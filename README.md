@@ -1,33 +1,33 @@
 ![image](logo.png)
 # Avatar - 跨平台高性能3D引擎
 
-##简介
+## 简介
 这是我的一个业余项目，Avatar 是一款跨平台高性能的3D引擎，底层采用 C++ 开发，目前支持 Windows、Linux、
 Android 三个平台。渲染部分基于 OpenGL3.3/ES3.0，引擎具有很高的可移植性，除了 freetype、glew、libcurl、
 libjpeg、libpng、lua、minimp3、openal、rapidxml、zlib 这些开源的第三方库以外无其他依赖库。引擎的特点是
 简单高效的同时提供非常丰富的功能，关于引擎名称 Avatar (译：女神)藏有一段小故事，它是我大学新学到的第一
-个单词(^_^)。部分特性见下方介绍。关于作者和引擎详见 [http://blog.csdn.net/luoyexunxue]。对于引擎的使用，
-可参考 [##编译]
+个单词(^_^)。部分特性见下方介绍。关于作者和引擎详见 [http://blog.csdn.net/luoyexunxue](http://blog.csdn.net/luoyexunxue)。对于引擎的使用，
+可参考 [编译](#编译)
 
 引擎的部分特性：
-<br/>
--# <b>支持多种纹理格式 BMP TGA PNG JPG，同时支持程序纹理</b>
--# <b>支持载入动画模型 MS3D DAE GLTF 和静态模型 OBJ STL 3DS 以及骨骼动画 BVH 并可配置自定义加载器</b>
--# <b>基于 OpenAL 的 3D 音效，支持 WAV 和 MP3 格式音频载入</b>
--# <b>集成 FreeType 字体库，支持自定义字体显示</b>
--# <b>集成 Lua 脚本引擎，支持使用 Lua 与引擎的交互，基于脚本的 GUI 系统，具有非常灵活的事件处理能力</b>
--# <b>能够实现诸如实时监控，摄像头视频采集，摄像头控制等功能</b>
--# <b>实现了一个小型快速的物理引擎，能够进行刚体模拟</b>
--# <b>内建多种后处理，如立体视觉透视矫正，HDR，FXAA，红蓝3D，VolumeLight 以及用户自定义后处理</b>
--# <b>支持场景节点动画，包括缩放，旋转，平移，包含多种动画方式</b>
--# <b>包含多种相机，可完成诸如第一人称游戏、第三人称游戏、模型浏览、飞行模拟、VR模式等多种控制</b>
--# <b>完整的日志系统，可指定输出级别，可输出到文件和控制台</b>
--# <b>支持读取多种文件来源，本地文件系统，压缩文件，HTTP/FTP 网络资源</b>
--# <b>包含 Delaunay 三角网生成、FFT 变换/逆变换、JSON 解析、模型分层切片、UDP 网络通信等基础库</b>
 
-##历程
+- <b>支持多种纹理格式 BMP TGA PNG JPG，同时支持程序纹理</b>
+- <b>支持载入动画模型 MS3D DAE GLTF 和静态模型 OBJ STL 3DS 以及骨骼动画 BVH 并可配置自定义加载器</b>
+- <b>基于 OpenAL 的 3D 音效，支持 WAV 和 MP3 格式音频载入</b>
+- <b>集成 FreeType 字体库，支持自定义字体显示</b>
+- <b>集成 Lua 脚本引擎，支持使用 Lua 与引擎的交互，基于脚本的 GUI 系统，具有非常灵活的事件处理能力</b>
+- <b>能够实现诸如实时监控，摄像头视频采集，摄像头控制等功能</b>
+- <b>实现了一个小型快速的物理引擎，能够进行刚体模拟</b>
+- <b>内建多种后处理，如立体视觉透视矫正，HDR，FXAA，红蓝3D，VolumeLight 以及用户自定义后处理</b>
+- <b>支持场景节点动画，包括缩放，旋转，平移，包含多种动画方式</b>
+- <b>包含多种相机，可完成诸如第一人称游戏、第三人称游戏、模型浏览、飞行模拟、VR模式等多种控制</b>
+- <b>完整的日志系统，可指定输出级别，可输出到文件和控制台</b>
+- <b>支持读取多种文件来源，本地文件系统，压缩文件，HTTP/FTP 网络资源</b>
+- <b>包含 Delaunay 三角网生成、FFT 变换/逆变换、JSON 解析、模型分层切片、UDP 网络通信等基础库</b>
+
+## 历程
 Avatar 是我从2013年3月份辞掉第一份工作后开始的，最初的目只是为了制作 3D 游戏，后经过断断续续的更新，已经相对成熟
-<br/>
+
 2013-03 开始开发 Windows 版本<br/>
 2014-04 移植到 Linux 系统上，需要感谢 MaYuan 的帮助<br/>
 2014-05 移植到 Raspberry Pi 上<br/>
@@ -59,7 +59,7 @@ Avatar 是我从2013年3月份辞掉第一份工作后开始的，最初的目�
 2019-05 新增插件功能<br/>
 2019-09 PBR 增加 IBL 环境光照特性<br/>
 
-##架构
+## 架构
 一、目录结构<br/>
 
 ```
@@ -98,8 +98,9 @@ CScriptManager 管理脚本接口，引擎以 Lua 作为脚本语言，提供丰
 CPostProcessManager 管理后处理程序资源，对渲染结果进行后处理操作<br/>
 CAnimationManager 管理动画模拟，为场景节点提供补间动画，包含缩放、旋转、平移动画<br/>
 
-##编译
-需要单独编译第三方库文件，Windows 平台已提供预编译版本<br/>
+## 编译
+需要单独编译第三方库文件，Windows 平台已提供预编译版本
+
 | 名称 | 描述 | 引用 |
 | :------- | :--- | :------ |
 | glew | OpenGL 扩展 | CGraphicsManager CShaderManager CTextureManager CMesh |
@@ -110,6 +111,7 @@ CAnimationManager 管理动画模拟，为场景节点提供补间动画，包�
 | freetype | 字体读取库 | CFontManager |
 | lua | 脚本解析库 | CScriptManager CScriptContext |
 | libcurl | URL 网络请求库 | CUrlConnection |
+
 编译前可以修改 AvatarConfig.h 文件进行配置<br/>
 AVATAR_ENABLE_VLD 使用 Visual Leak Detector 做内存泄漏检测<br/>
 AVATAR_ENABLE_VIDEOCAP 使用摄像机捕捉库（目前只能在 Windows 下使用）<br/>
@@ -119,7 +121,7 @@ AVATAR_ENABLE_MOUSE 启用鼠标输入<br/>
 AVATAR_ENABLE_KEYBOARD 启用键盘输入<br/>
 AVATAR_CONTROL_NETWORK 启用网络游戏手柄控制（UDP协议，JSON数据）<br/>
 
-###基本概念
+### 基本概念
 
 - 空间坐标系为右手坐标系，X 轴为屏幕向右，Y 轴为屏幕向里，Z 轴为屏幕向上
 - 屏幕坐标系原点为左下角，X 正方向为向右，Y 轴正方向为向上
@@ -127,7 +129,7 @@ AVATAR_CONTROL_NETWORK 启用网络游戏手柄控制（UDP协议，JSON数据�
 - 正交矩阵的逆矩阵等于转置矩阵，未缩放的旋转矩阵就是正交矩阵
 - 纹理通道0至7用于自定义用途，通道8为阴影贴图，通道9/10/11为IBL通道
 
-###编码技巧
+### 编码技巧
 
 - 自定义后处理和程序纹理均使用 uniform float uElapsedTime 获取当前时间
 - 自定义后处理和程序纹理均使用 uniform vec2 uResolution 获取屏幕分辨率
@@ -136,7 +138,7 @@ AVATAR_CONTROL_NETWORK 启用网络游戏手柄控制（UDP协议，JSON数据�
 - GUI 脚本文件需使用 UTF-8 编码，以防止 GUI 中文显示乱码
 
 
-###简单示例
+### 简单示例
 
 ```
 #include <CEngine.h>
