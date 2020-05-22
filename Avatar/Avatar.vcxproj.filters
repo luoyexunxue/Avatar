@@ -1,0 +1,721 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="源文件">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="头文件">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Avatar.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CCamera.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CFileManager.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CGraphicsManager.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CInputManager.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CLog.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CSoundManager.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CStringUtil.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CUdpSocket.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CSceneManager.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CSceneNode.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CTextureManager.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CEngine.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CJsonParser.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CPhysicsManager.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CRigidBody.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CMesh.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CFontManager.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CQuaternion.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CMatrix4.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CVector3.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CShaderManager.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CShader.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CVertex.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CTexture.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CDynamicBVT.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CGeometryCreator.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CMaterial.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CPostProcessManager.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CPostProcess.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CPostProcessOculus.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CPostProcessBlur.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CPostProcessGray.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CPostProcessAnaglyph.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CPostProcessEmboss.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CPostProcessFxaa.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CScriptManager.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CTimer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CPlane.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CRay.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CCameraFree.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CGuiEnvironment.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CPostProcessPass.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CRectangle.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CCameraViewer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CGuiButton.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CGuiEditBox.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CGuiTrackBar.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CVector2.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CCameraChase.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CCameraGaze.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CDeviceWindows.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CDeviceLinux.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CDeviceAndroid.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CGuiLabel.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CContactDetector.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CPostProcessEdge.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CPostProcessCartoon.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CAnimationManager.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CBoundingBox.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CPostProcessHdr.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CSceneNodeGeometry.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CSceneNodeSkybox.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CSceneNodeCloud.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CSceneNodeStatic.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CSceneNodeAnimation.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CSceneNodeSound.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CSceneNodeBlast.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CSceneNodeFlame.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CSceneNodeBoard.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CSceneNodeWater.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CSceneNodeTerrain.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CSceneNodeScreen.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CSceneNodeAxis.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CSceneNodeLensflare.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CSceneNodePlanet.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CSceneNodePlant.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CSceneNodeParticles.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CPostProcessUser.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CSceneNodeLine.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CSceneNodeMesh.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CPostProcessSsao.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CPostProcessBeam.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CZipReader.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CUrlConnection.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CProfile.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CMeshSlicer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CDelaunay.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CMeshLoader.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CMeshData.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CMeshLoaderBasic.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CMeshLoader3ds.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CMeshLoaderCollada.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CColor.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CSceneNodeDecal.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CVertexJoint.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CThreadPool.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CFrustum.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CFFT.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CPostProcessSnow.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CSceneNodeText.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CPostProcessRain.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CPostProcessBloom.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CCameraGeographic.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CThread.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CPostProcessPanorama.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CSceneNodeFresnel.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CGuiPanel.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CMeshLoaderGltf.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CPluginLoader.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CScriptContext.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CMeshBlend.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CBase64.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="AvatarConfig.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CCamera.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CFileManager.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CGraphicsManager.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CInputManager.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CLog.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CSoundManager.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CStringUtil.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CTimer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CUdpSocket.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CSceneManager.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CSceneNode.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CTextureManager.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CEngine.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CJsonParser.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CPhysicsManager.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CRigidBody.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CMesh.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CMaterial.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CFontManager.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CQuaternion.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CMatrix4.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CVector3.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CBoundingBox.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CShaderManager.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CPerlinNoise.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CTexture.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CShader.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CVertex.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CDynamicBVT.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CGeometryCreator.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CPostProcess.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CPostProcessManager.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CPostProcessOculus.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CPostProcessBlur.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CPostProcessGray.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CPostProcessAnaglyph.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CPostProcessEmboss.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CPostProcessFxaa.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CScriptManager.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CPlane.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CRay.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CCameraFree.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CGuiEnvironment.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CPostProcessPass.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CRectangle.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CCameraViewer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CGuiButton.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CGuiEditBox.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CGuiTrackBar.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CVector2.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CCameraChase.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CCameraGaze.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CDevice.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CDeviceWindows.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CDeviceLinux.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CDeviceAndroid.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CGuiLabel.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CContactDetector.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CPostProcessEdge.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CPostProcessCartoon.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CAnimationManager.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CPostProcessHdr.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CSceneNodeGeometry.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CSceneNodeSkybox.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CSceneNodeCloud.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CSceneNodeStatic.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CSceneNodeAnimation.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CSceneNodeSound.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CSceneNodeBlast.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CSceneNodeFlame.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CSceneNodeBoard.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CSceneNodeWater.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CSceneNodeTerrain.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CSceneNodeScreen.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CSceneNodeAxis.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CSceneNodeLensflare.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CSceneNodePlanet.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CSceneNodePlant.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CSceneNodeParticles.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CPostProcessUser.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CSceneNodeLine.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CSceneNodeMesh.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CPostProcessSsao.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CPostProcessBeam.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CZipReader.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CUrlConnection.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CProfile.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CMeshSlicer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CDelaunay.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CMeshLoader.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CMeshData.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CMeshLoaderBasic.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CMeshLoader3ds.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CMeshLoaderCollada.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CColor.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CSceneNodeDecal.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CVertexJoint.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CThreadPool.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CFrustum.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CFFT.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CPostProcessSnow.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CSceneNodeText.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CStreamWriter.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CStreamReader.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CPostProcessRain.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CPostProcessBloom.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CCameraGeographic.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CThread.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CPostProcessPanorama.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CSceneNodeFresnel.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CGuiPanel.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CMeshLoaderGltf.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CPluginLoader.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CScriptContext.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CMeshBlend.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CBase64.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Avatar.rc">
+      <Filter>资源文件</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="media\Avatar.ico">
+      <Filter>资源文件</Filter>
+    </None>
+  </ItemGroup>
+</Project>

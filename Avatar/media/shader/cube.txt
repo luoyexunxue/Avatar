@@ -1,0 +1,182 @@
+float line( vec2 a, vec2 b, vec2 p )
+{
+    vec2 aTob = b - a;
+    vec2 aTop = p - a;
+
+    float t = dot( aTop, aTob ) / dot( aTob, aTob);
+
+    t = clamp( t, 0.0, 1.0);
+
+    float d = length( p - (a + aTob * t) );
+    d = 0.05 / d;
+
+    d = pow(d, 7.0);
+    return clamp( d, 0.0, 1.0 );
+}
+
+mat4 perspectiveMatrix(float fovYInRad, float aspectRatio)
+{    
+    float yScale = 1.0/tan(fovYInRad / 2.0);
+    float xScale = yScale / aspectRatio;  
+    float zf = 100.0;
+    float zn = 0.3;
+    
+    float z1 = zf/(zf-zn);
+    float z2 = -zn*zf/(zf-zn);
+
+    mat4 result = mat4(xScale, 0.0, 0.0, 0.0,
+              0.0, yScale, 0.0, 0.0,
+              0.0, 0.0, z1, z2,
+              0.0, 0.0, -1.0, 0.0);
+    
+    return result;
+}
+
+mat4 translationMatrix(vec3 pos)
+{
+    mat4 result = 
+    mat4(1.0, 0.0, 0.0, 0.0, 
+         0.0, 1.0, 0.0, 0.0,
+         0.0, 0.0, 1.0, 0.0,
+         pos.x, pos.y, pos.z, 1.0 );
+    
+    return result;
+}
+
+mat4 rotXMatrix(float theta)
+{
+    float cs = cos(theta);
+    float ss = sin(theta);
+
+    mat4 result = 
+    mat4(1.0, 0.0, 0.0, 0.0, 
+         0.0, cs, -ss, 0.0,
+         0.0, ss, cs, 0.0,
+         0.0, 0.0, 0.0, 1.0 );
+
+    return result;
+}
+
+mat4 rotYMatrix(float theta)
+{
+    float cs = cos(theta);
+    float ss = sin(theta);
+
+    mat4 result = 
+    mat4(cs, 0.0, -ss, 0.0, 
+         0.0, 1.0, 0.0, 0.0,
+         ss, 0.0, cs, 0.0,
+         0.0, 0.0, 0.0, 1.0 );
+
+    return result;
+}
+
+float particle(vec2 uv, vec4 vert, mat4 mvp, vec2 sizeRange, float sizeOffset, vec2 moveSpeed)
+{
+    vec4 v = mvp * vert;
+    vec2 vp = (v.xy / v.w);
+
+    float size = mix(sizeRange.x, sizeRange.y, sin(uElapsedTime + sizeOffset) * 0.5 + 0.5);
+    float t = 1.0 / abs(length(uv.xy - (vp.xy + vec2(cos(uElapsedTime * moveSpeed.x), sin(uElapsedTime * moveSpeed.y)))) * size);
+
+    t = pow( t, 1.5);
+    
+    return t;
+}
+
+void main( void )
+{
+    vec2 uv = ( gl_FragCoord.xy / uResolution.xy ) * 2.0 - 1.0;
+
+    uv *= 10.0;
+
+    const float fovYInRad = (45.0/180.0) * 3.14159;
+    float aspectRatio = uResolution.x / uResolution.y;
+
+    const float vs = 10.0;
+    #define maxVerts 16
+    vec4 verts [maxVerts];
+    verts[0] = vec4( -vs, -vs, vs, 1.0 );
+    verts[1] = vec4( -vs,  vs, vs, 1.0 );
+    verts[2] = vec4(  vs,  vs, vs, 1.0 );
+    verts[3] = vec4(  vs, -vs, vs, 1.0 );
+
+    verts[4] = vec4( -vs, -vs, vs, 1.0 );
+    verts[5] = vec4( -vs,  vs, vs, 1.0 );
+    verts[6] = vec4( -vs,  vs, -vs, 1.0 );
+    verts[7] = vec4( -vs, -vs, -vs, 1.0 );
+
+    verts[8] = vec4( -vs, -vs, -vs, 1.0 );
+    verts[9] = vec4( -vs,  vs, -vs, 1.0 );
+    verts[10] = vec4( vs,  vs, -vs, 1.0 );
+    verts[11] = vec4( vs, -vs, -vs, 1.0 );
+
+    verts[12] = vec4( vs, -vs, vs, 1.0 );
+    verts[13] = vec4( vs,  vs, vs, 1.0 );
+    verts[14] = vec4( vs,  vs, -vs, 1.0 );
+    verts[15] = vec4( vs, -vs, -vs, 1.0 );
+
+    float moveX = mix(10.0, -10.0, sin(uElapsedTime * 0.4) * 0.5 + 0.5);
+    float moveY = mix(10.0, -10.0, sin(uElapsedTime * 0.2) * 0.5 + 0.5);
+    float moveZ = mix(40.0, 60.0, sin(uElapsedTime * 0.2) * 0.5 + 0.5);
+
+    vec3 pos = vec3( moveX, moveY, moveZ);
+    mat4 rotY = rotYMatrix(uElapsedTime) * rotXMatrix(uElapsedTime * 0.5);
+
+    mat4 worldMat = translationMatrix(pos) * rotY;
+    mat4 perspective = perspectiveMatrix(fovYInRad, aspectRatio);
+
+    mat4 mvp = perspective * worldMat;
+
+	
+	
+	
+    float t = 0.0;
+    for(int i = 0; i < maxVerts; ++i)
+    {
+        vec4 startWorldVert = mvp * verts[i];
+        vec4 endWorldVert;
+        if( i+1 < maxVerts)
+        {
+            endWorldVert = mvp * verts[i + 1];
+        }
+        else
+        {
+            endWorldVert = mvp * verts[i - 3];
+        }
+
+        if(i != 0 && mod(float(i+1), 4.0) == 0.0)
+        {
+            endWorldVert = mvp * verts[i - 3];
+        }
+
+        vec2 sp = startWorldVert.xy / startWorldVert.w;
+        vec2 ep = endWorldVert.xy / endWorldVert.w;
+
+        t += line( sp, ep, uv);
+    }
+
+    vec3 fc = vec3( 0.00 );
+    fc += vec3(pow(abs(uv.y / 10.0), 2.5));
+
+    fc += vec3( 2.0, 4.0, 8.0 ) * pow(t, 0.2);
+
+	
+    t = particle(uv, verts[0], mvp, vec2(20.0, 40.0), 1.0, vec2( 3.0, 1.0));
+    fc += vec3(8.0, 4.0, 2.0) * t;
+
+    t = particle(uv, verts[1], mvp, vec2(20.0, 40.0), 14.0, vec2( 1.0, 3.0));
+    fc += vec3(4.0, 8.0, 2.0) * t;
+
+    t = particle(uv, verts[10], mvp, vec2(10.0, 40.0), 25.0, vec2( 2.0, 1.0));
+    fc += vec3(3.0, 2.0, 7.0) * t;
+
+    t = particle(uv, verts[12], mvp, vec2(10.0, 40.0), 78.0, vec2( 5.0, 3.0));
+    fc += vec3(4.0, 3.0, 8.0) * t;
+
+    t = particle(uv, verts[6], mvp, vec2(10.0, 40.0), 100.0, vec2( 5.0, 3.0));
+    fc += vec3(8.0, 1.0, 1.0) * t;
+
+    gl_FragColor = vec4( fc, 1.0 );
+
+}

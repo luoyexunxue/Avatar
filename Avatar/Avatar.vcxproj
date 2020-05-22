@@ -1,0 +1,417 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="DebugDLL|Win32">
+      <Configuration>DebugDLL</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="ReleaseDLL|Win32">
+      <Configuration>ReleaseDLL</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{EB64B4E9-9D92-4B43-994E-08692557C3B5}</ProjectGuid>
+    <RootNamespace>Avatar</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <PlatformToolset>v120</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseDLL|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <PlatformToolset>v120</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v120</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugDLL|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v120</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseDLL|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='DebugDLL|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)bin\$(Configuration)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='DebugDLL|Win32'">$(SolutionDir)bin\$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)obj\$(Configuration)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='DebugDLL|Win32'">$(SolutionDir)obj\$(Configuration)\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</LinkIncremental>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='DebugDLL|Win32'">false</LinkIncremental>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)bin\$(Configuration)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='ReleaseDLL|Win32'">$(SolutionDir)bin\$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)obj\$(Configuration)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='ReleaseDLL|Win32'">$(SolutionDir)obj\$(Configuration)\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='ReleaseDLL|Win32'">false</LinkIncremental>
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='DebugDLL|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='DebugDLL|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='DebugDLL|Win32'" />
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='ReleaseDLL|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='ReleaseDLL|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='ReleaseDLL|Win32'" />
+    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">D:\Visual Leak Detector\include;$(IncludePath)</IncludePath>
+    <IncludePath Condition="'$(Configuration)|$(Platform)'=='DebugDLL|Win32'">D:\Visual Leak Detector\include;$(IncludePath)</IncludePath>
+    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">D:\Visual Leak Detector\lib\Win32;$(LibraryPath)</LibraryPath>
+    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='DebugDLL|Win32'">D:\Visual Leak Detector\lib\Win32;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;AVATAR;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <IgnoreSpecificDefaultLibraries>libcmt.lib;msvcrt.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <TargetMachine>MachineX86</TargetMachine>
+      <AdditionalOptions>/LTCG %(AdditionalOptions)</AdditionalOptions>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugDLL|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;AVATAR;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <IgnoreSpecificDefaultLibraries>libcmt.lib;msvcrt.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <TargetMachine>MachineX86</TargetMachine>
+      <AdditionalOptions>/LTCG %(AdditionalOptions)</AdditionalOptions>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;AVATAR;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <IgnoreSpecificDefaultLibraries>libcmt.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseDLL|Win32'">
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;AVATAR;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <IgnoreSpecificDefaultLibraries>libcmt.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="Avatar.cpp" />
+    <ClCompile Include="CAnimationManager.cpp" />
+    <ClCompile Include="CBase64.cpp" />
+    <ClCompile Include="CBoundingBox.cpp" />
+    <ClCompile Include="CCamera.cpp" />
+    <ClCompile Include="CCameraChase.cpp" />
+    <ClCompile Include="CCameraFree.cpp" />
+    <ClCompile Include="CCameraGaze.cpp" />
+    <ClCompile Include="CCameraGeographic.cpp" />
+    <ClCompile Include="CCameraViewer.cpp" />
+    <ClCompile Include="CColor.cpp" />
+    <ClCompile Include="CContactDetector.cpp" />
+    <ClCompile Include="CDelaunay.cpp" />
+    <ClCompile Include="CDeviceWindows.cpp" />
+    <ClCompile Include="CDeviceLinux.cpp" />
+    <ClCompile Include="CDeviceAndroid.cpp" />
+    <ClCompile Include="CDynamicBvt.cpp" />
+    <ClCompile Include="CEngine.cpp" />
+    <ClCompile Include="CFFT.cpp" />
+    <ClCompile Include="CFileManager.cpp" />
+    <ClCompile Include="CFontManager.cpp" />
+    <ClCompile Include="CFrustum.cpp" />
+    <ClCompile Include="CGeometryCreator.cpp" />
+    <ClCompile Include="CGraphicsManager.cpp" />
+    <ClCompile Include="CGuiButton.cpp" />
+    <ClCompile Include="CGuiEditBox.cpp" />
+    <ClCompile Include="CGuiEnvironment.cpp" />
+    <ClCompile Include="CGuiLabel.cpp" />
+    <ClCompile Include="CGuiPanel.cpp" />
+    <ClCompile Include="CGuiTrackBar.cpp" />
+    <ClCompile Include="CInputManager.cpp" />
+    <ClCompile Include="CJsonParser.cpp" />
+    <ClCompile Include="CLog.cpp" />
+    <ClCompile Include="CMaterial.cpp" />
+    <ClCompile Include="CMatrix4.cpp" />
+    <ClCompile Include="CMesh.cpp" />
+    <ClCompile Include="CMeshBlend.cpp" />
+    <ClCompile Include="CMeshData.cpp" />
+    <ClCompile Include="CMeshLoader.cpp" />
+    <ClCompile Include="CMeshLoader3ds.cpp" />
+    <ClCompile Include="CMeshLoaderBasic.cpp" />
+    <ClCompile Include="CMeshLoaderCollada.cpp" />
+    <ClCompile Include="CMeshLoaderGltf.cpp" />
+    <ClCompile Include="CMeshSlicer.cpp" />
+    <ClCompile Include="CPlane.cpp" />
+    <ClCompile Include="CPluginLoader.cpp" />
+    <ClCompile Include="CPostProcess.cpp" />
+    <ClCompile Include="CPostProcessAnaglyph.cpp" />
+    <ClCompile Include="CPostProcessBeam.cpp" />
+    <ClCompile Include="CPostProcessBloom.cpp" />
+    <ClCompile Include="CPostProcessBlur.cpp" />
+    <ClCompile Include="CPostProcessCartoon.cpp" />
+    <ClCompile Include="CPostProcessEdge.cpp" />
+    <ClCompile Include="CPostProcessEmboss.cpp" />
+    <ClCompile Include="CPostProcessFxaa.cpp" />
+    <ClCompile Include="CPostProcessGray.cpp" />
+    <ClCompile Include="CPostProcessHdr.cpp" />
+    <ClCompile Include="CPostProcessManager.cpp" />
+    <ClCompile Include="CPostProcessOculus.cpp" />
+    <ClCompile Include="CPostProcessPanorama.cpp" />
+    <ClCompile Include="CPostProcessPass.cpp" />
+    <ClCompile Include="CPostProcessRain.cpp" />
+    <ClCompile Include="CPostProcessSnow.cpp" />
+    <ClCompile Include="CPostProcessSsao.cpp" />
+    <ClCompile Include="CPostProcessUser.cpp" />
+    <ClCompile Include="CProfile.cpp" />
+    <ClCompile Include="CRay.cpp" />
+    <ClCompile Include="CRectangle.cpp" />
+    <ClCompile Include="CSceneManager.cpp" />
+    <ClCompile Include="CSceneNode.cpp" />
+    <ClCompile Include="CSceneNodeAnimation.cpp" />
+    <ClCompile Include="CSceneNodeAxis.cpp" />
+    <ClCompile Include="CSceneNodeBlast.cpp" />
+    <ClCompile Include="CSceneNodeBoard.cpp" />
+    <ClCompile Include="CSceneNodeFresnel.cpp" />
+    <ClCompile Include="CSceneNodeCloud.cpp" />
+    <ClCompile Include="CSceneNodeDecal.cpp" />
+    <ClCompile Include="CSceneNodeFlame.cpp" />
+    <ClCompile Include="CSceneNodeGeometry.cpp" />
+    <ClCompile Include="CSceneNodeLensflare.cpp" />
+    <ClCompile Include="CSceneNodeLine.cpp" />
+    <ClCompile Include="CSceneNodeMesh.cpp" />
+    <ClCompile Include="CSceneNodeParticles.cpp" />
+    <ClCompile Include="CSceneNodePlanet.cpp" />
+    <ClCompile Include="CSceneNodePlant.cpp" />
+    <ClCompile Include="CSceneNodeScreen.cpp" />
+    <ClCompile Include="CSceneNodeSkybox.cpp" />
+    <ClCompile Include="CSceneNodeSound.cpp" />
+    <ClCompile Include="CSceneNodeStatic.cpp" />
+    <ClCompile Include="CSceneNodeTerrain.cpp" />
+    <ClCompile Include="CSceneNodeText.cpp" />
+    <ClCompile Include="CSceneNodeWater.cpp" />
+    <ClCompile Include="CScriptContext.cpp" />
+    <ClCompile Include="CScriptManager.cpp" />
+    <ClCompile Include="CShader.cpp" />
+    <ClCompile Include="CShaderManager.cpp" />
+    <ClCompile Include="CSoundManager.cpp" />
+    <ClCompile Include="CStringUtil.cpp" />
+    <ClCompile Include="CTexture.cpp" />
+    <ClCompile Include="CTextureManager.cpp" />
+    <ClCompile Include="CRigidBody.cpp" />
+    <ClCompile Include="CPhysicsManager.cpp" />
+    <ClCompile Include="CQuaternion.cpp" />
+    <ClCompile Include="CThread.cpp" />
+    <ClCompile Include="CThreadPool.cpp" />
+    <ClCompile Include="CTimer.cpp" />
+    <ClCompile Include="CUdpSocket.cpp" />
+    <ClCompile Include="CUrlConnection.cpp" />
+    <ClCompile Include="CVector2.cpp" />
+    <ClCompile Include="CVector3.cpp" />
+    <ClCompile Include="CVertex.cpp" />
+    <ClCompile Include="CVertexJoint.cpp" />
+    <ClCompile Include="CZipReader.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="AvatarConfig.h" />
+    <ClInclude Include="CAnimationManager.h" />
+    <ClInclude Include="CBase64.h" />
+    <ClInclude Include="CBoundingBox.h" />
+    <ClInclude Include="CCamera.h" />
+    <ClInclude Include="CCameraChase.h" />
+    <ClInclude Include="CCameraFree.h" />
+    <ClInclude Include="CCameraGaze.h" />
+    <ClInclude Include="CCameraGeographic.h" />
+    <ClInclude Include="CCameraViewer.h" />
+    <ClInclude Include="CColor.h" />
+    <ClInclude Include="CContactDetector.h" />
+    <ClInclude Include="CDelaunay.h" />
+    <ClInclude Include="CDevice.h" />
+    <ClInclude Include="CDeviceWindows.h" />
+    <ClInclude Include="CDeviceLinux.h" />
+    <ClInclude Include="CDeviceAndroid.h" />
+    <ClInclude Include="CDynamicBvt.h" />
+    <ClInclude Include="CEngine.h" />
+    <ClInclude Include="CFFT.h" />
+    <ClInclude Include="CFileManager.h" />
+    <ClInclude Include="CFontManager.h" />
+    <ClInclude Include="CFrustum.h" />
+    <ClInclude Include="CGeometryCreator.h" />
+    <ClInclude Include="CGraphicsManager.h" />
+    <ClInclude Include="CGuiButton.h" />
+    <ClInclude Include="CGuiEditBox.h" />
+    <ClInclude Include="CGuiEnvironment.h" />
+    <ClInclude Include="CGuiLabel.h" />
+    <ClInclude Include="CGuiPanel.h" />
+    <ClInclude Include="CGuiTrackBar.h" />
+    <ClInclude Include="CInputManager.h" />
+    <ClInclude Include="CJsonParser.h" />
+    <ClInclude Include="CLog.h" />
+    <ClInclude Include="CMaterial.h" />
+    <ClInclude Include="CMatrix4.h" />
+    <ClInclude Include="CMesh.h" />
+    <ClInclude Include="CMeshBlend.h" />
+    <ClInclude Include="CMeshData.h" />
+    <ClInclude Include="CMeshLoader.h" />
+    <ClInclude Include="CMeshLoader3ds.h" />
+    <ClInclude Include="CMeshLoaderBasic.h" />
+    <ClInclude Include="CMeshLoaderCollada.h" />
+    <ClInclude Include="CMeshLoaderGltf.h" />
+    <ClInclude Include="CMeshSlicer.h" />
+    <ClInclude Include="CPerlinNoise.h" />
+    <ClInclude Include="CPlane.h" />
+    <ClInclude Include="CPluginLoader.h" />
+    <ClInclude Include="CPostProcess.h" />
+    <ClInclude Include="CPostProcessAnaglyph.h" />
+    <ClInclude Include="CPostProcessBeam.h" />
+    <ClInclude Include="CPostProcessBloom.h" />
+    <ClInclude Include="CPostProcessBlur.h" />
+    <ClInclude Include="CPostProcessCartoon.h" />
+    <ClInclude Include="CPostProcessEdge.h" />
+    <ClInclude Include="CPostProcessEmboss.h" />
+    <ClInclude Include="CPostProcessFxaa.h" />
+    <ClInclude Include="CPostProcessGray.h" />
+    <ClInclude Include="CPostProcessHdr.h" />
+    <ClInclude Include="CPostProcessManager.h" />
+    <ClInclude Include="CPostProcessOculus.h" />
+    <ClInclude Include="CPostProcessPanorama.h" />
+    <ClInclude Include="CPostProcessPass.h" />
+    <ClInclude Include="CPostProcessRain.h" />
+    <ClInclude Include="CPostProcessSnow.h" />
+    <ClInclude Include="CPostProcessSsao.h" />
+    <ClInclude Include="CPostProcessUser.h" />
+    <ClInclude Include="CProfile.h" />
+    <ClInclude Include="CRay.h" />
+    <ClInclude Include="CRectangle.h" />
+    <ClInclude Include="CRigidBody.h" />
+    <ClInclude Include="CSceneManager.h" />
+    <ClInclude Include="CSceneNode.h" />
+    <ClInclude Include="CSceneNodeAnimation.h" />
+    <ClInclude Include="CSceneNodeAxis.h" />
+    <ClInclude Include="CSceneNodeBlast.h" />
+    <ClInclude Include="CSceneNodeBoard.h" />
+    <ClInclude Include="CSceneNodeFresnel.h" />
+    <ClInclude Include="CSceneNodeCloud.h" />
+    <ClInclude Include="CSceneNodeDecal.h" />
+    <ClInclude Include="CSceneNodeFlame.h" />
+    <ClInclude Include="CSceneNodeGeometry.h" />
+    <ClInclude Include="CSceneNodeLensflare.h" />
+    <ClInclude Include="CSceneNodeLine.h" />
+    <ClInclude Include="CSceneNodeMesh.h" />
+    <ClInclude Include="CSceneNodeParticles.h" />
+    <ClInclude Include="CSceneNodePlanet.h" />
+    <ClInclude Include="CSceneNodePlant.h" />
+    <ClInclude Include="CSceneNodeScreen.h" />
+    <ClInclude Include="CSceneNodeSkybox.h" />
+    <ClInclude Include="CSceneNodeSound.h" />
+    <ClInclude Include="CSceneNodeStatic.h" />
+    <ClInclude Include="CSceneNodeTerrain.h" />
+    <ClInclude Include="CSceneNodeText.h" />
+    <ClInclude Include="CSceneNodeWater.h" />
+    <ClInclude Include="CScriptContext.h" />
+    <ClInclude Include="CScriptManager.h" />
+    <ClInclude Include="CShader.h" />
+    <ClInclude Include="CShaderManager.h" />
+    <ClInclude Include="CStreamReader.h" />
+    <ClInclude Include="CStreamWriter.h" />
+    <ClInclude Include="CTexture.h" />
+    <ClInclude Include="CTextureManager.h" />
+    <ClInclude Include="CSoundManager.h" />
+    <ClInclude Include="CPhysicsManager.h" />
+    <ClInclude Include="CQuaternion.h" />
+    <ClInclude Include="CStringUtil.h" />
+    <ClInclude Include="CThread.h" />
+    <ClInclude Include="CThreadPool.h" />
+    <ClInclude Include="CTimer.h" />
+    <ClInclude Include="CUdpSocket.h" />
+    <ClInclude Include="CUrlConnection.h" />
+    <ClInclude Include="CVector2.h" />
+    <ClInclude Include="CVector3.h" />
+    <ClInclude Include="CVertex.h" />
+    <ClInclude Include="CVertexJoint.h" />
+    <ClInclude Include="CZipReader.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Avatar.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="media\Avatar.ico" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

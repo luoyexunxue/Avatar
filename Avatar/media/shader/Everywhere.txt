@@ -1,0 +1,164 @@
+mat2 rot(float t)
+{
+    return mat2(cos(t), sin(t), -sin(t), cos(t));
+}
+
+float tunnel(vec3 p)
+{
+	float d = 0.0;
+    float k = 1.0;
+    d = 0.5 + k - abs(p.x);
+    d = min(d, -0.1 + k - abs(p.y));
+    return d;
+}
+
+float map(vec3 p)
+{    
+	float d = 1000.0;
+    
+    vec3 q = p;
+    q.x = mod(p.x - 2.0, 4.0) - 2.0;
+    q.y = mod(p.y - 2.0, 4.0) - 2.0;
+    d = tunnel(q);
+    
+    q = p;
+    q.y = mod(p.y - 2.0, 4.0) - 2.0;
+    q.z = mod(p.z, 4.0) - 2.0;
+    d = max(d, tunnel(q.zyx));
+    
+    q = p;
+    q.y = mod(p.y, 4.0) - 2.0;
+    q.z = mod(p.z - 2.0, 4.0) - 2.0;
+    d = max(d, tunnel(q.zyx));
+    
+    q = p;
+    q.x = mod(p.x - 2.0, 4.0) - 2.0;
+    q.z = mod(p.z - 2.0, 4.0) - 2.0;
+    d = max(d, tunnel(q.xzy));
+    
+    q = p;
+    q.x = mod(p.x, 4.0) - 2.0;
+    q.z = mod(p.z, 4.0) - 2.0;
+    d = max(d, tunnel(q.xzy));
+    
+    return d;
+}
+
+vec3 normal(vec3 p)
+{
+	vec3 o = vec3(0.01, 0.0, 0.0);
+    return normalize(vec3(map(p+o.xyy) - map(p-o.xyy),
+                          map(p+o.yxy) - map(p-o.yxy),
+                          map(p+o.yyx) - map(p-o.yyx)));
+}
+
+float trace(vec3 o, vec3 r)
+{
+    float t = 0.0;
+    for (int i = 0; i < 32; ++i) {
+        vec3 p = o + r * t;
+        float d = map(p);
+        t += d;
+    }
+    return t;
+}
+
+float axis(float t, float k)
+{
+    float n = t / 4.0;
+    float m = n * log2(n);
+    float a = clamp(t - k + m, 0.0, 1.0);
+    float b = clamp(t - k - m, 0.0, 1.0);
+    float r = mix(a, b, 0.5);
+	float s = 1.0-smoothstep(0.0, 1.0, 1.0-r);
+    return s;
+}
+
+float ptime()
+{
+    return iGlobalTime * 0.2;
+}
+
+vec3 path(float to)
+{
+    float r = fract(ptime());
+	float t = r * 4.0 - to * r * log2(r);
+    float cx = axis(t, 2.0) * 4.0;
+    float cy = axis(t, 1.0) * 2.0 + axis(t, 3.0) * 2.0;
+    float cz = axis(t, 0.0) * 4.0;
+    return vec3(cx, cy, cz);
+}
+
+vec3 texture(vec3 p)
+{
+	vec3 ta = texture2D(iChannel0, p.yz).xyz;
+    vec3 tb = texture2D(iChannel0, p.xz).xyz;
+    vec3 tc = texture2D(iChannel0, p.xy).xyz;
+    return ta*ta + tb*tb + tc*tc;
+}
+
+void mainImage( out vec4 fragColor, in vec2 fragCoord )
+{
+	vec2 uv = fragCoord.xy / iResolution.xy;
+    uv = uv * 2.0 - 1.0;
+    uv.x *= iResolution.x / iResolution.y;
+    
+    vec3 r = normalize(vec3(uv, 1.0 - dot(uv, uv) * 0.33));
+    
+    float ft = fract(ptime());
+	float g = ft * 4.0;
+    float fl = floor(ptime());
+    r.xy *= rot(fl * 3.14159 * cos(fl * 3.14) + sin(iGlobalTime * 0.5) * 2.0);
+    r.yz *= rot(axis(g, 3.0) * -1.57);
+    r.xz *= rot(axis(g, 2.0) * -1.57);
+    r.yz *= rot(axis(g, 0.0) * 1.57);
+    r.xy *= rot(axis(g, 1.0) * 1.57);
+    
+    vec3 o = path(0.0);
+    vec3 fc = vec3(0.0);
+    float lf = 1.0;
+    float gt = 0.0;
+    
+    for (int i = 0; i < 2; ++i) {
+    
+        float t = trace(o, r);
+        gt += t;
+        
+        vec3 w = o + r * t;
+        vec3 sn = normal(w);
+
+        float fd = map(w);
+        vec3 tw = vec3(w.xy * rot(fl * 3.14159), w.z);
+        vec3 tex = texture(tw * 0.5).xyz;
+
+        float fog = 1.0 / (1.0 + gt * gt * 0.1);
+        float fh = 1.0 / (1.0 + fd * 100.0);
+        
+        float nf = abs(dot(r, sn));
+        nf = mix(nf, 1.0, 1.0-fh);
+        
+        float rs = - ft * log2(ft);
+        vec3 lof = vec3(0.1);
+        lof.xy *= rot(fl * 3.14159);
+        vec3 lp = path(0.0) + lof;
+        vec3 lv = lp - w;
+        float ld = length(lv);
+        lv /= ld;
+		float lr = max(dot(lv, sn), 0.0);
+        vec3 lx = reflect(lv, sn);
+        float spec = pow(max(dot(r, lx), 0.0), 128.0);
+        float ly = 1.0 / (1.0 + ld * ld * 0.01);
+        
+        float lt = trace(lp + sn * 0.1, -lv);
+        float lm = max(sign(lt - ld), 0.0);
+        
+		fc += (tex * lf * nf * lr) * ly * fog * lm;
+        
+        lf = 1.0 - nf;
+        
+        r = reflect(r, sn);
+        o = w + sn * 0.1;
+    }
+    
+	fragColor = vec4(sqrt(fc), 1.0);
+}

@@ -1,0 +1,35 @@
+uniform vec3 uSkyColor;
+uniform vec3 uCloudColor;
+uniform float uCloudSize;
+uniform float uTime;
+
+in vec2 vTexCoord;
+out vec4 fragColor;
+
+float rand(vec2 n)
+{
+	return fract(cos(dot(n, vec2(12.9898, 4.1414))) * 43758.5453);
+}
+
+float noise(vec2 n)
+{
+	const vec2 d = vec2(0.0, 1.0);
+	vec2 b = floor(n), f = smoothstep(vec2(0.0), vec2(1.0), fract(n));
+	return mix(mix(rand(b), rand(b + d.yx), f.x), mix(rand(b + d.xy), rand(b + d.yy), f.x), f.y);
+}
+
+void main()
+{
+	// 柏林噪声
+	float total = 0.0;
+	vec2 pos = vTexCoord * uCloudSize;
+	total += noise(pos * 1.0 + vec2(uTime * 2.0, 0.0));
+	total += noise(pos * 2.0 + vec2(0.0, uTime * 3.0)) * 0.5;
+	total += noise(pos * 4.0 + vec2(uTime * 4.0, 0.0)) * 0.25;
+	total += noise(pos * 8.0 + vec2(0.0, uTime * 5.0)) * 0.125;
+	vec3 color = mix(uSkyColor, uCloudColor, total);
+
+	// 越边缘越透明
+	vec2 alpha = 1.0 - abs(vTexCoord - vec2(0.5)) * 2.0;
+	fragColor = vec4(color, alpha.x * alpha.y);
+}

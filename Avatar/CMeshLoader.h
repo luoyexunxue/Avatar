@@ -1,0 +1,51 @@
+//================================================
+// Copyright (c) 2016 周仁锋. All rights reserved.
+// ye_luo@qq.com
+//================================================
+#ifndef _CMESHLOADER_H_
+#define _CMESHLOADER_H_
+#include "AvatarConfig.h"
+#include "CMeshData.h"
+#include <map>
+using std::map;
+
+/**
+* @brief 模型加载类
+*/
+class AVATAR_EXPORT CMeshLoader {
+public:
+	//! 注册模型加载器
+	static bool Register(const string& type, CMeshLoader* loader);
+	//! 销毁已注册的加载器
+	static void Destroy();
+	//! 加载网格模型
+	static CMeshData* Load(const string& filename, bool cache);
+	//! 保存网格模型
+	static bool Save(const string& filename, CMeshData* meshData);
+	//! 移除已缓存的模型
+	static void Remove(CMeshData* meshData);
+
+protected:
+	//! 默认构造函数
+	CMeshLoader() {}
+	//! 虚析构函数
+	virtual ~CMeshLoader() {}
+	//! 加载模型文件
+	virtual CMeshData* LoadFile(const string& filename, const string& type) = 0;
+
+private:
+	//! 加载 AVT 文件
+	static CMeshData* LoadAvatar(const string& filename);
+	//! 保存 AVT 文件
+	static bool SaveAvatar(const string& filename, CMeshData* meshData);
+	//! 注册内置加载器
+	static void RegisterLoader();
+	//! 模型加载器列表
+	static map<string, CMeshLoader*> m_mapMeshLoader;
+	//! 已缓存的网格模型
+	static map<string, CMeshData*> m_mapMeshDataCache;
+	//! 已缓存的网格模型引用
+	static map<CMeshData*, int> m_mapCacheRefCount;
+};
+
+#endif

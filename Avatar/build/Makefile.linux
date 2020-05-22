@@ -1,0 +1,36 @@
+CC = g++
+CFLAGS = -Wall -I. -std=c++11
+LDFLAGS =
+
+EXEC = avatar
+OBJS = CAnimationManager.o CBase64.o CBoundingBox.o CCamera.o CCameraChase.o CCameraFree.o \
+	CCameraGaze.o CCameraGeographic.o CCameraViewer.o CColor.o CContactDetector.o \
+	CDelaunay.o CDeviceLinux.o CDynamicBvt.o CEngine.o CFFT.o CFileManager.o CFontManager.o \
+	CFrustum.o CGeometryCreator.o CGraphicsManager.o CGuiButton.o CGuiEditBox.o CGuiEnvironment.o \
+	CGuiLabel.o CGuiPanel.o CGuiTrackBar.o CInputManager.o CJsonParser.o CLog.o CMaterial.o \
+	CMatrix4.o CMesh.o CMeshBlend.o CMeshData.o CMeshLoader.o CMeshLoader3ds.o CMeshLoaderBasic.o \
+	CMeshLoaderCollada.o CMeshLoaderGltf.o CMeshSlicer.o CPhysicsManager.o CPlane.o \
+	CPluginLoader.o CPostProcess.o CPostProcessAnaglyph.o CPostProcessBeam.o CPostProcessBloom.o \
+	CPostProcessBlur.o CPostProcessCartoon.o CPostProcessEdge.o CPostProcessEmboss.o \
+	CPostProcessFxaa.o CPostProcessGray.o CPostProcessHdr.o CPostProcessManager.o \
+	CPostProcessOculus.o CPostProcessPanorama.o CPostProcessPass.o CPostProcessRain.o \
+	CPostProcessSnow.o CPostProcessSsao.o CPostProcessUser.o CProfile.o CQuaternion.o \
+	CRay.o CRectangle.o CRigidBody.o CSceneManager.o CSceneNode.o CSceneNodeAnimation.o \
+	CSceneNodeAxis.o CSceneNodeBlast.o CSceneNodeBoard.o CSceneNodeCloud.o CSceneNodeDecal.o \
+	CSceneNodeFlame.o CSceneNodeFresnel.o CSceneNodeGeometry.o CSceneNodeLensflare.o \
+	CSceneNodeLine.o CSceneNodeMesh.o CSceneNodeParticles.o CSceneNodePlanet.o CSceneNodePlant.o \
+	CSceneNodeScreen.o CSceneNodeSkybox.o CSceneNodeSound.o CSceneNodeStatic.o CSceneNodeTerrain.o \
+	CSceneNodeText.o CSceneNodeWater.o CScriptContext.o CScriptManager.o CShader.o \
+	CShaderManager.o CSoundManager.o CStringUtil.o CTexture.o CTextureManager.o \
+	CThread.o CThreadPool.o CTimer.o CUdpSocket.o CUrlConnection.o CVector2.o CVector3.o \
+	CVertex.o CVertexJoint.o CZipReader.o Avatar.o
+
+$(EXEC): $(OBJS)
+	$(CC) $(OBJS) $(LDFLAGS) -o $(EXEC) -lX11 -lGL -ljpeg -lpng16 -lz -lGLEW -lopenal -lfreetype -llua -ldl -lpthread -lcurl
+
+%.o: %.cpp
+	$(CC) $(CFLAGS) -c $<
+
+clean:
+	rm -rf $(OBJS)
+	rm $(EXEC)
