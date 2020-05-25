@@ -44,7 +44,7 @@ bool CSceneNodeAnimation::Init() {
 	for (size_t i = 0; i < jointCount; i++) {
 		SJoint* joint = m_pMeshData->GetJoint(i);
 		joint->finalMatrix.SetValue(joint->worldMatrix);
-		if (joint->physics && joint->parent) {
+		if (joint->physics) {
 			CVector3 binding = joint->worldMatrix * CVector3(0.0f, 0.0f, 0.0f, 1.0f);
 			joint->physics->position.SetValue(binding);
 		}
@@ -235,6 +235,13 @@ string CSceneNodeAnimation::GetAnimationName(int index) {
 }
 
 /**
+* 骨骼注视功能
+*/
+void CSceneNodeAnimation::PointFacing(const string& joint, const CVector3& front, const CVector3& point, float angle) {
+	m_pMeshData->SetFacing(joint, front, point, angle, -0.1f);
+}
+
+/**
 * 设置动画帧
 */
 void CSceneNodeAnimation::SetupFrame(float dt) {
@@ -245,7 +252,7 @@ void CSceneNodeAnimation::SetupFrame(float dt) {
 	int jointCount = m_pMeshData->GetJointCount();
 	for (int i = 0; i < jointCount; i++) {
 		SJoint* pJoint = m_pMeshData->GetJoint(i);
-		if (pJoint->physics && pJoint->parent) {
+		if (pJoint->physics) {
 			PhysicalSimulation(pJoint, gravity, dt, animateMat);
 		} else if (m_fBlendFactor < 1.0f) {
 			JointTransform(pJoint, 0, rotation, position);
@@ -406,15 +413,20 @@ void CSceneNodeAnimation::DrawSkeleton(bool topMost) {
 void CSceneNodeAnimation::PhysicalSimulation(SJoint* joint, const CVector3& gravity, float dt, CMatrix4& anim) {
 	const float maxStep = 1.0f / 60.0f;
 	const CVector3 orgin(0.0f, 0.0f, 0.0f, 1.0f);
-	CMatrix4 mat1 = m_cWorldMatrix * joint->parent->worldMatrix;
-	CMatrix4 mat2 = mat1 * joint->localMatrix;
 	SJointDynamic* physics = joint->physics;
+	if (!physics->enabled) return;
+	CMatrix4 mat1 = joint->parent ? m_cWorldMatrix * joint->parent->worldMatrix : m_cWorldMatrix;
+	CMatrix4 mat2 = mat1 * joint->localMatrix;
 	// 世界坐标系关节目标位置
 	const CVector3 targetPosParent = mat1 * orgin;
 	const CVector3 targetVector = mat2 * orgin - targetPosParent;
 	// 积分
 	float stepTime = dt;
 	float currTime = 0.0f;
+	if (physics->mass <= 0.0f) {
+		stepTime = 0.0f;
+		physics->position = targetPosParent + targetVector;
+	}
 	while (stepTime > 0.0f) {
 		float time = stepTime > maxStep ? maxStep : stepTime;
 		stepTime -= maxStep;
@@ -449,9 +461,21 @@ void CSceneNodeAnimation::PhysicalSimulation(SJoint* joint, const CVector3& grav
 	}
 	physics->parentPos.SetValue(targetPosParent);
 	// 计算关节变换
-	CQuaternion rot;
+	CQuaternion rotation;
 	CVector3 localPos = mat2.Invert() * physics->position;
-	CVector3 localPosParent = mat2 * targetPosParent;
-	rot.FromVector(localPosParent, localPosParent - localPos);
-	anim.MakeTransform(CVector3::One, rot, localPos);
+	CVector3 localPosParent = mat2 * physics->parentPos;
+	rotation.FromVector(localPosParent, localPosParent - localPos);
+	// 点关注模式
+	if (physics->isFacing) {
+		CQuaternion rot;
+		CVector3 src = m_cWorldMatrix * physics->frontDir;
+		CVector3 dst = physics->facingPoint - m_cWorldMatrix * CVector3(0.0f, 0.0f, 0.0f, 1.0f);
+		CVector3 local_src = mat2 * CVector3(src.m_fValue, 0.0f);
+		CVector3 local_dst = mat2 * CVector3(dst.m_fValue, 0.0f);
+		physics->direction = physics->direction.Slerp(local_dst, std::min(std::abs(dt / physics->damping), 1.0f));
+		rot.FromVector(local_src, physics->direction);
+		float angle = std::min(physics->restrictAngle, std::abs(2.0f * acosf(rot[3])));
+		rotation *= rot.FromAxisAngle(local_src.CrossProduct(physics->direction), angle);
+	}
+	anim.MakeTransform(CVector3::One, rotation, localPos);
 }

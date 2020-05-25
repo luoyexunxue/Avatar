@@ -155,10 +155,10 @@ void CSceneNodeParticles::Update(float dt) {
 /**
 * ³õÊ¼»¯Á£×Ó
 */
-void CSceneNodeParticles::InitParticles(const float initSpeed[3], float spreadSpeed, float fadeSpeed) {
-	m_fInitSpeed[0] = initSpeed[0];
-	m_fInitSpeed[1] = initSpeed[1];
-	m_fInitSpeed[2] = initSpeed[2];
+void CSceneNodeParticles::InitParticles(const CVector3& initSpeed, float spreadSpeed, float fadeSpeed) {
+	m_fInitSpeed[0] = initSpeed.m_fValue[0];
+	m_fInitSpeed[1] = initSpeed.m_fValue[1];
+	m_fInitSpeed[2] = initSpeed.m_fValue[2];
 	m_fSpreadSpeed = spreadSpeed;
 	m_fFadeSpeed = fadeSpeed;
 	for (size_t i = 0; i < m_vecParticles.size(); i++) {
@@ -168,9 +168,9 @@ void CSceneNodeParticles::InitParticles(const float initSpeed[3], float spreadSp
 		particle.color[0] = m_fParticleColor[0];
 		particle.color[1] = m_fParticleColor[1];
 		particle.color[2] = m_fParticleColor[2];
-		particle.speed[0] = initSpeed[0] + Random() * spreadSpeed;
-		particle.speed[1] = initSpeed[1] + Random() * spreadSpeed;
-		particle.speed[2] = initSpeed[2] + Random() * spreadSpeed;
+		particle.speed[0] = m_fInitSpeed[0] + Random() * spreadSpeed;
+		particle.speed[1] = m_fInitSpeed[1] + Random() * spreadSpeed;
+		particle.speed[2] = m_fInitSpeed[2] + Random() * spreadSpeed;
 		particle.position[0] = 0.0f;
 		particle.position[1] = 0.0f;
 		particle.position[2] = 0.0f;

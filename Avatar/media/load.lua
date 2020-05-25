@@ -135,3 +135,5 @@ physics.bind("cube_right_back", { mass = 0.5, linearDamping = -0.1, angularDampi
 physics.bind("cube_left_back", { mass = 0.5, linearDamping = -0.1, angularDamping = -0.1 })
 physics.joint("jiuniang", "Bone15", 1.0, 200.0, 100.0, -0.01)
 physics.joint("jiuniang", "Bone16", 1.0, 200.0, 100.0, -0.01)
+
+scene.handle("jiuniang", "PointFacing", {joint='Bip01-Head', front_x=0, front_y=0, front_z=1, angle=0.785})

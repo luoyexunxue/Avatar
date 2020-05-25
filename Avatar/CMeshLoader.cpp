@@ -230,8 +230,10 @@ CMeshData* CMeshLoader::LoadAvatar(const string& filename) {
 		for (int m = 0; m < 16; m++) reader >> joint->worldMatrix[m];
 		for (int m = 0; m < 16; m++) reader >> joint->bindMatrixInv[m];
 		uint8_t jointFlag = reader.GetValue<uint8_t>();
-		if (jointFlag == 0x01) {
+		if (jointFlag & 0x80) {
 			joint->physics = new SJointDynamic();
+			joint->physics->enabled = (jointFlag & 0x01) != 0x00;
+			joint->physics->isFacing = false;
 			reader >> joint->physics->mass;
 			reader >> joint->physics->vElasticity;
 			reader >> joint->physics->hElasticity;
@@ -430,7 +432,7 @@ bool CMeshLoader::SaveAvatar(const string& filename, CMeshData* meshData) {
 		for (int m = 0; m < 16; m++) writer << joint->localMatrix[m];
 		for (int m = 0; m < 16; m++) writer << joint->worldMatrix[m];
 		for (int m = 0; m < 16; m++) writer << joint->bindMatrixInv[m];
-		uint8_t jointFlag = joint->physics ? 0x01 : 0x00;
+		uint8_t jointFlag = joint->physics ? (joint->physics->enabled ? 0x81 : 0x80) : 0x00;
 		writer.SetValue(jointFlag);
 		if (joint->physics) {
 			writer << joint->physics->mass;

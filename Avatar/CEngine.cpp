@@ -146,17 +146,17 @@ void CEngine::Update() {
 	CCamera* pCamera = GetGraphicsManager()->GetCamera();
 	pCamera->Input(pInput);
 	pCamera->Update(m_fTimeSpan);
-	// 更新系统组件
-	GetPhysicsManager()->Update(m_fTimeSpan);
-	GetAnimationManager()->Update(m_fTimeSpan);
-	GetSceneManager()->Update(m_fTimeSpan);
-	pScriptMgr->OnUpdate(m_fTimeSpan);
 	// 处理注册的事件回调
 	list<CNotifyHandler*>::iterator iter = m_lstUpdateListener.begin();
 	while (iter != m_lstUpdateListener.end()) {
 		(*iter)->Handle();
 		++iter;
 	}
+	// 更新系统组件
+	GetPhysicsManager()->Update(m_fTimeSpan);
+	GetAnimationManager()->Update(m_fTimeSpan);
+	GetSceneManager()->Update(m_fTimeSpan);
+	pScriptMgr->OnUpdate(m_fTimeSpan);
 	// 更新听众位置，即摄像机位置
 	pSoundMgr->ListenerPos(pCamera->m_cPosition);
 	pSoundMgr->ListenerOri(pCamera->m_cLookVector, pCamera->m_cUpVector);

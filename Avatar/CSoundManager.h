@@ -89,7 +89,7 @@ public:
 	//! 启动录音
 	bool StartRecord(int sampleBits, int frequency, int bufferSize);
 	//! 获取录音数据
-	int GetRecordData(unsigned char* data, int size);
+	int GetRecordData(unsigned char* buffer, int bufferSize);
 	//! 停止录音
 	void StopRecord();
 

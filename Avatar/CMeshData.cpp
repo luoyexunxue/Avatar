@@ -236,25 +236,53 @@ CMeshData* CMeshData::AddAnimation(const string& name, float beginTime, float en
 
 /**
 * 为骨骼添加物理模拟支持
-* @param joint 关节名称
+* @param name 关节名称
 * @param mass 关节末端质量
 * @param hk 沿关节方向的弹性系数，即拉伸系数
 * @param vk 垂直于关节方向的弹性系数，即折弯系数
 * @param damping 阻尼系数
-* @return 当前 CMeshData 指针
+* @return 骨骼是否存在
 */
-CMeshData* CMeshData::AddPhysics(const string& joint, float mass, float hk, float vk, float damping) {
-	SJoint* pJoint = GetJoint(joint);
-	if (pJoint) {
-		if (!pJoint->physics) {
-			pJoint->physics = new SJointDynamic();
-		}
-		pJoint->physics->mass = mass;
-		pJoint->physics->hElasticity = hk;
-		pJoint->physics->vElasticity = vk;
+bool CMeshData::SetPhysics(const string& name, float mass, float hk, float vk, float damping) {
+	SJoint* pJoint = GetJoint(name);
+	if (!pJoint) return false;
+	if (!pJoint->physics) {
+		pJoint->physics = new SJointDynamic();
+		pJoint->physics->enabled = true;
+		pJoint->physics->isFacing = false;
+	}
+	pJoint->physics->mass = mass;
+	pJoint->physics->hElasticity = hk;
+	pJoint->physics->vElasticity = vk;
+	pJoint->physics->damping = damping;
+	return true;
+}
+
+/**
+* 设置骨骼朝向点
+* @param name 关节名称
+* @param front 关节的前朝向(物体坐标系)
+* @param point 设置的朝向位置(世界坐标系)
+* @param angle 旋转角度限制
+* @param damping 阻尼系数
+* @return 骨骼是否存在
+*/
+bool CMeshData::SetFacing(const string& name, const CVector3& front, const CVector3& point, float angle, float damping) {
+	SJoint* pJoint = GetJoint(name);
+	if (!pJoint) return false;
+	if (!pJoint->physics) {
+		pJoint->physics = new SJointDynamic();
+		pJoint->physics->enabled = true;
 		pJoint->physics->damping = damping;
 	}
-	return this;
+	pJoint->physics->isFacing = true;
+	pJoint->physics->mass = 0.0f;
+	pJoint->physics->hElasticity = 0.0f;
+	pJoint->physics->vElasticity = 0.0f;
+	pJoint->physics->facingPoint = point;
+	pJoint->physics->frontDir.SetValue(front.m_fValue, 0.0f);
+	pJoint->physics->restrictAngle = angle;
+	return true;
 }
 
 /**
@@ -313,10 +341,15 @@ CMeshData* CMeshData::Clone() const {
 		dst->finalMatrix = src->finalMatrix;
 		if (src->physics) {
 			dst->physics = new SJointDynamic();
+			dst->physics->enabled = src->physics->enabled;
 			dst->physics->mass = src->physics->mass;
 			dst->physics->vElasticity = src->physics->vElasticity;
 			dst->physics->hElasticity = src->physics->hElasticity;
 			dst->physics->damping = src->physics->damping;
+			dst->physics->isFacing = src->physics->isFacing;
+			dst->physics->restrictAngle = src->physics->restrictAngle;
+			dst->physics->facingPoint = src->physics->facingPoint;
+			dst->physics->frontDir = src->physics->frontDir;
 		}
 		memset(dst->currentRotKey, 0, sizeof(int) * 4);
 		memset(dst->currentPosKey, 0, sizeof(int) * 4);

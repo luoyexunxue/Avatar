@@ -27,7 +27,7 @@ public:
 	virtual void Update(float dt);
 
 	//! 初始化粒子
-	void InitParticles(const float initSpeed[3], float spreadSpeed, float fadeSpeed);
+	void InitParticles(const CVector3& initSpeed, float spreadSpeed, float fadeSpeed);
 
 private:
 	//! 随机数生成函数

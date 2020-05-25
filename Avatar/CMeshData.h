@@ -39,20 +39,32 @@ struct SAnimationPosKey {
 * @note 为骨骼设置物理引擎模拟
 */
 struct SJointDynamic {
+	//! 是否使能
+	bool enabled;
 	//! 质量绑定
 	float mass;
 	//! 垂直方向弹性系数
 	float vElasticity;
 	//! 水平方向弹性系数
 	float hElasticity;
-	//! 速度阻尼
+	//! 阻尼系数
 	float damping;
-	//! 当前速度
+	//! 当前速度(计算)
 	CVector3 velocity;
-	//! 最终位置
+	//! 最终位置(计算)
 	CVector3 position;
-	//! 父节点位置
+	//! 父节点位置(计算)
 	CVector3 parentPos;
+	//! 是否面向关注点(设置)
+	bool isFacing;
+	//! 角度限制(设置)
+	float restrictAngle;
+	//! 关注点位置(设置)
+	CVector3 facingPoint;
+	//! 关节的正面向量(设置)
+	CVector3 frontDir;
+	//! 关节的正面方向(计算)
+	CVector3 direction;
 };
 
 /**
@@ -138,8 +150,11 @@ public:
 	CMeshData* AddJoint(SJoint* joint);
 	//! 添加动画信息
 	CMeshData* AddAnimation(const string& name, float beginTime, float endTime);
-	//! 添加骨骼物理支持
-	CMeshData* AddPhysics(const string& joint, float mass, float hk, float vk, float damping);
+
+	//! 设置骨骼物理支持
+	bool SetPhysics(const string& name, float mass, float hk, float vk, float damping);
+	//! 设置骨骼朝向点
+	bool SetFacing(const string& name, const CVector3& front, const CVector3& point, float angle, float damping);
 
 	//! 清空所有网格
 	void ClearMesh();

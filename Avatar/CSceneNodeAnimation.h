@@ -38,6 +38,8 @@ public:
 	void ShowSkeleton(bool visible, bool skeletonOnly);
 	//! 获取动画名称
 	string GetAnimationName(int index);
+	//! 骨骼注视功能
+	void PointFacing(const string& joint, const CVector3& front, const CVector3& point, float angle);
 
 private:
 	//! 设置动画帧

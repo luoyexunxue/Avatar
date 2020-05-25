@@ -1578,6 +1578,18 @@ int CScriptManager::DoSceneHandle(lua_State* lua) {
 				int index = LuaTableFieldValue(lua, 3, "index", 0);
 				lua_pushstring(lua, that->GetAnimationName(index).c_str());
 				return 1;
+			} else if (!strcmp(function, "PointFacing")) {
+				if (!lua_istable(lua, 3)) return 0;
+				CVector3 front, point;
+				const char* joint = LuaTableFieldValue(lua, 3, "joint", "");
+				front[0] = LuaTableFieldValue(lua, 3, "front_x", 0.0f);
+				front[1] = LuaTableFieldValue(lua, 3, "front_y", -1.0f);
+				front[2] = LuaTableFieldValue(lua, 3, "front_z", 0.0f);
+				point[0] = LuaTableFieldValue(lua, 3, "point_x", 0.0f);
+				point[1] = LuaTableFieldValue(lua, 3, "point_y", 0.0f);
+				point[2] = LuaTableFieldValue(lua, 3, "point_z", 0.0f);
+				float angle = LuaTableFieldValue(lua, 3, "angle", 1.047198f);
+				that->PointFacing(joint, front, point, angle);
 			}
 		} else if (type == "blast") {
 			CSceneNodeBlast* that = static_cast<CSceneNodeBlast*>(pNode);
@@ -1649,7 +1661,7 @@ int CScriptManager::DoSceneHandle(lua_State* lua) {
 			CSceneNodeParticles* that = static_cast<CSceneNodeParticles*>(pNode);
 			if (!strcmp(function, "InitParticles")) {
 				if (!lua_istable(lua, 3)) return 0;
-				float initSpeed[3];
+				CVector3 initSpeed;
 				initSpeed[0] = LuaTableFieldValue(lua, 3, "initSpeed_x", 0.0f);
 				initSpeed[1] = LuaTableFieldValue(lua, 3, "initSpeed_y", 0.0f);
 				initSpeed[2] = LuaTableFieldValue(lua, 3, "initSpeed_z", 0.0f);
@@ -2507,7 +2519,7 @@ int CScriptManager::DoPhysicsJoint(lua_State* lua) {
 					vK = (float)lua_tonumber(lua, 5);
 					damping = (float)lua_tonumber(lua, 6);
 				}
-				meshData->AddPhysics(lua_tostring(lua, 2), mass, hK, vK, damping);
+				meshData->SetPhysics(lua_tostring(lua, 2), mass, hK, vK, damping);
 			}
 		}
 	}

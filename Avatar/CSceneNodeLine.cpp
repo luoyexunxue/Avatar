@@ -69,11 +69,13 @@ void CSceneNodeLine::Update(float dt) {
 		CCamera* pCamera = CEngine::GetGraphicsManager()->GetCamera();
 		float screen_w = static_cast<float>(pCamera->GetViewWidth());
 		float screen_h = static_cast<float>(pCamera->GetViewHeight());
-		// MVP = Proj * View * (View-1 * Proj-1 * OrthoProj * Offset)
+		// MVP = Proj * View * (View-1 * Proj-1 * OrthoProj * OffsetAndScale)
 		CMatrix4 mvp;
 		mvp.Ortho(screen_w, screen_h, -1.0f, 1.0f);
-		mvp(0, 3) = -0.5f * mvp(0, 0) * screen_w;
-		mvp(1, 3) = -0.5f * mvp(1, 1) * screen_h;
+		mvp(0, 3) = mvp(0, 0) * (m_cPosition[0] - 0.5f * screen_w);
+		mvp(1, 3) = mvp(1, 1) * (m_cPosition[1] - 0.5f * screen_h);
+		mvp(0, 0) = m_cScale[0] * mvp(0, 0);
+		mvp(1, 1) = m_cScale[1] * mvp(1, 1);
 		CMatrix4 viewProj = pCamera->GetProjMatrix() * pCamera->GetViewMatrix();
 		m_cWorldMatrix = viewProj.Invert() * mvp;
 	}

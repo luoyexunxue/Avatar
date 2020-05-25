@@ -21,7 +21,7 @@
 */
 CSoundManager::CSoundManager() {
 	m_pCaptureDevice = 0;
-	m_iCaptureSampleBits = 16;
+	m_iCaptureSampleBits = 0;
 	InitOpenAL(0);
 }
 
@@ -576,7 +576,6 @@ void CSoundManager::ListenerOri(float yaw, float pitch, float roll) {
 * @param frequency 采样频率
 * @param bufferSize 缓冲区大小
 * @return 录音开启成功
-* @note 一般 sampleBits=16, frequency=22050, bufferSize=4410
 */
 bool CSoundManager::StartRecord(int sampleBits, int frequency, int bufferSize) {
 	// 获取默认的音频采集器
@@ -587,9 +586,8 @@ bool CSoundManager::StartRecord(int sampleBits, int frequency, int bufferSize) {
 	else if (sampleBits == 16) format = AL_FORMAT_MONO16;
 	else return false;
 	// 最大缓冲区大小限制在 10240 B，且为偶数
+	bufferSize &= 0xFFFFFFFE;
 	if (bufferSize > 10240) bufferSize = 10240;
-	if (bufferSize % 2) bufferSize -= 1;
-
 	m_pCaptureDevice = alcCaptureOpenDevice(szDefaultCaptureDevice, frequency, format, bufferSize);
 	if (m_pCaptureDevice) {
 		m_iCaptureSampleBits = sampleBits;
@@ -601,21 +599,21 @@ bool CSoundManager::StartRecord(int sampleBits, int frequency, int bufferSize) {
 }
 
 /**
-* 获取录音数据，返回实际数据大小
-* @param data 数据缓冲区
-* @param size 数据缓冲区大小
-* @return 实际返回数据大小
+* 获取录音数据
+* @param buffer 数据缓冲区
+* @param bufferSize 缓冲区大小
+* @return 实际读取到的数据大小
 */
-int CSoundManager::GetRecordData(unsigned char* data, int size) {
+int CSoundManager::GetRecordData(unsigned char* buffer, int bufferSize) {
 	// 检测有多少样本被采集
 	ALint samplesAvailable;
 	alcGetIntegerv(m_pCaptureDevice, ALC_CAPTURE_SAMPLES, 1, &samplesAvailable);
-	int samplePerByte = m_iCaptureSampleBits >> 3;
-	int maxSampleSize = size / samplePerByte;
-	if (samplesAvailable > maxSampleSize) samplesAvailable = maxSampleSize;
+	int bytePerSample = m_iCaptureSampleBits >> 3;
+	int sampleCount = bufferSize / bytePerSample;
+	if (samplesAvailable > sampleCount) samplesAvailable = sampleCount;
 	if (samplesAvailable > 0) {
-		alcCaptureSamples(m_pCaptureDevice, (ALchar*)data, samplesAvailable);
-		return samplesAvailable * samplePerByte;
+		alcCaptureSamples(m_pCaptureDevice, (ALchar*)buffer, samplesAvailable);
+		return samplesAvailable * bytePerSample;
 	}
 	return 0;
 }
