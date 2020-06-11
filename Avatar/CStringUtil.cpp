@@ -212,7 +212,7 @@ bool CStringUtil::StartWith(const string& str, const char* key, bool ignoreCase)
 	if (ignoreCase) {
 		string src_uppercase = UpperCase(str);
 		string key_uppercase = UpperCase(key);
-		return src_uppercase.find(key) == 0;
+		return src_uppercase.find(key_uppercase) == 0;
 	}
 	return str.find(key) == 0;
 }
@@ -224,7 +224,7 @@ bool CStringUtil::EndWith(const string& str, const char* key, bool ignoreCase) {
 	if (ignoreCase) {
 		string src_uppercase = UpperCase(str);
 		string key_uppercase = UpperCase(key);
-		return src_uppercase.rfind(key) == str.length() - strlen(key);
+		return src_uppercase.rfind(key_uppercase) == str.length() - strlen(key);
 	}
 	return str.rfind(key) == str.length() - strlen(key);
 }
