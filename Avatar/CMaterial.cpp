@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CMaterial.h"
@@ -7,7 +7,7 @@
 #include <cstring>
 
 /**
-* ¹¹Ôìº¯Êı
+* æ„é€ å‡½æ•°
 */
 CMaterial::CMaterial() {
 	m_fColor[0] = 1.0f;
@@ -26,14 +26,14 @@ CMaterial::CMaterial() {
 	m_pTexture[6] = 0;
 	m_pTexture[7] = 0;
 	m_pShader = 0;
-	// äÖÈ¾Ä£Ê½
+	// æ¸²æŸ“æ¨¡å¼
 	m_bCullFace = true;
 	m_bUseDepth = true;
 	m_bAddColor = false;
 }
 
 /**
-* Îö¹¹º¯Êı
+* ææ„å‡½æ•°
 */
 CMaterial::~CMaterial() {
 	CTextureManager* pTextureMgr = CEngine::GetTextureManager();
@@ -49,7 +49,7 @@ CMaterial::~CMaterial() {
 }
 
 /**
-* ¸´ÖÆ²ÄÖÊ
+* å¤åˆ¶æè´¨
 */
 void CMaterial::CopyFrom(const CMaterial* material) {
 	m_fColor[0] = material->m_fColor[0];
@@ -73,17 +73,17 @@ void CMaterial::CopyFrom(const CMaterial* material) {
 }
 
 /**
-* Ê¹ÓÃ²ÄÖÊ
+* ä½¿ç”¨æè´¨
 */
 void CMaterial::UseMaterial() {
-	// ÉèÖÃÎÆÀíµ¥Ôª
+	// è®¾ç½®çº¹ç†å•å…ƒ
 	if (m_iTextureCount == 1) m_pTexture[0]->UseTexture();
 	else if (m_iTextureCount > 1) {
 		for (int i = m_iTextureCount - 1; i >= 0; i--) {
 			m_pTexture[i]->UseTexture(i);
 		}
 	}
-	// ÉèÖÃ Uniform ±äÁ¿
+	// è®¾ç½® Uniform å˜é‡
 	if (m_pShader) {
 		m_pShader->UseShader();
 		m_pShader->SetUniform("uRoughness", m_fRoughness);
@@ -113,7 +113,7 @@ void CMaterial::UseMaterial() {
 }
 
 /**
-* ÉèÖÃ²ÄÖÊÌùÍ¼
+* è®¾ç½®æè´¨è´´å›¾
 */
 void CMaterial::SetTexture(CTexture* texture, int index) {
 	if (m_pTexture[index]) {
@@ -129,7 +129,7 @@ void CMaterial::SetTexture(CTexture* texture, int index) {
 }
 
 /**
-* ÉèÖÃ²ÄÖÊÌùÍ¼
+* è®¾ç½®æè´¨è´´å›¾
 */
 void CMaterial::SetTexture(const string& file, int index) {
 	if (!m_pTexture[index]) {
@@ -141,7 +141,7 @@ void CMaterial::SetTexture(const string& file, int index) {
 }
 
 /**
-* ÉèÖÃÁ¢·½Ìå²ÄÖÊÌùÍ¼
+* è®¾ç½®ç«‹æ–¹ä½“æè´¨è´´å›¾
 */
 void CMaterial::SetTexture(const string& name, const string files[6], int index) {
 	if (!m_pTexture[index]) {
@@ -153,7 +153,7 @@ void CMaterial::SetTexture(const string& name, const string files[6], int index)
 }
 
 /**
-* ÉèÖÃÄÚ´æ²ÄÖÊÌùÍ¼
+* è®¾ç½®å†…å­˜æè´¨è´´å›¾
 */
 void CMaterial::SetTexture(const string& name, int width, int height, int channel, const void* data, int index) {
 	if (!m_pTexture[index]) {
@@ -165,7 +165,7 @@ void CMaterial::SetTexture(const string& name, int width, int height, int channe
 }
 
 /**
-* ÉèÖÃ×ÅÉ«Æ÷
+* è®¾ç½®ç€è‰²å™¨
 */
 void CMaterial::SetShader(const string& name) {
 	CShaderManager* pShaderMgr = CEngine::GetShaderManager();
@@ -175,7 +175,7 @@ void CMaterial::SetShader(const string& name) {
 }
 
 /**
-* ÉèÖÃ×ÅÉ«Æ÷
+* è®¾ç½®ç€è‰²å™¨
 */
 void CMaterial::SetShader(CShader* shader) {
 	CEngine::GetShaderManager()->Drop(m_pShader);
@@ -183,7 +183,7 @@ void CMaterial::SetShader(CShader* shader) {
 }
 
 /**
-* ´«µİ Uniform Öµ£¬bool
+* ä¼ é€’ Uniform å€¼ï¼Œbool
 */
 void CMaterial::PassUniform(const string& name, bool value) {
 	if (m_pShader) {
@@ -196,7 +196,7 @@ void CMaterial::PassUniform(const string& name, bool value) {
 }
 
 /**
-* ´«µİ Uniform Öµ£¬int
+* ä¼ é€’ Uniform å€¼ï¼Œint
 */
 void CMaterial::PassUniform(const string& name, int value) {
 	if (m_pShader) {
@@ -209,7 +209,7 @@ void CMaterial::PassUniform(const string& name, int value) {
 }
 
 /**
-* ´«µİ Uniform Öµ£¬float
+* ä¼ é€’ Uniform å€¼ï¼Œfloat
 */
 void CMaterial::PassUniform(const string& name, float value) {
 	if (m_pShader) {
@@ -222,7 +222,7 @@ void CMaterial::PassUniform(const string& name, float value) {
 }
 
 /**
-* ´«µİ Uniform Öµ£¬vec2
+* ä¼ é€’ Uniform å€¼ï¼Œvec2
 */
 void CMaterial::PassUniform(const string& name, const CVector2& value) {
 	if (m_pShader) {
@@ -236,7 +236,7 @@ void CMaterial::PassUniform(const string& name, const CVector2& value) {
 }
 
 /**
-* ´«µİ Uniform Öµ£¬vec3
+* ä¼ é€’ Uniform å€¼ï¼Œvec3
 */
 void CMaterial::PassUniform(const string& name, const CVector3& value) {
 	if (m_pShader) {
@@ -251,7 +251,7 @@ void CMaterial::PassUniform(const string& name, const CVector3& value) {
 }
 
 /**
-* ´«µİ Uniform Öµ£¬mat4
+* ä¼ é€’ Uniform å€¼ï¼Œmat4
 */
 void CMaterial::PassUniform(const string& name, const CMatrix4& value) {
 	if (m_pShader) {
@@ -264,7 +264,7 @@ void CMaterial::PassUniform(const string& name, const CMatrix4& value) {
 }
 
 /**
-* Í¨ÓÃĞÎÊ½´«µİ Uniform Öµ
+* é€šç”¨å½¢å¼ä¼ é€’ Uniform å€¼
 */
 void CMaterial::PassUniform(const string& name, const float value[], int size) {
 	if (m_pShader) {
@@ -284,7 +284,7 @@ void CMaterial::PassUniform(const string& name, const float value[], int size) {
 }
 
 /**
-* ÉèÖÃäÖÈ¾Ä£Ê½
+* è®¾ç½®æ¸²æŸ“æ¨¡å¼
 */
 void CMaterial::SetRenderMode(bool cullFace, bool useDepth, bool addColor) {
 	m_bCullFace = cullFace;

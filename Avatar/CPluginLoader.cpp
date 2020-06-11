@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CPluginLoader.h"
@@ -14,12 +14,12 @@
 #endif
 
 /**
-* ÒÑ¼ÓÔØµÄ²å¼şÁĞ±í
+* å·²åŠ è½½çš„æ’ä»¶åˆ—è¡¨
 */
 map<string, CPluginLoader::SPlugin*> CPluginLoader::m_mapPlugin;
 
 /**
-* ¼ÓÔØ²å¼ş
+* åŠ è½½æ’ä»¶
 */
 bool CPluginLoader::Load(const string& filename, CEngine* engine) {
 	string name = CFileManager::GetFileName(filename, false);
@@ -35,14 +35,14 @@ bool CPluginLoader::Load(const string& filename, CEngine* engine) {
 	}
 	plugin->name.assign(name);
 	plugin->path.assign(filename);
-	// ³õÊ¼»¯²å¼ş
+	// åˆå§‹åŒ–æ’ä»¶
 	int ret = plugin->avatar_init(engine);
 	if (ret != 0) {
 		CLog::Warn("Initialize plugin '%s' error, ret = %d", plugin->name.c_str(), ret);
 		ReleaseDynamicLibrary(plugin);
 		return false;
 	}
-	// »ñÈ¡²å¼şÃèÊö
+	// è·å–æ’ä»¶æè¿°
 	char description[1024];
 	plugin->avatar_desc(description);
 	plugin->description.assign(description);
@@ -52,7 +52,7 @@ bool CPluginLoader::Load(const string& filename, CEngine* engine) {
 }
 
 /**
-* Ğ¶ÔØ²å¼ş
+* å¸è½½æ’ä»¶
 */
 bool CPluginLoader::Unload(const string& name) {
 	map<string, SPlugin*>::iterator iter = m_mapPlugin.find(name);
@@ -67,7 +67,7 @@ bool CPluginLoader::Unload(const string& name) {
 }
 
 /**
-* Ïú»Ù²å¼ş¼ÓÔØÆ÷
+* é”€æ¯æ’ä»¶åŠ è½½å™¨
 */
 void CPluginLoader::Destroy() {
 	map<string, SPlugin*>::iterator iter = m_mapPlugin.begin();
@@ -81,14 +81,14 @@ void CPluginLoader::Destroy() {
 }
 
 /**
-* »ñÈ¡²å¼şÊıÁ¿
+* è·å–æ’ä»¶æ•°é‡
 */
 int CPluginLoader::GetCount() {
 	return m_mapPlugin.size();
 }
 
 /**
-* »ñÈ¡ÒÑ¼ÓÔØµÄ²å¼şÁĞ±í
+* è·å–å·²åŠ è½½çš„æ’ä»¶åˆ—è¡¨
 */
 void CPluginLoader::GetPluginList(vector<string>& pluginList) {
 	pluginList.clear();
@@ -100,7 +100,7 @@ void CPluginLoader::GetPluginList(vector<string>& pluginList) {
 }
 
 /**
-* »ñÈ¡²å¼şÂ·¾¶
+* è·å–æ’ä»¶è·¯å¾„
 */
 string CPluginLoader::GetPath(const string& name) {
 	map<string, SPlugin*>::iterator iter = m_mapPlugin.find(name);
@@ -111,7 +111,7 @@ string CPluginLoader::GetPath(const string& name) {
 }
 
 /**
-* »ñÈ¡²å¼şÃèÊö
+* è·å–æ’ä»¶æè¿°
 */
 string CPluginLoader::GetDescription(const string& name) {
 	map<string, SPlugin*>::iterator iter = m_mapPlugin.find(name);
@@ -122,7 +122,7 @@ string CPluginLoader::GetDescription(const string& name) {
 }
 
 /**
-* ¼ÓÔØ¶¯Ì¬¿â
+* åŠ è½½åŠ¨æ€åº“
 */
 CPluginLoader::SPlugin* CPluginLoader::LoadDynamicLibrary(const string& file) {
 	string path = file;
@@ -153,7 +153,7 @@ CPluginLoader::SPlugin* CPluginLoader::LoadDynamicLibrary(const string& file) {
 }
 
 /**
-* Ğ¶ÔØ¶¯Ì¬¿â
+* å¸è½½åŠ¨æ€åº“
 */
 void CPluginLoader::ReleaseDynamicLibrary(CPluginLoader::SPlugin* plugin) {
 #ifdef AVATAR_WINDOWS

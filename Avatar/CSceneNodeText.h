@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CSCENENODETEXT_H_
@@ -7,48 +7,48 @@
 #include "CSceneNode.h"
 
 /**
-* @brief ÎÄ×Ö³¡¾°½Úµã
+* @brief æ–‡å­—åœºæ™¯èŠ‚ç‚¹
 */
 class AVATAR_EXPORT CSceneNodeText: public CSceneNode {
 public:
-	//! ¹¹Ôì·½·¨
+	//! æ„é€ æ–¹æ³•
 	CSceneNodeText(const string& name, const wchar_t* text, const CColor& color,
 		const CColor& outline, const string& font, int fontSize);
 
-	//! ³õÊ¼»¯³¡¾°½Úµã
+	//! åˆå§‹åŒ–åœºæ™¯èŠ‚ç‚¹
 	virtual bool Init();
-	//! Ïú»Ù³¡¾°½Úµã
+	//! é”€æ¯åœºæ™¯èŠ‚ç‚¹
 	virtual void Destroy();
-	//! äÖÈ¾³¡¾°½Úµã
+	//! æ¸²æŸ“åœºæ™¯èŠ‚ç‚¹
 	virtual void Render();
-	//! ¸üĞÂ³¡¾°½Úµã
+	//! æ›´æ–°åœºæ™¯èŠ‚ç‚¹
 	virtual void Update(float dt);
-	//! ÖØÔØ×ø±ê±ä»»
+	//! é‡è½½åæ ‡å˜æ¢
 	virtual void Transform() {}
 
-	//! ÉèÖÃÎÄ±¾
+	//! è®¾ç½®æ–‡æœ¬
 	void SetText(const wchar_t* text);
-	//! ÉèÖÃ×ÖÌå
+	//! è®¾ç½®å­—ä½“
 	void SetFont(const string& font, int fontSize);
-	//! ÉèÖÃÎÄ±¾ÑÕÉ«
+	//! è®¾ç½®æ–‡æœ¬é¢œè‰²
 	void SetColor(const CColor& color, const CColor& outline);
 
 private:
-	//! ¸üĞÂÎÄ±¾
+	//! æ›´æ–°æ–‡æœ¬
 	void UpdateText();
 
 private:
-	//! ÎÄ±¾ÑÕÉ«
+	//! æ–‡æœ¬é¢œè‰²
 	CColor m_cColor;
-	//! ÂÖÀªÑÕÉ«
+	//! è½®å»“é¢œè‰²
 	CColor m_cOutline;
-	//! ×ÖÌåÃû³Æ
+	//! å­—ä½“åç§°
 	string m_strFont;
-	//! ×ÖÌå´óĞ¡
+	//! å­—ä½“å¤§å°
 	int m_iFontSize;
-	//! äÖÈ¾µÄÎÄ±¾
+	//! æ¸²æŸ“çš„æ–‡æœ¬
 	wchar_t m_strText[128];
-	//! Íø¸ñ¶ÔÏó
+	//! ç½‘æ ¼å¯¹è±¡
 	CMesh* m_pMesh;
 };
 

@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÷‹» ∑Ê. All rights reserved.
+// Copyright (c) 2020 Âë®‰ªÅÈîã. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CPostProcessSsao.h"
@@ -7,10 +7,10 @@
 #include <cstdlib>
 
 /**
-* ≥ı ºªØ∫Û¥¶¿Ì∂‘œÛ
+* ÂàùÂßãÂåñÂêéÂ§ÑÁêÜÂØπË±°
 */
 bool CPostProcessSsao::Init(int width, int height) {
-	// …˙≥……Ó∂»Õº
+	// ÁîüÊàêÊ∑±Â∫¶Âõæ
 	const char* depthShaderVs = "\
 		uniform mat4 uProjMatrix;\
 		uniform mat4 uViewMatrix;\
@@ -37,7 +37,7 @@ bool CPostProcessSsao::Init(int width, int height) {
 			float depth = (gl_FragCoord.z / gl_FragCoord.w) / zFar;\
 			fragColor = vec4(depth);\
 		}";
-	// …˙≥… SSAO π‚’’Õº
+	// ÁîüÊàê SSAO ÂÖâÁÖßÂõæ
 	const char* ssaoShader = "\
 		uniform sampler2D uDepthTexture;\
 		uniform sampler2D uRandomTexture;\
@@ -81,7 +81,7 @@ bool CPostProcessSsao::Init(int width, int height) {
 			float result = clamp(1.0 - occlusion * uSamplesFactor + base, 0.0, 1.0);\
 			fragColor = vec4(result, result, result, 1.0);\
 		}";
-	// ƒ£∫˝¥¶¿Ì
+	// Ê®°Á≥äÂ§ÑÁêÜ
 	const char* blurShader = "\
 		uniform sampler2D uTexture;\
 		uniform vec2 uScreenSize;\
@@ -109,7 +109,7 @@ bool CPostProcessSsao::Init(int width, int height) {
 			}\
 			fragColor = vec4(baseColor.rgb, 1.0);\
 		}";
-	//  π”√ SSAO π‚’’Õº…˙≥…◊Ó÷’≥°æ∞
+	// ‰ΩøÁî® SSAO ÂÖâÁÖßÂõæÁîüÊàêÊúÄÁªàÂú∫ÊôØ
 	const char* combineShader = "\
 		uniform sampler2D uTexture;\
 		uniform sampler2D uTextureAO;\
@@ -121,7 +121,7 @@ bool CPostProcessSsao::Init(int width, int height) {
 			vec4 sceneColor = texture(uTexture, vTexCoord);\
 			fragColor = ssaoColor * sceneColor;\
 		}";
-	// ¥¥Ω®◊≈…´∆˜∫ÕŒ∆¿Ì
+	// ÂàõÂª∫ÁùÄËâ≤Âô®ÂíåÁ∫πÁêÜ
 	CShaderManager* pShaderMgr = CEngine::GetShaderManager();
 	CTextureManager* pTextureMgr = CEngine::GetTextureManager();
 	m_pPostProcessShader = pShaderMgr->Create("postprocess_ssao", GetVertexShader(), combineShader);
@@ -168,7 +168,7 @@ bool CPostProcessSsao::Init(int width, int height) {
 }
 
 /**
-* ‰÷»æ«¯”Ú¥Û–°∏ƒ±‰
+* Ê∏≤ÊüìÂå∫ÂüüÂ§ßÂ∞èÊîπÂèò
 */
 void CPostProcessSsao::Resize(int width, int height) {
 	CEngine::GetTextureManager()->Resize(m_pRenderTexture, width, height);
@@ -180,7 +180,7 @@ void CPostProcessSsao::Resize(int width, int height) {
 }
 
 /**
-* œ˙ªŸ∫Û¥¶¿Ì∂‘œÛ
+* ÈîÄÊØÅÂêéÂ§ÑÁêÜÂØπË±°
 */
 void CPostProcessSsao::Destroy() {
 	CEngine::GetTextureManager()->Drop(m_pRenderTexture);
@@ -195,10 +195,10 @@ void CPostProcessSsao::Destroy() {
 }
 
 /**
-* ”¶”√µ±«∞∫Û¥¶¿Ì
+* Â∫îÁî®ÂΩìÂâçÂêéÂ§ÑÁêÜ
 */
 void CPostProcessSsao::Apply(CTexture* target, CMesh* mesh) {
-	// ‰÷»æ…Ó∂»ÕºœÒ
+	// Ê∏≤ÊüìÊ∑±Â∫¶ÂõæÂÉè
 	CGraphicsManager* pGraphicsMgr = CEngine::GetGraphicsManager();
 	CCamera* pCamera = pGraphicsMgr->GetCamera();
 	CMatrix4 viewProj = pCamera->GetProjMatrix() * pCamera->GetViewMatrix();
@@ -206,25 +206,25 @@ void CPostProcessSsao::Apply(CTexture* target, CMesh* mesh) {
 	pGraphicsMgr->SetColorBlendEnable(false);
 	CEngine::GetSceneManager()->RenderDepth(viewProj, "postprocess_ssao_depth");
 	pGraphicsMgr->SetColorBlendEnable(true);
-	// ‰÷»æ AO Õº
+	// Ê∏≤Êüì AO Âõæ
 	pGraphicsMgr->SetRenderTarget(m_pSsaoTexture, 0, true, false, false);
 	m_pSsaoShader->UseShader();
 	m_pRandomTexture->UseTexture(1);
 	m_pDepthTexture->UseTexture(0);
 	mesh->Render(false);
-	// AO ÀÆ∆Ωƒ£∫˝
+	// AO Ê∞¥Âπ≥Ê®°Á≥ä
 	pGraphicsMgr->SetRenderTarget(m_pBlurTexture, 0, true, false, false);
 	m_pBlurShader->UseShader();
 	m_pBlurShader->SetUniform("uDirection", CVector2(2.5f, 0.0f));
 	m_pSsaoTexture->UseTexture();
 	mesh->Render(false);
-	// AO ¥π÷±ƒ£∫˝
+	// AO ÂûÇÁõ¥Ê®°Á≥ä
 	pGraphicsMgr->SetRenderTarget(m_pSsaoTexture, 0, true, false, false);
 	m_pBlurShader->UseShader();
 	m_pBlurShader->SetUniform("uDirection", CVector2(0.0f, 2.5f));
 	m_pBlurTexture->UseTexture();
 	mesh->Render(false);
-	// ‰÷»æ◊Ó÷’≥°æ∞
+	// Ê∏≤ÊüìÊúÄÁªàÂú∫ÊôØ
 	pGraphicsMgr->SetRenderTarget(target, 0, true, false, false);
 	m_pPostProcessShader->UseShader();
 	m_pSsaoTexture->UseTexture(1);

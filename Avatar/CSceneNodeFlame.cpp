@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÷‹» ∑Ê. All rights reserved.
+// Copyright (c) 2020 Âë®‰ªÅÈîã. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CSceneNodeFlame.h"
@@ -8,7 +8,7 @@
 #include <cmath>
 
 /**
-* ππ‘Ï∫Ø ˝
+* ÊûÑÈÄ†ÂáΩÊï∞
 */
 CSceneNodeFlame::CSceneNodeFlame(const string& name, const string& texture, const string& distortionMap,
 	const string& alphaMask, float width, float height): CSceneNode("flame", name) {
@@ -22,7 +22,7 @@ CSceneNodeFlame::CSceneNodeFlame(const string& name, const string& texture, cons
 }
 
 /**
-* ≥ı ºªØ≥°æ∞Ω⁄µ„
+* ÂàùÂßãÂåñÂú∫ÊôØËäÇÁÇπ
 */
 bool CSceneNodeFlame::Init() {
 	m_pMesh = CGeometryCreator::CreatePlane(m_fWidth, m_fHeight, 2);
@@ -41,14 +41,14 @@ bool CSceneNodeFlame::Init() {
 }
 
 /**
-* œ˙ªŸ≥°æ∞Ω⁄µ„
+* ÈîÄÊØÅÂú∫ÊôØËäÇÁÇπ
 */
 void CSceneNodeFlame::Destroy() {
 	delete m_pMesh;
 }
 
 /**
-* ‰÷»æ≥°æ∞Ω⁄µ„
+* Ê∏≤ÊüìÂú∫ÊôØËäÇÁÇπ
 */
 void CSceneNodeFlame::Render() {
 	m_pMesh->GetMaterial()->PassUniform("uTime", m_fTimeElapse);
@@ -56,7 +56,7 @@ void CSceneNodeFlame::Render() {
 }
 
 /***
-* ∏¸–¬≥°æ∞Ω⁄µ„
+* Êõ¥Êñ∞Âú∫ÊôØËäÇÁÇπ
 */
 void CSceneNodeFlame::Update(float dt) {
 	m_fTimeElapse += dt;
@@ -64,7 +64,7 @@ void CSceneNodeFlame::Update(float dt) {
 	CVector3 position = GetWorldPosition();
 	float dx = pCamera->m_cPosition[0] - position[0];
 	float dy = pCamera->m_cPosition[1] - position[1];
-	//  π∆‰ º÷’≥ØœÚπ€≤Ï’ﬂ
+	// ‰ΩøÂÖ∂ÂßãÁªàÊúùÂêëËßÇÂØüËÄÖ
 	if (dx != 0.0f || dy != 0.0f) {
 		float angle = acosf(dy / sqrt(dx * dx + dy * dy));
 		if (dx > 0.0f) angle = -angle;

@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CVECTOR3_H_
@@ -7,116 +7,116 @@
 #include "AvatarConfig.h"
 
 /**
-* @brief ÈıÎ¬ÏòÁ¿Àà
+* @brief ä¸‰ç»´å‘é‡ç±»
 */
 class AVATAR_EXPORT CVector3 {
 public:
-	//! Ä¬ÈÏ¹¹Ôìº¯Êı
+	//! é»˜è®¤æ„é€ å‡½æ•°
 	CVector3();
-	//! ¸´ÖÆ¹¹Ôìº¯Êı
+	//! å¤åˆ¶æ„é€ å‡½æ•°
 	CVector3(const CVector3& vector);
-	//! Ê¹ÓÃµ¥Ò»Öµ¸³Öµ
+	//! ä½¿ç”¨å•ä¸€å€¼èµ‹å€¼
 	CVector3(float val);
-	//! Ê¹ÓÃÊı×é¹¹ÔìÏòÁ¿
+	//! ä½¿ç”¨æ•°ç»„æ„é€ å‘é‡
 	CVector3(const float vector[3]);
-	//! Ê¹ÓÃxyz¹¹ÔìÏòÁ¿
+	//! ä½¿ç”¨xyzæ„é€ å‘é‡
 	CVector3(float x, float y, float z);
-	//! Ê¹ÓÃÊı×éºÍw¹¹ÔìÏòÁ¿
+	//! ä½¿ç”¨æ•°ç»„å’Œwæ„é€ å‘é‡
 	CVector3(const float vector[3], float w);
-	//! Ê¹ÓÃxyzw¹¹ÔìÏòÁ¿
+	//! ä½¿ç”¨xyzwæ„é€ å‘é‡
 	CVector3(float x, float y, float z, float w);
 
-	//! ÉèÖÃÏòÁ¿Öµ
+	//! è®¾ç½®å‘é‡å€¼
 	void SetValue(const CVector3& vector);
-	//! ÉèÖÃÏòÁ¿Öµ
+	//! è®¾ç½®å‘é‡å€¼
 	void SetValue(const float vector[3]);
-	//! ÉèÖÃÏòÁ¿Öµ
+	//! è®¾ç½®å‘é‡å€¼
 	void SetValue(float x, float y, float z);
-	//! ÉèÖÃÏòÁ¿Öµ
+	//! è®¾ç½®å‘é‡å€¼
 	void SetValue(const float vector[3], float w);
-	//! ÉèÖÃÏòÁ¿Öµ
+	//! è®¾ç½®å‘é‡å€¼
 	void SetValue(float x, float y, float z, float w);
 
-	//! ×ª»»Îªµ¥Î»ÏòÁ¿
+	//! è½¬æ¢ä¸ºå•ä½å‘é‡
 	CVector3& Normalize();
-	//! ×ª»»Îªµ¹Êı
+	//! è½¬æ¢ä¸ºå€’æ•°
 	CVector3& Inverse();
 
-	//! ¼ÓÖ¸¶¨Öµ
+	//! åŠ æŒ‡å®šå€¼
 	CVector3& Add(const CVector3& vector);
-	//! ¼ÓÖ¸¶¨Öµ
+	//! åŠ æŒ‡å®šå€¼
 	CVector3& Add(const float vector[3]);
-	//! ¼ÓÖ¸¶¨Öµ
+	//! åŠ æŒ‡å®šå€¼
 	CVector3& Add(float x, float y, float z);
-	//! ¼õÖ¸¶¨Öµ
+	//! å‡æŒ‡å®šå€¼
 	CVector3& Sub(const CVector3& vector);
-	//! ¼õÖ¸¶¨Öµ
+	//! å‡æŒ‡å®šå€¼
 	CVector3& Sub(const float vector[3]);
-	//! ¼õÖ¸¶¨Öµ
+	//! å‡æŒ‡å®šå€¼
 	CVector3& Sub(float x, float y, float z);
-	//! Ëõ·ÅÖ¸¶¨Öµ
+	//! ç¼©æ”¾æŒ‡å®šå€¼
 	CVector3& Scale(float scale);
-	//! Ëõ·ÅÖ¸¶¨Öµ
+	//! ç¼©æ”¾æŒ‡å®šå€¼
 	CVector3& Scale(float sx, float sy, float sz);
 
-	//! È¡µÃÏòÁ¿µÄ³¤¶È
+	//! å–å¾—å‘é‡çš„é•¿åº¦
 	float Length() const;
-	//! ÏòÁ¿µã³Ë
+	//! å‘é‡ç‚¹ä¹˜
 	float DotProduct(const CVector3& vector) const;
-	//! ÏòÁ¿²æ³Ë
+	//! å‘é‡å‰ä¹˜
 	CVector3 CrossProduct(const CVector3& vector) const;
-	//! ÏßĞÔ²åÖµ
+	//! çº¿æ€§æ’å€¼
 	CVector3 Lerp(const CVector3& vector, float t) const;
-	//! ÇòĞÎ²åÖµ
+	//! çƒå½¢æ’å€¼
 	CVector3 Slerp(const CVector3& vector, float t) const;
-	//! Çó·´ÉäÏòÁ¿
+	//! æ±‚åå°„å‘é‡
 	CVector3 Reflect(const CVector3& normal) const;
-	//! Éú³ÉÇĞÏòÁ¿
+	//! ç”Ÿæˆåˆ‡å‘é‡
 	CVector3 Tangent() const;
 
 public:
-	//! ÏÂ±êÔËËã·û []
+	//! ä¸‹æ ‡è¿ç®—ç¬¦ []
 	float& operator [] (int index);
-	//! ÖØÔØÔËËã·û ==
+	//! é‡è½½è¿ç®—ç¬¦ ==
 	bool operator == (const CVector3& vector) const;
-	//! ÖØÔØÔËËã·û !=
+	//! é‡è½½è¿ç®—ç¬¦ !=
 	bool operator != (const CVector3& vector) const;
 
-	//! ¼Ó·¨ÔËËã
+	//! åŠ æ³•è¿ç®—
 	CVector3 operator + (const CVector3& vector) const;
-	//! ¼õ·¨ÔËËã
+	//! å‡æ³•è¿ç®—
 	CVector3 operator - (const CVector3& vector) const;
-	//! ³Ë·¨ÔËËã
+	//! ä¹˜æ³•è¿ç®—
 	CVector3 operator * (const CVector3& vector) const;
-	//! ³ËÒò×ÓÔËËã
+	//! ä¹˜å› å­è¿ç®—
 	CVector3 operator * (float factor) const;
-	//! ³ıÒò×ÓÔËËã
+	//! é™¤å› å­è¿ç®—
 	CVector3 operator / (float factor) const;
 
-	//! ÖØÔØÔËËã·û +=
+	//! é‡è½½è¿ç®—ç¬¦ +=
 	CVector3& operator += (const CVector3& vector);
-	//! ÖØÔØÔËËã·û -=
+	//! é‡è½½è¿ç®—ç¬¦ -=
 	CVector3& operator -= (const CVector3& vector);
-	//! ÖØÔØÔËËã·û *=
+	//! é‡è½½è¿ç®—ç¬¦ *=
 	CVector3& operator *= (float factor);
-	//! ÖØÔØÔËËã·û /=
+	//! é‡è½½è¿ç®—ç¬¦ /=
 	CVector3& operator /= (float factor);
 
 public:
 	/**
-	* ÏòÁ¿´æ´¢·½Ê½
+	* å‘é‡å­˜å‚¨æ–¹å¼
 	* [x, y, z, w]
 	*/
 	float m_fValue[4];
-	//! ÁãÏòÁ¿³£Á¿
+	//! é›¶å‘é‡å¸¸é‡
 	const static CVector3 Zero;
-	//! µ¥Î»Ò»ÏòÁ¿
+	//! å•ä½ä¸€å‘é‡
 	const static CVector3 One;
-	//! µ¥Î»XÏòÁ¿³£Á¿
+	//! å•ä½Xå‘é‡å¸¸é‡
 	const static CVector3 X;
-	//! µ¥Î»YÏòÁ¿³£Á¿
+	//! å•ä½Yå‘é‡å¸¸é‡
 	const static CVector3 Y;
-	//! µ¥Î»ZÏòÁ¿³£Á¿
+	//! å•ä½Zå‘é‡å¸¸é‡
 	const static CVector3 Z;
 };
 

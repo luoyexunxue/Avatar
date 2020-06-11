@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CShader.h"
@@ -19,7 +19,7 @@
 #endif
 
 /**
-* ¹¹Ôìº¯Êı
+* æ„é€ å‡½æ•°
 */
 CShader::CShader(CShaderManager* manager) {
 	m_pManager = manager;
@@ -29,35 +29,35 @@ CShader::CShader(CShaderManager* manager) {
 }
 
 /**
-* Îö¹¹º¯Êı
+* ææ„å‡½æ•°
 */
 CShader::~CShader() {
 	if (m_iProgram) glDeleteProgram(m_iProgram);
 }
 
 /**
-* ×ÅÉ«Æ÷ÊÇ·ñÓĞĞ§
+* ç€è‰²å™¨æ˜¯å¦æœ‰æ•ˆ
 */
 bool CShader::IsValid() const {
 	return m_bIsValid;
 }
 
 /**
-* »ñÈ¡×ÅÉ«Æ÷Ãû³Æ
+* è·å–ç€è‰²å™¨åç§°
 */
 const string& CShader::GetName() const {
 	return m_strName;
 }
 
 /**
-* ÅĞ¶ÏÊÇ·ñº¬ÓĞÖ¸¶¨Ãû³ÆµÄ Uniform
+* åˆ¤æ–­æ˜¯å¦å«æœ‰æŒ‡å®šåç§°çš„ Uniform
 */
 bool CShader::IsUniform(const string& name) const {
 	return m_mapUniforms.count(name) > 0;
 }
 
 /**
-* »ñÈ¡Ö¸¶¨Ãû³ÆµÄ Uniform Î»ÖÃ
+* è·å–æŒ‡å®šåç§°çš„ Uniform ä½ç½®
 */
 int CShader::GetUniform(const string& name) const {
 	map<string, int>::const_iterator iter = m_mapUniforms.find(name);
@@ -66,14 +66,14 @@ int CShader::GetUniform(const string& name) const {
 }
 
 /**
-* »ñÈ¡×ÅÉ«Æ÷ID
+* è·å–ç€è‰²å™¨ID
 */
 unsigned int CShader::GetProgramId() const {
 	return m_iProgram;
 }
 
 /**
-* ÉèÖÃ bool ÀàĞÍ Uniform Öµ
+* è®¾ç½® bool ç±»å‹ Uniform å€¼
 */
 void CShader::SetUniform(const string& name, bool value) const {
 	map<string, int>::const_iterator iter = m_mapUniforms.find(name);
@@ -83,7 +83,7 @@ void CShader::SetUniform(const string& name, bool value) const {
 }
 
 /**
-* ÉèÖÃ int ÀàĞÍ Uniform Öµ
+* è®¾ç½® int ç±»å‹ Uniform å€¼
 */
 void CShader::SetUniform(const string& name, int value) const {
 	map<string, int>::const_iterator iter = m_mapUniforms.find(name);
@@ -93,7 +93,7 @@ void CShader::SetUniform(const string& name, int value) const {
 }
 
 /**
-* ÉèÖÃ float ÀàĞÍ Uniform Öµ
+* è®¾ç½® float ç±»å‹ Uniform å€¼
 */
 void CShader::SetUniform(const string& name, float value) const {
 	map<string, int>::const_iterator iter = m_mapUniforms.find(name);
@@ -103,7 +103,7 @@ void CShader::SetUniform(const string& name, float value) const {
 }
 
 /**
-* ÉèÖÃ vec2 ÀàĞÍ Uniform Öµ
+* è®¾ç½® vec2 ç±»å‹ Uniform å€¼
 */
 void CShader::SetUniform(const string& name, const CVector2& value) const {
 	map<string, int>::const_iterator iter = m_mapUniforms.find(name);
@@ -113,7 +113,7 @@ void CShader::SetUniform(const string& name, const CVector2& value) const {
 }
 
 /**
-* ÉèÖÃ vec3 ÀàĞÍ Uniform Öµ
+* è®¾ç½® vec3 ç±»å‹ Uniform å€¼
 */
 void CShader::SetUniform(const string& name, const CVector3& value) const {
 	map<string, int>::const_iterator iter = m_mapUniforms.find(name);
@@ -123,7 +123,7 @@ void CShader::SetUniform(const string& name, const CVector3& value) const {
 }
 
 /**
-* ÉèÖÃ mat4 ÀàĞÍ Uniform Öµ
+* è®¾ç½® mat4 ç±»å‹ Uniform å€¼
 */
 void CShader::SetUniform(const string& name, const CMatrix4& value) const {
 	map<string, int>::const_iterator iter = m_mapUniforms.find(name);
@@ -133,7 +133,7 @@ void CShader::SetUniform(const string& name, const CMatrix4& value) const {
 }
 
 /**
-* Í¨ÓÃ·½Ê½ÉèÖÃ Uniform Öµ
+* é€šç”¨æ–¹å¼è®¾ç½® Uniform å€¼
 */
 void CShader::SetUniform(const string& name, const float value[], int size, int length) const {
 	map<string, int>::const_iterator iter = m_mapUniforms.find(name);
@@ -150,49 +150,49 @@ void CShader::SetUniform(const string& name, const float value[], int size, int 
 }
 
 /**
-* ÉèÖÃ bool ÀàĞÍ Uniform Öµ
+* è®¾ç½® bool ç±»å‹ Uniform å€¼
 */
 void CShader::SetUniform(int location, bool value) const {
 	glUniform1i(location, value? 1: 0);
 }
 
 /**
-* ÉèÖÃ int ÀàĞÍ Uniform Öµ
+* è®¾ç½® int ç±»å‹ Uniform å€¼
 */
 void CShader::SetUniform(int location, int value) const {
 	glUniform1i(location, value);
 }
 
 /**
-* ÉèÖÃ float ÀàĞÍ Uniform Öµ
+* è®¾ç½® float ç±»å‹ Uniform å€¼
 */
 void CShader::SetUniform(int location, float value) const {
 	glUniform1f(location, value);
 }
 
 /**
-* ÉèÖÃ vec2 ÀàĞÍ Uniform Öµ
+* è®¾ç½® vec2 ç±»å‹ Uniform å€¼
 */
 void CShader::SetUniform(int location, const CVector2& value) const {
 	glUniform2fv(location, 1, value.m_fValue);
 }
 
 /**
-* ÉèÖÃ vec3 ÀàĞÍ Uniform Öµ
+* è®¾ç½® vec3 ç±»å‹ Uniform å€¼
 */
 void CShader::SetUniform(int location, const CVector3& value) const {
 	glUniform3fv(location, 1, value.m_fValue);
 }
 
 /**
-* ÉèÖÃ mat4 ÀàĞÍ Uniform Öµ
+* è®¾ç½® mat4 ç±»å‹ Uniform å€¼
 */
 void CShader::SetUniform(int location, const CMatrix4& value) const {
 	glUniformMatrix4fv(location, 1, GL_FALSE, value.m_fValue);
 }
 
 /**
-* Í¨ÓÃ·½Ê½ÉèÖÃ Uniform Öµ
+* é€šç”¨æ–¹å¼è®¾ç½® Uniform å€¼
 */
 void CShader::SetUniform(int location, const float value[], int size, int length) const {
 	switch (size) {
@@ -206,7 +206,7 @@ void CShader::SetUniform(int location, const float value[], int size, int length
 }
 
 /**
-* Ê¹ÓÃ×ÅÉ«Æ÷
+* ä½¿ç”¨ç€è‰²å™¨
 */
 void CShader::UseShader() {
 	if (m_pManager->m_pCurrentShader != this) {
@@ -216,7 +216,7 @@ void CShader::UseShader() {
 }
 
 /**
-* Ôö¼ÓÒıÓÃ
+* å¢åŠ å¼•ç”¨
 */
 CShader* CShader::AddReference() {
 	m_iRefCount += 1;

@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CGUIBUTTON_H_
@@ -7,41 +7,41 @@
 #include "CGuiEnvironment.h"
 
 /**
-* @brief GUI °´Å¥
+* @brief GUI æŒ‰é’®
 */
 class CGuiButton: public CGuiEnvironment::CGuiElement {
 public:
-	//! ¹¹Ôìº¯Êı
+	//! æ„é€ å‡½æ•°
 	CGuiButton(const string& name);
-	//! Îö¹¹º¯Êı
+	//! ææ„å‡½æ•°
 	virtual ~CGuiButton();
-	//! ÊôĞÔÉèÖÃ
+	//! å±æ€§è®¾ç½®
 	virtual bool SetAttribute(const string& name, const string& value);
-	//! »ñÈ¡ÊôĞÔ
+	//! è·å–å±æ€§
 	virtual string GetAttribute(const string& name);
-	//! ¿Ø¼ş»æÖÆ
+	//! æ§ä»¶ç»˜åˆ¶
 	virtual void Draw(const CRectangle& rect, unsigned char* buffer);
 
 private:
-	//! ×ÖÌåÃû³Æ
+	//! å­—ä½“åç§°
 	string m_strFont;
-	//! ×ÖÌå´óĞ¡
+	//! å­—ä½“å¤§å°
 	int m_iFontSize;
-	//! ±êÌâÎÄ±¾
+	//! æ ‡é¢˜æ–‡æœ¬
 	wchar_t m_strText[64];
-	//! ÎÄ×ÖÀ­Éìµ½°´Å¥´óĞ¡
+	//! æ–‡å­—æ‹‰ä¼¸åˆ°æŒ‰é’®å¤§å°
 	bool m_bStretchText;
-	//! ±³¾°ÑÕÉ«
+	//! èƒŒæ™¯é¢œè‰²
 	unsigned char m_cBackColor[4];
-	//! Ç°¾°ÑÕÉ«
+	//! å‰æ™¯é¢œè‰²
 	unsigned char m_cForeColor[4];
-	//! ±³¾°Í¼Æ¬Êı¾İ
+	//! èƒŒæ™¯å›¾ç‰‡æ•°æ®
 	unsigned char* m_pImage;
-	//! ±³¾°Í¼Æ¬¿í¶È
+	//! èƒŒæ™¯å›¾ç‰‡å®½åº¦
 	int m_iImageWidth;
-	//! ±³¾°Í¼Æ¬¸ß¶È
+	//! èƒŒæ™¯å›¾ç‰‡é«˜åº¦
 	int m_iImageHeight;
-	//! ±³¾°Í¼Æ¬Í¨µÀÊı
+	//! èƒŒæ™¯å›¾ç‰‡é€šé“æ•°
 	int m_iImageChannels;
 };
 

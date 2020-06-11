@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CRIGIDBODY_H_
@@ -11,108 +11,108 @@
 #include "CMatrix4.h"
 
 /**
-* @brief ¸ÕÌåÀà
+* @brief åˆšä½“ç±»
 */
 class AVATAR_EXPORT CRigidBody {
 public:
-	//! ¹¹Ôì¸ÕÌå²¢°ó¶¨³¡¾°½Úµã
+	//! æ„é€ åˆšä½“å¹¶ç»‘å®šåœºæ™¯èŠ‚ç‚¹
 	CRigidBody(CSceneNode* binding);
 
-	//! »ñÈ¡°ó¶¨µÄ³¡¾°½Úµã
+	//! è·å–ç»‘å®šçš„åœºæ™¯èŠ‚ç‚¹
 	CSceneNode* GetSceneNode() const;
 
-	//! ÉèÖÃÎïÌåÊôĞÔ
+	//! è®¾ç½®ç‰©ä½“å±æ€§
 	void SetAttribute(float mass, const SGeometry& geometry, bool trigger, bool allowSleep);
-	//! ÉèÖÃ×èÄáÏµÊı
+	//! è®¾ç½®é˜»å°¼ç³»æ•°
 	void SetDamping(float linearDamping, float angularDamping);
-	//! ÉèÖÃÄ¦²ÁÏµÊı
+	//! è®¾ç½®æ‘©æ“¦ç³»æ•°
 	void SetFriction(float friction);
-	//! ÉèÖÃ»Ö¸´ÏµÊı
+	//! è®¾ç½®æ¢å¤ç³»æ•°
 	void SetRestitution(float restitution);
-	//! ÉèÖÃ³õËÙ¶È
+	//! è®¾ç½®åˆé€Ÿåº¦
 	void SetVelocity(const CVector3& linearVel, const CVector3& angularVel);
 
-	//! ¸´Î»¸ÕÌå×´Ì¬
+	//! å¤ä½åˆšä½“çŠ¶æ€
 	void Reset();
-	//! Çå³ıËùÓĞÍâÁ¦
+	//! æ¸…é™¤æ‰€æœ‰å¤–åŠ›
 	void ClearForce();
-	//! Ê©¼ÓÍâÁ¦
+	//! æ–½åŠ å¤–åŠ›
 	void ApplyForce(const CVector3& force, bool local);
-	//! Ê©¼ÓÍâÁ¦ºÍÍâÁ¦¾Ø
+	//! æ–½åŠ å¤–åŠ›å’Œå¤–åŠ›çŸ©
 	void ApplyForce(const CVector3& force, const CVector3& torque, bool local);
 
-	//! »ñÈ¡¸ÕÌå¼¸ºÎ
+	//! è·å–åˆšä½“å‡ ä½•
 	inline const SGeometry& GetGeometry() const { return m_sGeometry; }
-	//! ¸ÕÌåÅö×²»Øµ÷
+	//! åˆšä½“ç¢°æ’å›è°ƒ
 	inline int& CollideCallback() { return m_iCollideCallback; }
 
 private:
-	//! ¼ì²éÊÇ·ñĞèÒªË¯Ãß
+	//! æ£€æŸ¥æ˜¯å¦éœ€è¦ç¡çœ 
 	bool CheckSleeping(float dt);
-	//! ¼ÆËã¹ßĞÔÕÅÁ¿
+	//! è®¡ç®—æƒ¯æ€§å¼ é‡
 	void SetupInertiaTensor();
 
 private:
-	//! Á¦µÄ×ÜºÍ
+	//! åŠ›çš„æ€»å’Œ
 	CVector3 m_cTotalForce;
-	//! ¼ÓËÙ¶È
+	//! åŠ é€Ÿåº¦
 	CVector3 m_cAcceleration;
-	//! ÏßËÙ¶È
+	//! çº¿é€Ÿåº¦
 	CVector3 m_cLinearVelocity;
-	//! Á¦¾ØµÄ×ÜºÍ
+	//! åŠ›çŸ©çš„æ€»å’Œ
 	CVector3 m_cTotalTorque;
-	//! ½ÇËÙ¶È
+	//! è§’é€Ÿåº¦
 	CVector3 m_cAngularVelocity;
-	//! ¶îÍâµÄÁ¦
+	//! é¢å¤–çš„åŠ›
 	CVector3 m_cExtraForce;
-	//! ¶îÍâµÄÁ¦¾Ø
+	//! é¢å¤–çš„åŠ›çŸ©
 	CVector3 m_cExtraTorque;
-	//! ¶îÍâµÄ¾Ö²¿Á¦
+	//! é¢å¤–çš„å±€éƒ¨åŠ›
 	CVector3 m_cExtraForceLocal;
-	//! ¶îÍâµÄ¾Ö²¿Á¦¾Ø
+	//! é¢å¤–çš„å±€éƒ¨åŠ›çŸ©
 	CVector3 m_cExtraTorqueLocal;
-	//! Ğı×ªºóµÄ¹ßĞÔÕÅÁ¿Äæ¾ØÕó
+	//! æ—‹è½¬åçš„æƒ¯æ€§å¼ é‡é€†çŸ©é˜µ
 	CMatrix4 m_cInvInertiaTensorWorld;
 
-	//! ÏßËÙ¶È×èÄá
+	//! çº¿é€Ÿåº¦é˜»å°¼
 	float m_fLinearDamping;
-	//! ½ÇËÙ¶È×èÄá
+	//! è§’é€Ÿåº¦é˜»å°¼
 	float m_fAngularDamping;
-	//! ÎïÌåÖÊÁ¿
+	//! ç‰©ä½“è´¨é‡
 	float m_fMass;
-	//! ÎïÌåÖÊÁ¿µ¹Êı
+	//! ç‰©ä½“è´¨é‡å€’æ•°
 	float m_fInvMass;
-	//! ×ª¶¯¹ßÁ¿
+	//! è½¬åŠ¨æƒ¯é‡
 	CVector3 m_cInertiaLocal;
-	//! Äæ×ª¶¯¹ßÁ¿
+	//! é€†è½¬åŠ¨æƒ¯é‡
 	CVector3 m_cInvInertiaLocal;
-	//! Ä¦²ÁÏµÊı
+	//! æ‘©æ“¦ç³»æ•°
 	float m_fFriction;
-	//! »Ö¸´ÏµÊı
+	//! æ¢å¤ç³»æ•°
 	float m_fRestitution;
-	//! ÊÇ·ñÊÇ¾²Ì¬ÎïÌå
+	//! æ˜¯å¦æ˜¯é™æ€ç‰©ä½“
 	bool m_bStatic;
-	//! ÊÇ·ñ´¥·¢Æ÷
+	//! æ˜¯å¦è§¦å‘å™¨
 	bool m_bIsTrigger;
-	//! ÊÇ·ñÔÊĞíĞİÃß
+	//! æ˜¯å¦å…è®¸ä¼‘çœ 
 	bool m_bAllowSleep;
-	//! ¸ÕÌå¼¸ºÎ¶¨Òå
+	//! åˆšä½“å‡ ä½•å®šä¹‰
 	SGeometry m_sGeometry;
 
-	//! ÎïÌåĞİÃß×´Ì¬
+	//! ç‰©ä½“ä¼‘çœ çŠ¶æ€
 	bool m_bSleeping;
-	//! ½øÈëĞİÃßµÄÊ±¼ä
+	//! è¿›å…¥ä¼‘çœ çš„æ—¶é—´
 	float m_fSleepingTime;
-	//! Ë¯ÃßÊ±µÄºÏÁ¦
+	//! ç¡çœ æ—¶çš„åˆåŠ›
 	CVector3 m_cSleepingForce;
-	//! Ë¯ÃßÊ±µÄºÏÁ¦¾Ø
+	//! ç¡çœ æ—¶çš„åˆåŠ›çŸ©
 	CVector3 m_cSleepingTorque;
 
-	//! Åö×²»Øµ÷
+	//! ç¢°æ’å›è°ƒ
 	int m_iCollideCallback;
-	//! °ó¶¨µÄ³¡¾°½Úµã
+	//! ç»‘å®šçš„åœºæ™¯èŠ‚ç‚¹
 	CSceneNode* m_pSceneNode;
-	//! CPhysicsManager ¿É·ÃÎÊ
+	//! CPhysicsManager å¯è®¿é—®
 	friend class CPhysicsManager;
 };
 

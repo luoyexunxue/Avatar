@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CSceneNodeText.h"
@@ -10,7 +10,7 @@
 #include <cmath>
 
 /**
-* ¹¹Ôìº¯Êı
+* æ„é€ å‡½æ•°
 */
 CSceneNodeText::CSceneNodeText(const string& name, const wchar_t* text, const CColor& color,
 	const CColor& outline, const string& font, int fontSize) : CSceneNode("text", name) {
@@ -23,7 +23,7 @@ CSceneNodeText::CSceneNodeText(const string& name, const wchar_t* text, const CC
 }
 
 /**
-* ³õÊ¼»¯³¡¾°½Úµã
+* åˆå§‹åŒ–åœºæ™¯èŠ‚ç‚¹
 */
 bool CSceneNodeText::Init() {
 	m_pMesh = CGeometryCreator::CreatePlane(1.0f, 1.0f, 3);
@@ -32,21 +32,21 @@ bool CSceneNodeText::Init() {
 }
 
 /**
-* Ïú»Ù³¡¾°½Úµã
+* é”€æ¯åœºæ™¯èŠ‚ç‚¹
 */
 void CSceneNodeText::Destroy() {
 	delete m_pMesh;
 }
 
 /**
-* äÖÈ¾³¡¾°½Úµã
+* æ¸²æŸ“åœºæ™¯èŠ‚ç‚¹
 */
 void CSceneNodeText::Render() {
 	m_pMesh->Render();
 }
 
 /**
-* ¸üĞÂ³¡¾°½Úµã
+* æ›´æ–°åœºæ™¯èŠ‚ç‚¹
 */
 void CSceneNodeText::Update(float dt) {
 	m_cModelMatrix.MakeTransform(m_cScale, CMatrix4::Identity, m_cPosition);
@@ -58,7 +58,7 @@ void CSceneNodeText::Update(float dt) {
 	CMatrix4 mvMat = viewMat * m_cWorldMatrix;
 	float fov = pCamera->GetFieldOfView() * (3.141593f / 360.0f);
 	float scale = -2.0f * mvMat(2, 3) * tanf(fov) / pCamera->GetViewWidth();
-	// È¥³ıĞı×ªËõ·Å·ÖÁ¿
+	// å»é™¤æ—‹è½¬ç¼©æ”¾åˆ†é‡
 	mvMat(0, 0) = m_cScale[0] * scale;
 	mvMat(1, 1) = m_cScale[1] * scale;
 	mvMat(2, 2) = m_cScale[2] * scale;
@@ -73,7 +73,7 @@ void CSceneNodeText::Update(float dt) {
 }
 
 /**
-* ÉèÖÃÎÄ±¾
+* è®¾ç½®æ–‡æœ¬
 */
 void CSceneNodeText::SetText(const wchar_t* text) {
 	wcsncpy(m_strText, text, 128);
@@ -81,7 +81,7 @@ void CSceneNodeText::SetText(const wchar_t* text) {
 }
 
 /**
-* ÉèÖÃ×ÖÌå
+* è®¾ç½®å­—ä½“
 */
 void CSceneNodeText::SetFont(const string& font, int fontSize) {
 	m_strFont = font;
@@ -90,7 +90,7 @@ void CSceneNodeText::SetFont(const string& font, int fontSize) {
 }
 
 /**
-* ÉèÖÃÎÄ±¾ÑÕÉ«
+* è®¾ç½®æ–‡æœ¬é¢œè‰²
 */
 void CSceneNodeText::SetColor(const CColor& color, const CColor& outline) {
 	m_cColor.SetValue(color);
@@ -99,17 +99,17 @@ void CSceneNodeText::SetColor(const CColor& color, const CColor& outline) {
 }
 
 /**
-* ¸üĞÂÎÄ±¾
+* æ›´æ–°æ–‡æœ¬
 */
 void CSceneNodeText::UpdateText() {
-	// »ñÈ¡ÎÄ±¾´óĞ¡
+	// è·å–æ–‡æœ¬å¤§å°
 	int width = 0;
 	int height = 0;
 	CFontManager* pFontMgr = CEngine::GetFontManager();
 	pFontMgr->UseFont(m_strFont);
 	pFontMgr->SetSize(m_iFontSize);
 	pFontMgr->TextSize(m_strText, &width, &height);
-	// »æÖÆÎÄ±¾
+	// ç»˜åˆ¶æ–‡æœ¬
 	CFontManager::CTextImage image(width, height);
 	pFontMgr->DrawText(m_strText, &image, CFontManager::TOPLEFT, false);
 	int extend = static_cast<int>(m_iFontSize * 0.1f);
@@ -118,7 +118,7 @@ void CSceneNodeText::UpdateText() {
 	unsigned char color[4];
 	unsigned char* buffer = new unsigned char[textureWidth * textureHeight * 4];
 	memset(buffer, 0, textureWidth * textureHeight * 4);
-	// »æÖÆ8´Î£¬µÃµ½ÂÖÀª
+	// ç»˜åˆ¶8æ¬¡ï¼Œå¾—åˆ°è½®å»“
 	m_cOutline.GetValue(color);
 	for (int x = 0; x < 3; x++) {
 		for (int y = 0; y < 3; y++) {
@@ -135,7 +135,7 @@ void CSceneNodeText::UpdateText() {
 			}
 		}
 	}
-	// ÎÄ±¾Ìî³ä
+	// æ–‡æœ¬å¡«å……
 	m_cColor.GetValue(color);
 	for (int h = 0; h < height; h++) {
 		for (int w = 0; w < width; w++) {

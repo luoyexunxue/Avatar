@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CRECTANGLE_H_
@@ -7,85 +7,87 @@
 #include "AvatarConfig.h"
 
 /**
-* @brief ¾ØĞÎÀà
+* @brief çŸ©å½¢ç±»
 */
 class AVATAR_EXPORT CRectangle {
 public:
-	//! Ä¬ÈÏ¹¹Ôìº¯Êı
+	//! é»˜è®¤æ„é€ å‡½æ•°
 	CRectangle();
-	//! ¸´ÖÆ¹¹Ôìº¯Êı
+	//! å¤åˆ¶æ„é€ å‡½æ•°
 	CRectangle(const CRectangle& rect);
-	//! ÓÉÊı×é¹¹Ôì¾ØĞÎ
+	//! ç”±æ•°ç»„æ„é€ çŸ©å½¢
 	CRectangle(const int rect[4]);
-	//! ÓÉ×óÉÏ½Çxy×ø±êºÍ¿í¸ß¹¹Ôì¾ØĞÎ
+	//! ç”±å·¦ä¸Šè§’xyåæ ‡å’Œå®½é«˜æ„é€ çŸ©å½¢
 	CRectangle(int x, int y, int w, int h);
 
-	//! ÉèÖÃ¾ØĞÎÖµ
+	//! è®¾ç½®çŸ©å½¢å€¼
 	void SetValue(const CRectangle& rect);
-	//! ÉèÖÃ¾ØĞÎÖµ
+	//! è®¾ç½®çŸ©å½¢å€¼
 	void SetValue(const int rect[4]);
-	//! ÉèÖÃ¾ØĞÎÖµ
+	//! è®¾ç½®çŸ©å½¢å€¼
 	void SetValue(int x, int y, int w, int h);
 
-	//! ÉèÖÃÆ«ÒÆ
+	//! è®¾ç½®åç§»
 	CRectangle& Offset(int x, int y);
-	//! ÉèÖÃÆ«ÒÆ
+	//! è®¾ç½®åç§»
 	CRectangle& Offset(int offset[2]);
-	//! ÉèÖÃÆ«ÒÆ
+	//! è®¾ç½®åç§»
 	CRectangle& Offset(const CRectangle& rect);
-	//! ÉèÖÃËõ·Å
+	//! è®¾ç½®ç¼©æ”¾
 	CRectangle& Scale(float scale, bool center);
+	//! è®¾ç½®å®½é«˜
+	CRectangle& Resize(int width, int height);
 
-	//! ÉèÖÃÇøÓòÎª¿Õ
+	//! è®¾ç½®åŒºåŸŸä¸ºç©º
 	void SetEmpty();
-	//! ÅĞ¶ÏÇøÓòÊÇ·ñÎª¿Õ
+	//! åˆ¤æ–­åŒºåŸŸæ˜¯å¦ä¸ºç©º
 	bool IsEmpty() const;
-	//! ÅĞ¶ÏÊÇ·ñÓĞ½»¼¯
+	//! åˆ¤æ–­æ˜¯å¦æœ‰äº¤é›†
 	bool IsIntersect(const CRectangle& rect) const;
-	//! ÅĞ¶ÏÊÇ·ñ°üº¬µã
+	//! åˆ¤æ–­æ˜¯å¦åŒ…å«ç‚¹
 	bool IsContain(int x, int y) const;
-	//! ÅĞ¶ÏÊÇ·ñ°üº¬ÇøÓò
+	//! åˆ¤æ–­æ˜¯å¦åŒ…å«åŒºåŸŸ
 	bool IsContain(const CRectangle& rect) const;
 
-	//! »ñÈ¡¾ØĞÎ×ó±ß½ç
+	//! è·å–çŸ©å½¢å·¦è¾¹ç•Œ
 	int GetLeft() const;
-	//! »ñÈ¡¾ØĞÎÉÏ±ß½ç
+	//! è·å–çŸ©å½¢ä¸Šè¾¹ç•Œ
 	int GetTop() const;
-	//! »ñÈ¡¾ØĞÎÓÒ±ß½ç
+	//! è·å–çŸ©å½¢å³è¾¹ç•Œ
 	int GetRight() const;
-	//! »ñÈ¡¾ØĞÎÏÂ±ß½ç
+	//! è·å–çŸ©å½¢ä¸‹è¾¹ç•Œ
 	int GetBottom() const;
-	//! »ñÈ¡¾ØĞÎ¿í¶È
+	//! è·å–çŸ©å½¢å®½åº¦
 	int GetWidth() const;
-	//! »ñÈ¡¾ØĞÎ¸ß¶È
+	//! è·å–çŸ©å½¢é«˜åº¦
 	int GetHeight() const;
-	//! »ñÈ¡¾ØĞÎÃæ»ı
+	//! è·å–çŸ©å½¢é¢ç§¯
 	int GetArea() const;
 
-	//! Óë rect Çó²¢¼¯
+	//! ä¸ rect æ±‚å¹¶é›†
 	CRectangle Union(const CRectangle& rect) const;
-	//! Óë rect Çó½»¼¯
+	//! ä¸ rect æ±‚äº¤é›†
 	CRectangle Intersect(const CRectangle& rect) const;
 
 public:
-	//! ÏÂ±êÔËËã·û []
+	//! ä¸‹æ ‡è¿ç®—ç¬¦ []
 	int& operator [] (int index);
-	//! ÖØÔØÔËËã·û ==
+	//! é‡è½½è¿ç®—ç¬¦ ==
 	bool operator == (const CRectangle& rect) const;
-	//! ÖØÔØÔËËã·û !=
+	//! é‡è½½è¿ç®—ç¬¦ !=
 	bool operator != (const CRectangle& rect) const;
-	//! ²¢¼¯¼ÆËã
+	//! å¹¶é›†è®¡ç®—
 	CRectangle& operator += (const CRectangle& rect);
-	//! ½»¼¯¼ÆËã
+	//! äº¤é›†è®¡ç®—
 	CRectangle& operator *= (const CRectangle& rect);
 
 public:
 	/**
-	* ¾ØĞÎ´æ´¢·½Ê½
+	* çŸ©å½¢å­˜å‚¨æ–¹å¼
 	* [x, y, w, h]
 	*/
 	int m_iValue[4];
-	//! ¿Õ¾ØĞÎ³£Á¿
+	//! ç©ºçŸ©å½¢å¸¸é‡
 	const static CRectangle Empty;
 };
 

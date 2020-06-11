@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CGRAPHICSMANAGER_H_
@@ -17,152 +17,152 @@
 using std::string;
 
 /**
-* @brief Í¼ĞÎäÖÈ¾¹ÜÀíÆ÷
+* @brief å›¾å½¢æ¸²æŸ“ç®¡ç†å™¨
 */
 class AVATAR_EXPORT CGraphicsManager {
 public:
-	//! »ñÈ¡¹ÜÀíÆ÷ÊµÀı
+	//! è·å–ç®¡ç†å™¨å®ä¾‹
 	static CGraphicsManager* GetInstance() {
 		if (m_pInstance) return m_pInstance;
 		m_pInstance = new CGraphicsManager();
 		return m_pInstance;
 	}
-	//! ÊµÀıÏú»Ù
+	//! å®ä¾‹é”€æ¯
 	void Destroy();
 
-	//! äÖÈ¾Ò»Ö¡
+	//! æ¸²æŸ“ä¸€å¸§
 	void Render();
 
-	//! ÉèÖÃÏà»ú
+	//! è®¾ç½®ç›¸æœº
 	void SetCamera(CCamera* camera);
-	//! »ñÈ¡Ïà»ú
+	//! è·å–ç›¸æœº
 	CCamera* GetCamera();
-	//! ÉèÖÃ´°¿Ú´óĞ¡
+	//! è®¾ç½®çª—å£å¤§å°
 	void SetWindowSize(int width, int height);
-	//! »ñÈ¡´°¿Ú´óĞ¡
+	//! è·å–çª—å£å¤§å°
 	void GetWindowSize(int* width, int* height);
-	//! ÉèÖÃ¹âÔ´
+	//! è®¾ç½®å…‰æº
 	void SetLight(const CVector3& pos, const CVector3& dir, const CVector3& color);
-	//! »ñÈ¡¹âÔ´Î»ÖÃ
+	//! è·å–å…‰æºä½ç½®
 	CVector3 GetLight();
-	//! ÉèÖÃÊÇ·ñÁ¢ÌåÏÔÊ¾
+	//! è®¾ç½®æ˜¯å¦ç«‹ä½“æ˜¾ç¤º
 	void SetStereoMode(bool stereo);
-	//! »ñÈ¡ÊÇ·ñÁ¢ÌåÏÔÊ¾
+	//! è·å–æ˜¯å¦ç«‹ä½“æ˜¾ç¤º
 	bool GetStereoMode();
-	//! ÉèÖÃÊÇ·ñÏÔÊ¾ÒõÓ°
+	//! è®¾ç½®æ˜¯å¦æ˜¾ç¤ºé˜´å½±
 	void SetShadowEnable(bool enable);
-	//! »ñÈ¡ÒõÓ°ÊÇ·ñÏÔÊ¾
+	//! è·å–é˜´å½±æ˜¯å¦æ˜¾ç¤º
 	bool GetShadowEnable();
-	//! ÉèÖÃÎíÏÔÊ¾¼°²ÎÊı
+	//! è®¾ç½®é›¾æ˜¾ç¤ºåŠå‚æ•°
 	void SetFogEnable(bool enable, float start, float end, const CColor& color);
-	//! »ñÈ¡ÎíÊÇ·ñÏÔÊ¾
+	//! è·å–é›¾æ˜¯å¦æ˜¾ç¤º
 	bool GetFogEnable();
-	//! ÉèÖÃÆôÓÃ»·¾³¹âÕÕ
+	//! è®¾ç½®å¯ç”¨ç¯å¢ƒå…‰ç…§
 	void SetEnvironmentMapEnable(bool enable, const string& cubemap);
-	//! »ñÈ¡ÊÇ·ñ¿ªÆô»·¾³¹âÕÕ
+	//! è·å–æ˜¯å¦å¼€å¯ç¯å¢ƒå…‰ç…§
 	bool GetEnvironmentMapEnable();
 
-	//! ÉèÖÃÊÇ·ñÆôÓÃÉî¶È²âÊÔ
+	//! è®¾ç½®æ˜¯å¦å¯ç”¨æ·±åº¦æµ‹è¯•
 	void SetDepthTestEnable(bool enable);
-	//! ÉèÖÃÊÇ·ñÆôÓÃÉî¶ÈÆ«ÒÆ
+	//! è®¾ç½®æ˜¯å¦å¯ç”¨æ·±åº¦åç§»
 	void SetDepthOffsetEnable(bool enable, float offset);
-	//! ÉèÖÃÊÇ·ñÆôÓÃÑÕÉ«»ìºÏ
+	//! è®¾ç½®æ˜¯å¦å¯ç”¨é¢œè‰²æ··åˆ
 	void SetColorBlendEnable(bool enable);
-	//! ÉèÖÃ³õÊ¼±³¾°ÑÕÉ«
+	//! è®¾ç½®åˆå§‹èƒŒæ™¯é¢œè‰²
 	void SetBackgroundColor(const CColor& color);
-	//! ÉèÖÃÁ¢ÌåÊÓ¾õ½¹¾à
+	//! è®¾ç½®ç«‹ä½“è§†è§‰ç„¦è·
 	void SetFocusDistance(float distance);
 
-	//! ÅĞ¶ÏÊÇ·ñ´¦ÓÚÉî¶ÈäÖÈ¾Ä£Ê½
+	//! åˆ¤æ–­æ˜¯å¦å¤„äºæ·±åº¦æ¸²æŸ“æ¨¡å¼
 	bool IsDepthRender();
-	//! ÅĞ¶ÏÊÇ·ñ´¦ÓÚ·´ÉäÍ¼äÖÈ¾
+	//! åˆ¤æ–­æ˜¯å¦å¤„äºåå°„å›¾æ¸²æŸ“
 	bool IsReflectRender();
-	//! ÅĞ¶ÏÊÇ·ñ´¦ÓÚ×óÑÛäÖÈ¾
+	//! åˆ¤æ–­æ˜¯å¦å¤„äºå·¦çœ¼æ¸²æŸ“
 	bool IsLeftEyeRender();
 
-	//! ÆÁÄ»½ØÍ¼
+	//! å±å¹•æˆªå›¾
 	void Screenshot(CFileManager::CImageFile& file, bool redraw);
-	//! ÆÁÄ»½ØÍ¼²¢±£´æÖÁÎÄ¼ş
+	//! å±å¹•æˆªå›¾å¹¶ä¿å­˜è‡³æ–‡ä»¶
 	void Screenshot(const string& fileName, bool redraw);
-	//! »ñÈ¡µãµÄÆÁÄ»×ø±ê
+	//! è·å–ç‚¹çš„å±å¹•åæ ‡
 	void PointToScreen(const CVector3& point, CVector3& screen);
-	//! ¼ÆËãÊ°È¡ÉäÏß
+	//! è®¡ç®—æ‹¾å–å°„çº¿
 	void PickingRay(int x, int y, CRay& ray);
-	//! »ñÈ¡Ê°È¡µã×ø±ê
+	//! è·å–æ‹¾å–ç‚¹åæ ‡
 	void PickingPosition(int x, int y, CVector3& position);
 
-	//! »æÖÆµã
+	//! ç»˜åˆ¶ç‚¹
 	void DrawPoints(const CVertex* vertices, int size);
-	//! »æÖÆÏß
+	//! ç»˜åˆ¶çº¿
 	void DrawLines(const CVertex* vertices, int size, float width, bool strip);
-	//! »æÖÆÈı½ÇĞÎ
+	//! ç»˜åˆ¶ä¸‰è§’å½¢
 	void DrawTriangles(const CVertex* vertices, int size, bool strip);
-	//! »æÖÆËÄ±ßĞÎ
+	//! ç»˜åˆ¶å››è¾¹å½¢
 	void DrawQuadrilateral(const CColor& color, bool flipTexCoord);
-	//! »æÖÆÁ¢·½Ìå
+	//! ç»˜åˆ¶ç«‹æ–¹ä½“
 	void DrawCube(const CColor& color);
 
-	//! ÉèÖÃµ±Ç°äÖÈ¾Ä¿±ê
+	//! è®¾ç½®å½“å‰æ¸²æŸ“ç›®æ ‡
 	void SetRenderTarget(CTexture* texture, int level, bool fullView, bool clearColor, bool clearDepth);
-	//! »ñÈ¡µ±Ç°äÖÈ¾Ä¿±ê
+	//! è·å–å½“å‰æ¸²æŸ“ç›®æ ‡
 	CTexture* GetRenderTarget();
 
-	//! »ñÈ¡Ö¡ÂÊ
+	//! è·å–å¸§ç‡
 	float GetFrameRate();
 
 private:
 	CGraphicsManager();
 	~CGraphicsManager();
 
-	//! ÊÀ½ç×ø±êÏµµ½ÆÁÄ»×ø±êÏµµÄ±ä»»
+	//! ä¸–ç•Œåæ ‡ç³»åˆ°å±å¹•åæ ‡ç³»çš„å˜æ¢
 	void Project(const int viewport[4], const float objCoord[3], float winPos[3]);
-	//! ÆÁÄ»×ø±êÏµµ½ÊÀ½ç×ø±êÏµµÄ±ä»»
+	//! å±å¹•åæ ‡ç³»åˆ°ä¸–ç•Œåæ ‡ç³»çš„å˜æ¢
 	void UnProject(const int viewport[4], const float winPos[3], float objCoord[3]);
 
-	//! »æÖÆ³¡¾°
+	//! ç»˜åˆ¶åœºæ™¯
 	void Draw();
-	//! »æÖÆÆÁÄ»ÔªËØ
+	//! ç»˜åˆ¶å±å¹•å…ƒç´ 
 	void DrawScreen();
-	//! »æÖÆÒõÓ°ÌùÍ¼
+	//! ç»˜åˆ¶é˜´å½±è´´å›¾
 	void DrawShadowMap();
-	//! »æÖÆÈ«¾°Í¼
+	//! ç»˜åˆ¶å…¨æ™¯å›¾
 	void DrawCubeMap();
-	//! äÖÈ¾·´ÉäÌùÍ¼
+	//! æ¸²æŸ“åå°„è´´å›¾
 	void DrawReflectMap();
 
 private:
-	//! ´°¿Ú¿í¸ß
+	//! çª—å£å®½é«˜
 	int m_iWindowSize[2];
-	//! Á¢ÌåÄ£Ê½
+	//! ç«‹ä½“æ¨¡å¼
 	bool m_bStereoMode;
-	//! ÒõÓ°ÏÔÊ¾
+	//! é˜´å½±æ˜¾ç¤º
 	bool m_bShadowEnable;
-	//! ÎíÏÔÊ¾
+	//! é›¾æ˜¾ç¤º
 	bool m_bFogEnable;
-	//! »·¾³¹âÕÕ
+	//! ç¯å¢ƒå…‰ç…§
 	bool m_bEnvironmentMapEnable;
-	//! ±³¾°ÑÕÉ«
+	//! èƒŒæ™¯é¢œè‰²
 	CColor m_cBackground;
-	//! È«¾Ö¹âÔ´Î»ÖÃ
+	//! å…¨å±€å…‰æºä½ç½®
 	CVector3 m_cLightPos;
-	//! È«¾Ö¹âÕÕ·½Ïò
+	//! å…¨å±€å…‰ç…§æ–¹å‘
 	CVector3 m_cLightDir;
-	//! Ïà»ú
+	//! ç›¸æœº
 	CCamera* m_pCamera;
-	//! µ±Ç°äÖÈ¾Ä¿±ê
+	//! å½“å‰æ¸²æŸ“ç›®æ ‡
 	CTexture* m_pRenderTarget;
 
-	//! äÖÈ¾×óÑÛ£¨Á¢ÌåÄ£Ê½£©
+	//! æ¸²æŸ“å·¦çœ¼ï¼ˆç«‹ä½“æ¨¡å¼ï¼‰
 	bool m_bRenderLeftEye;
-	//! Éî¶ÈÍ¼äÖÈ¾
+	//! æ·±åº¦å›¾æ¸²æŸ“
 	bool m_bRenderDepth;
-	//! ·´ÉäÍ¼äÖÈ¾
+	//! åå°„å›¾æ¸²æŸ“
 	bool m_bRenderReflect;
-	//! ½¹¾à
+	//! ç„¦è·
 	float m_fFocusDistance;
-	//! Ö¡ÂÊ
+	//! å¸§ç‡
 	float m_fFrameRate;
-	//! ÊµÀı
+	//! å®ä¾‹
 	static CGraphicsManager* m_pInstance;
 };
 

@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CBASE64_H_
@@ -11,26 +11,26 @@ using std::string;
 using std::vector;
 
 /**
-* @brief Base64 ±à½âÂëÀà
+* @brief Base64 ç¼–è§£ç ç±»
 */
 class AVATAR_EXPORT CBase64 {
 public:
-	//! ±àÂë Base64 ×Ö·û´®
+	//! ç¼–ç  Base64 å­—ç¬¦ä¸²
 	static int Encode(const unsigned char* data, int length, char* buffer, int size);
-	//! ±àÂë Base64 ÎÄ±¾
+	//! ç¼–ç  Base64 æ–‡æœ¬
 	static int Encode(const unsigned char* data, int length, string& buffer);
-	//! ±àÂë Base64 ×Ö·û´®
+	//! ç¼–ç  Base64 å­—ç¬¦ä¸²
 	static int Encode(const vector<unsigned char>& data, char* buffer, int size);
-	//! ±àÂë Base64 ÎÄ±¾
+	//! ç¼–ç  Base64 æ–‡æœ¬
 	static int Encode(const vector<unsigned char>& data, string& buffer);
 
-	//! ½âÂë Base64 ×Ö·û´®
+	//! è§£ç  Base64 å­—ç¬¦ä¸²
 	static int Decode(const char* data, unsigned char* buffer, int size);
-	//! ½âÂë Base64 ÎÄ±¾
+	//! è§£ç  Base64 æ–‡æœ¬
 	static int Decode(const string& data, unsigned char* buffer, int size);
-	//! ½âÂë Base64 ×Ö·û´®
+	//! è§£ç  Base64 å­—ç¬¦ä¸²
 	static int Decode(const char* data, vector<unsigned char>& buffer);
-	//! ½âÂë Base64 ÎÄ±¾
+	//! è§£ç  Base64 æ–‡æœ¬
 	static int Decode(const string& data, vector<unsigned char>& buffer);
 };
 

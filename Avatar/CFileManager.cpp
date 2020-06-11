@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CFileManager.h"
@@ -32,7 +32,7 @@ using std::ifstream;
 using std::ofstream;
 
 /**
-* ¹¹Ôìº¯Êı
+* æ„é€ å‡½æ•°
 */
 CFileManager::CFileManager() {
 	m_pCurrentDirectory = new SDirectory();
@@ -45,19 +45,19 @@ CFileManager::CFileManager() {
 }
 
 /**
-* Îö¹¹º¯Êı
+* ææ„å‡½æ•°
 */
 CFileManager::~CFileManager() {
 	m_pInstance = 0;
 }
 
 /**
-* µ¥ÀıÊµÀı
+* å•ä¾‹å®ä¾‹
 */
 CFileManager* CFileManager::m_pInstance = 0;
 
 /**
-* Ïú»ÙÎÄ¼ş¹ÜÀíÆ÷
+* é”€æ¯æ–‡ä»¶ç®¡ç†å™¨
 */
 void CFileManager::Destroy() {
 	delete m_pCurrentDirectory;
@@ -67,8 +67,8 @@ void CFileManager::Destroy() {
 }
 
 /**
-* »ñÈ¡³ÌĞòÂ·¾¶
-* @return ¿ÉÖ´ĞĞ³ÌĞòÂ·¾¶£¬°üº¬ '/'
+* è·å–ç¨‹åºè·¯å¾„
+* @return å¯æ‰§è¡Œç¨‹åºè·¯å¾„ï¼ŒåŒ…å« '/'
 */
 string CFileManager::GetAppDirectory() {
 #ifdef AVATAR_WINDOWS
@@ -87,9 +87,9 @@ string CFileManager::GetAppDirectory() {
 }
 
 /**
-* »ñÈ¡ÎÄ¼şÀ©Õ¹Ãû
-* @param path Â·¾¶Ãû
-* @return À©Õ¹Ãû£¬²»°üº¬ '.'
+* è·å–æ–‡ä»¶æ‰©å±•å
+* @param path è·¯å¾„å
+* @return æ‰©å±•åï¼Œä¸åŒ…å« '.'
 */
 string CFileManager::GetExtension(const string& path) {
 	size_t dot = path.find_last_of('.');
@@ -102,9 +102,9 @@ string CFileManager::GetExtension(const string& path) {
 }
 
 /**
-* »ñÈ¡ÎÄ¼şËùÔÚÄ¿Â¼
-* @param path Â·¾¶Ãû
-* @return ÎÄ¼şÄ¿Â¼£¬°üº¬ '/'
+* è·å–æ–‡ä»¶æ‰€åœ¨ç›®å½•
+* @param path è·¯å¾„å
+* @return æ–‡ä»¶ç›®å½•ï¼ŒåŒ…å« '/'
 */
 string CFileManager::GetDirectory(const string& path) {
 	size_t slash = path.find_last_of("/\\");
@@ -117,10 +117,10 @@ string CFileManager::GetDirectory(const string& path) {
 
 
 /**
-* »ñÈ¡ÎÄ¼şÃû³Æ
-* @param path Â·¾¶Ãû
-* @param withExt ÊÇ·ñ°üº¬À©Õ¹Ãû
-* @return ÎÄ¼şÃû³Æ
+* è·å–æ–‡ä»¶åç§°
+* @param path è·¯å¾„å
+* @param withExt æ˜¯å¦åŒ…å«æ‰©å±•å
+* @return æ–‡ä»¶åç§°
 */
 string CFileManager::GetFileName(const string& path, bool withExt) {
 	string name = path;
@@ -138,9 +138,9 @@ string CFileManager::GetFileName(const string& path, bool withExt) {
 }
 
 /**
-* ¼ì²éÊÇ·ñÊÇÈ«Â·¾¶
-* @param path Â·¾¶Ãû
-* @return Èç¹û path ±íÊ¾ÍêÕûÂ·¾¶Ôò·µ»Ø true
+* æ£€æŸ¥æ˜¯å¦æ˜¯å…¨è·¯å¾„
+* @param path è·¯å¾„å
+* @return å¦‚æœ path è¡¨ç¤ºå®Œæ•´è·¯å¾„åˆ™è¿”å› true
 */
 bool CFileManager::IsFullPath(const string& path) {
 	if (path.empty()) return false;
@@ -158,15 +158,15 @@ bool CFileManager::IsFullPath(const string& path) {
 }
 
 /**
-* ÉèÖÃ×ÊÔ´Ä¿Â¼
-* @param directory µ±Ç°×ÊÔ´Ä¿Â¼£¬¿ÉÒÔÉè¶¨Îª ZIP ÎÄ¼ş»ò URL µØÖ·
-* @note µ±Éè¶¨Îª ZIP ÎÄ¼şÊ±£¬GetDataDirectory ·µ»Ø ZIP ÎÄ¼şËùÔÚÄ¿Â¼£¬ÁíÍâ¿ÉÒÔÉèÖÃ½âÑ¹ÃÜÂë(ÀıÈç C:\\media.zip?password)
+* è®¾ç½®èµ„æºç›®å½•
+* @param directory å½“å‰èµ„æºç›®å½•ï¼Œå¯ä»¥è®¾å®šä¸º ZIP æ–‡ä»¶æˆ– URL åœ°å€
+* @note å½“è®¾å®šä¸º ZIP æ–‡ä»¶æ—¶ï¼ŒGetDataDirectory è¿”å› ZIP æ–‡ä»¶æ‰€åœ¨ç›®å½•ï¼Œå¦å¤–å¯ä»¥è®¾ç½®è§£å‹å¯†ç (ä¾‹å¦‚ C:\\media.zip?password)
 */
 void CFileManager::SetDataDirectory(const string& directory) {
 	m_pCurrentDirectory->path = "";
 	m_pCurrentDirectory->isCompressed = false;
 	m_pCurrentDirectory->isRemoteUrl = false;
-	// directory Îª URL Â·¾¶
+	// directory ä¸º URL è·¯å¾„
 	if (directory.find("http://") == 0 ||
 		directory.find("https://") == 0 ||
 		directory.find("ftp://") == 0 ||
@@ -177,7 +177,7 @@ void CFileManager::SetDataDirectory(const string& directory) {
 			m_pCurrentDirectory->path += "/";
 		}
 	}
-	// directory Îª ZIP ÎÄ¼ş
+	// directory ä¸º ZIP æ–‡ä»¶
 	else if (directory.find(".zip") != string::npos) {
 		size_t index = directory.rfind('?');
 		string filepath = index != string::npos? directory.substr(0, index): directory;
@@ -191,7 +191,7 @@ void CFileManager::SetDataDirectory(const string& directory) {
 			if (m_pCurrentDirectory->path[i] == '\\') m_pCurrentDirectory->path[i] = '/';
 		}
 	}
-	// directory Îª±¾µØÄ¿Â¼
+	// directory ä¸ºæœ¬åœ°ç›®å½•
 	else {
 		if (!DirectoryExists(directory)) CLog::Error("Data directory not exist");
 		m_pCurrentDirectory->path = directory;
@@ -205,17 +205,17 @@ void CFileManager::SetDataDirectory(const string& directory) {
 }
 
 /**
-* »ñÈ¡×ÊÔ´Ä¿Â¼
-* @return µ±Ç°×ÊÔ´Ä¿Â¼
+* è·å–èµ„æºç›®å½•
+* @return å½“å‰èµ„æºç›®å½•
 */
 string CFileManager::GetDataDirectory() {
 	return m_pCurrentDirectory->path;
 }
 
 /**
-* ÅĞ¶ÏÄ¿Â¼ÊÇ·ñ´æÔÚ
-* @param directory ĞèÒª¼ì²éµÄÄ¿Â¼Ãû
-* @return ÈôÖ¸¶¨µÄÄ¿Â¼´æÔÚÔò·µ»Ø true
+* åˆ¤æ–­ç›®å½•æ˜¯å¦å­˜åœ¨
+* @param directory éœ€è¦æ£€æŸ¥çš„ç›®å½•å
+* @return è‹¥æŒ‡å®šçš„ç›®å½•å­˜åœ¨åˆ™è¿”å› true
 */
 bool CFileManager::DirectoryExists(const string& directory) {
 	if (directory.empty() || m_pCurrentDirectory->isRemoteUrl) return true;
@@ -237,9 +237,9 @@ bool CFileManager::DirectoryExists(const string& directory) {
 }
 
 /**
-* ´´½¨Ä¿Â¼
-* @param directory ĞèÒª´´½¨µÄÄ¿Â¼Ãû
-* @return ´´½¨³É¹¦·µ»Ø true
+* åˆ›å»ºç›®å½•
+* @param directory éœ€è¦åˆ›å»ºçš„ç›®å½•å
+* @return åˆ›å»ºæˆåŠŸè¿”å› true
 */
 bool CFileManager::DirectoryCreate(const string& directory) {
 	string fullpath = directory;
@@ -263,9 +263,9 @@ bool CFileManager::DirectoryCreate(const string& directory) {
 }
 
 /**
-* ÅĞ¶ÏÎÄ¼şÊÇ·ñ´æÔÚ
-* @param filename ĞèÒª¼ì²éµÄÎÄ¼ş
-* @return Èô´æÔÚÔò·µ»Ø true
+* åˆ¤æ–­æ–‡ä»¶æ˜¯å¦å­˜åœ¨
+* @param filename éœ€è¦æ£€æŸ¥çš„æ–‡ä»¶
+* @return è‹¥å­˜åœ¨åˆ™è¿”å› true
 */
 bool CFileManager::FileExists(const string& filename) {
 #ifdef AVATAR_WINDOWS
@@ -282,19 +282,19 @@ bool CFileManager::FileExists(const string& filename) {
 }
 
 /**
-* »ñÈ¡ÎÄ¼ş´óĞ¡
-* @param filename ĞèÒª¼ì²éµÄÎÄ¼ş
-* @return ÎÄ¼ş´óĞ¡
+* è·å–æ–‡ä»¶å¤§å°
+* @param filename éœ€è¦æ£€æŸ¥çš„æ–‡ä»¶
+* @return æ–‡ä»¶å¤§å°
 */
 unsigned int CFileManager::FileSize(const string& filename) {
 	unsigned int size = 0;
-	// ²¹È«Â·¾¶
+	// è¡¥å…¨è·¯å¾„
 	bool isFullPath = IsFullPath(filename);
 	string fullpath = filename;
 	if (!isFullPath && !m_pCurrentDirectory->isCompressed) {
 		fullpath = m_pCurrentDirectory->path + filename;
 	}
-	// URL Ô´
+	// URL æº
 	if (fullpath.find("http://") == 0 ||
 		fullpath.find("https://") == 0 ||
 		fullpath.find("ftp://") == 0 ||
@@ -303,12 +303,12 @@ unsigned int CFileManager::FileSize(const string& filename) {
 		if (m_pUrlConnection->Request(fullpath, buffer) != 200) return 0;
 		size = buffer.size();
 	}
-	// ZIP Ô´
+	// ZIP æº
 	else if (!isFullPath && m_pCurrentDirectory->isCompressed && m_pZipReader->Open(fullpath)) {
 		size = m_pZipReader->Size();
 		m_pZipReader->Close();
 	}
-	// ±¾µØÔ´
+	// æœ¬åœ°æº
 	else {
 		if (!isFullPath) fullpath = m_pCurrentDirectory->path + filename;
 		ifstream fin(fullpath, std::ios::in | std::ios::ate | std::ios::binary);
@@ -320,9 +320,9 @@ unsigned int CFileManager::FileSize(const string& filename) {
 }
 
 /**
-* »ñÈ¡Ö¸¶¨Ä¿Â¼ÏÂËùÓĞÎÄ¼ş
-* @param directory ĞèÒªÁĞ³öÎÄ¼şµÄÄ¿Â¼
-* @param file ÎÄ¼şÁĞ±í
+* è·å–æŒ‡å®šç›®å½•ä¸‹æ‰€æœ‰æ–‡ä»¶
+* @param directory éœ€è¦åˆ—å‡ºæ–‡ä»¶çš„ç›®å½•
+* @param file æ–‡ä»¶åˆ—è¡¨
 */
 void CFileManager::GetFileList(const string& directory, vector<string>& file) {
 	string fullpath = directory;
@@ -330,7 +330,7 @@ void CFileManager::GetFileList(const string& directory, vector<string>& file) {
 	if (fullpath.back() == '\\' || fullpath.back() == '/') fullpath.append("*");
 	else fullpath.append("/*");
 	file.clear();
-	// »ñÈ¡ÎÄ¼şÁĞ±í
+	// è·å–æ–‡ä»¶åˆ—è¡¨
 #ifdef AVATAR_WINDOWS
 	WIN32_FIND_DATAA FindFileData;
 	HANDLE hFind = FindFirstFileA(fullpath.c_str(), &FindFileData);
@@ -352,28 +352,28 @@ void CFileManager::GetFileList(const string& directory, vector<string>& file) {
 }
 
 /**
-* ¶ÁÈ¡ÎÄ¼ş
-* @param filename ¶ÁÈ¡µÄÎÄ¼şÃû
-* @param file ÎÄ¼ş¶ÔÏóÖ¸Õë
-* @return ¶ÁÈ¡³É¹¦·µ»Ø true
+* è¯»å–æ–‡ä»¶
+* @param filename è¯»å–çš„æ–‡ä»¶å
+* @param file æ–‡ä»¶å¯¹è±¡æŒ‡é’ˆ
+* @return è¯»å–æˆåŠŸè¿”å› true
 */
 bool CFileManager::ReadFile(const string& filename, CFile* file) {
 	unsigned int size = 0;
 	unsigned char* data = 0;
 
-	// Çå³ıÎÄ¼şÔ­ÄÚÈİ
+	// æ¸…é™¤æ–‡ä»¶åŸå†…å®¹
 	if (file->contents) {
 		delete[] file->contents;
 		file->contents = 0;
 		file->size = 0;
 	}
-	// ²¹È«Â·¾¶
+	// è¡¥å…¨è·¯å¾„
 	bool isFullPath = IsFullPath(filename);
 	string fullpath = filename;
 	if (!isFullPath && !m_pCurrentDirectory->isCompressed) {
 		fullpath = m_pCurrentDirectory->path + filename;
 	}
-	// URL Ô´
+	// URL æº
 	if (fullpath.find("http://") == 0 ||
 		fullpath.find("https://") == 0 ||
 		fullpath.find("ftp://") == 0 ||
@@ -387,14 +387,14 @@ bool CFileManager::ReadFile(const string& filename, CFile* file) {
 		data = new unsigned char[size];
 		memcpy(data, &buffer[0], size);
 	}
-	// ZIP Ô´
+	// ZIP æº
 	else if (!isFullPath && m_pCurrentDirectory->isCompressed && m_pZipReader->Open(fullpath)) {
 		size = m_pZipReader->Size();
 		data = new unsigned char[size];
 		m_pZipReader->Read(data, size);
 		m_pZipReader->Close();
 	}
-	// ±¾µØÔ´
+	// æœ¬åœ°æº
 	else {
 		if (!isFullPath) fullpath = m_pCurrentDirectory->path + filename;
 		ifstream fin(fullpath, std::ios::in | std::ios::ate | std::ios::binary);
@@ -408,7 +408,7 @@ bool CFileManager::ReadFile(const string& filename, CFile* file) {
 		fin.read((char*)data, size);
 		fin.close();
 	}
-	// ¸ù¾İ²»Í¬µÄÎÄ¼şÀàĞÍ½øĞĞ½âÎö
+	// æ ¹æ®ä¸åŒçš„æ–‡ä»¶ç±»å‹è¿›è¡Œè§£æ
 	bool ret = false;
 	switch (file->type) {
 	case BIN: ret = ParseBinFile(file, data, size); break;
@@ -425,20 +425,20 @@ bool CFileManager::ReadFile(const string& filename, CFile* file) {
 }
 
 /**
-* ´Ó»º³åÇø¶ÁÈ¡ÎÄ¼ş
-* @param buffer ¶ÁÈ¡µÄ»º³åÇøÖ¸Õë
-* @param size ¶ÁÈ¡µÄ»º³åÇø´óĞ¡
-* @param file ÎÄ¼ş¶ÔÏóÖ¸Õë
-* @return ¶ÁÈ¡³É¹¦·µ»Ø true
+* ä»ç¼“å†²åŒºè¯»å–æ–‡ä»¶
+* @param buffer è¯»å–çš„ç¼“å†²åŒºæŒ‡é’ˆ
+* @param size è¯»å–çš„ç¼“å†²åŒºå¤§å°
+* @param file æ–‡ä»¶å¯¹è±¡æŒ‡é’ˆ
+* @return è¯»å–æˆåŠŸè¿”å› true
 */
 bool CFileManager::ReadFile(unsigned char* buffer, unsigned int size, CFile* file) {
-	// Çå³ıÎÄ¼şÔ­ÄÚÈİ
+	// æ¸…é™¤æ–‡ä»¶åŸå†…å®¹
 	if (file->contents) {
 		delete[] file->contents;
 		file->contents = 0;
 		file->size = 0;
 	}
-	// ¸ù¾İ²»Í¬µÄÎÄ¼şÀàĞÍ½øĞĞ½âÎö
+	// æ ¹æ®ä¸åŒçš„æ–‡ä»¶ç±»å‹è¿›è¡Œè§£æ
 	bool ret = false;
 	switch (file->type) {
 	case BIN: ret = ParseBinFile(file, buffer, size); break;
@@ -454,20 +454,20 @@ bool CFileManager::ReadFile(unsigned char* buffer, unsigned int size, CFile* fil
 }
 
 /**
-* Ğ´ÈëÎÄ¼ş
-* @param file ÎÄ¼ş¶ÔÏóÖ¸Õë
-* @param filename Ğ´ÈëµÄÎÄ¼şÃû
-* @return Ğ´Èë×Ö½ÚÊı
+* å†™å…¥æ–‡ä»¶
+* @param file æ–‡ä»¶å¯¹è±¡æŒ‡é’ˆ
+* @param filename å†™å…¥çš„æ–‡ä»¶å
+* @return å†™å…¥å­—èŠ‚æ•°
 */
 int CFileManager::WriteFile(CFile* file, const string& filename) {
 	unsigned int size = 0;
 	unsigned char* data = 0;
 
-	// ¼ì²éÎÄ¼şÄÚÈİÊÇ·ñÎª¿Õ
+	// æ£€æŸ¥æ–‡ä»¶å†…å®¹æ˜¯å¦ä¸ºç©º
 	if (!file->contents) {
 		return 0;
 	}
-	// ¸ù¾İ²»Í¬µÄÎÄ¼şÀàĞÍ½øĞĞĞòÁĞ»¯
+	// æ ¹æ®ä¸åŒçš„æ–‡ä»¶ç±»å‹è¿›è¡Œåºåˆ—åŒ–
 	bool ret = false;
 	switch (file->type) {
 	case BIN: ret = SerializeBinFile(file, &data, &size); break;
@@ -480,12 +480,12 @@ int CFileManager::WriteFile(CFile* file, const string& filename) {
 	case MP3: ret = SerializeMp3File(file, &data, &size); break;
 	}
 	if (!ret) return 0;
-	// ¼ÆËãÍêÕûÂ·¾¶
+	// è®¡ç®—å®Œæ•´è·¯å¾„
 	string fullpath = filename;
 	if (!IsFullPath(filename) && !m_pCurrentDirectory->isRemoteUrl) {
 		fullpath = m_pCurrentDirectory->path + filename;
 	}
-	// Ğ´ÈëÎÄ¼şÄÚÈİ
+	// å†™å…¥æ–‡ä»¶å†…å®¹
 	ofstream fout(fullpath, std::ios::out | std::ios::binary | std::ios::trunc);
 	if (fout.is_open()) {
 		fout.write((char*)data, size);
@@ -498,21 +498,21 @@ int CFileManager::WriteFile(CFile* file, const string& filename) {
 }
 
 /**
-* Ğ´ÈëÎÄ¼şµ½»º³åÇø
-* @param file ÎÄ¼ş¶ÔÏóÖ¸Õë
-* @param buffer Ğ´ÈëµÄ»º³åÇøÖ¸Õë
-* @param size Ğ´ÈëµÄ»º³åÇø´óĞ¡
-* @return Ğ´Èë×Ö½ÚÊı
+* å†™å…¥æ–‡ä»¶åˆ°ç¼“å†²åŒº
+* @param file æ–‡ä»¶å¯¹è±¡æŒ‡é’ˆ
+* @param buffer å†™å…¥çš„ç¼“å†²åŒºæŒ‡é’ˆ
+* @param size å†™å…¥çš„ç¼“å†²åŒºå¤§å°
+* @return å†™å…¥å­—èŠ‚æ•°
 */
 int CFileManager::WriteFile(CFile* file, unsigned char* buffer, unsigned int size) {
 	unsigned int length = 0;
 	unsigned char* data = 0;
 
-	// ¼ì²éÎÄ¼şÄÚÈİÊÇ·ñÎª¿Õ
+	// æ£€æŸ¥æ–‡ä»¶å†…å®¹æ˜¯å¦ä¸ºç©º
 	if (!file->contents) {
 		return 0;
 	}
-	// ¸ù¾İ²»Í¬µÄÎÄ¼şÀàĞÍ½øĞĞĞòÁĞ»¯
+	// æ ¹æ®ä¸åŒçš„æ–‡ä»¶ç±»å‹è¿›è¡Œåºåˆ—åŒ–
 	bool ret = false;
 	switch (file->type) {
 	case BIN: ret = SerializeBinFile(file, &data, &length); break;
@@ -526,18 +526,18 @@ int CFileManager::WriteFile(CFile* file, unsigned char* buffer, unsigned int siz
 	}
 	if (!ret) return 0;
 	if (length > size) length = size;
-	// Ğ´ÈëÎÄ¼şÄÚÈİ
+	// å†™å…¥æ–‡ä»¶å†…å®¹
 	memcpy(buffer, data, length);
 	delete[] data;
 	return length;
 }
 
 /**
-* ½âÎö BIN ÎÄ¼ş
-* @param file ÎÄ¼ş¶ÔÏóÖ¸Õë
-* @param data ¶ş½øÖÆÊı¾İ
-* @param size Êı¾İ´óĞ¡
-* @return ³É¹¦Ôò·µ»Ø true
+* è§£æ BIN æ–‡ä»¶
+* @param file æ–‡ä»¶å¯¹è±¡æŒ‡é’ˆ
+* @param data äºŒè¿›åˆ¶æ•°æ®
+* @param size æ•°æ®å¤§å°
+* @return æˆåŠŸåˆ™è¿”å› true
 */
 bool CFileManager::ParseBinFile(CFile* file, unsigned char* data, unsigned int size) {
 	file->size = size;
@@ -547,11 +547,11 @@ bool CFileManager::ParseBinFile(CFile* file, unsigned char* data, unsigned int s
 }
 
 /**
-* ½âÎö TXT ÎÄ¼ş
-* @param file ÎÄ¼ş¶ÔÏóÖ¸Õë
-* @param data ÎÄ±¾Êı¾İ
-* @param size Êı¾İ´óĞ¡
-* @return ³É¹¦Ôò·µ»Ø true
+* è§£æ TXT æ–‡ä»¶
+* @param file æ–‡ä»¶å¯¹è±¡æŒ‡é’ˆ
+* @param data æ–‡æœ¬æ•°æ®
+* @param size æ•°æ®å¤§å°
+* @return æˆåŠŸåˆ™è¿”å› true
 */
 bool CFileManager::ParseTxtFile(CFile* file, unsigned char* data, unsigned int size) {
 	file->size = size + 1;
@@ -562,14 +562,14 @@ bool CFileManager::ParseTxtFile(CFile* file, unsigned char* data, unsigned int s
 }
 
 /**
-* ½âÎö BMP ÎÄ¼ş
-* @param file ÎÄ¼ş¶ÔÏóÖ¸Õë
-* @param data BMP Í¼Æ¬Êı¾İ
-* @param size Êı¾İ´óĞ¡
-* @return ³É¹¦Ôò·µ»Ø true
+* è§£æ BMP æ–‡ä»¶
+* @param file æ–‡ä»¶å¯¹è±¡æŒ‡é’ˆ
+* @param data BMP å›¾ç‰‡æ•°æ®
+* @param size æ•°æ®å¤§å°
+* @return æˆåŠŸåˆ™è¿”å› true
 */
 bool CFileManager::ParseBmpFile(CFile* file, unsigned char* data, unsigned int size) {
-	// ¼ì²éÊı¾İ³¤¶È
+	// æ£€æŸ¥æ•°æ®é•¿åº¦
 	if (size <= 0x36) return false;
 	uint32_t offBits = *(uint32_t*)(data + 0x0A);
 	uint32_t width = *(uint32_t*)(data + 0x12);
@@ -578,10 +578,10 @@ bool CFileManager::ParseBmpFile(CFile* file, unsigned char* data, unsigned int s
 	uint32_t compression = *(uint32_t*)(data + 0x1E);
 	uint32_t clrUsed = *(uint32_t*)(data + 0x2E);
 
-	// ²»Ö§³ÖÑ¹Ëõ¸ñÊ½
+	// ä¸æ”¯æŒå‹ç¼©æ ¼å¼
 	if (compression) return false;
 	CImageFile* pImage = static_cast<CImageFile*>(file);
-	// Ö§³Ö´øµ÷É«°åµÄ256É«Î»Í¼
+	// æ”¯æŒå¸¦è°ƒè‰²æ¿çš„256è‰²ä½å›¾
 	if (bitCount == 8 && clrUsed > 0) pImage->channels = 3;
 	else if (bitCount == 8) pImage->channels = 1;
 	else if (bitCount == 24) pImage->channels = 3;
@@ -598,16 +598,16 @@ bool CFileManager::ParseBmpFile(CFile* file, unsigned char* data, unsigned int s
 	int dataSize = height * (width * byteCount + rowExtra);
 	if (static_cast<int>(size) - position < dataSize) return false;
 
-	// ¶ÁÈ¡Êı¾İ
+	// è¯»å–æ•°æ®
 	pImage->contents = new unsigned char[pImage->size];
 	if (clrUsed == 0) {
 		for (int h = 0; h < pImage->height; h++) {
 			for (int w = 0; w < pImage->width; w++) {
-				// ×¢Òâ BMP ÊÇµ¹ÖÃµÄ
+				// æ³¨æ„ BMP æ˜¯å€’ç½®çš„
 				int srcIndex = pImage->channels * (pImage->width * h + w) + rowExtra * h + position;
 				int dstIndex = pImage->channels * (pImage->width * (pImage->height - h - 1) + w);
 				memcpy(pImage->contents + dstIndex, data + srcIndex, pImage->channels);
-				// BGR ×ª»»Îª RGB
+				// BGR è½¬æ¢ä¸º RGB
 				if (pImage->channels > 2) {
 					unsigned char temp = pImage->contents[dstIndex];
 					pImage->contents[dstIndex] = pImage->contents[dstIndex + 2];
@@ -616,7 +616,7 @@ bool CFileManager::ParseBmpFile(CFile* file, unsigned char* data, unsigned int s
 			}
 		}
 	} else {
-		// µ÷É«°åÊı¾İ
+		// è°ƒè‰²æ¿æ•°æ®
 		for (int h = 0; h < pImage->height; h++) {
 			for (int w = 0; w < pImage->width; w++) {
 				int srcIndex = data[pImage->width * h + w + rowExtra * h + position] * 4 + 0x36;
@@ -631,14 +631,14 @@ bool CFileManager::ParseBmpFile(CFile* file, unsigned char* data, unsigned int s
 }
 
 /**
-* ½âÎö TGA ÎÄ¼ş
-* @param file ÎÄ¼ş¶ÔÏóÖ¸Õë
-* @param data TGA Í¼Æ¬Êı¾İ
-* @param size Êı¾İ´óĞ¡
-* @return ³É¹¦Ôò·µ»Ø true
+* è§£æ TGA æ–‡ä»¶
+* @param file æ–‡ä»¶å¯¹è±¡æŒ‡é’ˆ
+* @param data TGA å›¾ç‰‡æ•°æ®
+* @param size æ•°æ®å¤§å°
+* @return æˆåŠŸåˆ™è¿”å› true
 */
 bool CFileManager::ParseTgaFile(CFile* file, unsigned char* data, unsigned int size) {
-	// Ö§³ÖµÄ TGA ÎÄ¼şÍ·
+	// æ”¯æŒçš„ TGA æ–‡ä»¶å¤´
 	const unsigned char tag_header[10] = { 0, 0, 2, 0, 0, 0, 0, 0, 0, 0 };
 	const unsigned char tag_header_rle[10] = { 0, 0, 10, 0, 0, 0, 0, 0, 0, 0 };
 	if (size < 18) return false;
@@ -653,17 +653,17 @@ bool CFileManager::ParseTgaFile(CFile* file, unsigned char* data, unsigned int s
 	pImage->height = header[3] * 256 + header[2];
 	if (header[2] == data[10] && header[3] == data[11]) upsidedown = !upsidedown;
 
-	// Ö»Ö§³Ö 24 Î» 32 Î»Í¼
+	// åªæ”¯æŒ 24 ä½ 32 ä½å›¾
 	if (header[4] == 24) pImage->channels = 3;
 	else if (header[4] == 32) pImage->channels = 4;
 	else return false;
 
-	// ¸´ÖÆÏñËØÊı¾İ
+	// å¤åˆ¶åƒç´ æ•°æ®
 	pImage->size = pImage->width * pImage->height * pImage->channels;
 	if (!compressed && size - 18 < pImage->size) return false;
 	pImage->contents = new unsigned char[pImage->size];
 
-	// RLE Ñ¹ËõÊı¾İ
+	// RLE å‹ç¼©æ•°æ®
 	if (compressed) {
 		unsigned int srcIndex = 0;
 		unsigned int dstIndex = 0;
@@ -689,7 +689,7 @@ bool CFileManager::ParseTgaFile(CFile* file, unsigned char* data, unsigned int s
 	} else {
 		memcpy(pImage->contents, content, pImage->size);
 	}
-	// BGR->RGB ÑÕÉ«×ª»»
+	// BGR->RGB é¢œè‰²è½¬æ¢
 	for (int h = 0; h < pImage->height; h++) {
 		for (int w = 0; w < pImage->width; w++) {
 			int dstIndex = pImage->channels * (pImage->width * h + w);
@@ -698,7 +698,7 @@ bool CFileManager::ParseTgaFile(CFile* file, unsigned char* data, unsigned int s
 			pImage->contents[dstIndex + 2] = temp;
 		}
 	}
-	// Ô­µãÊÇ·ñÔÚ×óÏÂ½Ç
+	// åŸç‚¹æ˜¯å¦åœ¨å·¦ä¸‹è§’
 	if (upsidedown) {
 		const int halfHeight = pImage->height >> 1;
 		const int lineSize = pImage->width * pImage->channels;
@@ -716,7 +716,7 @@ bool CFileManager::ParseTgaFile(CFile* file, unsigned char* data, unsigned int s
 }
 
 /**
-* PNG Á÷¶ÁÈ¡»Øµ÷º¯Êı
+* PNG æµè¯»å–å›è°ƒå‡½æ•°
 */
 void pngStreamRead(png_structp png_ptr, png_bytep outBytes, png_size_t byteCountToRead) {
 	struct SParam {
@@ -737,11 +737,11 @@ void pngStreamRead(png_structp png_ptr, png_bytep outBytes, png_size_t byteCount
 }
 
 /**
-* ½âÎö PNG ÎÄ¼ş
-* @param file ÎÄ¼ş¶ÔÏóÖ¸Õë
-* @param data PNG Í¼Æ¬Êı¾İ
-* @param size Êı¾İ´óĞ¡
-* @return ³É¹¦Ôò·µ»Ø true
+* è§£æ PNG æ–‡ä»¶
+* @param file æ–‡ä»¶å¯¹è±¡æŒ‡é’ˆ
+* @param data PNG å›¾ç‰‡æ•°æ®
+* @param size æ•°æ®å¤§å°
+* @return æˆåŠŸåˆ™è¿”å› true
 */
 bool CFileManager::ParsePngFile(CFile* file, unsigned char* data, unsigned int size) {
 	png_uint_32 i, width, height, rowbytes;
@@ -813,11 +813,11 @@ bool CFileManager::ParsePngFile(CFile* file, unsigned char* data, unsigned int s
 }
 
 /**
-* ½âÎö JPG ÎÄ¼ş
-* @param file ÎÄ¼ş¶ÔÏóÖ¸Õë
-* @param data JPG Í¼Æ¬Êı¾İ
-* @param size Êı¾İ´óĞ¡
-* @return ³É¹¦Ôò·µ»Ø true
+* è§£æ JPG æ–‡ä»¶
+* @param file æ–‡ä»¶å¯¹è±¡æŒ‡é’ˆ
+* @param data JPG å›¾ç‰‡æ•°æ®
+* @param size æ•°æ®å¤§å°
+* @return æˆåŠŸåˆ™è¿”å› true
 */
 bool CFileManager::ParseJpgFile(CFile* file, unsigned char* data, unsigned int size) {
 	struct jpeg_decompress_struct info;
@@ -849,14 +849,14 @@ bool CFileManager::ParseJpgFile(CFile* file, unsigned char* data, unsigned int s
 }
 
 /**
-* ½âÎö WAV ÎÄ¼ş
-* @param file ÎÄ¼ş¶ÔÏóÖ¸Õë
-* @param data WAV ÒôÆµÊı¾İ
-* @param size Êı¾İ´óĞ¡
-* @return ³É¹¦Ôò·µ»Ø true
+* è§£æ WAV æ–‡ä»¶
+* @param file æ–‡ä»¶å¯¹è±¡æŒ‡é’ˆ
+* @param data WAV éŸ³é¢‘æ•°æ®
+* @param size æ•°æ®å¤§å°
+* @return æˆåŠŸåˆ™è¿”å› true
 */
 bool CFileManager::ParseWavFile(CFile* file, unsigned char* data, unsigned int size) {
-	// ²¨ĞÎ¸ñÊ½ÎÄ¼şÍ·
+	// æ³¢å½¢æ ¼å¼æ–‡ä»¶å¤´
 	struct FmtHeader {
 		int8_t fmtId[4];
 		uint32_t fmtSize;
@@ -868,7 +868,7 @@ bool CFileManager::ParseWavFile(CFile* file, unsigned char* data, unsigned int s
 		uint16_t bitsPerSample;
 	} fmtHeader;
 
-	// ¼ì²éÊı¾İ³¤¶È
+	// æ£€æŸ¥æ•°æ®é•¿åº¦
 	if (size <= 0x24) return false;
 
 	fmtHeader.fmtId[0] = *(int8_t*)(data + 0x0C);
@@ -883,11 +883,11 @@ bool CFileManager::ParseWavFile(CFile* file, unsigned char* data, unsigned int s
 	fmtHeader.blockAlign = *(uint16_t*)(data + 0x20);
 	fmtHeader.bitsPerSample = *(uint16_t*)(data + 0x22);
 
-	// ÊÇ·ñÎªÓĞĞ§ WAV ÎÄ¼ş
+	// æ˜¯å¦ä¸ºæœ‰æ•ˆ WAV æ–‡ä»¶
 	if (fmtHeader.fmtId[0] != 'f' || fmtHeader.fmtId[1] != 'm' || fmtHeader.fmtId[2] != 't') {
 		return false;
 	}
-	// ½öÖ§³ÖÏßĞÔ PCM ±àÂë
+	// ä»…æ”¯æŒçº¿æ€§ PCM ç¼–ç 
 	if (fmtHeader.wavFormat != 1) {
 		return false;
 	}
@@ -906,19 +906,19 @@ bool CFileManager::ParseWavFile(CFile* file, unsigned char* data, unsigned int s
 }
 
 /**
-* ½âÎö MP3 ÎÄ¼ş
-* @param file ÎÄ¼ş¶ÔÏóÖ¸Õë
-* @param data MP3 ÒôÆµÊı¾İ
-* @param size Êı¾İ´óĞ¡
-* @return ³É¹¦Ôò·µ»Ø true
+* è§£æ MP3 æ–‡ä»¶
+* @param file æ–‡ä»¶å¯¹è±¡æŒ‡é’ˆ
+* @param data MP3 éŸ³é¢‘æ•°æ®
+* @param size æ•°æ®å¤§å°
+* @return æˆåŠŸåˆ™è¿”å› true
 */
 bool CFileManager::ParseMp3File(CFile* file, unsigned char* data, unsigned int size) {
-	// ³õÊ¼»¯ minimp3 ¿â
+	// åˆå§‹åŒ– minimp3 åº“
 	mp3dec_t mp3d;
 	mp3dec_file_info_t info;
 	mp3dec_init(&mp3d);
 	mp3dec_load_buf(&mp3d, data, size, &info, 0, 0);
-	// ±£´æÒôÆµÊı¾İ
+	// ä¿å­˜éŸ³é¢‘æ•°æ®
 	CAudioFile* pAudio = static_cast<CAudioFile*>(file);
 	pAudio->channels = info.channels;
 	pAudio->sampleRate = info.hz;
@@ -931,11 +931,11 @@ bool CFileManager::ParseMp3File(CFile* file, unsigned char* data, unsigned int s
 }
 
 /**
-* ĞòÁĞ»¯Îª BIN ¸ñÊ½
-* @param file ÎÄ¼ş¶ÔÏóÖ¸Õë
-* @param data Êä³öĞòÁĞ»¯Êı¾İ
-* @param size Êä³öÊı¾İ´óĞ¡
-* @return ³É¹¦Ôò·µ»Ø true
+* åºåˆ—åŒ–ä¸º BIN æ ¼å¼
+* @param file æ–‡ä»¶å¯¹è±¡æŒ‡é’ˆ
+* @param data è¾“å‡ºåºåˆ—åŒ–æ•°æ®
+* @param size è¾“å‡ºæ•°æ®å¤§å°
+* @return æˆåŠŸåˆ™è¿”å› true
 */
 bool CFileManager::SerializeBinFile(CFile* file, unsigned char** data, unsigned int* size){
 	*size = file->size;
@@ -945,11 +945,11 @@ bool CFileManager::SerializeBinFile(CFile* file, unsigned char** data, unsigned 
 }
 
 /**
-* ĞòÁĞ»¯Îª TXT ¸ñÊ½
-* @param file ÎÄ¼ş¶ÔÏóÖ¸Õë
-* @param data Êä³öĞòÁĞ»¯Êı¾İ
-* @param size Êä³öÊı¾İ´óĞ¡
-* @return ³É¹¦Ôò·µ»Ø true
+* åºåˆ—åŒ–ä¸º TXT æ ¼å¼
+* @param file æ–‡ä»¶å¯¹è±¡æŒ‡é’ˆ
+* @param data è¾“å‡ºåºåˆ—åŒ–æ•°æ®
+* @param size è¾“å‡ºæ•°æ®å¤§å°
+* @return æˆåŠŸåˆ™è¿”å› true
 */
 bool CFileManager::SerializeTxtFile(CFile* file, unsigned char** data, unsigned int* size) {
 	unsigned int txtLength = file->size;
@@ -961,11 +961,11 @@ bool CFileManager::SerializeTxtFile(CFile* file, unsigned char** data, unsigned 
 }
 
 /**
-* ĞòÁĞ»¯ Pixel Êı¾İÎª BMP ¸ñÊ½
-* @param file ÎÄ¼ş¶ÔÏóÖ¸Õë
-* @param data Êä³öĞòÁĞ»¯Êı¾İ
-* @param size Êä³öÊı¾İ´óĞ¡
-* @return ³É¹¦Ôò·µ»Ø true
+* åºåˆ—åŒ– Pixel æ•°æ®ä¸º BMP æ ¼å¼
+* @param file æ–‡ä»¶å¯¹è±¡æŒ‡é’ˆ
+* @param data è¾“å‡ºåºåˆ—åŒ–æ•°æ®
+* @param size è¾“å‡ºæ•°æ®å¤§å°
+* @return æˆåŠŸåˆ™è¿”å› true
 */
 bool CFileManager::SerializeBmpFile(CFile* file, unsigned char** data, unsigned int* size) {
 	CImageFile* pImage = static_cast<CImageFile*>(file);
@@ -995,13 +995,13 @@ bool CFileManager::SerializeBmpFile(CFile* file, unsigned char** data, unsigned 
 	pData[35] = (unsigned char)((pImage->size >> 8) & 0xFF);
 	pData[36] = (unsigned char)((pImage->size >> 16) & 0xFF);
 	pData[37] = (unsigned char)((pImage->size >> 24) & 0xFF);
-	// ¸´ÖÆ BMP Êı¾İ
+	// å¤åˆ¶ BMP æ•°æ®
 	for (int h = 0; h < pImage->height; h++) {
 		for (int w = 0; w < pImage->width; w++) {
 			int srcIndex = pImage->channels * (pImage->width * (pImage->height - h - 1) + w);
 			int dstIndex = pImage->channels * (pImage->width * h + w) + rowExtra * h + 54;
 			memcpy(pData + dstIndex, pImage->contents + srcIndex, pImage->channels);
-			// RGB ×ª»»Îª BGR
+			// RGB è½¬æ¢ä¸º BGR
 			if (pImage->channels > 2) {
 				unsigned char temp = pData[dstIndex];
 				pData[dstIndex] = pData[dstIndex + 2];
@@ -1015,16 +1015,16 @@ bool CFileManager::SerializeBmpFile(CFile* file, unsigned char** data, unsigned 
 }
 
 /**
-* ĞòÁĞ»¯ Pixel Êı¾İÎª TGA ¸ñÊ½
-* @param file ÎÄ¼ş¶ÔÏóÖ¸Õë
-* @param data Êä³öĞòÁĞ»¯Êı¾İ
-* @param size Êä³öÊı¾İ´óĞ¡
-* @return ³É¹¦Ôò·µ»Ø true
+* åºåˆ—åŒ– Pixel æ•°æ®ä¸º TGA æ ¼å¼
+* @param file æ–‡ä»¶å¯¹è±¡æŒ‡é’ˆ
+* @param data è¾“å‡ºåºåˆ—åŒ–æ•°æ®
+* @param size è¾“å‡ºæ•°æ®å¤§å°
+* @return æˆåŠŸåˆ™è¿”å› true
 */
 bool CFileManager::SerializeTgaFile(CFile* file, unsigned char** data, unsigned int* size) {
 	CImageFile* pImage = static_cast<CImageFile*>(file);
 	unsigned char* pData = new unsigned char[pImage->size + 18];
-	// ÎÄ¼şÍ·
+	// æ–‡ä»¶å¤´
 	const unsigned char TGAheader[12] = {0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 	memcpy(pData, TGAheader, 12);
 	pData[12] = (unsigned char)(pImage->width & 0xFF);
@@ -1033,13 +1033,13 @@ bool CFileManager::SerializeTgaFile(CFile* file, unsigned char** data, unsigned 
 	pData[15] = (unsigned char)((pImage->height >> 8) & 0xFF);
 	pData[16] = (unsigned char)(pImage->channels * 8);
 	pData[17] = 0x20;
-	// ¸´ÖÆÏñËØÊı¾İ
+	// å¤åˆ¶åƒç´ æ•°æ®
 	int srcIndex = 0;
 	int dstIndex = 18;
 	for (int h = 0; h < pImage->height; h++) {
 		for (int w = 0; w < pImage->width; w++) {
 			memcpy(pData + dstIndex, pImage->contents + srcIndex, pImage->channels);
-			// RGB ×ª»»Îª BGR
+			// RGB è½¬æ¢ä¸º BGR
 			if (pImage->channels > 2) {
 				unsigned char temp = pData[dstIndex];
 				pData[dstIndex] = pData[dstIndex + 2];
@@ -1055,7 +1055,7 @@ bool CFileManager::SerializeTgaFile(CFile* file, unsigned char** data, unsigned 
 }
 
 /**
-* PNG Á÷Ğ´Èë»Øµ÷º¯Êı
+* PNG æµå†™å…¥å›è°ƒå‡½æ•°
 */
 void pngStreamWrite(png_structp png_ptr, png_bytep data, png_size_t length) {
 	vector<unsigned char>& vec = *(vector<unsigned char>*)png_get_io_ptr(png_ptr);
@@ -1064,17 +1064,17 @@ void pngStreamWrite(png_structp png_ptr, png_bytep data, png_size_t length) {
 }
 
 /**
-* PNG Á÷Ğ´Èë»Øµ÷º¯Êı
+* PNG æµå†™å…¥å›è°ƒå‡½æ•°
 */
 void pngStreamFlush(png_structp png_ptr){
 }
 
 /**
-* Ê¹ÓÃ libpng ½« Pixel Êı¾İĞòÁĞ»¯Îª PNG ¸ñÊ½
-* @param file ÎÄ¼ş¶ÔÏóÖ¸Õë
-* @param data Êä³öĞòÁĞ»¯Êı¾İ
-* @param size Êä³öÊı¾İ´óĞ¡
-* @return ³É¹¦Ôò·µ»Ø true
+* ä½¿ç”¨ libpng å°† Pixel æ•°æ®åºåˆ—åŒ–ä¸º PNG æ ¼å¼
+* @param file æ–‡ä»¶å¯¹è±¡æŒ‡é’ˆ
+* @param data è¾“å‡ºåºåˆ—åŒ–æ•°æ®
+* @param size è¾“å‡ºæ•°æ®å¤§å°
+* @return æˆåŠŸåˆ™è¿”å› true
 */
 bool CFileManager::SerializePngFile(CFile* file, unsigned char** data, unsigned int* size) {
 	vector<unsigned char> vecData;
@@ -1119,11 +1119,11 @@ bool CFileManager::SerializePngFile(CFile* file, unsigned char** data, unsigned 
 }
 
 /**
-* Ê¹ÓÃ libjpeg ½« Pixel Êı¾İĞòÁĞ»¯Îª JPG ¸ñÊ½
-* @param file ÎÄ¼ş¶ÔÏóÖ¸Õë
-* @param data Êä³öĞòÁĞ»¯Êı¾İ
-* @param size Êä³öÊı¾İ´óĞ¡
-* @return ³É¹¦Ôò·µ»Ø true
+* ä½¿ç”¨ libjpeg å°† Pixel æ•°æ®åºåˆ—åŒ–ä¸º JPG æ ¼å¼
+* @param file æ–‡ä»¶å¯¹è±¡æŒ‡é’ˆ
+* @param data è¾“å‡ºåºåˆ—åŒ–æ•°æ®
+* @param size è¾“å‡ºæ•°æ®å¤§å°
+* @return æˆåŠŸåˆ™è¿”å› true
 */
 bool CFileManager::SerializeJpgFile(CFile* file, unsigned char** data, unsigned int* size) {
 	struct jpeg_compress_struct info;
@@ -1132,7 +1132,7 @@ bool CFileManager::SerializeJpgFile(CFile* file, unsigned char** data, unsigned 
 	info.err = jpeg_std_error(&err);
 	jpeg_create_compress(&info);
 	unsigned long dataSize = 0;
-	// ´Ë´¦×Ô¶¯·ÖÅäÁËÄÚ´æ
+	// æ­¤å¤„è‡ªåŠ¨åˆ†é…äº†å†…å­˜
 	jpeg_mem_dest(&info, data, &dataSize);
 
 	CImageFile* pImage = static_cast<CImageFile*>(file);
@@ -1148,7 +1148,7 @@ bool CFileManager::SerializeJpgFile(CFile* file, unsigned char** data, unsigned 
 	}
 
 	jpeg_set_defaults(&info);
-	// Ñ¹ËõÖÊÁ¿ 0 ÖÁ 100
+	// å‹ç¼©è´¨é‡ 0 è‡³ 100
 	jpeg_set_quality(&info, 80, TRUE);
 	jpeg_start_compress(&info, TRUE);
 
@@ -1164,17 +1164,17 @@ bool CFileManager::SerializeJpgFile(CFile* file, unsigned char** data, unsigned 
 }
 
 /**
-* ½« PCM ÒôÆµĞòÁĞ»¯Îª WAV ¸ñÊ½
-* @param file ÎÄ¼ş¶ÔÏóÖ¸Õë
-* @param data Êä³öĞòÁĞ»¯Êı¾İ
-* @param size Êä³öÊı¾İ´óĞ¡
-* @return ³É¹¦Ôò·µ»Ø true
+* å°† PCM éŸ³é¢‘åºåˆ—åŒ–ä¸º WAV æ ¼å¼
+* @param file æ–‡ä»¶å¯¹è±¡æŒ‡é’ˆ
+* @param data è¾“å‡ºåºåˆ—åŒ–æ•°æ®
+* @param size è¾“å‡ºæ•°æ®å¤§å°
+* @return æˆåŠŸåˆ™è¿”å› true
 */
 bool CFileManager::SerializeWavFile(CFile* file, unsigned char** data, unsigned int* size) {
 	unsigned int fileSize = file->size + 0x2C;
 	unsigned char* pData = new unsigned char[fileSize];
 	CAudioFile* pAudio = static_cast<CAudioFile*>(file);
-	// WAV ÎÄ¼şÍ·
+	// WAV æ–‡ä»¶å¤´
 	memcpy(pData, "RIFF", 4);
 	pData[4] = (unsigned char)((fileSize - 8) & 0xFF);
 	pData[5] = (unsigned char)(((fileSize - 8) >> 8) & 0xFF);
@@ -1207,7 +1207,7 @@ bool CFileManager::SerializeWavFile(CFile* file, unsigned char** data, unsigned 
 	pData[0x29] = (unsigned char)((file->size >> 8) & 0xFF);
 	pData[0x2A] = (unsigned char)((file->size >> 16) & 0xFF);
 	pData[0x2B] = (unsigned char)((file->size >> 24) & 0xFF);
-	// WAV ÎÄ¼şÊı¾İ
+	// WAV æ–‡ä»¶æ•°æ®
 	memcpy(pData+ 0x2C, file->contents, file->size);
 	*size = fileSize;
 	*data = pData;
@@ -1215,11 +1215,11 @@ bool CFileManager::SerializeWavFile(CFile* file, unsigned char** data, unsigned 
 }
 
 /**
-* ½« PCM ÒôÆµĞòÁĞ»¯Îª MP3 ¸ñÊ½
-* @param file ÎÄ¼ş¶ÔÏóÖ¸Õë
-* @param data Êä³öĞòÁĞ»¯Êı¾İ
-* @param size Êä³öÊı¾İ´óĞ¡
-* @return ³É¹¦Ôò·µ»Ø true
+* å°† PCM éŸ³é¢‘åºåˆ—åŒ–ä¸º MP3 æ ¼å¼
+* @param file æ–‡ä»¶å¯¹è±¡æŒ‡é’ˆ
+* @param data è¾“å‡ºåºåˆ—åŒ–æ•°æ®
+* @param size è¾“å‡ºæ•°æ®å¤§å°
+* @return æˆåŠŸåˆ™è¿”å› true
 */
 bool CFileManager::SerializeMp3File(CFile* file, unsigned char** data, unsigned int* size) {
 	CLog::Warn("Can't serialize MP3 file, SerializeMp3File is not implenment");

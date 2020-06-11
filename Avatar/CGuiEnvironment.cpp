@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CGuiEnvironment.h"
@@ -16,7 +16,7 @@
 #include <cstdlib>
 
 /**
-* GUIÊÂ¼ş¶¨Òå
+* GUIäº‹ä»¶å®šä¹‰
 */
 const int EVENT_MOUSE_CLICK = 0;
 const int EVENT_MOUSE_DOWN = 1;
@@ -25,19 +25,21 @@ const int EVENT_MOUSE_DRAG = 3;
 const int EVENT_KEY_PRESS = 4;
 
 /**
-* ¹¹Ôìº¯Êı
+* æ„é€ å‡½æ•°
 */
 CGuiEnvironment::CGuiEnvironment() {
 	m_bEnabled = true;
 	m_fScaleFactor = 1.0f;
-	m_cDrawRegion.SetValue(0, 0, 1, 1);
+	m_iScreenSize[0] = 1;
+	m_iScreenSize[1] = 1;
+	m_cDrawRegion.Resize(1, 1);
 	m_iLastMouseButton = 0;
 	m_iLastMouseDownPos[0] = -1;
 	m_iLastMouseDownPos[1] = -1;
 	m_pFocusElement = 0;
 	m_pDragElement = 0;
 	m_pGuiBuffer = new unsigned char[4];
-	// ´´½¨×ÅÉ«Æ÷
+	// åˆ›å»ºç€è‰²å™¨
 	const char* vertShader = "\
 		in vec4 aPosition;\
 		in vec2 aTexCoord;\
@@ -57,10 +59,10 @@ CGuiEnvironment::CGuiEnvironment() {
 		}";
 	CShader* pShader = CEngine::GetShaderManager()->Create("gui", vertShader, fragShader);
 	pShader->SetUniform("uTexture", 0);
-	// ´´½¨ÎÆÀí
+	// åˆ›å»ºçº¹ç†
 	CTexture* pTexture = CEngine::GetTextureManager()->Create("gui", 1, 1, 4, m_pGuiBuffer, false);
 	pTexture->SetWrapModeClampToEdge(true, true);
-	// ´´½¨Íø¸ñ¶ÔÏó
+	// åˆ›å»ºç½‘æ ¼å¯¹è±¡
 	m_pRenderMesh = new CMesh();
 	m_pRenderMesh->SetVertexUsage(4);
 	m_pRenderMesh->AddVertex(CVertex(-1.0f, 1.0f, 0.0f, 0.0f, 0.0f));
@@ -78,19 +80,19 @@ CGuiEnvironment::CGuiEnvironment() {
 }
 
 /**
-* Îö¹¹º¯Êı
+* ææ„å‡½æ•°
 */
 CGuiEnvironment::~CGuiEnvironment() {
 	m_pInstance = 0;
 }
 
 /**
-* µ¥ÀıÊµÀı
+* å•ä¾‹å®ä¾‹
 */
 CGuiEnvironment* CGuiEnvironment::m_pInstance = 0;
 
 /**
-* Ïú»Ù GUI »·¾³
+* é”€æ¯ GUI ç¯å¢ƒ
 */
 void CGuiEnvironment::Destroy() {
 	list<CGuiElement*>::iterator iter = m_lstElements.begin();
@@ -105,12 +107,20 @@ void CGuiEnvironment::Destroy() {
 }
 
 /**
-* äÖÈ¾ GUI ½çÃæ
+* æ¸²æŸ“ GUI ç•Œé¢
 */
-void CGuiEnvironment::Render() {
+void CGuiEnvironment::Render(int width, int height) {
 	if (!m_bEnabled || m_lstElements.empty()) return;
 	if (m_pFocusElement && m_pFocusElement->Redraw()) {
 		m_vecInvalidateRect.push_back(m_pFocusElement->m_cRegionScreen);
+	}
+	if (m_iScreenSize[0] != width || m_iScreenSize[1] != height) {
+		m_iScreenSize[0] = width;
+		m_iScreenSize[1] = height;
+		m_cDrawRegion.Resize(m_iScreenSize[0], m_iScreenSize[1]);
+		m_cDrawRegion.Scale(m_fScaleFactor, false);
+		m_vecInvalidateRect.clear();
+		m_vecInvalidateRect.push_back(m_cDrawRegion);
 	}
 	if (!m_vecInvalidateRect.empty()) {
 		DrawInvalidateRegion();
@@ -119,14 +129,14 @@ void CGuiEnvironment::Render() {
 }
 
 /**
-* Êó±êÊÂ¼ş£¬Èô´¦ÀíÊÂ¼ş·µ»Øtrue
+* é¼ æ ‡äº‹ä»¶ï¼Œè‹¥å¤„ç†äº‹ä»¶è¿”å›true
 */
 bool CGuiEnvironment::MouseEvent(int x, int y, int button, int delta) {
 	if (!m_bEnabled) return false;
 	x = static_cast<int>(x * m_fScaleFactor);
 	y = static_cast<int>(y * m_fScaleFactor);
 	CGuiElement* pElement = GetElement(0, x, y);
-	// Êó±êÔÚ GUI ×é¼şÉÏÃæ»òÕßÓĞÕıÔÚÍÏ×§µÄÔªËØ
+	// é¼ æ ‡åœ¨ GUI ç»„ä»¶ä¸Šé¢æˆ–è€…æœ‰æ­£åœ¨æ‹–æ‹½çš„å…ƒç´ 
 	bool handleEvent = pElement || m_pDragElement;
 	if (handleEvent) {
 		if (m_iLastMouseButton == 0 && button == 1) {
@@ -167,7 +177,7 @@ bool CGuiEnvironment::MouseEvent(int x, int y, int button, int delta) {
 }
 
 /**
-* ¼üÅÌÊÂ¼ş£¬Èô´¦ÀíÊÂ¼ş·µ»Øtrue
+* é”®ç›˜äº‹ä»¶ï¼Œè‹¥å¤„ç†äº‹ä»¶è¿”å›true
 */
 bool CGuiEnvironment::KeyboardEvent(int key) {
 	if (m_bEnabled && m_pFocusElement) {
@@ -181,24 +191,14 @@ bool CGuiEnvironment::KeyboardEvent(int key) {
 }
 
 /**
-* ¸üĞÂÆÁÄ»´óĞ¡
-*/
-void CGuiEnvironment::UpdateSize(int width, int height) {
-	m_cDrawRegion.SetValue(0, 0, width, height);
-	m_cDrawRegion.Scale(m_fScaleFactor, false);
-	m_vecInvalidateRect.clear();
-	m_vecInvalidateRect.push_back(m_cDrawRegion);
-}
-
-/**
-* Ê¹ÄÜ»ò½ûÓÃ GUI
+* ä½¿èƒ½æˆ–ç¦ç”¨ GUI
 */
 void CGuiEnvironment::SetEnable(bool enable) {
 	m_bEnabled = enable;
 }
 
 /**
-* »ñÈ¡ GUI »­²¼´óĞ¡
+* è·å– GUI ç”»å¸ƒå¤§å°
 */
 void CGuiEnvironment::GetSize(int* width, int* height) {
 	*width = m_cDrawRegion.GetWidth();
@@ -206,29 +206,30 @@ void CGuiEnvironment::GetSize(int* width, int* height) {
 }
 
 /**
-* ÉèÖÃ GUI ·Ö±æÂÊ
+* è®¾ç½® GUI åˆ†è¾¨ç‡
 */
 void CGuiEnvironment::SetScale(float scale) {
 	m_fScaleFactor = 1.0f / scale;
+	m_cDrawRegion.Resize(m_iScreenSize[0], m_iScreenSize[1]);
 	m_cDrawRegion.Scale(m_fScaleFactor, false);
 	m_vecInvalidateRect.clear();
 	m_vecInvalidateRect.push_back(m_cDrawRegion);
 }
 
 /**
-* ´´½¨ GUI ÔªËØ
+* åˆ›å»º GUI å…ƒç´ 
 */
 bool CGuiEnvironment::GuiCreate(const string& name, const string& type, const string& desc) {
-	// ·ÀÖ¹Ìí¼ÓÖØÃûµÄÔªËØ
+	// é˜²æ­¢æ·»åŠ é‡åçš„å…ƒç´ 
 	CGuiElement* pElement = GetElement(name);
 	if (pElement) return false;
-	// ¸ù¾İÀàĞÍÌí¼Ó
+	// æ ¹æ®ç±»å‹æ·»åŠ 
 	if (type == "button") pElement = new CGuiButton(name);
 	else if (type == "label") pElement = new CGuiLabel(name);
 	else if (type == "trackbar") pElement = new CGuiTrackBar(name);
 	else if (type == "editbox") pElement = new CGuiEditBox(name);
 	else if (type == "panel") pElement = new CGuiPanel(name);
-	// ½âÎöÊôĞÔÁĞ±í
+	// è§£æå±æ€§åˆ—è¡¨
 	if (pElement) {
 		vector<string> attribs;
 		vector<string> keyvalue;
@@ -252,7 +253,7 @@ bool CGuiEnvironment::GuiCreate(const string& name, const string& type, const st
 }
 
 /**
-* ĞŞ¸Ä GUI ÔªËØ
+* ä¿®æ”¹ GUI å…ƒç´ 
 */
 bool CGuiEnvironment::GuiModify(const string& name, const string& desc) {
 	CGuiElement* pElement = GetElement(name);
@@ -284,7 +285,7 @@ bool CGuiEnvironment::GuiModify(const string& name, const string& desc) {
 }
 
 /**
-* É¾³ı GUI ÔªËØ
+* åˆ é™¤ GUI å…ƒç´ 
 */
 bool CGuiEnvironment::GuiDelete(const string& name) {
 	list<CGuiElement*>::iterator iter = m_lstElements.begin();
@@ -302,7 +303,7 @@ bool CGuiEnvironment::GuiDelete(const string& name) {
 }
 
 /**
-* »ñÈ¡Ö¸¶¨Ãû³ÆµÄGUIÔªËØ
+* è·å–æŒ‡å®šåç§°çš„GUIå…ƒç´ 
 */
 CGuiEnvironment::CGuiElement* CGuiEnvironment::GetElement(const string& name) {
 	list<CGuiElement*>::iterator iter = m_lstElements.begin();
@@ -314,8 +315,8 @@ CGuiEnvironment::CGuiElement* CGuiEnvironment::GetElement(const string& name) {
 }
 
 /**
-* ¸ù¾İÆÁÄ»×ø±ê»ñÈ¡GUIÔªËØ
-* @note Ö»»ñÈ¡¿É¼ûµÄ GUI ÔªËØ
+* æ ¹æ®å±å¹•åæ ‡è·å–GUIå…ƒç´ 
+* @note åªè·å–å¯è§çš„ GUI å…ƒç´ 
 */
 CGuiEnvironment::CGuiElement* CGuiEnvironment::GetElement(CGuiElement* parent, int x, int y) {
 	list<CGuiElement*>::iterator iter = parent ? parent->m_lstChildren.end() : m_lstElements.end();
@@ -332,7 +333,7 @@ CGuiEnvironment::CGuiElement* CGuiEnvironment::GetElement(CGuiElement* parent, i
 }
 
 /**
-* É¾³ıÖ¸¶¨µÄÔªËØºÍÆä×ÓÔªËØ
+* åˆ é™¤æŒ‡å®šçš„å…ƒç´ å’Œå…¶å­å…ƒç´ 
 */
 void CGuiEnvironment::DeleteElement(CGuiElement* element) {
 	list<CGuiElement*>::iterator iter = m_lstElements.begin();
@@ -350,10 +351,10 @@ void CGuiEnvironment::DeleteElement(CGuiElement* element) {
 }
 
 /**
-* Ê¹Ö¸¶¨¾ØĞÎ»æÍ¼ÇøÎŞĞ§£¬µ¼ÖÂÖØ»æ
+* ä½¿æŒ‡å®šçŸ©å½¢ç»˜å›¾åŒºæ— æ•ˆï¼Œå¯¼è‡´é‡ç»˜
 */
 void CGuiEnvironment::InvalidateRegion(const CRectangle& rect) {
-	// ¼ÆËã°üº¬ÔÚÆÁÄ»·¶Î§ÄÚµÄÇøÓò
+	// è®¡ç®—åŒ…å«åœ¨å±å¹•èŒƒå›´å†…çš„åŒºåŸŸ
 	CRectangle r = rect.Intersect(m_cDrawRegion);
 	for (size_t i = 0; i < m_vecInvalidateRect.size(); i++) {
 		if (m_vecInvalidateRect[i].IsContain(r)) return;
@@ -362,15 +363,15 @@ void CGuiEnvironment::InvalidateRegion(const CRectangle& rect) {
 }
 
 /**
-* »æÖÆÖ¸¶¨µÄÎŞĞ§ÇøÓò
+* ç»˜åˆ¶æŒ‡å®šçš„æ— æ•ˆåŒºåŸŸ
 */
 void CGuiEnvironment::DrawInvalidateRegion() {
 	CTextureManager* pTextureMgr = CEngine::GetTextureManager();
 	CTexture* pTexture = m_pRenderMesh->GetMaterial()->GetTexture();
-	// ¼ÆËãÊÇ·ñĞèÒª¸ü¸Ä»æÍ¼ÇøÓò´óĞ¡
+	// è®¡ç®—æ˜¯å¦éœ€è¦æ›´æ”¹ç»˜å›¾åŒºåŸŸå¤§å°
 	if (m_cDrawRegion.GetWidth() != pTexture->GetWidth() ||
 		m_cDrawRegion.GetHeight() != pTexture->GetHeight()) {
-		// Çå¿ÕÈ«²¿ÇøÓò
+		// æ¸…ç©ºå…¨éƒ¨åŒºåŸŸ
 		int bufferSize = m_cDrawRegion.GetArea() * 4;
 		delete[] m_pGuiBuffer;
 		m_pGuiBuffer = new unsigned char[bufferSize];
@@ -378,7 +379,7 @@ void CGuiEnvironment::DrawInvalidateRegion() {
 		pTextureMgr->Resize(pTexture, m_cDrawRegion.GetWidth(), m_cDrawRegion.GetHeight());
 		pTextureMgr->Update(pTexture, m_pGuiBuffer);
 	} else {
-		// Çå¿ÕÖØ»æÇøÓò
+		// æ¸…ç©ºé‡ç»˜åŒºåŸŸ
 		int maxArea = 0;
 		for (size_t i = 0; i < m_vecInvalidateRect.size(); i++) {
 			int area = m_vecInvalidateRect[i].GetArea();
@@ -389,7 +390,7 @@ void CGuiEnvironment::DrawInvalidateRegion() {
 			pTextureMgr->Update(pTexture, m_pGuiBuffer, m_vecInvalidateRect[i]);
 		}
 	}
-	// »æÖÆĞèÒªÖØ»æµÄÔªËØ
+	// ç»˜åˆ¶éœ€è¦é‡ç»˜çš„å…ƒç´ 
 	list<CGuiElement*>::iterator iter = m_lstElements.begin();
 	while (iter != m_lstElements.end()) {
 		CGuiElement* pElement = *iter;
@@ -397,7 +398,7 @@ void CGuiEnvironment::DrawInvalidateRegion() {
 			CRectangle drawRegion = m_vecInvalidateRect[i].Intersect(pElement->m_cRegionScreen);
 			if (pElement->m_pParent) drawRegion *= pElement->m_pParent->m_cRegionScreen;
 			if (!drawRegion.IsEmpty() && pElement->m_bVisible) {
-				// ¸¸ÔªËØ¿É¼ûÔòäÖÈ¾£¬²¢ÇÒ»æÖÆÇøÓò¾­¹ı¸¸ÔªËØÇøÓò²Ã¼ô
+				// çˆ¶å…ƒç´ å¯è§åˆ™æ¸²æŸ“ï¼Œå¹¶ä¸”ç»˜åˆ¶åŒºåŸŸç»è¿‡çˆ¶å…ƒç´ åŒºåŸŸè£å‰ª
 				bool parentVisible = true;
 				CGuiElement* parent = pElement->m_pParent;
 				while (parent && parentVisible) {
@@ -412,6 +413,6 @@ void CGuiEnvironment::DrawInvalidateRegion() {
 		}
 		++iter;
 	}
-	// ÖØÖÃÎŞĞ§ÇøÓò
+	// é‡ç½®æ— æ•ˆåŒºåŸŸ
 	m_vecInvalidateRect.clear();
 }

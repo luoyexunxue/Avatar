@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CSceneNodeFresnel.h"
@@ -7,7 +7,7 @@
 #include "CMeshLoader.h"
 
 /**
-* ¹¹Ôìº¯Êı
+* æ„é€ å‡½æ•°
 */
 CSceneNodeFresnel::CSceneNodeFresnel(const string& name, const string& meshFile): CSceneNode("fresnel", name) {
 	m_strFile = meshFile;
@@ -15,7 +15,7 @@ CSceneNodeFresnel::CSceneNodeFresnel(const string& name, const string& meshFile)
 }
 
 /**
-* ³õÊ¼»¯³¡¾°½Úµã
+* åˆå§‹åŒ–åœºæ™¯èŠ‚ç‚¹
 */
 bool CSceneNodeFresnel::Init() {
 	m_pMeshData = CMeshLoader::Load(m_strFile, true);
@@ -25,14 +25,14 @@ bool CSceneNodeFresnel::Init() {
 }
 
 /**
-* Ïú»Ù³¡¾°½Úµã
+* é”€æ¯åœºæ™¯èŠ‚ç‚¹
 */
 void CSceneNodeFresnel::Destroy() {
 	CMeshLoader::Remove(m_pMeshData);
 }
 
 /**
-* äÖÈ¾³¡¾°½Úµã
+* æ¸²æŸ“åœºæ™¯èŠ‚ç‚¹
 */
 void CSceneNodeFresnel::Render() {
 	int count = m_pMeshData->GetMeshCount();
@@ -42,7 +42,7 @@ void CSceneNodeFresnel::Render() {
 }
 
 /**
-* »ñÈ¡Íø¸ñÊı¾İ
+* è·å–ç½‘æ ¼æ•°æ®
 */
 CMeshData* CSceneNodeFresnel::GetMeshData() {
 	return m_pMeshData;

@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CGUIEDITBOX_H_
@@ -7,39 +7,39 @@
 #include "CGuiEnvironment.h"
 
 /**
-* @brief GUI ÎÄ±¾ÊäÈë¿ò
+* @brief GUI æ–‡æœ¬è¾“å…¥æ¡†
 */
 class CGuiEditBox: public CGuiEnvironment::CGuiElement {
 public:
-	//! ¹¹Ôìº¯Êı
+	//! æ„é€ å‡½æ•°
 	CGuiEditBox(const string& name);
-	//! ÊÇ·ñÖØ»æ
+	//! æ˜¯å¦é‡ç»˜
 	virtual bool Redraw();
-	//! ÊôĞÔÉèÖÃ
+	//! å±æ€§è®¾ç½®
 	virtual bool SetAttribute(const string& name, const string& value);
-	//! »ñÈ¡ÊôĞÔ
+	//! è·å–å±æ€§
 	virtual string GetAttribute(const string& name);
-	//! ¿Ø¼ş»æÖÆ
+	//! æ§ä»¶ç»˜åˆ¶
 	virtual void Draw(const CRectangle& rect, unsigned char* buffer);
 
 public:
-	//! ×ÖÌåÃû³Æ
+	//! å­—ä½“åç§°
 	string m_strFont;
-	//! ×ÖÌå´óĞ¡
+	//! å­—ä½“å¤§å°
 	int m_iFontSize;
-	//! ÊäÈëÎÄ±¾
+	//! è¾“å…¥æ–‡æœ¬
 	wchar_t m_strText[256];
-	//! ¶ÔÆë·½Ê½
+	//! å¯¹é½æ–¹å¼
 	int m_iAlignment;
-	//! ±³¾°ÑÕÉ«
+	//! èƒŒæ™¯é¢œè‰²
 	unsigned char m_cBackColor[4];
-	//! ÎÄ±¾ÑÕÉ«
+	//! æ–‡æœ¬é¢œè‰²
 	unsigned char m_cForeColor[4];
 
 private:
-	//! ÉÁË¸¼ÆÊ±
+	//! é—ªçƒè®¡æ—¶
 	float m_fTimeElapsed;
-	//! ÏÔÊ¾¹â±ê
+	//! æ˜¾ç¤ºå…‰æ ‡
 	bool m_bShowCursor;
 };
 

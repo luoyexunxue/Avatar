@@ -1,12 +1,12 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CRay.h"
 #include <cmath>
 
 /**
-* ¹¹Ôìº¯Êı
+* æ„é€ å‡½æ•°
 */
 CRay::CRay() {
 	m_cOrigin.SetValue(0, 0, 0);
@@ -14,7 +14,7 @@ CRay::CRay() {
 }
 
 /**
-* ¸´ÖÆ¹¹Ôìº¯Êı
+* å¤åˆ¶æ„é€ å‡½æ•°
 */
 CRay::CRay(const CRay& ray) {
 	m_cOrigin = ray.m_cOrigin;
@@ -22,7 +22,7 @@ CRay::CRay(const CRay& ray) {
 }
 
 /**
-* ¹¹Ôìº¯Êı£¬Ö¸¶¨ÆğµãºÍ·½Ïò
+* æ„é€ å‡½æ•°ï¼ŒæŒ‡å®šèµ·ç‚¹å’Œæ–¹å‘
 */
 CRay::CRay(const CVector3& origin, const CVector3& direction) {
 	m_cOrigin = origin;
@@ -32,7 +32,7 @@ CRay::CRay(const CVector3& origin, const CVector3& direction) {
 }
 
 /**
-* ÉèÖÃÉäÏßÖµ
+* è®¾ç½®å°„çº¿å€¼
 */
 void CRay::SetValue(const CRay& ray) {
 	m_cOrigin = ray.m_cOrigin;
@@ -40,7 +40,7 @@ void CRay::SetValue(const CRay& ray) {
 }
 
 /**
-* ÉèÖÃÉäÏßÖµ
+* è®¾ç½®å°„çº¿å€¼
 */
 void CRay::SetValue(const float origin[3], const float direction[3]) {
 	m_cOrigin.SetValue(origin);
@@ -49,7 +49,7 @@ void CRay::SetValue(const float origin[3], const float direction[3]) {
 }
 
 /**
-* Ê¹ÓÃ¾ØÕó±ä»»ÉäÏß
+* ä½¿ç”¨çŸ©é˜µå˜æ¢å°„çº¿
 */
 CRay& CRay::Transform(const CMatrix4& matrix) {
 	m_cOrigin = matrix * m_cOrigin;
@@ -58,7 +58,7 @@ CRay& CRay::Transform(const CMatrix4& matrix) {
 }
 
 /**
-* ½«ÉäÏß·´Ïò
+* å°†å°„çº¿åå‘
 */
 CRay& CRay::Reverse() {
 	m_cDirection.Scale(-1.0f);
@@ -66,37 +66,37 @@ CRay& CRay::Reverse() {
 }
 
 /**
-* »ñÈ¡ÉäÏßÓëÆ½ÃæµÄ½»µã
+* è·å–å°„çº¿ä¸å¹³é¢çš„äº¤ç‚¹
 */
 bool CRay::IntersectPlane(const CPlane& plane, CVector3& point) const {
 	CVector3 normal(plane.m_fNormal);
 	float t = m_cDirection.DotProduct(normal);
-	// ÉäÏßÓëÆ½ÃæÆ½ĞĞ
+	// å°„çº¿ä¸å¹³é¢å¹³è¡Œ
 	if (t == 0.0f) return false;
 	float s = (plane.m_fDistance + m_cOrigin.DotProduct(normal)) / t;
-	// ÉäÏßÓëÆ½Ãæ²»Ïà½»
+	// å°„çº¿ä¸å¹³é¢ä¸ç›¸äº¤
 	if (s > 0.0f) return false;
 	point = m_cOrigin - m_cDirection * s;
 	return true;
 }
 
 /**
-* »ñÈ¡ÉäÏßÓëÇòÌåµÄ½»µã
+* è·å–å°„çº¿ä¸çƒä½“çš„äº¤ç‚¹
 */
 bool CRay::IntersectSphere(const CVector3& center, float radius, CVector3& point) const {
-	// ½«ÇòÌåÒÆÖÁ×ø±êÔ­µã½øĞĞ¼ÆËã
+	// å°†çƒä½“ç§»è‡³åæ ‡åŸç‚¹è¿›è¡Œè®¡ç®—
 	CVector3 originRel = m_cOrigin - center;
 	float oo = originRel.DotProduct(originRel);
 	float od = originRel.DotProduct(m_cDirection);
 	float delta = radius * radius + od * od - oo;
-	// ÎŞ½»µã
+	// æ— äº¤ç‚¹
 	if (delta < 0) return false;
 	delta = sqrtf(delta);
 	float t1 = -(od + delta);
 	float t2 = -(od - delta);
 	CVector3 pt1 = m_cDirection * t1 + originRel;
 	CVector3 pt2 = m_cDirection * t2 + originRel;
-	// »ñÈ¡µ½ÉäÏßÆğµã¾àÀë×î½üµÄ½»µã
+	// è·å–åˆ°å°„çº¿èµ·ç‚¹è·ç¦»æœ€è¿‘çš„äº¤ç‚¹
 	CVector3 len1 = pt1 - originRel;
 	CVector3 len2 = pt2 - originRel;
 	if (len1.DotProduct(len1) > len2.DotProduct(len2)) {
@@ -108,15 +108,15 @@ bool CRay::IntersectSphere(const CVector3& center, float radius, CVector3& point
 }
 
 /**
-* »ñÈ¡ÉäÏßÓë°üÎ§ºĞµÄ½»µã
+* è·å–å°„çº¿ä¸åŒ…å›´ç›’çš„äº¤ç‚¹
 */
 bool CRay::IntersectAABB(const CBoundingBox& aabb, CVector3& point) const {
-	// °üÎ§ºĞÎŞĞ§
+	// åŒ…å›´ç›’æ— æ•ˆ
 	if (!aabb.IsValid()) return false;
-	// ÉäÏßÆğµãÔÚ°üÎ§ºĞÄÚ
+	// å°„çº¿èµ·ç‚¹åœ¨åŒ…å›´ç›’å†…
 	if (aabb.IsContain(m_cOrigin)) return true;
 
-	// ÒÀ´Î¼ì²é¸÷¸öÃæµÄÏà½»Çé¿ö
+	// ä¾æ¬¡æ£€æŸ¥å„ä¸ªé¢çš„ç›¸äº¤æƒ…å†µ
 	float distance = -1.0f;
 	for (int i = 0; i < 3; i++) {
 		int indexA = (i + 1) % 3;
@@ -148,14 +148,14 @@ bool CRay::IntersectAABB(const CBoundingBox& aabb, CVector3& point) const {
 }
 
 /**
-* ÖØÔØÔËËã·û ==
+* é‡è½½è¿ç®—ç¬¦ ==
 */
 bool CRay::operator == (const CRay& ray) const {
 	return (m_cOrigin == ray.m_cOrigin && m_cDirection == ray.m_cDirection);
 }
 
 /**
-* ÖØÔØÔËËã·û !=
+* é‡è½½è¿ç®—ç¬¦ !=
 */
 bool CRay::operator != (const CRay& ray) const {
 	return !(*this == ray);

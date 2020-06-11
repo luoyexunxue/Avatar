@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CPLUGINLOADER_H_
@@ -12,32 +12,32 @@ using std::string;
 using std::map;
 
 /**
-* @brief ²å¼ş¼ÓÔØÀà
+* @brief æ’ä»¶åŠ è½½ç±»
 */
 class AVATAR_EXPORT CPluginLoader {
 public:
-	//! ¼ÓÔØ²å¼ş
+	//! åŠ è½½æ’ä»¶
 	static bool Load(const string& filename, CEngine* engine);
-	//! Ğ¶ÔØ²å¼ş
+	//! å¸è½½æ’ä»¶
 	static bool Unload(const string& name);
-	//! Ïú»Ù¼ÓÔØÆ÷
+	//! é”€æ¯åŠ è½½å™¨
 	static void Destroy();
 
-	//! »ñÈ¡²å¼şÊıÁ¿
+	//! è·å–æ’ä»¶æ•°é‡
 	static int GetCount();
-	//! »ñÈ¡ÒÑ¼ÓÔØµÄ²å¼şÁĞ±í
+	//! è·å–å·²åŠ è½½çš„æ’ä»¶åˆ—è¡¨
 	static void GetPluginList(vector<string>& pluginList);
-	//! »ñÈ¡²å¼şÂ·¾¶
+	//! è·å–æ’ä»¶è·¯å¾„
 	static string GetPath(const string& name);
-	//! »ñÈ¡²å¼şÃèÊö
+	//! è·å–æ’ä»¶æè¿°
 	static string GetDescription(const string& name);
 
 private:
-	//! ¶¨Òå²å¼ş½Ó¿Ú
+	//! å®šä¹‰æ’ä»¶æ¥å£
 	typedef int(*pfn_avatar_init)(CEngine* engine);
 	typedef int(*pfn_avatar_desc)(char* buffer);
 	typedef int(*pfn_avatar_destroy)();
-	//! ²å¼ş¶¨Òå
+	//! æ’ä»¶å®šä¹‰
 	typedef struct _SPlugin {
 		string name;
 		string path;
@@ -47,13 +47,13 @@ private:
 		pfn_avatar_desc avatar_desc;
 		pfn_avatar_destroy avatar_destroy;
 	} SPlugin;
-	//! ²å¼şÁĞ±í
+	//! æ’ä»¶åˆ—è¡¨
 	static map<string, SPlugin*> m_mapPlugin;
 
 private:
-	//! ¼ÓÔØ¶¯Ì¬¿â
+	//! åŠ è½½åŠ¨æ€åº“
 	static SPlugin* LoadDynamicLibrary(const string& file);
-	//! Ğ¶ÔØ¶¯Ì¬¿â
+	//! å¸è½½åŠ¨æ€åº“
 	static void ReleaseDynamicLibrary(SPlugin* plugin);
 };
 

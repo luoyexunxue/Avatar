@@ -1,12 +1,12 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CPostProcessEdge.h"
 #include "CEngine.h"
 
 /**
-* ³õÊ¼»¯ºó´¦Àí¶ÔÏó
+* åˆå§‹åŒ–åŽå¤„ç†å¯¹è±¡
 */
 bool CPostProcessEdge::Init(int width, int height) {
 	const char* fragShader = "\
@@ -37,7 +37,7 @@ bool CPostProcessEdge::Init(int width, int height) {
 			float glow = gx * gx + gy * gy;\
 			fragColor = vec4(uEdgeColor * glow, 1.0);\
 		}";
-	// ´´½¨×ÅÉ«Æ÷ºÍÎÆÀí
+	// åˆ›å»ºç€è‰²å™¨å’Œçº¹ç†
 	CShaderManager* pShaderMgr = CEngine::GetShaderManager();
 	CTextureManager* pTextureMgr = CEngine::GetTextureManager();
 	m_pPostProcessShader = pShaderMgr->Create("postprocess_edge", GetVertexShader(), fragShader);
@@ -49,7 +49,7 @@ bool CPostProcessEdge::Init(int width, int height) {
 }
 
 /**
-* äÖÈ¾ÇøÓò´óÐ¡¸Ä±ä
+* æ¸²æŸ“åŒºåŸŸå¤§å°æ”¹å˜
 */
 void CPostProcessEdge::Resize(int width, int height) {
 	CEngine::GetTextureManager()->Resize(m_pRenderTexture, width, height);
@@ -58,7 +58,7 @@ void CPostProcessEdge::Resize(int width, int height) {
 }
 
 /**
-* Ïú»Ùºó´¦Àí¶ÔÏó
+* é”€æ¯åŽå¤„ç†å¯¹è±¡
 */
 void CPostProcessEdge::Destroy() {
 	CEngine::GetTextureManager()->Drop(m_pRenderTexture);

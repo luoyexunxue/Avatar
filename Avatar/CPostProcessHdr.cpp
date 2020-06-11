@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CPostProcessHdr.h"
@@ -7,10 +7,10 @@
 #include "CTimer.h"
 
 /**
-* ³õÊ¼»¯ºó´¦Àí¶ÔÏó
+* åˆå§‹åŒ–åå¤„ç†å¯¹è±¡
 */
 bool CPostProcessHdr::Init(int width, int height) {
-	// HDR ÏñËØ×ÅÉ«Æ÷
+	// HDR åƒç´ ç€è‰²å™¨
 	const char* hdrShader = "\
 		uniform sampler2D uTexture;\
 		uniform sampler2D uLuminance;\
@@ -25,7 +25,7 @@ bool CPostProcessHdr::Init(int width, int height) {
 			color /= (1.0 + color);\
 			fragColor = vec4(color, 1.0);\
 		}";
-	// ÎÆÀí¸´ÖÆ×ÅÉ«Æ÷
+	// çº¹ç†å¤åˆ¶ç€è‰²å™¨
 	const char* passShader = "\
 		uniform sampler2D uTexture;\
 		in vec2 vTexCoord;\
@@ -35,7 +35,7 @@ bool CPostProcessHdr::Init(int width, int height) {
 			float luminance = dot(texture(uTexture, vTexCoord).rgb, vec3(0.3, 0.59, 0.11));\
 			fragColor = vec4(luminance, luminance, luminance, 1.0);\
 		}";
-	// 1/4ÏÂ²ÉÑùÏñËØ×ÅÉ«Æ÷
+	// 1/4ä¸‹é‡‡æ ·åƒç´ ç€è‰²å™¨
 	const char* downShader = "\
 		uniform sampler2D uTexture;\
 		uniform vec2 uTextureSize;\
@@ -63,7 +63,7 @@ bool CPostProcessHdr::Init(int width, int height) {
 			color /= 16.0;\
 			fragColor = color;\
 		}";
-	// ÁÁ¶È½¥µ÷×ÅÉ«Æ÷
+	// äº®åº¦æ¸è°ƒç€è‰²å™¨
 	const char* adaptShader = "\
 		uniform sampler2D uTexture;\
 		uniform sampler2D uTextureSelf;\
@@ -77,7 +77,7 @@ bool CPostProcessHdr::Init(int width, int height) {
 			float adaptation = adaptedLum + (currentLum - adaptedLum) * uElapsedTime;\
 			fragColor = vec4(adaptation, adaptation, adaptation, 1.0);\
 		}";
-	// ´´½¨×ÅÉ«Æ÷ºÍÎÆÀí
+	// åˆ›å»ºç€è‰²å™¨å’Œçº¹ç†
 	CShaderManager* pShaderMgr = CEngine::GetShaderManager();
 	CTextureManager* pTextureMgr = CEngine::GetTextureManager();
 	m_pPostProcessShader = pShaderMgr->Create("postprocess_hdr", GetVertexShader(), hdrShader);
@@ -101,14 +101,14 @@ bool CPostProcessHdr::Init(int width, int height) {
 }
 
 /**
-* äÖÈ¾ÇøÓò´óĞ¡¸Ä±ä
+* æ¸²æŸ“åŒºåŸŸå¤§å°æ”¹å˜
 */
 void CPostProcessHdr::Resize(int width, int height) {
 	CEngine::GetTextureManager()->Resize(m_pRenderTexture, width, height);
 }
 
 /**
-* Ïú»Ùºó´¦Àí¶ÔÏó
+* é”€æ¯åå¤„ç†å¯¹è±¡
 */
 void CPostProcessHdr::Destroy() {
 	CEngine::GetTextureManager()->Drop(m_pRenderTexture);
@@ -124,10 +124,10 @@ void CPostProcessHdr::Destroy() {
 }
 
 /**
-* Ó¦ÓÃµ±Ç°ºó´¦Àí
+* åº”ç”¨å½“å‰åå¤„ç†
 */
 void CPostProcessHdr::Apply(CTexture* target, CMesh* mesh) {
-	// »æÖÆµ±Ç° HDR Í¼Ïñ
+	// ç»˜åˆ¶å½“å‰ HDR å›¾åƒ
 	CGraphicsManager* pGraphicsMgr = CEngine::GetGraphicsManager();
 	pGraphicsMgr->SetRenderTarget(target, 0, true, true, true);
 	m_pPostProcessShader->UseShader();
@@ -135,12 +135,12 @@ void CPostProcessHdr::Apply(CTexture* target, CMesh* mesh) {
 	m_pRenderTexture->UseTexture(0);
 	mesh->Render(false);
 
-	// ¼ÆËãÍ¼ÏñµÄÆ½¾ùÁÁ¶È£¬½«³¡¾°äÖÈ¾µ½ 64 x 64 µÄÎÆÀíÉÏ£¬µÃµ½»Ò¶ÈÍ¼
+	// è®¡ç®—å›¾åƒçš„å¹³å‡äº®åº¦ï¼Œå°†åœºæ™¯æ¸²æŸ“åˆ° 64 x 64 çš„çº¹ç†ä¸Šï¼Œå¾—åˆ°ç°åº¦å›¾
 	pGraphicsMgr->SetRenderTarget(m_pToneMapTexture[4], 0, true, true, false);
 	m_pPassShader->UseShader();
 	m_pRenderTexture->UseTexture(0);
 	mesh->Render(false);
-	// ½øĞĞÏÂ²ÉÑù
+	// è¿›è¡Œä¸‹é‡‡æ ·
 	const static float sizeArray[4] = { 1.0f, 4.0f, 16.0f, 64.0f };
 	for (int i = 3; i > 0; i--) {
 		pGraphicsMgr->SetRenderTarget(m_pToneMapTexture[i], 0, true, true, false);
@@ -149,7 +149,7 @@ void CPostProcessHdr::Apply(CTexture* target, CMesh* mesh) {
 		m_pToneMapTexture[i + 1]->UseTexture();
 		mesh->Render(false);
 	}
-	// ÁÁ¶È½¥µ÷£¨ÏßĞÔµ÷Õû£©
+	// äº®åº¦æ¸è°ƒï¼ˆçº¿æ€§è°ƒæ•´ï¼‰
 	float elapsedTime = CTimer::Reset("postprocess_hdr");
 	if (elapsedTime > 1.0f) elapsedTime = 1.0f;
 	pGraphicsMgr->SetRenderTarget(m_pToneMapTexture[0], 0, true, false, false);
@@ -158,6 +158,6 @@ void CPostProcessHdr::Apply(CTexture* target, CMesh* mesh) {
 	m_pToneMapTexture[0]->UseTexture(1);
 	m_pToneMapTexture[1]->UseTexture(0);
 	mesh->Render(false);
-	// »Ö¸´äÖÈ¾Ä¿±ê
+	// æ¢å¤æ¸²æŸ“ç›®æ ‡
 	pGraphicsMgr->SetRenderTarget(target, 0, true, false, false);
 }

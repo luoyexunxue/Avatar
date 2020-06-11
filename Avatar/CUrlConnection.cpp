@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CUrlConnection.h"
@@ -16,12 +16,12 @@
 #endif
 
 /**
-* CUrlConnection ¿âÒıÓÃ´ÎÊı
+* CUrlConnection åº“å¼•ç”¨æ¬¡æ•°
 */
 int CUrlConnection::m_iRefCount = 0;
 
 /**
-* Êı¾İ½ÓÊÕ»Øµ÷
+* æ•°æ®æ¥æ”¶å›è°ƒ
 */
 static size_t OnWrite(void* data, size_t size, size_t items, vector<unsigned char>* buffer) {
 	size_t bytes = size * items;
@@ -32,7 +32,7 @@ static size_t OnWrite(void* data, size_t size, size_t items, vector<unsigned cha
 }
 
 /**
-* µ÷ÊÔĞÅÏ¢»Øµ÷
+* è°ƒè¯•ä¿¡æ¯å›è°ƒ
 */
 static int OnDebug(CURL* curl, curl_infotype type, char* data, size_t size, void* userData) {
 	switch (type) {
@@ -47,7 +47,7 @@ static int OnDebug(CURL* curl, curl_infotype type, char* data, size_t size, void
 }
 
 /**
-* ¹¹Ôìº¯Êı
+* æ„é€ å‡½æ•°
 */
 CUrlConnection::CUrlConnection() {
 	m_pCachedUrl = 0;
@@ -59,7 +59,7 @@ CUrlConnection::CUrlConnection() {
 }
 
 /**
-* ¹¹Ôìº¯Êı£¬Êä³öµ÷ÊÔĞÅÏ¢
+* æ„é€ å‡½æ•°ï¼Œè¾“å‡ºè°ƒè¯•ä¿¡æ¯
 */
 CUrlConnection::CUrlConnection(bool debug) {
 	m_pCachedUrl = 0;
@@ -71,7 +71,7 @@ CUrlConnection::CUrlConnection(bool debug) {
 }
 
 /**
-* Îö¹¹º¯Êı
+* ææ„å‡½æ•°
 */
 CUrlConnection::~CUrlConnection() {
 	if (m_pCachedUrl) {
@@ -83,14 +83,14 @@ CUrlConnection::~CUrlConnection() {
 }
 
 /**
-* ÉèÖÃ¶ÁÈ¡³¬Ê±Ê±¼ä
+* è®¾ç½®è¯»å–è¶…æ—¶æ—¶é—´
 */
 void CUrlConnection::SetTimeout(int second) {
 	m_iTimeout = second;
 }
 
 /**
-* »ñÈ¡Êı¾İ½Ó¿Ú
+* è·å–æ•°æ®æ¥å£
 */
 int CUrlConnection::Request(const string& url, string& response) {
 	vector<unsigned char> buffer;
@@ -102,7 +102,7 @@ int CUrlConnection::Request(const string& url, string& response) {
 }
 
 /**
-* »ñÈ¡Êı¾İ½Ó¿Ú
+* è·å–æ•°æ®æ¥å£
 */
 int CUrlConnection::Request(const string& url, vector<unsigned char>& response) {
 	int scheme = 0;
@@ -140,7 +140,7 @@ int CUrlConnection::Request(const string& url, vector<unsigned char>& response) 
 }
 
 /**
-* »ñÈ¡Êı¾İ½Ó¿Ú
+* è·å–æ•°æ®æ¥å£
 */
 int CUrlConnection::Request(const string& url, const string& param, string& response) {
 	vector<unsigned char> buffer;
@@ -152,7 +152,7 @@ int CUrlConnection::Request(const string& url, const string& param, string& resp
 }
 
 /**
-* »ñÈ¡Êı¾İ½Ó¿Ú
+* è·å–æ•°æ®æ¥å£
 */
 int CUrlConnection::Request(const string& url, const string& param, vector<unsigned char>& response) {
 	int scheme = 0;
@@ -187,8 +187,8 @@ int CUrlConnection::Request(const string& url, const string& param, vector<unsig
 }
 
 /**
-* µ¥´Î HTTP GET ÇëÇó
-* @note ²»»á¼ÇÂ¼ cookie
+* å•æ¬¡ HTTP GET è¯·æ±‚
+* @note ä¸ä¼šè®°å½• cookie
 */
 int CUrlConnection::HttpGet(const string& url, string& response) {
 	vector<unsigned char> buffer;
@@ -200,8 +200,8 @@ int CUrlConnection::HttpGet(const string& url, string& response) {
 }
 
 /**
-* µ¥´Î HTTP GET ÇëÇó
-* @note ²»»á¼ÇÂ¼ cookie
+* å•æ¬¡ HTTP GET è¯·æ±‚
+* @note ä¸ä¼šè®°å½• cookie
 */
 int CUrlConnection::HttpGet(const string& url, vector<unsigned char>& response) {
 	CURL* curl = curl_easy_init();
@@ -226,8 +226,8 @@ int CUrlConnection::HttpGet(const string& url, vector<unsigned char>& response) 
 }
 
 /**
-* µ¥´Î HTTP POST ÇëÇó
-* @note ²»»á¼ÇÂ¼ cookie
+* å•æ¬¡ HTTP POST è¯·æ±‚
+* @note ä¸ä¼šè®°å½• cookie
 */
 int CUrlConnection::HttpPost(const string& url, const string& param, string& response) {
 	vector<unsigned char> buffer;
@@ -239,8 +239,8 @@ int CUrlConnection::HttpPost(const string& url, const string& param, string& res
 }
 
 /**
-* µ¥´Î HTTP POST ÇëÇó
-* @note ²»»á¼ÇÂ¼ cookie
+* å•æ¬¡ HTTP POST è¯·æ±‚
+* @note ä¸ä¼šè®°å½• cookie
 */
 int CUrlConnection::HttpPost(const string& url, const string& param, vector<unsigned char>& response) {
 	CURL* curl = curl_easy_init();
@@ -267,8 +267,8 @@ int CUrlConnection::HttpPost(const string& url, const string& param, vector<unsi
 }
 
 /**
-* µ¥´Î HTTP POST ÇëÇó£¬¿É×Ô¶¨ÒåHTTPÍ·²¿
-* @note ²»»á¼ÇÂ¼ cookie
+* å•æ¬¡ HTTP POST è¯·æ±‚ï¼Œå¯è‡ªå®šä¹‰HTTPå¤´éƒ¨
+* @note ä¸ä¼šè®°å½• cookie
 */
 int CUrlConnection::HttpPost(const string& url, const string& param, const map<string, string>& headers, string& response) {
 	vector<unsigned char> buffer;
@@ -280,8 +280,8 @@ int CUrlConnection::HttpPost(const string& url, const string& param, const map<s
 }
 
 /**
-* µ¥´Î HTTP POST ÇëÇó£¬¿É×Ô¶¨ÒåHTTPÍ·²¿
-* @note ²»»á¼ÇÂ¼ cookie
+* å•æ¬¡ HTTP POST è¯·æ±‚ï¼Œå¯è‡ªå®šä¹‰HTTPå¤´éƒ¨
+* @note ä¸ä¼šè®°å½• cookie
 */
 int CUrlConnection::HttpPost(const string& url, const string& param, const map<string, string>& headers, vector<unsigned char>& response) {
 	CURL* curl = curl_easy_init();

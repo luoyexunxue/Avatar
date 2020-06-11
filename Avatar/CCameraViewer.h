@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CCAMERAVIEWER_H_
@@ -8,48 +8,48 @@
 #include "CQuaternion.h"
 
 /**
-* @brief Ä£ĞÍä¯ÀÀĞÍÏà»ú
+* @brief æ¨¡å‹æµè§ˆå‹ç›¸æœº
 *
-* È«·½Î»¹Û²ì£¬¿ÉÒÔÓÃËüÀ´¹Û²âÎïÌå£¬ä¯ÀÀÄ£ĞÍ
+* å…¨æ–¹ä½è§‚å¯Ÿï¼Œå¯ä»¥ç”¨å®ƒæ¥è§‚æµ‹ç‰©ä½“ï¼Œæµè§ˆæ¨¡å‹
 */
 class AVATAR_EXPORT CCameraViewer: public CCamera {
 public:
-	//! Ä¬ÈÏ¹¹Ôìº¯Êı
+	//! é»˜è®¤æ„é€ å‡½æ•°
 	CCameraViewer();
 
-	//! »ñÈ¡Ïà»úÃû³Æ
+	//! è·å–ç›¸æœºåç§°
 	virtual const char* GetName() const;
 
-	//! ¿ØÖÆĞÅÏ¢ÊäÈë
+	//! æ§åˆ¶ä¿¡æ¯è¾“å…¥
 	virtual void Input(CInputManager::SInput* input);
-	//! ÉèÖÃÏà»ú¸ß¶È
+	//! è®¾ç½®ç›¸æœºé«˜åº¦
 	virtual void SetHeight(float height);
-	//! ÉèÖÃÏà»úÎ»ÖÃ
+	//! è®¾ç½®ç›¸æœºä½ç½®
 	virtual void SetPosition(const CVector3& pos);
-	//! ÉèÖÃÏà»ú·½Î»
+	//! è®¾ç½®ç›¸æœºæ–¹ä½
 	virtual void SetAngle(float yaw, float pitch, float roll);
-	//! ÉèÖÃÏà»úÄ¿±ê
+	//! è®¾ç½®ç›¸æœºç›®æ ‡
 	virtual void SetTarget(const CVector3& pos);
 
-	//! ¸üĞÂÏà»ú
+	//! æ›´æ–°ç›¸æœº
 	virtual void Update(float dt);
 
 public:
-	//! ÉèÖÃ×èÄáÏµÊı
+	//! è®¾ç½®é˜»å°¼ç³»æ•°
 	void SetDamping(float k);
 
 private:
-	//! ×èÄáÏµÊı
+	//! é˜»å°¼ç³»æ•°
 	float m_fDamping;
-	//! Ïà»úÄ¿±ê¾àÀë
+	//! ç›¸æœºç›®æ ‡è·ç¦»
 	float m_fDistance;
-	//! Ïà»úÔ¤¶¨Ä¿±ê¾àÀë
+	//! ç›¸æœºé¢„å®šç›®æ ‡è·ç¦»
 	float m_fDistanceInAdvance;
-	//! Ä¿±êÎ»ÖÃ
+	//! ç›®æ ‡ä½ç½®
 	CVector3 m_cTargetPos;
-	//! Ïà»ú·½Î»
+	//! ç›¸æœºæ–¹ä½
 	CQuaternion m_cOrientation;
-	//! Ïà»úÔ¤¶¨·½Î»
+	//! ç›¸æœºé¢„å®šæ–¹ä½
 	CQuaternion m_cOrientInAdvance;
 };
 

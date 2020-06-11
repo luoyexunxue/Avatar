@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CMeshLoader.h"
@@ -21,22 +21,22 @@ using std::vector;
 using std::set;
 
 /**
-* ÒÑ×¢²áµÄÄ£ĞÍ¼ÓÔØÆ÷
+* å·²æ³¨å†Œçš„æ¨¡å‹åŠ è½½å™¨
 */
 map<string, CMeshLoader*> CMeshLoader::m_mapMeshLoader;
 
 /**
-* ÒÑ»º´æµÄÍø¸ñÄ£ĞÍ
+* å·²ç¼“å­˜çš„ç½‘æ ¼æ¨¡å‹
 */
 map<string, CMeshData*> CMeshLoader::m_mapMeshDataCache;
 
 /**
-* ÒÑ»º´æµÄÍø¸ñÄ£ĞÍÒıÓÃ
+* å·²ç¼“å­˜çš„ç½‘æ ¼æ¨¡å‹å¼•ç”¨
 */
 map<CMeshData*, int> CMeshLoader::m_mapCacheRefCount;
 
 /**
-* ×¢²áÄ£ĞÍ¼ÓÔØÆ÷
+* æ³¨å†Œæ¨¡å‹åŠ è½½å™¨
 */
 bool CMeshLoader::Register(const string& type, CMeshLoader* loader) {
 	if (!m_mapMeshLoader.size()) {
@@ -52,7 +52,7 @@ bool CMeshLoader::Register(const string& type, CMeshLoader* loader) {
 }
 
 /**
-* Ïú»ÙÒÑ×¢²áµÄ¼ÓÔØÆ÷
+* é”€æ¯å·²æ³¨å†Œçš„åŠ è½½å™¨
 */
 void CMeshLoader::Destroy() {
 	set<CMeshLoader*> loaders;
@@ -75,12 +75,12 @@ void CMeshLoader::Destroy() {
 }
 
 /**
-* ¼ÓÔØÍø¸ñÄ£ĞÍ
-* @param filename Ä£ĞÍÎÄ¼ş
-* @param cache ÊÇ·ñ»º´æ
-* @return Íø¸ñÄ£ĞÍ¶ÔÏóÖ¸Õë
-* @attention µ±Ê¹ÓÃ»º´æÊ±£¬±ØĞëÊ¹ÓÃ CMeshLoader::Remove() ÊÍ·Å×ÊÔ´£¬²¢ÇÒÓ¦¸Ã±ÜÃâĞŞ¸ÄÍø¸ñ¶ÔÏóÄÚ²¿Êı¾İ
-*	ÈôÃ»ÓĞÊ¹ÓÃ»º´æ£¬ÔòÖ±½Ó delete ¼´¿É
+* åŠ è½½ç½‘æ ¼æ¨¡å‹
+* @param filename æ¨¡å‹æ–‡ä»¶
+* @param cache æ˜¯å¦ç¼“å­˜
+* @return ç½‘æ ¼æ¨¡å‹å¯¹è±¡æŒ‡é’ˆ
+* @attention å½“ä½¿ç”¨ç¼“å­˜æ—¶ï¼Œå¿…é¡»ä½¿ç”¨ CMeshLoader::Remove() é‡Šæ”¾èµ„æºï¼Œå¹¶ä¸”åº”è¯¥é¿å…ä¿®æ”¹ç½‘æ ¼å¯¹è±¡å†…éƒ¨æ•°æ®
+*	è‹¥æ²¡æœ‰ä½¿ç”¨ç¼“å­˜ï¼Œåˆ™ç›´æ¥ delete å³å¯
 */
 CMeshData* CMeshLoader::Load(const string& filename, bool cache) {
 	if (!m_mapMeshLoader.size()) {
@@ -110,10 +110,10 @@ CMeshData* CMeshLoader::Load(const string& filename, bool cache) {
 }
 
 /**
-* ±£´æÍø¸ñÄ£ĞÍ
-* @param filename ±£´æµÄÎÄ¼şÃû
-* @param meshData Ä£ĞÍ¶ÔÏó
-* @return ³É¹¦·µ»Øtrue
+* ä¿å­˜ç½‘æ ¼æ¨¡å‹
+* @param filename ä¿å­˜çš„æ–‡ä»¶å
+* @param meshData æ¨¡å‹å¯¹è±¡
+* @return æˆåŠŸè¿”å›true
 */
 bool CMeshLoader::Save(const string& filename, CMeshData* meshData) {
 	string ext = CStringUtil::UpperCase(CFileManager::GetExtension(filename));
@@ -125,9 +125,9 @@ bool CMeshLoader::Save(const string& filename, CMeshData* meshData) {
 }
 
 /**
-* ÒÆ³ıÒÑ»º´æµÄÄ£ĞÍ
-* @param meshData ĞèÒªÒÆ³ıµÄÍø¸ñ¶ÔÏó
-* @attention µ±Ê¹ÓÃ CMeshLoader::Load() ÇÒ²ÎÊı cache Îª true Ê±²Å¿ÉÊ¹ÓÃ´Ë·½·¨
+* ç§»é™¤å·²ç¼“å­˜çš„æ¨¡å‹
+* @param meshData éœ€è¦ç§»é™¤çš„ç½‘æ ¼å¯¹è±¡
+* @attention å½“ä½¿ç”¨ CMeshLoader::Load() ä¸”å‚æ•° cache ä¸º true æ—¶æ‰å¯ä½¿ç”¨æ­¤æ–¹æ³•
 */
 void CMeshLoader::Remove(CMeshData* meshData) {
 	map<CMeshData*, int>::iterator iter = m_mapCacheRefCount.find(meshData);
@@ -149,19 +149,19 @@ void CMeshLoader::Remove(CMeshData* meshData) {
 }
 
 /**
-* ¼ÓÔØ AVT ÎÄ¼ş
+* åŠ è½½ AVT æ–‡ä»¶
 */
 CMeshData* CMeshLoader::LoadAvatar(const string& filename) {
 	CFileManager::CBinaryFile file;
 	if (!CEngine::GetFileManager()->ReadFile(filename, &file)) {
 		return 0;
 	}
-	// ¼ìÑéÎÄ¼şÊÇ·ñÓĞĞ§
+	// æ£€éªŒæ–‡ä»¶æ˜¯å¦æœ‰æ•ˆ
 	CStreamReader reader(file.contents, file.size);
 	if (memcmp("AVATAR", reader.GetPointer(), 6) != 0) return 0;
 	if (reader.Skip(6).GetValue<uint16_t>() != 0x0001) return 0;
 	if (reader.GetValue<uint32_t>() != file.size) return 0;
-	// ¶ÁÈ¡ÎÄ¼ş
+	// è¯»å–æ–‡ä»¶
 	vector<CMaterial*> textureMaterial;
 	vector<uint8_t> textureIndex;
 	vector<string> textureName;
@@ -170,7 +170,7 @@ CMeshData* CMeshLoader::LoadAvatar(const string& filename) {
 	uint32_t jointCount = reader.GetValue<uint32_t>();
 	uint32_t animCount = reader.GetValue<uint32_t>();
 	uint32_t textureCount = reader.GetValue<uint32_t>();
-	// ¶ÁÈ¡Íø¸ñÊı¾İ
+	// è¯»å–ç½‘æ ¼æ•°æ®
 	CMeshData* meshData = new CMeshData();
 	for (uint32_t i = 0; i < meshCount; i++) {
 		uint8_t meshFlag = reader.GetValue<uint8_t>();
@@ -203,7 +203,7 @@ CMeshData* CMeshLoader::LoadAvatar(const string& filename) {
 			unsigned int tri3 = static_cast<unsigned int>(reader.GetValue<uint16_t>());
 			mesh->AddTriangle(tri1, tri2, tri3);
 		}
-		// ²ÄÖÊÊı¾İ
+		// æè´¨æ•°æ®
 		CMaterial* mtl = mesh->GetMaterial();
 		mtl->GetName() = (char*)reader.GetPointer();
 		reader.Skip(32);
@@ -220,7 +220,7 @@ CMeshData* CMeshLoader::LoadAvatar(const string& filename) {
 		mesh->Create((meshFlag & 0x01) != 0);
 		meshData->AddMesh(mesh);
 	}
-	// ¶Á¹Ç÷ÀÊı¾İ
+	// è¯»éª¨éª¼æ•°æ®
 	vector<int16_t> parentIndex;
 	for (uint32_t i = 0; i < jointCount; i++) {
 		SJoint* joint = new SJoint();
@@ -241,7 +241,7 @@ CMeshData* CMeshLoader::LoadAvatar(const string& filename) {
 		}
 		meshData->AddJoint(joint);
 	}
-	// ¶Á¶¯»­Êı¾İ
+	// è¯»åŠ¨ç”»æ•°æ®
 	for (uint32_t i = 0; i < jointCount; i++) {
 		SJoint* joint = meshData->GetJoint(i);
 		uint32_t numKeyRot = reader.GetValue<uint32_t>();
@@ -265,14 +265,14 @@ CMeshData* CMeshLoader::LoadAvatar(const string& filename) {
 			joint->parent = meshData->GetJoint(parentIndex[i]);
 		}
 	}
-	// ¶Á¶¯»­ĞÅÏ¢
+	// è¯»åŠ¨ç”»ä¿¡æ¯
 	for (uint32_t i = 0; i < animCount; i++) {
 		const char* name = (char*)reader.GetPointer();
 		float beginTime = reader.Skip(32).GetValue<float>();
 		float endTime = reader.GetValue<float>();
 		meshData->AddAnimation(name, beginTime, endTime);
 	}
-	// ¶ÁÎÆÀíÊı¾İ
+	// è¯»çº¹ç†æ•°æ®
 	CTextureManager* pTextureMgr = CEngine::GetTextureManager();
 	for (uint32_t i = 0; i < textureCount; i++) {
 		char buffer[33] = { 0 };
@@ -312,10 +312,10 @@ CMeshData* CMeshLoader::LoadAvatar(const string& filename) {
 }
 
 /**
-* ±£´æ AVT ÎÄ¼ş
+* ä¿å­˜ AVT æ–‡ä»¶
 */
 bool CMeshLoader::SaveAvatar(const string& filename, CMeshData* meshData) {
-	// ¼ÆËãÎÄ¼ş´óĞ¡
+	// è®¡ç®—æ–‡ä»¶å¤§å°
 	map<string, CTexture*> textureMapper;
 	map<string, uint32_t> textureOffset;
 	map<string, uint32_t> textureSize;
@@ -367,12 +367,12 @@ bool CMeshLoader::SaveAvatar(const string& filename, CMeshData* meshData) {
 	}
 	CFileManager::CBinaryFile file(size);
 	CStreamWriter writer(file.contents, file.size);
-	// Ğ´ÎÄ¼şÍ·
+	// å†™æ–‡ä»¶å¤´
 	const uint16_t version = 0x0001;
 	writer.Write((unsigned char*)"AVATAR", 6);
 	writer << version << size;
 	writer << meshCount << jointCount << animCount << textureCount;
-	// Ğ´Íø¸ñÊı¾İ
+	// å†™ç½‘æ ¼æ•°æ®
 	for (uint32_t i = 0; i < meshCount; i++) {
 		CMesh* mesh = meshData->GetMesh(i);
 		uint8_t meshFlag = mesh->GetBindCount() > 0? 0x01: 0x00;
@@ -402,7 +402,7 @@ bool CMeshLoader::SaveAvatar(const string& filename, CMeshData* meshData) {
 			writer.SetValue((uint16_t&)vertices[1]);
 			writer.SetValue((uint16_t&)vertices[2]);
 		}
-		// ²ÄÖÊÊı¾İ
+		// æè´¨æ•°æ®
 		CMaterial* mtl = mesh->GetMaterial();
 		char materialName[32] = { 0 };
 		strncpy(materialName, mtl->GetName().c_str(), 31);
@@ -415,7 +415,7 @@ bool CMeshLoader::SaveAvatar(const string& filename, CMeshData* meshData) {
 			writer << textureOffset[mtl->GetTexture(t)->GetFilePath()];
 		}
 	}
-	// Ğ´¹Ç÷ÀÊı¾İ
+	// å†™éª¨éª¼æ•°æ®
 	for (uint32_t i = 0; i < jointCount; i++) {
 		SJoint* joint = meshData->GetJoint(i);
 		char jointName[32] = { 0 };
@@ -441,7 +441,7 @@ bool CMeshLoader::SaveAvatar(const string& filename, CMeshData* meshData) {
 			writer << joint->physics->damping;
 		}
 	}
-	// Ğ´¶¯»­Êı¾İ
+	// å†™åŠ¨ç”»æ•°æ®
 	for (uint32_t i = 0; i < jointCount; i++) {
 		SJoint* joint = meshData->GetJoint(i);
 		uint32_t numKeyRot = joint->keyRot.size();
@@ -461,7 +461,7 @@ bool CMeshLoader::SaveAvatar(const string& filename, CMeshData* meshData) {
 			writer << joint->keyPos[k].param[2];
 		}
 	}
-	// Ğ´¶¯»­ĞÅÏ¢
+	// å†™åŠ¨ç”»ä¿¡æ¯
 	for (uint32_t i = 0; i < animCount; i++) {
 		char animationName[32] = { 0 };
 		strncpy(animationName, meshData->GetAnimationName(i).c_str(), 31);
@@ -470,7 +470,7 @@ bool CMeshLoader::SaveAvatar(const string& filename, CMeshData* meshData) {
 		float endTime = meshData->GetAnimationEndTime(i);
 		writer << beginTime << endTime;
 	}
-	// Ğ´ÎÆÀíÊı¾İ
+	// å†™çº¹ç†æ•°æ®
 	for (iter = textureMapper.begin(); iter != textureMapper.end(); ++iter) {
 		string ext = CStringUtil::UpperCase(CFileManager::GetExtension(iter->first));
 		uint32_t fileSize = textureSize[iter->first];
@@ -502,7 +502,7 @@ bool CMeshLoader::SaveAvatar(const string& filename, CMeshData* meshData) {
 }
 
 /**
-* ×¢²áÄÚÖÃ¼ÓÔØÆ÷
+* æ³¨å†Œå†…ç½®åŠ è½½å™¨
 */
 void CMeshLoader::RegisterLoader() {
 	CMeshLoader* basicLoader = new CMeshLoaderBasic();

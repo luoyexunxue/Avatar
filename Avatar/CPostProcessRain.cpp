@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÷‹» ∑Ê. All rights reserved.
+// Copyright (c) 2020 Âë®‰ªÅÈîã. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CPostProcessRain.h"
@@ -8,7 +8,7 @@
 #include <cstdlib>
 
 /**
-* ≥ı ºªØ∫Û¥¶¿Ì∂‘œÛ
+* ÂàùÂßãÂåñÂêéÂ§ÑÁêÜÂØπË±°
 */
 bool CPostProcessRain::Init(int width, int height) {
 	const char* fragShader = "\
@@ -44,7 +44,7 @@ bool CPostProcessRain::Init(int width, int height) {
 			}\
 			fragColor = vec4(color, 1.0);\
 		}";
-	// ¥¥Ω®◊≈…´∆˜”ÎŒ∆¿Ì
+	// ÂàõÂª∫ÁùÄËâ≤Âô®‰∏éÁ∫πÁêÜ
 	CShaderManager* pShaderMgr = CEngine::GetShaderManager();
 	CTextureManager* pTextureMgr = CEngine::GetTextureManager();
 	m_pPostProcessShader = pShaderMgr->Create("postprocess_rain", GetVertexShader(), fragShader);
@@ -61,14 +61,14 @@ bool CPostProcessRain::Init(int width, int height) {
 }
 
 /**
-* ‰÷»æ«¯”Ú¥Û–°∏ƒ±‰
+* Ê∏≤ÊüìÂå∫ÂüüÂ§ßÂ∞èÊîπÂèò
 */
 void CPostProcessRain::Resize(int width, int height) {
 	CEngine::GetTextureManager()->Resize(m_pRenderTexture, width, height);
 }
 
 /**
-* œ˙ªŸ∫Û¥¶¿Ì∂‘œÛ
+* ÈîÄÊØÅÂêéÂ§ÑÁêÜÂØπË±°
 */
 void CPostProcessRain::Destroy() {
 	CEngine::GetTextureManager()->Drop(m_pNoiseTexture);
@@ -77,7 +77,7 @@ void CPostProcessRain::Destroy() {
 }
 
 /**
-* ”¶”√µ±«∞∫Û¥¶¿Ì
+* Â∫îÁî®ÂΩìÂâçÂêéÂ§ÑÁêÜ
 */
 void CPostProcessRain::Apply(CTexture* target, CMesh* mesh) {
 	CEngine::GetGraphicsManager()->SetRenderTarget(target, 0, true, true, true);

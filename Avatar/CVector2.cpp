@@ -1,19 +1,19 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CVector2.h"
 #include <cmath>
 
 /**
-* ¾²Ì¬³£Á¿
+* é™æ€å¸¸é‡
 */
 const CVector2 CVector2::Zero(0.0f, 0.0f);
 const CVector2 CVector2::X(1.0f, 0.0f);
 const CVector2 CVector2::Y(0.0f, 1.0f);
 
 /**
-* ¹¹Ôìº¯Êı
+* æ„é€ å‡½æ•°
 */
 CVector2::CVector2() {
 	m_fValue[0] = 0;
@@ -21,7 +21,7 @@ CVector2::CVector2() {
 }
 
 /**
-* ¸´ÖÆ¹¹Ôìº¯Êı
+* å¤åˆ¶æ„é€ å‡½æ•°
 */
 CVector2::CVector2(const CVector2& vector) {
 	m_fValue[0] = vector.m_fValue[0];
@@ -29,7 +29,7 @@ CVector2::CVector2(const CVector2& vector) {
 }
 
 /**
-* ¹¹Ôìº¯Êı
+* æ„é€ å‡½æ•°
 */
 CVector2::CVector2(float val) {
 	m_fValue[0] = val;
@@ -37,7 +37,7 @@ CVector2::CVector2(float val) {
 }
 
 /**
-* ¹¹Ôìº¯Êı
+* æ„é€ å‡½æ•°
 */
 CVector2::CVector2(const float vector[2]) {
 	m_fValue[0] = vector[0];
@@ -45,7 +45,7 @@ CVector2::CVector2(const float vector[2]) {
 }
 
 /**
-* ¹¹Ôìº¯Êı
+* æ„é€ å‡½æ•°
 */
 CVector2::CVector2(float x, float y) {
 	m_fValue[0] = x;
@@ -53,7 +53,7 @@ CVector2::CVector2(float x, float y) {
 }
 
 /**
-* ¹¹Ôìº¯Êı
+* æ„é€ å‡½æ•°
 */
 CVector2::CVector2(int x, int y) {
 	m_fValue[0] = static_cast<float>(x);
@@ -61,7 +61,7 @@ CVector2::CVector2(int x, int y) {
 }
 
 /**
-* ÉèÖÃÏòÁ¿Öµ
+* è®¾ç½®å‘é‡å€¼
 */
 void CVector2::SetValue(const CVector2& vector) {
 	m_fValue[0] = vector.m_fValue[0];
@@ -69,7 +69,7 @@ void CVector2::SetValue(const CVector2& vector) {
 }
 
 /**
-* ÉèÖÃÏòÁ¿Öµ
+* è®¾ç½®å‘é‡å€¼
 */
 void CVector2::SetValue(const float vector[2]) {
 	m_fValue[0] = vector[0];
@@ -77,7 +77,7 @@ void CVector2::SetValue(const float vector[2]) {
 }
 
 /**
-* ÉèÖÃÏòÁ¿Öµ
+* è®¾ç½®å‘é‡å€¼
 */
 void CVector2::SetValue(float x, float y) {
 	m_fValue[0] = x;
@@ -85,7 +85,7 @@ void CVector2::SetValue(float x, float y) {
 }
 
 /**
-* ×ª»»Îªµ¥Î»ÏòÁ¿
+* è½¬æ¢ä¸ºå•ä½å‘é‡
 */
 CVector2& CVector2::Normalize() {
 	float len = Length();
@@ -97,7 +97,7 @@ CVector2& CVector2::Normalize() {
 }
 
 /**
-* ¼ÓÖ¸¶¨Öµ
+* åŠ æŒ‡å®šå€¼
 */
 CVector2& CVector2::Add(const CVector2& vector) {
 	m_fValue[0] += vector.m_fValue[0];
@@ -106,7 +106,7 @@ CVector2& CVector2::Add(const CVector2& vector) {
 }
 
 /**
-* ¼ÓÖ¸¶¨Öµ
+* åŠ æŒ‡å®šå€¼
 */
 CVector2& CVector2::Add(const float vector[2]) {
 	m_fValue[0] += vector[0];
@@ -115,7 +115,7 @@ CVector2& CVector2::Add(const float vector[2]) {
 }
 
 /**
-* ¼ÓÖ¸¶¨Öµ
+* åŠ æŒ‡å®šå€¼
 */
 CVector2& CVector2::Add(float x, float y) {
 	m_fValue[0] += x;
@@ -124,7 +124,7 @@ CVector2& CVector2::Add(float x, float y) {
 }
 
 /**
-* ¼õÖ¸¶¨Öµ
+* å‡æŒ‡å®šå€¼
 */
 CVector2& CVector2::Sub(const CVector2& vector) {
 	m_fValue[0] -= vector.m_fValue[0];
@@ -133,7 +133,7 @@ CVector2& CVector2::Sub(const CVector2& vector) {
 }
 
 /**
-* ¼õÖ¸¶¨Öµ
+* å‡æŒ‡å®šå€¼
 */
 CVector2& CVector2::Sub(const float vector[2]) {
 	m_fValue[0] -= vector[0];
@@ -142,7 +142,7 @@ CVector2& CVector2::Sub(const float vector[2]) {
 }
 
 /**
-* ¼õÖ¸¶¨Öµ
+* å‡æŒ‡å®šå€¼
 */
 CVector2& CVector2::Sub(float x, float y) {
 	m_fValue[0] -= x;
@@ -151,7 +151,7 @@ CVector2& CVector2::Sub(float x, float y) {
 }
 
 /**
-* Ëõ·ÅÖ¸¶¨Öµ
+* ç¼©æ”¾æŒ‡å®šå€¼
 */
 CVector2& CVector2::Scale(float scale) {
 	m_fValue[0] *= scale;
@@ -160,7 +160,7 @@ CVector2& CVector2::Scale(float scale) {
 }
 
 /**
-* Ëõ·ÅÖ¸¶¨Öµ
+* ç¼©æ”¾æŒ‡å®šå€¼
 */
 CVector2& CVector2::Scale(float sx, float sy) {
 	m_fValue[0] *= sx;
@@ -169,7 +169,7 @@ CVector2& CVector2::Scale(float sx, float sy) {
 }
 
 /**
-* È¡µÃÏòÁ¿µÄ³¤¶È
+* å–å¾—å‘é‡çš„é•¿åº¦
 */
 float CVector2::Length() const {
 	float length = m_fValue[0] * m_fValue[0] + m_fValue[1] * m_fValue[1];
@@ -178,21 +178,21 @@ float CVector2::Length() const {
 }
 
 /**
-* ÏòÁ¿µã³Ë
+* å‘é‡ç‚¹ä¹˜
 */
 float CVector2::DotProduct(const CVector2& vector) const {
 	return m_fValue[0] * vector.m_fValue[0] + m_fValue[1] * vector.m_fValue[1];
 }
 
 /**
-* ÏòÁ¿²æ³Ë
+* å‘é‡å‰ä¹˜
 */
 float CVector2::CrossProduct(const CVector2& vector) const {
 	return m_fValue[0] * vector.m_fValue[1] - m_fValue[1] * vector.m_fValue[0];
 }
 
 /**
-* ÏßĞÔ²åÖµ
+* çº¿æ€§æ’å€¼
 */
 CVector2 CVector2::Lerp(const CVector2& vector, float t) const {
 	float vTemp[2];
@@ -202,20 +202,20 @@ CVector2 CVector2::Lerp(const CVector2& vector, float t) const {
 }
 
 /**
-* »¡ĞÎ²åÖµ
+* å¼§å½¢æ’å€¼
 */
 CVector2 CVector2::Slerp(const CVector2& vector, float t) const {
 	CVector2 temp;
 	temp[0] = m_fValue[0] + (vector.m_fValue[0] - m_fValue[0]) * t;
 	temp[1] = m_fValue[1] + (vector.m_fValue[1] - m_fValue[1]) * t;
-	// ½øĞĞ³¤¶ÈµÄ²åÖµ
+	// è¿›è¡Œé•¿åº¦çš„æ’å€¼
 	float length1 = this->Length();
 	float length2 = vector.Length();
 	return temp.Scale((length1 + (length2 - length1) * t) / temp.Length());
 }
 
 /**
-* Çó·´ÉäÏòÁ¿£¬×¢ÒâÔ´ÏòÁ¿ºÍ·´ÉäÏòÁ¿·½Ïò¾ùÔÚ·¨ÏòÒ»²à
+* æ±‚åå°„å‘é‡ï¼Œæ³¨æ„æºå‘é‡å’Œåå°„å‘é‡æ–¹å‘å‡åœ¨æ³•å‘ä¸€ä¾§
 */
 CVector2 CVector2::Reflect(const CVector2& normal) const {
 	CVector2 n(normal);
@@ -225,14 +225,14 @@ CVector2 CVector2::Reflect(const CVector2& normal) const {
 }
 
 /**
-* ÖØÔØÔËËã·û []
+* é‡è½½è¿ç®—ç¬¦ []
 */
 float& CVector2::operator [] (int index) {
 	return m_fValue[index];
 }
 
 /**
-* ÖØÔØÔËËã·û ==
+* é‡è½½è¿ç®—ç¬¦ ==
 */
 bool CVector2::operator == (const CVector2& vector) const {
 	if (m_fValue[0] == vector.m_fValue[0] &&
@@ -243,14 +243,14 @@ bool CVector2::operator == (const CVector2& vector) const {
 }
 
 /**
-* ÖØÔØÔËËã·û !=
+* é‡è½½è¿ç®—ç¬¦ !=
 */
 bool CVector2::operator != (const CVector2& vector) const {
 	return !(*this == vector);
 }
 
 /**
-* ÖØÔØÔËËã·û +
+* é‡è½½è¿ç®—ç¬¦ +
 */
 CVector2 CVector2::operator + (const CVector2& vector) const {
 	float vTemp[2];
@@ -260,7 +260,7 @@ CVector2 CVector2::operator + (const CVector2& vector) const {
 }
 
 /**
-* ÖØÔØÔËËã·û -
+* é‡è½½è¿ç®—ç¬¦ -
 */
 CVector2 CVector2::operator - (const CVector2& vector) const {
 	float vTemp[2];
@@ -270,7 +270,7 @@ CVector2 CVector2::operator - (const CVector2& vector) const {
 }
 
 /**
-* ÖØÔØÔËËã·û *
+* é‡è½½è¿ç®—ç¬¦ *
 */
 CVector2 CVector2::operator * (float factor) const {
 	float vTemp[2];
@@ -280,7 +280,7 @@ CVector2 CVector2::operator * (float factor) const {
 }
 
 /**
-* ÖØÔØÔËËã·û /
+* é‡è½½è¿ç®—ç¬¦ /
 */
 CVector2 CVector2::operator / (float factor) const {
 	float vTemp[2];
@@ -291,7 +291,7 @@ CVector2 CVector2::operator / (float factor) const {
 }
 
 /**
-* ÖØÔØÔËËã·û +=
+* é‡è½½è¿ç®—ç¬¦ +=
 */
 CVector2& CVector2::operator += (const CVector2& vector) {
 	m_fValue[0] += vector.m_fValue[0];
@@ -300,7 +300,7 @@ CVector2& CVector2::operator += (const CVector2& vector) {
 }
 
 /**
-* ÖØÔØÔËËã·û -=
+* é‡è½½è¿ç®—ç¬¦ -=
 */
 CVector2& CVector2::operator -= (const CVector2& vector) {
 	m_fValue[0] -= vector.m_fValue[0];
@@ -309,7 +309,7 @@ CVector2& CVector2::operator -= (const CVector2& vector) {
 }
 
 /**
-* ÖØÔØÔËËã·û *=
+* é‡è½½è¿ç®—ç¬¦ *=
 */
 CVector2& CVector2::operator *= (float factor) {
 	m_fValue[0] *= factor;
@@ -318,7 +318,7 @@ CVector2& CVector2::operator *= (float factor) {
 }
 
 /**
-* ÖØÔØÔËËã·û /=
+* é‡è½½è¿ç®—ç¬¦ /=
 */
 CVector2& CVector2::operator /= (float factor) {
 	factor = 1.0f / factor;

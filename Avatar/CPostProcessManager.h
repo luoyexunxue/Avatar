@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CPOSTPROCESSMANAGER_H_
@@ -18,68 +18,64 @@ using std::map;
 using std::list;
 
 /**
-* @brief Í¼Ïñºó´¦Àí¹ÜÀíÆ÷
+* @brief å›¾åƒåå¤„ç†ç®¡ç†å™¨
 */
 class AVATAR_EXPORT CPostProcessManager {
 public:
-	//! »ñÈ¡¹ÜÀíÆ÷ÊµÀı
+	//! è·å–ç®¡ç†å™¨å®ä¾‹
 	static CPostProcessManager* GetInstance() {
 		if (m_pInstance) return m_pInstance;
 		m_pInstance = new CPostProcessManager();
 		return m_pInstance;
 	}
-	//! ÊµÀıÏú»Ù
+	//! å®ä¾‹é”€æ¯
 	void Destroy();
 
-	//! ×¢²áºó´¦Àí
+	//! æ³¨å†Œåå¤„ç†
 	bool Register(const string& name, CPostProcess* postProcess);
-	//! ¸½¼Ó»òÈ¡ÏûÖ¸¶¨µÄÍ¼Ïñºó´¦Àí
+	//! é™„åŠ æˆ–å–æ¶ˆæŒ‡å®šçš„å›¾åƒåå¤„ç†
 	bool Enable(const string& name, bool enable);
-	//! Ö¸¶¨µÄºó´¦ÀíÊÇ·ñÆôÓÃ
+	//! æŒ‡å®šçš„åå¤„ç†æ˜¯å¦å¯ç”¨
 	bool IsEnabled(const string& name);
-	//! »ñÈ¡ÒÑ×¢²áµÄºó´¦ÀíÁĞ±í
+	//! è·å–å·²æ³¨å†Œçš„åå¤„ç†åˆ—è¡¨
 	void GetPostProcessList(vector<string>& postList);
 
-	//! ×¼±¸ºó´¦Àí
-	bool PrepareFrame(CTexture* renderTarget);
-	//! ½øĞĞºó´¦Àí
+	//! å‡†å¤‡åå¤„ç†
+	bool PrepareFrame(CTexture* renderTarget, int width, int height);
+	//! è¿›è¡Œåå¤„ç†
 	void ApplyFrame();
-	//! ¸üĞÂºó´¦ÀíÍ¼Æ¬´óĞ¡
-	void UpdateSize(int width, int height);
 
-	//! ÉèÖÃºó´¦Àí²ÎÊı int
+	//! è®¾ç½®åå¤„ç†å‚æ•° int
 	void SetProcessParam(const string& name, const string& key, int value);
-	//! ÉèÖÃºó´¦Àí²ÎÊı float
+	//! è®¾ç½®åå¤„ç†å‚æ•° float
 	void SetProcessParam(const string& name, const string& key, float value);
-	//! ÉèÖÃºó´¦Àí²ÎÊı vec2
+	//! è®¾ç½®åå¤„ç†å‚æ•° vec2
 	void SetProcessParam(const string& name, const string& key, const CVector2& value);
-	//! ÉèÖÃºó´¦Àí²ÎÊı vec3
+	//! è®¾ç½®åå¤„ç†å‚æ•° vec3
 	void SetProcessParam(const string& name, const string& key, const CVector3& value);
-	//! ÉèÖÃºó´¦Àí²ÎÊı mat4
+	//! è®¾ç½®åå¤„ç†å‚æ•° mat4
 	void SetProcessParam(const string& name, const string& key, const CMatrix4& value);
-	//! ÉèÖÃºó´¦Àí²ÎÊı float[]
+	//! è®¾ç½®åå¤„ç†å‚æ•° float[]
 	void SetProcessParam(const string& name, const string& key, const float value[], int size);
 
 private:
 	CPostProcessManager();
 	~CPostProcessManager();
 
-	//! ×¢²áÄÚÖÃºó´¦Àí
+	//! æ³¨å†Œå†…ç½®åå¤„ç†
 	bool RegisterDefault(const string& name);
 
 private:
-	//! ºó´¦ÀíÆÁÄ»´óĞ¡
-	int m_iScreenSize[2];
-	//! ±£´æµÄÔ´äÖÈ¾Ä¿±ê
+	//! ä¿å­˜çš„æºæ¸²æŸ“ç›®æ ‡
 	CTexture* m_pSavedRenderTarget;
-	//! ºó´¦ÀíÁĞ±í
+	//! åå¤„ç†åˆ—è¡¨
 	map<string, CPostProcess*> m_mapPostProcess;
-	//! ÆôÓÃµÄºó´¦Àí
+	//! å¯ç”¨çš„åå¤„ç†
 	list<CPostProcess*> m_lstEnabledPostProcess;
-	//! ÓÃÓÚºó´¦ÀíäÖÈ¾µÄÍø¸ñ¶ÔÏó
+	//! ç”¨äºåå¤„ç†æ¸²æŸ“çš„ç½‘æ ¼å¯¹è±¡
 	CMesh* m_pRenderMesh;
 
-	//! ÊµÀı
+	//! å®ä¾‹
 	static CPostProcessManager* m_pInstance;
 };
 

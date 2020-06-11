@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CPERLINNOISE_H_
@@ -7,12 +7,12 @@
 #include <cmath>
 
 /**
-* @brief Perlin ÔëÉù·¢ÉúÆ÷
+* @brief Perlin å™ªå£°å‘ç”Ÿå™¨
 */
 class CPerlinNoise {
 public:
 	/**
-	* »ñÈ¡µã X,Y µÄ Perlin ÔëÉùÖµ
+	* è·å–ç‚¹ X,Y çš„ Perlin å™ªå£°å€¼
 	*/
 	float GetValue(float x, float y) {
 		const int octaves = 3;
@@ -28,7 +28,7 @@ public:
 
 private:
 	/**
-	* Éú³ÉÔëÉù
+	* ç”Ÿæˆå™ªå£°
 	*/
 	inline float Noise(int x, int y) {
 		x = x % 25;
@@ -38,7 +38,7 @@ private:
 		return (1.0f - ((n * (n * n * 15731 + 789221) + 1376312589) & 0x7fffffff) / 1073741824.0f); 
 	}
 	/**
-	* ¹â»¬ÔëÉù
+	* å…‰æ»‘å™ªå£°
 	*/
 	inline float SmoothNoise(int x, int y) {
 		float corners = (Noise(x-1, y-1) + Noise(x+1, y-1) + Noise(x-1, y+1) + Noise(x+1, y+1)) / 16.0f;
@@ -47,14 +47,14 @@ private:
 		return (corners + sides + center);
 	}
 	/**
-	* ÓàÏÒ²åÖµº¯Êı
+	* ä½™å¼¦æ’å€¼å‡½æ•°
 	*/
 	inline float CosineInterpolate(float a, float b, float x) {
 		float f = (1.0f - cosf(x * 3.1415927f)) * 0.5f;
 		return a * (1.0f - f) + b * f;
 	}
 	/**
-	* Éú³É²åÖµÔëÉù
+	* ç”Ÿæˆæ’å€¼å™ªå£°
 	*/
 	inline float InterpolatedNoise(float x, float y) {
 		int ix = static_cast<int>(x < 0 ? x - 1 : x);

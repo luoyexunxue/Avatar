@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CGUIPANEL_H_
@@ -7,25 +7,25 @@
 #include "CGuiEnvironment.h"
 
 /**
-* @brief GUI Ãæ°åÈİÆ÷
+* @brief GUI é¢æ¿å®¹å™¨
 */
 class CGuiPanel: public CGuiEnvironment::CGuiElement {
 public:
-	//! ¹¹Ôìº¯Êı
+	//! æ„é€ å‡½æ•°
 	CGuiPanel(const string& name);
-	//! ÍÏ¶¯²Ù×÷
+	//! æ‹–åŠ¨æ“ä½œ
 	virtual bool Drag(bool release, int dx, int dy, CRectangle& region);
-	//! ÊôĞÔÉèÖÃ
+	//! å±æ€§è®¾ç½®
 	virtual bool SetAttribute(const string& name, const string& value);
-	//! »ñÈ¡ÊôĞÔ
+	//! è·å–å±æ€§
 	virtual string GetAttribute(const string& name);
-	//! ¿Ø¼ş»æÖÆ
+	//! æ§ä»¶ç»˜åˆ¶
 	virtual void Draw(const CRectangle& rect, unsigned char* buffer);
 
 private:
-	//! Æ«ÒÆÁ¿
+	//! åç§»é‡
 	int m_iCurrentOffset[2];
-	//! ±³¾°ÑÕÉ«
+	//! èƒŒæ™¯é¢œè‰²
 	unsigned char m_cBackColor[4];
 };
 

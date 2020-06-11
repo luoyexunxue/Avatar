@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CPOSTPROCESSEMBOSS_H_
@@ -7,7 +7,7 @@
 #include "CPostProcess.h"
 
 /**
-* @brief ¸¡µñĞ§¹ûºó´¦Àí
+* @brief æµ®é›•æ•ˆæœåå¤„ç†
 */
 class CPostProcessEmboss: public CPostProcess {
 public:

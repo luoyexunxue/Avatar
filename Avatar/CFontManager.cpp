@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CFontManager.h"
@@ -15,13 +15,13 @@
 #endif
 
 /**
-* ¹¹Ôìº¯Êı
+* æ„é€ å‡½æ•°
 */
 CFontManager::CFontManager() {
 	m_pFreeTypeLib = 0;
 	m_pCurrentFace = 0;
 	m_iCurrentSize = 16;
-	// Ä¬ÈÏ»º´æ´óĞ¡Îª100
+	// é»˜è®¤ç¼“å­˜å¤§å°ä¸º100
 	m_iCacheSize = 100;
 	m_pLRUCacheHead = new SCacheEntry();
 	m_pLRUCacheTail = new SCacheEntry();
@@ -29,24 +29,24 @@ CFontManager::CFontManager() {
 	m_pLRUCacheHead->next = m_pLRUCacheTail;
 	m_pLRUCacheTail->next = 0;
 	m_pLRUCacheTail->prev = m_pLRUCacheHead;
-	// ³õÊ¼»¯ FreeType ¿â
+	// åˆå§‹åŒ– FreeType åº“
 	FT_Init_FreeType(&m_pFreeTypeLib);
 }
 
 /**
-* Îö¹¹º¯Êı
+* ææ„å‡½æ•°
 */
 CFontManager::~CFontManager() {
 	m_pInstance = 0;
 }
 
 /**
-* µ¥ÀıÊµÀı
+* å•ä¾‹å®ä¾‹
 */
 CFontManager* CFontManager::m_pInstance = 0;
 
 /**
-* Ïú»Ù×ÖÌå¿â¹ÜÀíÆ÷
+* é”€æ¯å­—ä½“åº“ç®¡ç†å™¨
 */
 void CFontManager::Destroy() {
 	Clear();
@@ -57,23 +57,23 @@ void CFontManager::Destroy() {
 }
 
 /**
-* ¼ÓÔØ×ÖÌå¿â
-* @param file ×ÖÌåÎÄ¼şÃû
-* @param name ×ÖÌå¿âÃû³Æ
-* @return ¼ÓÔØ³É¹¦·µ»Ø true
+* åŠ è½½å­—ä½“åº“
+* @param file å­—ä½“æ–‡ä»¶å
+* @param name å­—ä½“åº“åç§°
+* @return åŠ è½½æˆåŠŸè¿”å› true
 */
 bool CFontManager::Load(const string& file, const string& name) {
-	// ÊÇ·ñÒÑ¾­´æÔÚ
+	// æ˜¯å¦å·²ç»å­˜åœ¨
 	if (UseFont(name)) return true;
 
-	// ¶ÁÈ¡ÎÄ¼ş
+	// è¯»å–æ–‡ä»¶
 	CFileManager::CBinaryFile* pFile = new CFileManager::CBinaryFile();
 	if (!CEngine::GetFileManager()->ReadFile(file, pFile)) {
 		CLog::Error("Read font file '%s' error", file.c_str());
 		delete pFile;
 		return false;
 	}
-	// ¶ÁÈ¡×ÖÌå¿â
+	// è¯»å–å­—ä½“åº“
 	FT_Face face;
 	FT_Error err = FT_New_Memory_Face(m_pFreeTypeLib, pFile->contents, pFile->size, 0, &face);
 	if (err == FT_Err_Unknown_File_Format) {
@@ -85,9 +85,9 @@ bool CFontManager::Load(const string& file, const string& name) {
 		delete pFile;
 		return false;
 	}
-	// Ä¬ÈÏ×ÖÌå´óĞ¡
+	// é»˜è®¤å­—ä½“å¤§å°
 	FT_Set_Char_Size(face, m_iCurrentSize << 6, 0, 96, 0);
-	// ¼ÓÈëµ½×ÖÌå¼¯
+	// åŠ å…¥åˆ°å­—ä½“é›†
 	SFontFace font;
 	font.face = face;
 	font.data = pFile;
@@ -97,7 +97,7 @@ bool CFontManager::Load(const string& file, const string& name) {
 }
 
 /**
-* Çå¿ÕËùÓĞÒÑ¼ÓÔØ×ÖÌå¿â
+* æ¸…ç©ºæ‰€æœ‰å·²åŠ è½½å­—ä½“åº“
 */
 void CFontManager::Clear() {
 	map<string, SFontFace>::iterator iter = m_mapFontFace.begin();
@@ -112,12 +112,12 @@ void CFontManager::Clear() {
 }
 
 /**
-* ÉèÖÃ»º´æ´óĞ¡£¬»º´æ¿ÉÒÔ¼õÉÙ×ÖÌå»æÖÆÊ±¼ä
-* @param size LRU »º´æ´óĞ¡
+* è®¾ç½®ç¼“å­˜å¤§å°ï¼Œç¼“å­˜å¯ä»¥å‡å°‘å­—ä½“ç»˜åˆ¶æ—¶é—´
+* @param size LRU ç¼“å­˜å¤§å°
 */
 void CFontManager::SetCacheSize(int size) {
 	m_iCacheSize = size;
-	// ĞèÒªÉ¾³ıµÄÔªËØ¸öÊı
+	// éœ€è¦åˆ é™¤çš„å…ƒç´ ä¸ªæ•°
 	int count = static_cast<int>(m_mapLRUCache.size()) - size;
 	if (count > 0) {
 		SCacheEntry* entry = m_pLRUCacheTail->prev;
@@ -133,8 +133,8 @@ void CFontManager::SetCacheSize(int size) {
 }
 
 /**
-* Ê¹ÓÃ×ÖÌå¿â
-* @param name ×ÖÌå¿âÃû³Æ
+* ä½¿ç”¨å­—ä½“åº“
+* @param name å­—ä½“åº“åç§°
 * @see CFontManager::Load
 */
 bool CFontManager::UseFont(const string& name) {
@@ -147,8 +147,8 @@ bool CFontManager::UseFont(const string& name) {
 }
 
 /**
-* ÉèÖÃ×ÖÌå´óĞ¡
-* @param size ×ÖÌå´óĞ¡
+* è®¾ç½®å­—ä½“å¤§å°
+* @param size å­—ä½“å¤§å°
 */
 void CFontManager::SetSize(int size){
 	if (m_pCurrentFace && m_iCurrentSize != size) {
@@ -158,10 +158,10 @@ void CFontManager::SetSize(int size){
 }
 
 /**
-* ¼ÆËãËùĞèÍ¼Æ¬´óĞ¡
-* @param text UNICODE ÎÄ±¾
-* @param width ÎÄ±¾Õ¼ÓÃµÄÏñËØ¿í¶È
-* @param height ÎÄ±¾Õ¼ÓÃµÄÏñËØ¸ß¶È
+* è®¡ç®—æ‰€éœ€å›¾ç‰‡å¤§å°
+* @param text UNICODE æ–‡æœ¬
+* @param width æ–‡æœ¬å ç”¨çš„åƒç´ å®½åº¦
+* @param height æ–‡æœ¬å ç”¨çš„åƒç´ é«˜åº¦
 */
 void CFontManager::TextSize(const wchar_t* text, int* width, int* height) {
 	size_t count = wcslen(text);
@@ -170,20 +170,20 @@ void CFontManager::TextSize(const wchar_t* text, int* width, int* height) {
 		if (height) *height = 0;
 		return;
 	}
-	// ×Ö·û´®Õ¼ÓÃ¿í¸ß
+	// å­—ç¬¦ä¸²å ç”¨å®½é«˜
 	int maxWidth = 0;
 	int maxHeight = 0;
 	int rowWidth = 0;
 	int rowHeight = static_cast<int>(m_pCurrentFace->size->metrics.height >> 6);
 	for (size_t i = 0; i < count; i++) {
-		// ´¦Àí»»ĞĞ·û
+		// å¤„ç†æ¢è¡Œç¬¦
 		if (text[i] == (wchar_t)0x0A) {
 			maxWidth = std::max(maxWidth, rowWidth);
 			maxHeight += rowHeight;
 			rowWidth = 0;
 			continue;
 		}
-		// ¼ÇÂ¼×Ö·û´®Õ¼ÓÃ¿í¶È
+		// è®°å½•å­—ç¬¦ä¸²å ç”¨å®½åº¦
 		if (FT_Load_Char(m_pCurrentFace, text[i], FT_LOAD_RENDER)) continue;
 		rowWidth += static_cast<int>(m_pCurrentFace->glyph->advance.x >> 6);
 	}
@@ -192,27 +192,27 @@ void CFontManager::TextSize(const wchar_t* text, int* width, int* height) {
 }
 
 /**
-* »æÖÆ»Ò¶ÈÍ¼
-* @param text UNICODE ÎÄ±¾
-* @param image Ö¸¶¨»æÖÆµÄÍ¼Æ¬
-* @param align ¶ÔÆë·½Ê½
-* @param stretch À­Éìµ½Í¼Æ¬´óĞ¡²¢±£³Ö¸ß¿í±È
+* ç»˜åˆ¶ç°åº¦å›¾
+* @param text UNICODE æ–‡æœ¬
+* @param image æŒ‡å®šç»˜åˆ¶çš„å›¾ç‰‡
+* @param align å¯¹é½æ–¹å¼
+* @param stretch æ‹‰ä¼¸åˆ°å›¾ç‰‡å¤§å°å¹¶ä¿æŒé«˜å®½æ¯”
 */
 void CFontManager::DrawText(const wchar_t* text, CTextImage* image, Alignment align, bool stretch) {
-	// ÎÄ±¾ËùÕ¼´óĞ¡
+	// æ–‡æœ¬æ‰€å å¤§å°
 	TextSize(text, &image->textWidth, &image->textHeight);
 	if (!image->data) {
 		image->width = image->textWidth;
 		image->height = image->textHeight;
 		image->data = new unsigned char[image->width * image->height];
 	}
-	// ¼ì²é×ÖÌåºÍ×Ö·û´®
+	// æ£€æŸ¥å­—ä½“å’Œå­—ç¬¦ä¸²
 	size_t count = wcslen(text);
 	if (!m_pCurrentFace || count == 0) {
 		memset(image->data, 0, image->width * image->height);
 		return;
 	}
-	// ÓÅÏÈ¶ÁÈ¡»º´æ
+	// ä¼˜å…ˆè¯»å–ç¼“å­˜
 	CTextImage* canvas = 0;
 	if (CacheGet(text, canvas)) {
 		SetAlignment(canvas, image, align, stretch);
@@ -222,22 +222,22 @@ void CFontManager::DrawText(const wchar_t* text, CTextImage* image, Alignment al
 	canvas->textWidth = image->textWidth;
 	canvas->textHeight = image->textHeight;
 	memset(canvas->data, 0, canvas->width * canvas->height);
-	// ×Ö·û´®Õ¼ÓÃ¿í¸ß
+	// å­—ç¬¦ä¸²å ç”¨å®½é«˜
 	int maxWidth = 0;
 	int maxHeight = 0;
 	int rowWidth = 0;
 	int rowHeight = static_cast<int>(m_pCurrentFace->size->metrics.height >> 6);
 	for (size_t i = 0; i < count; i++) {
-		// ´¦Àí»»ĞĞ·û
+		// å¤„ç†æ¢è¡Œç¬¦
 		if (text[i] == (wchar_t)0x0A) {
 			maxWidth = std::max(maxWidth, rowWidth);
 			maxHeight += rowHeight;
 			rowWidth = 0;
 			continue;
 		}
-		// äÖÈ¾µ¥¸ö×Ö·û
+		// æ¸²æŸ“å•ä¸ªå­—ç¬¦
 		if (FT_Load_Char(m_pCurrentFace, text[i], FT_LOAD_RENDER)) continue;
-		// ½«äÖÈ¾µÄ×Ö·û¸´ÖÆµ½ canvas->data »º³åÇø
+		// å°†æ¸²æŸ“çš„å­—ç¬¦å¤åˆ¶åˆ° canvas->data ç¼“å†²åŒº
 		FT_GlyphSlot g = m_pCurrentFace->glyph;
 		int xPos = rowWidth + g->bitmap_left;
 		int yPos = maxHeight + static_cast<int>(m_pCurrentFace->size->metrics.ascender >> 6) - g->bitmap_top;
@@ -252,14 +252,14 @@ void CFontManager::DrawText(const wchar_t* text, CTextImage* image, Alignment al
 			memcpy(canvas->data + idx_dst, g->bitmap.buffer + idx_src, line_width);
 		}
 	}
-	// ½«Í¼Æ¬»º´æ
+	// å°†å›¾ç‰‡ç¼“å­˜
 	CachePut(text, canvas);
 	SetAlignment(canvas, image, align, stretch);
 }
 
 /**
-* »ñÈ¡¹ÜÀíµÄËùÓĞ×ÖÌå¿âÁĞ±í
-* @param fontList Êä³ö×ÖÌå¿âÁĞ±í
+* è·å–ç®¡ç†çš„æ‰€æœ‰å­—ä½“åº“åˆ—è¡¨
+* @param fontList è¾“å‡ºå­—ä½“åº“åˆ—è¡¨
 */
 void CFontManager::GetFontList(vector<string>& fontList) {
 	fontList.resize(m_mapFontFace.size());
@@ -272,19 +272,19 @@ void CFontManager::GetFontList(vector<string>& fontList) {
 }
 
 /**
-* ÉèÖÃ×Ö·û¶ÔÆë
-* @param src Ô´ÎÄ±¾»Ò¶ÈÍ¼
-* @param dst Ä¿±êÎÄ±¾»Ò¶ÈÍ¼
-* @param align ¶ÔÆë·½Ê½
-* @param stretch À­Éìµ½Í¼Æ¬´óĞ¡
+* è®¾ç½®å­—ç¬¦å¯¹é½
+* @param src æºæ–‡æœ¬ç°åº¦å›¾
+* @param dst ç›®æ ‡æ–‡æœ¬ç°åº¦å›¾
+* @param align å¯¹é½æ–¹å¼
+* @param stretch æ‹‰ä¼¸åˆ°å›¾ç‰‡å¤§å°
 */
 void CFontManager::SetAlignment(CTextImage* src, CTextImage* dst, Alignment align, bool stretch) {
 	if (stretch) {
-		// ÊÇ·ñ´¹Ö±·½ÏòÀ­Éìµ½Í¼Æ¬´óĞ¡£¨±£³Ö¿í¸ß±È£©
+		// æ˜¯å¦å‚ç›´æ–¹å‘æ‹‰ä¼¸åˆ°å›¾ç‰‡å¤§å°ï¼ˆä¿æŒå®½é«˜æ¯”ï¼‰
 		bool stretch_vertical = dst->textWidth * dst->height < dst->textHeight * dst->width;
 		const int target_width = stretch_vertical ? dst->height * dst->textWidth / dst->textHeight : dst->width;
 		const int target_height = stretch_vertical ? dst->height : dst->width * dst->textHeight / dst->textWidth;
-		// Ê¹ÓÃË«ÏßĞÔ²åÖµËõ·ÅÍ¼Æ¬
+		// ä½¿ç”¨åŒçº¿æ€§æ’å€¼ç¼©æ”¾å›¾ç‰‡
 		CTextImage* temp = new CTextImage(target_width, target_height);
 		const float fw = static_cast<float>(src->width - 1) / static_cast<float>(target_width - 1);
 		const float fh = static_cast<float>(src->height - 1) / static_cast<float>(target_height - 1);
@@ -298,7 +298,7 @@ void CFontManager::SetAlignment(CTextImage* src, CTextImage* dst, Alignment alig
 				int x1 = static_cast<int>(sx);
 				int x2 = x1 + 1 == src->width ? x1 : x1 + 1;
 				float u = sx - x1;
-				// ËÄ¸öµãÈ¨ÖØ
+				// å››ä¸ªç‚¹æƒé‡
 				float s1 = (1.0f - u) * (1.0f - v);
 				float s2 = (1.0f - u) * v;
 				float s3 = u * (1.0f - v);
@@ -316,7 +316,7 @@ void CFontManager::SetAlignment(CTextImage* src, CTextImage* dst, Alignment alig
 	}
 	int dx = dst->width - dst->textWidth;
 	int dy = dst->height - dst->textHeight;
-	// Ä¬ÈÏ×óÉÏ½Ç
+	// é»˜è®¤å·¦ä¸Šè§’
 	switch (align) {
 	case TOPLEFT: { dx = 0; dy = 0; } break;
 	case TOPCENTER: { dx /= 2; dy = 0; } break;
@@ -328,7 +328,7 @@ void CFontManager::SetAlignment(CTextImage* src, CTextImage* dst, Alignment alig
 	case BOTTOMCENTER: { dx /= 2; } break;
 	case BOTTOMRIGHT: break;
 	}
-	// ¸´ÖÆÎ»Í¼¿é£¬Ö÷ÒªÊÇ¶ÔÒ»¿éÎ»Í¼½øĞĞ¸´ÖÆ (dx, dy)
+	// å¤åˆ¶ä½å›¾å—ï¼Œä¸»è¦æ˜¯å¯¹ä¸€å—ä½å›¾è¿›è¡Œå¤åˆ¶ (dx, dy)
 	memset(dst->data, 0, dst->width * dst->height);
 	int imgW = std::min(dst->width, dst->textWidth);
 	int imgH = std::min(dst->height, dst->textHeight);
@@ -341,15 +341,15 @@ void CFontManager::SetAlignment(CTextImage* src, CTextImage* dst, Alignment alig
 			dst->data[dst->width * dsty + dstx] = src->data[src->width * srcy + srcx];
 		}
 	}
-	// É¾³ıÓÃÀ´Ëõ·Å´´½¨µÄÍ¼Æ¬
+	// åˆ é™¤ç”¨æ¥ç¼©æ”¾åˆ›å»ºçš„å›¾ç‰‡
 	if (stretch) delete src;
 }
 
 /**
-* »º´æäÖÈ¾½á¹û
-* @param text UNICODE ÎÄ±¾
-* @param image ÎÄ±¾»Ò¶ÈÍ¼
-* @return Èô»º´æ³É¹¦Ôò·µ»Øtrue
+* ç¼“å­˜æ¸²æŸ“ç»“æœ
+* @param text UNICODE æ–‡æœ¬
+* @param image æ–‡æœ¬ç°åº¦å›¾
+* @return è‹¥ç¼“å­˜æˆåŠŸåˆ™è¿”å›true
 */
 bool CFontManager::CachePut(const wchar_t* text, CTextImage* image) {
 	SCacheKey key;
@@ -357,7 +357,7 @@ bool CFontManager::CachePut(const wchar_t* text, CTextImage* image) {
 	key.face = m_pCurrentFace;
 	key.size = m_iCurrentSize;
 	SCacheEntry* entry = 0;
-	// ¼ì²éÊÇ·ñÒÑ¾­´æÔÚ
+	// æ£€æŸ¥æ˜¯å¦å·²ç»å­˜åœ¨
 	map<SCacheKey, SCacheEntry*>::iterator iter = m_mapLRUCache.find(key);
 	if (iter != m_mapLRUCache.end()) {
 		entry = iter->second;
@@ -377,7 +377,7 @@ bool CFontManager::CachePut(const wchar_t* text, CTextImage* image) {
 		entry->image = image;
 		m_mapLRUCache.insert(std::pair<SCacheKey, SCacheEntry*>(key, entry));
 	}
-	// ½«ÔªËØÒÆ¶¯µ½Í·²¿
+	// å°†å…ƒç´ ç§»åŠ¨åˆ°å¤´éƒ¨
 	entry->next = m_pLRUCacheHead->next;
 	entry->prev = m_pLRUCacheHead;
 	m_pLRUCacheHead->next = entry;
@@ -386,22 +386,22 @@ bool CFontManager::CachePut(const wchar_t* text, CTextImage* image) {
 }
 
 /**
-* È¡³ö»º´æÍ¼Æ¬
-* @param text UNICODE ÎÄ±¾
-* @param image ÎÄ±¾»Ò¶ÈÍ¼
-* @return Èô¶ÁÈ¡³É¹¦Ôò·µ»Øtrue
+* å–å‡ºç¼“å­˜å›¾ç‰‡
+* @param text UNICODE æ–‡æœ¬
+* @param image æ–‡æœ¬ç°åº¦å›¾
+* @return è‹¥è¯»å–æˆåŠŸåˆ™è¿”å›true
 */
 bool CFontManager::CacheGet(const wchar_t* text, CTextImage*& image) {
 	SCacheKey key;
 	key.text = text;
 	key.face = m_pCurrentFace;
 	key.size = m_iCurrentSize;
-	// ²éÕÒ»º´æ
+	// æŸ¥æ‰¾ç¼“å­˜
 	map<SCacheKey, SCacheEntry*>::iterator iter = m_mapLRUCache.find(key);
 	if (iter != m_mapLRUCache.end()) {
 		SCacheEntry* entry = iter->second;
 		image = entry->image;
-		// ¸üĞÂLRU»º´æÁ´±í
+		// æ›´æ–°LRUç¼“å­˜é“¾è¡¨
 		entry->prev->next = entry->next;
 		entry->next->prev = entry->prev;
 		entry->next = m_pLRUCacheHead->next;
@@ -414,7 +414,7 @@ bool CFontManager::CacheGet(const wchar_t* text, CTextImage*& image) {
 }
 
 /**
-* Çå¿ÕLRU»º´æ
+* æ¸…ç©ºLRUç¼“å­˜
 */
 void CFontManager::CacheClear() {
 	SCacheEntry* entry = m_pLRUCacheHead->next;

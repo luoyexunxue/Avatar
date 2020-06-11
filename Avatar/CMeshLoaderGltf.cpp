@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CMeshLoaderGltf.h"
@@ -10,7 +10,7 @@
 #include <algorithm>
 
 /**
-* ¼ÓÔØ GLTF Ä£ĞÍ
+* åŠ è½½ GLTF æ¨¡å‹
 */
 CMeshData* CMeshLoaderGltf::LoadFile(const string& filename, const string& type) {
 	CFileManager::CBinaryFile file;
@@ -27,7 +27,7 @@ CMeshData* CMeshLoaderGltf::LoadFile(const string& filename, const string& type)
 	m_mapLocalInv.clear();
 	m_mapBindInv.clear();
 	m_strBaseDir = CFileManager::GetDirectory(filename);
-	// ¶ş½øÖÆ glb ÎÄ¼ş
+	// äºŒè¿›åˆ¶ glb æ–‡ä»¶
 	if (isBinary) {
 		uint32_t chunkLength = *(uint32_t*)(data + 12);
 		uint32_t chunkType = *(uint32_t*)(data + 16);
@@ -47,11 +47,11 @@ CMeshData* CMeshLoaderGltf::LoadFile(const string& filename, const string& type)
 			}
 		}
 	}
-	// ½âÎö Json ¶ÔÏó
+	// è§£æ Json å¯¹è±¡
 	if (!m_cJsonParser.Parse(json, size)) return 0;
 	if (m_cJsonParser["asset"]["version"].ToString() != "2.0") return 0;
 	if (!m_cJsonParser.IsContain("scenes")) return 0;
-	// ½âÎö GLTF Êı¾İ
+	// è§£æ GLTF æ•°æ®
 	if (!isBinary) ReadBuffers();
 	CMatrix4 transform;
 	transform.RotateX(1.570796f);
@@ -68,7 +68,7 @@ CMeshData* CMeshLoaderGltf::LoadFile(const string& filename, const string& type)
 }
 
 /**
-* ¶ÁÈ¡¶ş½øÖÆ»º³åÇø
+* è¯»å–äºŒè¿›åˆ¶ç¼“å†²åŒº
 */
 void CMeshLoaderGltf::ReadBuffers() {
 	int count = m_cJsonParser["buffers"].GetCount();
@@ -101,7 +101,7 @@ void CMeshLoaderGltf::ReadBuffers() {
 }
 
 /**
-* ¶ÁÈ¡¹Ç÷ÀÃÉÆ¤Êı¾İ
+* è¯»å–éª¨éª¼è’™çš®æ•°æ®
 */
 void CMeshLoaderGltf::ReadSkin() {
 	if (!m_cJsonParser.IsContain("skins")) return;
@@ -110,7 +110,7 @@ void CMeshLoaderGltf::ReadSkin() {
 		CJsonParser& joints = skin["joints"];
 		if (skin.IsContain("skeleton")) m_setJoints.insert(std::pair<int, bool>(skin["skeleton"].ToInt(), false));
 		for (int j = 0; j < joints.GetCount(); j++) m_setJoints.insert(std::pair<int, bool>(joints[j].ToInt(), false));
-		// »ñÈ¡¹Ø½ÚµÄÄæ°ó¶¨¾ØÕó
+		// è·å–å…³èŠ‚çš„é€†ç»‘å®šçŸ©é˜µ
 		if (skin.IsContain("inverseBindMatrices")) {
 			CJsonParser& accessor = m_cJsonParser["accessors"][skin["inverseBindMatrices"].ToInt()];
 			CJsonParser& bufferView = m_cJsonParser["bufferViews"][accessor["bufferView"].ToInt()];
@@ -134,7 +134,7 @@ void CMeshLoaderGltf::ReadSkin() {
 }
 
 /**
-* ¶ÁÈ¡¹Ç÷À½Úµã
+* è¯»å–éª¨éª¼èŠ‚ç‚¹
 */
 void CMeshLoaderGltf::ReadJointNode(int index, const CMatrix4& matrix, SJoint* parent) {
 	CMatrix4 local;
@@ -171,7 +171,7 @@ void CMeshLoaderGltf::ReadJointNode(int index, const CMatrix4& matrix, SJoint* p
 }
 
 /**
-* ¶ÁÈ¡Íø¸ñ½Úµã
+* è¯»å–ç½‘æ ¼èŠ‚ç‚¹
 */
 void CMeshLoaderGltf::ReadMeshNode(int index, const CMatrix4& matrix) {
 	int mesh_index = -1;
@@ -216,7 +216,7 @@ void CMeshLoaderGltf::ReadMeshNode(int index, const CMatrix4& matrix) {
 }
 
 /**
-* ¶ÁÈ¡Íø¸ñ
+* è¯»å–ç½‘æ ¼
 */
 void CMeshLoaderGltf::ReadMesh(CJsonParser& mesh, const CMatrix4& matrix, map<int, int>& skinMapper) {
 	int primitive_count = mesh["primitives"].GetCount();
@@ -240,7 +240,7 @@ void CMeshLoaderGltf::ReadMesh(CJsonParser& mesh, const CMatrix4& matrix, map<in
 		}
 		AddTriangles(pMesh, mesh_indices);
 		AddVertices(pMesh, mesh_position, mesh_joints, mesh_weights, skinMapper);
-		// ÉèÖÃ¶¥µãÊôĞÔ
+		// è®¾ç½®é¡¶ç‚¹å±æ€§
 		if (mesh_normal >= 0) SetupVerticesNormal(pMesh, mesh_normal);
 		if (mesh_texcoord >= 0) SetupVerticesTexCoord(pMesh, mesh_texcoord);
 		if (mesh_color >= 0) SetupVerticesColor(pMesh, mesh_color);
@@ -252,7 +252,7 @@ void CMeshLoaderGltf::ReadMesh(CJsonParser& mesh, const CMatrix4& matrix, map<in
 }
 
 /**
-* ¶ÁÈ¡²ÄÖÊĞÅÏ¢
+* è¯»å–æè´¨ä¿¡æ¯
 */
 void CMeshLoaderGltf::ReadMaterial(int index, CMaterial* material, int* texcoord) {
 	CJsonParser& node = m_cJsonParser["materials"][index];
@@ -283,7 +283,7 @@ void CMeshLoaderGltf::ReadMaterial(int index, CMaterial* material, int* texcoord
 }
 
 /**
-* ¶ÁÈ¡ÎÆÀíÊı¾İ
+* è¯»å–çº¹ç†æ•°æ®
 */
 void CMeshLoaderGltf::ReadTexture(CJsonParser& texture, CMaterial* material) {
 	CJsonParser& image = m_cJsonParser["images"][texture["source"].ToInt()];
@@ -327,7 +327,7 @@ void CMeshLoaderGltf::ReadTexture(CJsonParser& texture, CMaterial* material) {
 }
 
 /**
-* ¶ÁÈ¡¶¯»­Êı¾İ
+* è¯»å–åŠ¨ç”»æ•°æ®
 */
 void CMeshLoaderGltf::ReadAnimation() {
 	if (!m_cJsonParser.IsContain("animations")) return;
@@ -391,7 +391,7 @@ void CMeshLoaderGltf::ReadAnimation() {
 }
 
 /**
-* Ìí¼ÓÍø¸ñÈı½ÇĞÎ
+* æ·»åŠ ç½‘æ ¼ä¸‰è§’å½¢
 */
 void CMeshLoaderGltf::AddTriangles(CMesh* mesh, int accessoIndex) {
 	CJsonParser& accessor = m_cJsonParser["accessors"][accessoIndex];
@@ -416,7 +416,7 @@ void CMeshLoaderGltf::AddTriangles(CMesh* mesh, int accessoIndex) {
 }
 
 /**
-* Ìí¼ÓÍø¸ñ¶¥µã
+* æ·»åŠ ç½‘æ ¼é¡¶ç‚¹
 */
 void CMeshLoaderGltf::AddVertices(CMesh* mesh, int position, int joints, int weights, map<int, int>& skinMapper) {
 	CJsonParser& accessor_pos = m_cJsonParser["accessors"][position];
@@ -486,7 +486,7 @@ void CMeshLoaderGltf::AddVertices(CMesh* mesh, int position, int joints, int wei
 }
 
 /**
-* ÉèÖÃ¶¥µã·¨Ïà
+* è®¾ç½®é¡¶ç‚¹æ³•ç›¸
 */
 void CMeshLoaderGltf::SetupVerticesNormal(CMesh* mesh, int accessorIndex) {
 	CJsonParser& accessor = m_cJsonParser["accessors"][accessorIndex];
@@ -509,7 +509,7 @@ void CMeshLoaderGltf::SetupVerticesNormal(CMesh* mesh, int accessorIndex) {
 }
 
 /**
-* ÉèÖÃ¶¥µãÎÆÀí×ø±ê
+* è®¾ç½®é¡¶ç‚¹çº¹ç†åæ ‡
 */
 void CMeshLoaderGltf::SetupVerticesTexCoord(CMesh* mesh, int accessorIndex) {
 	CJsonParser& accessor = m_cJsonParser["accessors"][accessorIndex];
@@ -546,7 +546,7 @@ void CMeshLoaderGltf::SetupVerticesTexCoord(CMesh* mesh, int accessorIndex) {
 }
 
 /**
-* ÉèÖÃ¶¥µãÑÕÉ«
+* è®¾ç½®é¡¶ç‚¹é¢œè‰²
 */
 void CMeshLoaderGltf::SetupVerticesColor(CMesh* mesh, int accessorIndex) {
 	CJsonParser& accessor = m_cJsonParser["accessors"][accessorIndex];

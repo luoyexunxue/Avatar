@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CSoundManager.h"
@@ -17,7 +17,7 @@
 #endif
 
 /**
-* ¹¹Ôìº¯Êı
+* æ„é€ å‡½æ•°
 */
 CSoundManager::CSoundManager() {
 	m_pCaptureDevice = 0;
@@ -26,19 +26,19 @@ CSoundManager::CSoundManager() {
 }
 
 /**
-* Îö¹¹º¯Êı
+* ææ„å‡½æ•°
 */
 CSoundManager::~CSoundManager() {
 	m_pInstance = 0;
 }
 
 /**
-* µ¥ÀıÊµÀı
+* å•ä¾‹å®ä¾‹
 */
 CSoundManager* CSoundManager::m_pInstance = 0;
 
 /**
-* Ïú»ÙÉùÒô¹ÜÀíÆ÷
+* é”€æ¯å£°éŸ³ç®¡ç†å™¨
 */
 void CSoundManager::Destroy() {
 	if (m_pCaptureDevice) StopRecord();
@@ -57,17 +57,17 @@ void CSoundManager::Destroy() {
 }
 
 /**
-* ´ÓÎÄ¼ş´´½¨ÒôÔ´
-* @param file ÒôÆµÎÄ¼şÂ·¾¶
+* ä»æ–‡ä»¶åˆ›å»ºéŸ³æº
+* @param file éŸ³é¢‘æ–‡ä»¶è·¯å¾„
 * @return SoundId
 */
 int CSoundManager::Create(const string& file) {
-	// Éú³ÉÒ»¸öÒôÔ´
+	// ç”Ÿæˆä¸€ä¸ªéŸ³æº
 	SSoundSource sourceItem;
 	sourceItem.soundId = 0;
 	sourceItem.bufferCount = 0;
 	alGenSources(1, &sourceItem.source);
-	// ¼ì²éÊÇ·ñÒÑ¾­ÔØÈëÏàÍ¬µÄÉùÒô×ÊÔ´
+	// æ£€æŸ¥æ˜¯å¦å·²ç»è½½å…¥ç›¸åŒçš„å£°éŸ³èµ„æº
 	for (size_t i = 0; i < m_vecBuffer.size(); i++) {
 		if (m_vecBuffer[i].file == file) {
 			sourceItem.bufferIndex[0] = i;
@@ -75,7 +75,7 @@ int CSoundManager::Create(const string& file) {
 			break;
 		}
 	}
-	// ÔØÈëÉùÒô×ÊÔ´
+	// è½½å…¥å£°éŸ³èµ„æº
 	if (sourceItem.bufferCount == 0) {
 		SSoundBuffer bufferItem;
 		bufferItem.file = file;
@@ -86,7 +86,7 @@ int CSoundManager::Create(const string& file) {
 			bufferItem.channels = pFile->channels;
 			bufferItem.sampleBits = pFile->sampleBits;
 			bufferItem.frequency = pFile->sampleRate;
-			// Í¨µÀºÍ²ÉÑùÎ»Êı
+			// é€šé“å’Œé‡‡æ ·ä½æ•°
 			ALenum format = AL_FORMAT_MONO8;
 			if (pFile->channels == 1 && pFile->sampleBits == 8) format = AL_FORMAT_MONO8;
 			else if (pFile->channels == 1 && pFile->sampleBits == 16) format = AL_FORMAT_MONO16;
@@ -99,7 +99,7 @@ int CSoundManager::Create(const string& file) {
 			}
 			delete pFile;
 		}
-		// ¼ÓÈëµ½ÁĞ±í
+		// åŠ å…¥åˆ°åˆ—è¡¨
 		sourceItem.bufferIndex[0] = m_vecBuffer.size();
 		sourceItem.bufferCount = 1;
 		m_vecBuffer.push_back(bufferItem);
@@ -107,56 +107,56 @@ int CSoundManager::Create(const string& file) {
 			CLog::Warn("Invalid sound file '%s'", file.c_str());
 		}
 	}
-	// ÅĞ¶ÏÊÇ·ñÎªÓĞĞ§×ÊÔ´²¢ÉèÖÃË¥¼õÊôĞÔ
+	// åˆ¤æ–­æ˜¯å¦ä¸ºæœ‰æ•ˆèµ„æºå¹¶è®¾ç½®è¡°å‡å±æ€§
 	if (m_vecBuffer[sourceItem.bufferIndex[0]].valid) {
 		alSourcei(sourceItem.source, AL_BUFFER, m_vecBuffer[sourceItem.bufferIndex[0]].buffer);
 		alSourcef(sourceItem.source, AL_ROLLOFF_FACTOR, 0.5f);
 	} else {
 		sourceItem.bufferCount = 0;
 	}
-	// Éú³ÉÒ»¸ö SoundId
+	// ç”Ÿæˆä¸€ä¸ª SoundId
 	int maxSoundId = 0;
 	map<int, SSoundSource>::iterator iter = m_mapSource.begin();
 	while (iter != m_mapSource.end()) {
 		if (maxSoundId < iter->second.soundId) maxSoundId = iter->second.soundId;
 		++iter;
 	}
-	// ¼ÓÈëµ½ MAP ÖĞ
+	// åŠ å…¥åˆ° MAP ä¸­
 	sourceItem.soundId = maxSoundId + 1;
 	m_mapSource.insert(std::pair<int, SSoundSource>(sourceItem.soundId, sourceItem));
 	return sourceItem.soundId;
 }
 
 /**
-* ´ÓÄÚ´æ´´½¨ÒôÔ´
-* @param channel Í¨µÀÊı
-* @param sampleRate ²ÉÑùËÙÂÊ
-* @param sampleBits ²ÉÑùÎ»Êı
-* @param size Êı¾İ³¤¶È
-* @param data Êı¾İÖ¸Õë
+* ä»å†…å­˜åˆ›å»ºéŸ³æº
+* @param channel é€šé“æ•°
+* @param sampleRate é‡‡æ ·é€Ÿç‡
+* @param sampleBits é‡‡æ ·ä½æ•°
+* @param size æ•°æ®é•¿åº¦
+* @param data æ•°æ®æŒ‡é’ˆ
 * @return SoundID
 */
 int CSoundManager::Create(int channel, int sampleRate, int sampleBits, int size, const void* data) {
-	// Éú³ÉÒ»¸öÒôÔ´
+	// ç”Ÿæˆä¸€ä¸ªéŸ³æº
 	SSoundSource sourceItem;
 	sourceItem.soundId = 0;
 	sourceItem.bufferCount = 0;
 	alGenSources(1, &sourceItem.source);
-	// »º³åÇøÃüÃû
+	// ç¼“å†²åŒºå‘½å
 	string file = "mem_";
 	file.append(std::to_string(channel)).append("_");
 	file.append(std::to_string(sampleRate)).append("_");
 	file.append(std::to_string(sampleBits)).append("_");
 	file.append(std::to_string(size)).append("_");
 	file.append(CStringUtil::Guid());
-	// ÔØÈëÉùÒô×ÊÔ´
+	// è½½å…¥å£°éŸ³èµ„æº
 	SSoundBuffer bufferItem;
 	bufferItem.file = file;
 	bufferItem.valid = true;
 	bufferItem.channels = channel;
 	bufferItem.sampleBits = sampleBits;
 	bufferItem.frequency = sampleRate;
-	// Í¨µÀºÍ²ÉÑùÎ»Êı
+	// é€šé“å’Œé‡‡æ ·ä½æ•°
 	ALenum format = AL_FORMAT_MONO8;
 	if (channel == 1 && sampleBits == 8) format = AL_FORMAT_MONO8;
 	else if (channel == 1 && sampleBits == 16) format = AL_FORMAT_MONO16;
@@ -167,43 +167,43 @@ int CSoundManager::Create(int channel, int sampleRate, int sampleBits, int size,
 		alGenBuffers(1, &bufferItem.buffer);
 		alBufferData(bufferItem.buffer, format, data, size, sampleRate);
 	}
-	// ¼ÓÈëµ½ÁĞ±í
+	// åŠ å…¥åˆ°åˆ—è¡¨
 	sourceItem.bufferIndex[0] = m_vecBuffer.size();
 	sourceItem.bufferCount = 1;
 	m_vecBuffer.push_back(bufferItem);
-	// ÅĞ¶ÏÊÇ·ñÎªÓĞĞ§×ÊÔ´²¢ÉèÖÃË¥¼õÊôĞÔ
+	// åˆ¤æ–­æ˜¯å¦ä¸ºæœ‰æ•ˆèµ„æºå¹¶è®¾ç½®è¡°å‡å±æ€§
 	if (m_vecBuffer[sourceItem.bufferIndex[0]].valid) {
 		alSourcei(sourceItem.source, AL_BUFFER, m_vecBuffer[sourceItem.bufferIndex[0]].buffer);
 		alSourcef(sourceItem.source, AL_ROLLOFF_FACTOR, 0.5f);
 	} else {
 		sourceItem.bufferCount = 0;
 	}
-	// Éú³ÉÒ»¸ö SoundID
+	// ç”Ÿæˆä¸€ä¸ª SoundID
 	int maxSoundId = 0;
 	map<int, SSoundSource>::iterator iter = m_mapSource.begin();
 	while (iter != m_mapSource.end()) {
 		if (maxSoundId < iter->second.soundId) maxSoundId = iter->second.soundId;
 		++iter;
 	}
-	// ¼ÓÈëµ½ MAP ÖĞ
+	// åŠ å…¥åˆ° MAP ä¸­
 	sourceItem.soundId = maxSoundId + 1;
 	m_mapSource.insert(std::pair<int, SSoundSource>(sourceItem.soundId, sourceItem));
 	return sourceItem.soundId;
 }
 
 /**
-* ´´½¨ÒôÆµÁ÷Ô´
-* @param channel Í¨µÀÊı
-* @param sampleRate ²ÉÑùËÙÂÊ
-* @param sampleBits ²ÉÑùÎ»Êı
+* åˆ›å»ºéŸ³é¢‘æµæº
+* @param channel é€šé“æ•°
+* @param sampleRate é‡‡æ ·é€Ÿç‡
+* @param sampleBits é‡‡æ ·ä½æ•°
 */
 int CSoundManager::Create(int channel, int sampleRate, int sampleBits) {
-	// Éú³ÉÒ»¸öÒôÔ´
+	// ç”Ÿæˆä¸€ä¸ªéŸ³æº
 	SSoundSource sourceItem;
 	sourceItem.soundId = 0;
 	sourceItem.bufferCount = 2;
 	alGenSources(1, &sourceItem.source);
-	// ÕâÀïĞèÒª³õÊ¼»¯¶ÓÁĞÊı¾İ
+	// è¿™é‡Œéœ€è¦åˆå§‹åŒ–é˜Ÿåˆ—æ•°æ®
 	ALenum format;
 	const unsigned char silent[4] = { 0x00, 0x00, 0x00, 0x00 };
 	switch (channel | sampleBits) {
@@ -213,7 +213,7 @@ int CSoundManager::Create(int channel, int sampleRate, int sampleBits) {
 	case 0x12: format = AL_FORMAT_STEREO16; break;
 	default: format = AL_FORMAT_MONO8; break;
 	}
-	// Éú³É Buffer ²¢·ÅÈë¶ÓÁĞ
+	// ç”Ÿæˆ Buffer å¹¶æ”¾å…¥é˜Ÿåˆ—
 	for (int i = 0; i < sourceItem.bufferCount; i++) {
 		SSoundBuffer bufferItem;
 		bufferItem.file = "stream";
@@ -227,35 +227,35 @@ int CSoundManager::Create(int channel, int sampleRate, int sampleBits) {
 		alBufferData(bufferItem.buffer, format, silent, 4, sampleRate);
 		alSourceQueueBuffers(sourceItem.source, 1, &bufferItem.buffer);
 	}
-	// ÉèÖÃÊôĞÔ²¢Æô¶¯²¥·Å
+	// è®¾ç½®å±æ€§å¹¶å¯åŠ¨æ’­æ”¾
 	alSourcei(sourceItem.source, AL_LOOPING, AL_FALSE);
 	alSourcef(sourceItem.source, AL_ROLLOFF_FACTOR, 0.5f);
 	alSourcePlay(sourceItem.source);
-	// Éú³ÉÒ»¸ö SoundID
+	// ç”Ÿæˆä¸€ä¸ª SoundID
 	int maxSoundId = 0;
 	map<int, SSoundSource>::iterator iter = m_mapSource.begin();
 	while (iter != m_mapSource.end()) {
 		if (maxSoundId < iter->second.soundId) maxSoundId = iter->second.soundId;
 		++iter;
 	}
-	// ¼ÓÈëµ½ MAP ÖĞ
+	// åŠ å…¥åˆ° MAP ä¸­
 	sourceItem.soundId = maxSoundId + 1;
 	m_mapSource.insert(std::pair<int, SSoundSource>(sourceItem.soundId, sourceItem));
 	return sourceItem.soundId;
 }
 
 /**
-* »ñÈ¡ÒôÔ´ÊıÁ¿
-* @return ÒôÔ´ÊıÁ¿
+* è·å–éŸ³æºæ•°é‡
+* @return éŸ³æºæ•°é‡
 */
 int CSoundManager::SoundCount() {
 	return m_mapSource.size();
 }
 
 /**
-* ¼ì²éÒôÔ´ÊÇ·ñÓĞĞ§
-* @param soundId ÒôÔ´ID
-* @return ÓĞĞ§ĞÔ
+* æ£€æŸ¥éŸ³æºæ˜¯å¦æœ‰æ•ˆ
+* @param soundId éŸ³æºID
+* @return æœ‰æ•ˆæ€§
 */
 bool CSoundManager::IsValid(int soundId) {
 	map<int, SSoundSource>::iterator iter = m_mapSource.find(soundId);
@@ -266,8 +266,8 @@ bool CSoundManager::IsValid(int soundId) {
 }
 
 /**
-* ²¥·ÅÖ¸¶¨ ID µÄÒôÔ´
-* @param soundId ÒôÔ´ID
+* æ’­æ”¾æŒ‡å®š ID çš„éŸ³æº
+* @param soundId éŸ³æºID
 */
 void CSoundManager::Play(int soundId) {
 	map<int, SSoundSource>::iterator iter = m_mapSource.find(soundId);
@@ -277,8 +277,8 @@ void CSoundManager::Play(int soundId) {
 }
 
 /**
-* ÔİÍ£Ö¸¶¨ ID µÄÒôÔ´
-* @param soundId ÒôÔ´ID
+* æš‚åœæŒ‡å®š ID çš„éŸ³æº
+* @param soundId éŸ³æºID
 */
 void CSoundManager::Pause(int soundId) {
 	map<int, SSoundSource>::iterator iter = m_mapSource.find(soundId);
@@ -288,8 +288,8 @@ void CSoundManager::Pause(int soundId) {
 }
 
 /**
-* ¶ÔËùÓĞÒôÔ´ÔİÍ£»òÈ¡ÏûÔİÍ£
-* @param pause ÔİÍ£»ò²¥·Å
+* å¯¹æ‰€æœ‰éŸ³æºæš‚åœæˆ–å–æ¶ˆæš‚åœ
+* @param pause æš‚åœæˆ–æ’­æ”¾
 */
 void CSoundManager::Pause(bool pause) {
 	map<int, SSoundSource>::iterator iter = m_mapSource.begin();
@@ -305,8 +305,8 @@ void CSoundManager::Pause(bool pause) {
 }
 
 /**
-* Í£Ö¹Ö¸¶¨ ID µÄÒôÔ´
-* @param soundId ÒôÔ´ID
+* åœæ­¢æŒ‡å®š ID çš„éŸ³æº
+* @param soundId éŸ³æºID
 */
 void CSoundManager::Stop(int soundId) {
 	map<int, SSoundSource>::iterator iter = m_mapSource.find(soundId);
@@ -316,8 +316,8 @@ void CSoundManager::Stop(int soundId) {
 }
 
 /**
-* Ïú»ÙÖ¸¶¨ ID µÄÒôÔ´
-* @param soundId ÒôÔ´ID
+* é”€æ¯æŒ‡å®š ID çš„éŸ³æº
+* @param soundId éŸ³æºID
 */
 void CSoundManager::Drop(int soundId) {
 	map<int, SSoundSource>::iterator iter = m_mapSource.find(soundId);
@@ -328,8 +328,8 @@ void CSoundManager::Drop(int soundId) {
 }
 
 /**
-* »ñÈ¡ÒôÁ¿
-* @return µ±Ç°ÒôÁ¿(·¶Î§0-100)
+* è·å–éŸ³é‡
+* @return å½“å‰éŸ³é‡(èŒƒå›´0-100)
 */
 int CSoundManager::GetVolume() {
 	float volume = 0.0f;
@@ -338,8 +338,8 @@ int CSoundManager::GetVolume() {
 }
 
 /**
-* ÉèÖÃÒôÁ¿
-* @param volume ÒôÁ¿(·¶Î§0-100)
+* è®¾ç½®éŸ³é‡
+* @param volume éŸ³é‡(èŒƒå›´0-100)
 */
 void CSoundManager::SetVolume(int volume) {
 	if (volume >= 0 && volume <= 100) {
@@ -348,9 +348,9 @@ void CSoundManager::SetVolume(int volume) {
 }
 
 /**
-* ¸üĞÂÒôÆµÊı¾İ
-* @param original Ô­Ê¼ÎÄ¼ş
-* @param file ĞÂÒôÆµÎÄ¼ş
+* æ›´æ–°éŸ³é¢‘æ•°æ®
+* @param original åŸå§‹æ–‡ä»¶
+* @param file æ–°éŸ³é¢‘æ–‡ä»¶
 */
 bool CSoundManager::Update(const string& original, const string& file) {
 	size_t select = 0;
@@ -363,7 +363,7 @@ bool CSoundManager::Update(const string& original, const string& file) {
 		}
 	}
 	if (!pFile) return false;
-	// ÒôÆµ¸ñÊ½
+	// éŸ³é¢‘æ ¼å¼
 	ALenum format = AL_FORMAT_MONO8;
 	if (pFile->channels == 1 && pFile->sampleBits == 8) format = AL_FORMAT_MONO8;
 	else if (pFile->channels == 1 && pFile->sampleBits == 16) format = AL_FORMAT_MONO16;
@@ -387,13 +387,13 @@ bool CSoundManager::Update(const string& original, const string& file) {
 }
 
 /**
-* ¸üĞÂÒôÔ´£¬½ö¶ÔÒôÆµÁ÷ÓĞĞ§£¬¶ÔÎÄ¼ş´´½¨µÄÒôÆµÎŞĞ§
-* @param soundId ÒôÔ´ID
-* @param data ÒôÆµÊı¾İ
-* @param size Êı¾İ³¤¶È
-* @return ÊÇ·ñ³É¹¦¼ÓÈëµ½»º³å¶ÓÁĞ
-* @attention µ±·½·¨·µ»Ø false Ê±£¬ĞèÒªµÈ´ı»º³å´¦ÀíÍêÔÙ´Îµ÷ÓÃ£¬
-*	ĞèÒª±ÜÃâÊı¾İ¶ªÊ§µ¼ÖÂµÄÉùÒô²»Á¬Ğø
+* æ›´æ–°éŸ³æºï¼Œä»…å¯¹éŸ³é¢‘æµæœ‰æ•ˆï¼Œå¯¹æ–‡ä»¶åˆ›å»ºçš„éŸ³é¢‘æ— æ•ˆ
+* @param soundId éŸ³æºID
+* @param data éŸ³é¢‘æ•°æ®
+* @param size æ•°æ®é•¿åº¦
+* @return æ˜¯å¦æˆåŠŸåŠ å…¥åˆ°ç¼“å†²é˜Ÿåˆ—
+* @attention å½“æ–¹æ³•è¿”å› false æ—¶ï¼Œéœ€è¦ç­‰å¾…ç¼“å†²å¤„ç†å®Œå†æ¬¡è°ƒç”¨ï¼Œ
+*	éœ€è¦é¿å…æ•°æ®ä¸¢å¤±å¯¼è‡´çš„å£°éŸ³ä¸è¿ç»­
 */
 bool CSoundManager::Update(int soundId, void* data, int size) {
 	map<int, SSoundSource>::iterator iter = m_mapSource.find(soundId);
@@ -402,7 +402,7 @@ bool CSoundManager::Update(int soundId, void* data, int size) {
 		unsigned int source = iter->second.source;
 		alGetSourcei(source, AL_BUFFERS_PROCESSED, &processed);
 		if (processed > 0) {
-			// »ñÈ¡ Buffer ÊôĞÔ
+			// è·å– Buffer å±æ€§
 			ALenum format;
 			SSoundBuffer& sourceBuffer = m_vecBuffer[iter->second.bufferIndex[0]];
 			switch (sourceBuffer.channels | sourceBuffer.sampleBits) {
@@ -412,12 +412,12 @@ bool CSoundManager::Update(int soundId, void* data, int size) {
 			case 0x12: format = AL_FORMAT_STEREO16; break;
 			default: format = AL_FORMAT_MONO8; break;
 			}
-			// ¸üĞÂ»º³åÇø
+			// æ›´æ–°ç¼“å†²åŒº
 			ALuint buffer;
 			alSourceUnqueueBuffers(source, 1, &buffer);
 			alBufferData(buffer, format, data, size, sourceBuffer.frequency);
 			alSourceQueueBuffers(source, 1, &buffer);
-			// ÈôÒÑÍ£Ö¹²¥·ÅÔòĞèÒªÆô¶¯²¥·Å
+			// è‹¥å·²åœæ­¢æ’­æ”¾åˆ™éœ€è¦å¯åŠ¨æ’­æ”¾
 			ALint playing;
 			alGetSourcei(source, AL_SOURCE_STATE, &playing);
 			if (playing != AL_PLAYING) alSourcePlay(source);
@@ -428,9 +428,9 @@ bool CSoundManager::Update(int soundId, void* data, int size) {
 }
 
 /**
-* ¼ì²éÖ¸¶¨µÄÒôÔ´ÊÇ·ñ²¥·Å
-* @param soundId ÒôÔ´ID
-* @return ²¥·ÅÔò·µ»Ø true
+* æ£€æŸ¥æŒ‡å®šçš„éŸ³æºæ˜¯å¦æ’­æ”¾
+* @param soundId éŸ³æºID
+* @return æ’­æ”¾åˆ™è¿”å› true
 */
 bool CSoundManager::IsPlaying(int soundId) {
 	map<int, SSoundSource>::iterator iter = m_mapSource.find(soundId);
@@ -443,9 +443,9 @@ bool CSoundManager::IsPlaying(int soundId) {
 }
 
 /**
-* ¼ì²éÖ¸¶¨µÄÒôÔ´ÊÇ·ñÔİÍ£
-* @param soundId ÒôÔ´ID
-* @return ÔİÍ£Ôò·µ»Ø true
+* æ£€æŸ¥æŒ‡å®šçš„éŸ³æºæ˜¯å¦æš‚åœ
+* @param soundId éŸ³æºID
+* @return æš‚åœåˆ™è¿”å› true
 */
 bool CSoundManager::IsPaused(int soundId) {
 	map<int, SSoundSource>::iterator iter = m_mapSource.find(soundId);
@@ -458,9 +458,9 @@ bool CSoundManager::IsPaused(int soundId) {
 }
 
 /**
-* ¼ì²éÖ¸¶¨µÄÒôÔ´ÊÇ·ñÍ£Ö¹
-* @param soundId ÒôÔ´ID
-* @return Í£Ö¹Ôò·µ»Ø true
+* æ£€æŸ¥æŒ‡å®šçš„éŸ³æºæ˜¯å¦åœæ­¢
+* @param soundId éŸ³æºID
+* @return åœæ­¢åˆ™è¿”å› true
 */
 bool CSoundManager::IsStopped(int soundId) {
 	map<int, SSoundSource>::iterator iter = m_mapSource.find(soundId);
@@ -473,12 +473,12 @@ bool CSoundManager::IsStopped(int soundId) {
 }
 
 /**
-* ÉèÖÃÒôÔ´ÔöÒæ£¬Ñ­»·£¬Òôµ÷ÊôĞÔ
-* @param soundId ÒôÔ´ID
-* @param loop ÊÇ·ñÑ­»·
-* @param gain ÔöÒæ´óĞ¡
-* @param pitch Òôµ÷
-* @return ÉèÖÃÊÇ·ñ³É¹¦
+* è®¾ç½®éŸ³æºå¢ç›Šï¼Œå¾ªç¯ï¼ŒéŸ³è°ƒå±æ€§
+* @param soundId éŸ³æºID
+* @param loop æ˜¯å¦å¾ªç¯
+* @param gain å¢ç›Šå¤§å°
+* @param pitch éŸ³è°ƒ
+* @return è®¾ç½®æ˜¯å¦æˆåŠŸ
 */
 bool CSoundManager::SetAttrib(int soundId, bool loop, float gain, float pitch) {
 	map<int, SSoundSource>::iterator iter = m_mapSource.find(soundId);
@@ -494,9 +494,9 @@ bool CSoundManager::SetAttrib(int soundId, bool loop, float gain, float pitch) {
 }
 
 /**
-* ÉèÖÃÒôÔ´Î»ÖÃ
-* @param soundId ÒôÔ´ID
-* @param pos Î»ÖÃ
+* è®¾ç½®éŸ³æºä½ç½®
+* @param soundId éŸ³æºID
+* @param pos ä½ç½®
 */
 void CSoundManager::SetPosition(int soundId, const CVector3& pos) {
 	map<int, SSoundSource>::iterator iter = m_mapSource.find(soundId);
@@ -506,8 +506,8 @@ void CSoundManager::SetPosition(int soundId, const CVector3& pos) {
 }
 
 /**
-* ÉèÖÃÒôÔ´Îª±³¾°ÒôÀÖ£¬¸úËæÌıÖÚÎ»ÖÃ¸Ä±ä
-* @param soundId ÒôÔ´ID
+* è®¾ç½®éŸ³æºä¸ºèƒŒæ™¯éŸ³ä¹ï¼Œè·Ÿéšå¬ä¼—ä½ç½®æ”¹å˜
+* @param soundId éŸ³æºID
 */
 void CSoundManager::SetBackground(int soundId) {
 	map<int, SSoundSource>::iterator iter = m_mapSource.find(soundId);
@@ -520,25 +520,25 @@ void CSoundManager::SetBackground(int soundId) {
 }
 
 /**
-* ÉèÖÃÌıÖÚÎ»ÖÃ
-* @param pos Î»ÖÃ
+* è®¾ç½®å¬ä¼—ä½ç½®
+* @param pos ä½ç½®
 */
 void CSoundManager::ListenerPos(const CVector3& pos) {
 	alListenerfv(AL_POSITION, pos.m_fValue);
 }
 
 /**
-* ÉèÖÃÌıÖÚËÙ¶È
-* @param vel ËÙ¶È
+* è®¾ç½®å¬ä¼—é€Ÿåº¦
+* @param vel é€Ÿåº¦
 */
 void CSoundManager::ListenerVel(const CVector3& vel) {
 	alListenerfv(AL_VELOCITY, vel.m_fValue);
 }
 
 /**
-* ÉèÖÃÌıÖÚ·½Î»
-* @param to ³¯Ïò
-* @param up ÏòÉÏÏòÁ¿
+* è®¾ç½®å¬ä¼—æ–¹ä½
+* @param to æœå‘
+* @param up å‘ä¸Šå‘é‡
 */
 void CSoundManager::ListenerOri(const CVector3& to, const CVector3& up) {
 	const float* t = to.m_fValue;
@@ -548,10 +548,10 @@ void CSoundManager::ListenerOri(const CVector3& to, const CVector3& up) {
 }
 
 /**
-* ÉèÖÃÌıÖÚ·½Î»
-* @param yaw ·½Î»½Ç
-* @param pitch ¸©Ñö½Ç
-* @param roll ·­¹ö½Ç
+* è®¾ç½®å¬ä¼—æ–¹ä½
+* @param yaw æ–¹ä½è§’
+* @param pitch ä¿¯ä»°è§’
+* @param roll ç¿»æ»šè§’
 */
 void CSoundManager::ListenerOri(float yaw, float pitch, float roll) {
 	float sinx = sinf(yaw);
@@ -571,21 +571,21 @@ void CSoundManager::ListenerOri(float yaw, float pitch, float roll) {
 }
 
 /**
-* ¸ù¾İÖ¸¶¨µÄ²ÎÊı¿ªÊ¼Â¼Òô
-* @param sampleBits ²ÉÑùÎ»Êı
-* @param frequency ²ÉÑùÆµÂÊ
-* @param bufferSize »º³åÇø´óĞ¡
-* @return Â¼Òô¿ªÆô³É¹¦
+* æ ¹æ®æŒ‡å®šçš„å‚æ•°å¼€å§‹å½•éŸ³
+* @param sampleBits é‡‡æ ·ä½æ•°
+* @param frequency é‡‡æ ·é¢‘ç‡
+* @param bufferSize ç¼“å†²åŒºå¤§å°
+* @return å½•éŸ³å¼€å¯æˆåŠŸ
 */
 bool CSoundManager::StartRecord(int sampleBits, int frequency, int bufferSize) {
-	// »ñÈ¡Ä¬ÈÏµÄÒôÆµ²É¼¯Æ÷
+	// è·å–é»˜è®¤çš„éŸ³é¢‘é‡‡é›†å™¨
 	const ALCchar* szDefaultCaptureDevice = alcGetString(0, ALC_CAPTURE_DEFAULT_DEVICE_SPECIFIER);
-	// Ö»Ö§³Ö 8Î»»òÕß 16Î»µ¥ÉùµÀ±àÂë·½Ê½
+	// åªæ”¯æŒ 8ä½æˆ–è€… 16ä½å•å£°é“ç¼–ç æ–¹å¼
 	ALenum format;
 	if (sampleBits == 8) format = AL_FORMAT_MONO8;
 	else if (sampleBits == 16) format = AL_FORMAT_MONO16;
 	else return false;
-	// ×î´ó»º³åÇø´óĞ¡ÏŞÖÆÔÚ 10240 B£¬ÇÒÎªÅ¼Êı
+	// æœ€å¤§ç¼“å†²åŒºå¤§å°é™åˆ¶åœ¨ 10240 Bï¼Œä¸”ä¸ºå¶æ•°
 	bufferSize &= 0xFFFFFFFE;
 	if (bufferSize > 10240) bufferSize = 10240;
 	m_pCaptureDevice = alcCaptureOpenDevice(szDefaultCaptureDevice, frequency, format, bufferSize);
@@ -599,13 +599,13 @@ bool CSoundManager::StartRecord(int sampleBits, int frequency, int bufferSize) {
 }
 
 /**
-* »ñÈ¡Â¼ÒôÊı¾İ
-* @param buffer Êı¾İ»º³åÇø
-* @param bufferSize »º³åÇø´óĞ¡
-* @return Êµ¼Ê¶ÁÈ¡µ½µÄÊı¾İ´óĞ¡
+* è·å–å½•éŸ³æ•°æ®
+* @param buffer æ•°æ®ç¼“å†²åŒº
+* @param bufferSize ç¼“å†²åŒºå¤§å°
+* @return å®é™…è¯»å–åˆ°çš„æ•°æ®å¤§å°
 */
 int CSoundManager::GetRecordData(unsigned char* buffer, int bufferSize) {
-	// ¼ì²âÓĞ¶àÉÙÑù±¾±»²É¼¯
+	// æ£€æµ‹æœ‰å¤šå°‘æ ·æœ¬è¢«é‡‡é›†
 	ALint samplesAvailable;
 	alcGetIntegerv(m_pCaptureDevice, ALC_CAPTURE_SAMPLES, 1, &samplesAvailable);
 	int bytePerSample = m_iCaptureSampleBits >> 3;
@@ -619,7 +619,7 @@ int CSoundManager::GetRecordData(unsigned char* buffer, int bufferSize) {
 }
 
 /**
-* Í£Ö¹Â¼Òô
+* åœæ­¢å½•éŸ³
 */
 void CSoundManager::StopRecord() {
 	if (m_pCaptureDevice) {
@@ -630,8 +630,8 @@ void CSoundManager::StopRecord() {
 }
 
 /**
-* »ñÈ¡¹ÜÀíµÄËùÓĞÒôÆµÎÄ¼şÁĞ±í
-* @param soundList Êä³öÒôÆµÎÄ¼şÁĞ±í
+* è·å–ç®¡ç†çš„æ‰€æœ‰éŸ³é¢‘æ–‡ä»¶åˆ—è¡¨
+* @param soundList è¾“å‡ºéŸ³é¢‘æ–‡ä»¶åˆ—è¡¨
 */
 void CSoundManager::GetSoundList(vector<string>& soundList) {
 	soundList.resize(m_vecBuffer.size());
@@ -644,12 +644,12 @@ void CSoundManager::GetSoundList(vector<string>& soundList) {
 }
 
 /**
-* ¶ÁÈ¡ÒôÆµÎÄ¼ş
-* @param file ÎÄ¼şÂ·¾¶
-* @return ÒôÆµ¶ÔÏóÖ¸Õë
+* è¯»å–éŸ³é¢‘æ–‡ä»¶
+* @param file æ–‡ä»¶è·¯å¾„
+* @return éŸ³é¢‘å¯¹è±¡æŒ‡é’ˆ
 */
 CFileManager::CAudioFile* CSoundManager::ReadAudio(const string& file) {
-	// Ä¿Ç°Ö§³Ö WAV¡¢MP3 Á½ÖÖ¸ñÊ½
+	// ç›®å‰æ”¯æŒ WAVã€MP3 ä¸¤ç§æ ¼å¼
 	CFileManager::CAudioFile* pFile = 0;
 	string ext = CStringUtil::UpperCase(CFileManager::GetExtension(file));
 	if (ext == "WAV") pFile = new CFileManager::CAudioFile(CFileManager::WAV);
@@ -658,7 +658,7 @@ CFileManager::CAudioFile* CSoundManager::ReadAudio(const string& file) {
 		CLog::Warn("Audio file type is not supported '%s'", file.c_str());
 		return 0;
 	}
-	// ¶ÁÈ¡ÎÄ¼ş
+	// è¯»å–æ–‡ä»¶
 	if (!CEngine::GetFileManager()->ReadFile(file, pFile)) {
 		CLog::Warn("Read audio file error '%s'", file.c_str());
 		delete pFile;
@@ -668,9 +668,9 @@ CFileManager::CAudioFile* CSoundManager::ReadAudio(const string& file) {
 }
 
 /**
-* ³õÊ¼»¯ OpenAL ÊµÀı
-* @param device Éè±¸Ãû³Æ£¬Ä¬ÈÏNULL
-* @return ³É¹¦±êÖ¾
+* åˆå§‹åŒ– OpenAL å®ä¾‹
+* @param device è®¾å¤‡åç§°ï¼Œé»˜è®¤NULL
+* @return æˆåŠŸæ ‡å¿—
 */
 bool CSoundManager::InitOpenAL(const char* device) {
 	ALCdevice* pDevice = alcOpenDevice((ALCchar*)device);
@@ -682,7 +682,7 @@ bool CSoundManager::InitOpenAL(const char* device) {
 }
 
 /**
-* Ïú»Ù OpenAL ÊµÀı
+* é”€æ¯ OpenAL å®ä¾‹
 */
 void CSoundManager::ExitOpenAL() {
 	ALCcontext* pContext = alcGetCurrentContext();

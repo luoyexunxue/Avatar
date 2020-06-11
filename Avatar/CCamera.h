@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CCAMERA_H_
@@ -13,116 +13,116 @@
 #include "CInputManager.h"
 
 /**
-* @brief Ïà»úÀà
+* @brief ç›¸æœºç±»
 */
 class AVATAR_EXPORT CCamera {
 public:
-	//! Ä¬ÈÏ¹¹Ôìº¯Êı
+	//! é»˜è®¤æ„é€ å‡½æ•°
 	CCamera();
-	//! Ä¬ÈÏÎö¹¹º¯Êı
+	//! é»˜è®¤ææ„å‡½æ•°
 	virtual ~CCamera();
 
-	//! »ñÈ¡Ïà»úÃû³Æ
+	//! è·å–ç›¸æœºåç§°
 	virtual const char* GetName() const;
 
-	//! ¿ØÖÆĞÅÏ¢ÊäÈë
+	//! æ§åˆ¶ä¿¡æ¯è¾“å…¥
 	virtual void Input(CInputManager::SInput* input);
-	//! ÉèÖÃÏà»ú¸ß¶È
+	//! è®¾ç½®ç›¸æœºé«˜åº¦
 	virtual void SetHeight(float height);
-	//! ÉèÖÃÏà»úÎ»ÖÃ
+	//! è®¾ç½®ç›¸æœºä½ç½®
 	virtual void SetPosition(const CVector3& pos);
-	//! ÉèÖÃÏà»ú·½Î»
+	//! è®¾ç½®ç›¸æœºæ–¹ä½
 	virtual void SetAngle(float yaw, float pitch, float roll);
-	//! ÉèÖÃÏà»úÄ¿±ê
+	//! è®¾ç½®ç›¸æœºç›®æ ‡
 	virtual void SetTarget(const CVector3& pos);
 
-	//! ¸üĞÂÏà»ú
+	//! æ›´æ–°ç›¸æœº
 	virtual void Update(float dt);
 
 public:
-	//! »ñÈ¡ÊÓ¿Ú¿í¶È
+	//! è·å–è§†å£å®½åº¦
 	int GetViewWidth() const;
-	//! »ñÈ¡ÊÓ¿Ú¸ß¶È
+	//! è·å–è§†å£é«˜åº¦
 	int GetViewHeight() const;
-	//! »ñÈ¡Ïà»úÊÓ½Ç
+	//! è·å–ç›¸æœºè§†è§’
 	float GetFieldOfView() const;
-	//! »ñÈ¡ÊÓ¿Ú¿í¸ß±È
+	//! è·å–è§†å£å®½é«˜æ¯”
 	float GetAspectRatio() const;
-	//! »ñÈ¡½ü²Ã¼ôÃæ¾àÀë
+	//! è·å–è¿‘è£å‰ªé¢è·ç¦»
 	float GetNearClipDistance() const;
-	//! »ñÈ¡Ô¶²Ã¼ôÃæ¾àÀë
+	//! è·å–è¿œè£å‰ªé¢è·ç¦»
 	float GetFarClipDistance() const;
 
-	//! ÉèÖÃÏà»úÊÓ¿Ú´óĞ¡
+	//! è®¾ç½®ç›¸æœºè§†å£å¤§å°
 	void SetViewSize(int width, int height);
-	//! ÉèÖÃÏà»úÊÓ½Ç
+	//! è®¾ç½®ç›¸æœºè§†è§’
 	void SetFieldOfView(float fov);
-	//! ÉèÖÃ²Ã¼ôÃæ¾àÀë
+	//! è®¾ç½®è£å‰ªé¢è·ç¦»
 	void SetClipDistance(float zNear, float zFar);
 
-	//! ¸üĞÂÍ¶Ó°¾ØÕó
+	//! æ›´æ–°æŠ•å½±çŸ©é˜µ
 	void UpdateProjMatrix(bool ortho);
-	//! ¸üĞÂÊÓÍ¼¾ØÕó
+	//! æ›´æ–°è§†å›¾çŸ©é˜µ
 	void UpdateViewMatrix();
-	//! ¸üĞÂÊÓ×¶Ìå
+	//! æ›´æ–°è§†é”¥ä½“
 	void UpdateFrustum();
 
-	//! »ñÈ¡Í¶Ó°¾ØÕóÒıÓÃ
+	//! è·å–æŠ•å½±çŸ©é˜µå¼•ç”¨
 	CMatrix4& GetProjMatrix();
-	//! »ñÈ¡ÊÓÍ¼¾ØÕóÒıÓÃ
+	//! è·å–è§†å›¾çŸ©é˜µå¼•ç”¨
 	CMatrix4& GetViewMatrix();
-	//! »ñÈ¡ÊÓ×¶ÌåÒıÓÃ
+	//! è·å–è§†é”¥ä½“å¼•ç”¨
 	const CFrustum& GetFrustum();
 
-	//! °ó¶¨ÊäÈë¿ØÖÆ
+	//! ç»‘å®šè¾“å…¥æ§åˆ¶
 	void Control(bool enable);
-	//! °ó¶¨ÖÁÖ¸¶¨³¡¾°½Úµã
+	//! ç»‘å®šè‡³æŒ‡å®šåœºæ™¯èŠ‚ç‚¹
 	void Bind(CSceneNode* sceneNode, const CVector3& pos, const CQuaternion& orient);
 
-	//! »ñÈ¡Ïà»ú·½Î»½Ç£¬¸©Ñö½Ç£¬Ğı×ª½Ç
+	//! è·å–ç›¸æœºæ–¹ä½è§’ï¼Œä¿¯ä»°è§’ï¼Œæ—‹è½¬è§’
 	static void GetYawPitchRoll(const CVector3& lookVec, const CVector3& upVec, float* yaw, float* pitch, float* roll);
-	//! ¼ÆËãÏà»úÊÓÏßÏòÁ¿ºÍÉÏÏòÁ¿
+	//! è®¡ç®—ç›¸æœºè§†çº¿å‘é‡å’Œä¸Šå‘é‡
 	static void GetLookVecUpVec(float yaw, float pitch, float roll, CVector3& lookVec, CVector3& upVec);
 
 public:
-	//! Ïà»úÎ»ÖÃ
+	//! ç›¸æœºä½ç½®
 	CVector3 m_cPosition;
-	//! ÊÓÏß·½Ïò
+	//! è§†çº¿æ–¹å‘
 	CVector3 m_cLookVector;
-	//! ³¯ÉÏ·½Ïò
+	//! æœä¸Šæ–¹å‘
 	CVector3 m_cUpVector;
 
 protected:
-	//! ·½Î»½Ç
+	//! æ–¹ä½è§’
 	float m_fYaw;
-	//! ¸©Ñö½Ç
+	//! ä¿¯ä»°è§’
 	float m_fPitch;
-	//! Ğı×ª½Ç
+	//! æ—‹è½¬è§’
 	float m_fRoll;
 
-	//! ÓÃ»§¿ØÖÆ°ó¶¨
+	//! ç”¨æˆ·æ§åˆ¶ç»‘å®š
 	bool m_bControlAttached;
-	//! ÊÓ¿Ú¿í¶È
+	//! è§†å£å®½åº¦
 	int m_iViewWidth;
-	//! ÊÓ¿Ú¸ß¶È
+	//! è§†å£é«˜åº¦
 	int m_iViewHeight;
-	//! Ë®Æ½ÊÓ½Ç (µ¥Î»¶È)
+	//! æ°´å¹³è§†è§’ (å•ä½åº¦)
 	float m_fFieldOfView;
-	//! ½ü²Ã¼ôÃæ¾àÀë
+	//! è¿‘è£å‰ªé¢è·ç¦»
 	float m_fClipNear;
-	//! Ô¶²Ã¼ôÃæ¾àÀë
+	//! è¿œè£å‰ªé¢è·ç¦»
 	float m_fClipFar;
-	//! Í¶Ó°¾ØÕó
+	//! æŠ•å½±çŸ©é˜µ
 	CMatrix4 m_cProjMatrix;
-	//! ÊÓÍ¼¾ØÕó
+	//! è§†å›¾çŸ©é˜µ
 	CMatrix4 m_cViewMatrix;
-	//! ÊÓ×¶Ìå
+	//! è§†é”¥ä½“
 	CFrustum m_cFrustum;
-	//! ÒÀ¸½µÄ³¡¾°½Úµã
+	//! ä¾é™„çš„åœºæ™¯èŠ‚ç‚¹
 	CSceneNode* m_pBindNode;
-	//! ÒÀ¸½Î»ÖÃÆ«ÒÆ
+	//! ä¾é™„ä½ç½®åç§»
 	CVector3 m_cBindPosition;
-	//! ÒÀ¸½½Ç¶ÈÆ«ÒÆ
+	//! ä¾é™„è§’åº¦åç§»
 	CQuaternion m_cBindOrientation;
 };
 

@@ -1,11 +1,11 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CVertex.h"
 
 /**
-* ¹¹Ôìº¯Êı
+* æ„é€ å‡½æ•°
 */
 CVertex::CVertex() {
 	m_fPosition[0] = 0.0f;
@@ -25,7 +25,7 @@ CVertex::CVertex() {
 }
 
 /**
-* ¸´ÖÆ¹¹Ôìº¯Êı
+* å¤åˆ¶æ„é€ å‡½æ•°
 */
 CVertex::CVertex(const CVertex& vertex) {
 	m_fPosition[0] = vertex.m_fPosition[0];
@@ -45,7 +45,7 @@ CVertex::CVertex(const CVertex& vertex) {
 }
 
 /**
-* ¹¹Ôìº¯Êı£¬½öÖ¸¶¨¶¥µã×ø±ê
+* æ„é€ å‡½æ•°ï¼Œä»…æŒ‡å®šé¡¶ç‚¹åæ ‡
 */
 CVertex::CVertex(float x, float y, float z) {
 	m_fPosition[0] = x;
@@ -65,7 +65,7 @@ CVertex::CVertex(float x, float y, float z) {
 }
 
 /**
-* ¹¹Ôìº¯Êı£¬Ö¸¶¨¶¥µã×ø±ê¼°ÎÆÀí×ø±ê
+* æ„é€ å‡½æ•°ï¼ŒæŒ‡å®šé¡¶ç‚¹åæ ‡åŠçº¹ç†åæ ‡
 */
 CVertex::CVertex(float x, float y, float z, float s, float t) {
 	m_fPosition[0] = x;
@@ -85,7 +85,7 @@ CVertex::CVertex(float x, float y, float z, float s, float t) {
 }
 
 /**
-* ¹¹Ôìº¯Êı£¬Ö¸¶¨¶¥µã×ø±êºÍÎÆÀí×ø±êÒÔ¼°·¨ÏòÁ¿
+* æ„é€ å‡½æ•°ï¼ŒæŒ‡å®šé¡¶ç‚¹åæ ‡å’Œçº¹ç†åæ ‡ä»¥åŠæ³•å‘é‡
 */
 CVertex::CVertex(float x, float y, float z, float s, float t, float nx, float ny, float nz) {
 	m_fPosition[0] = x;
@@ -105,7 +105,7 @@ CVertex::CVertex(float x, float y, float z, float s, float t, float nx, float ny
 }
 
 /**
-* ¹¹Ôìº¯Êı£¬Ö¸¶¨¶¥µã×ø±êºÍÎÆÀí×ø±êºÍ·¨ÏòÁ¿ÒÔ¼°ÑÕÉ«
+* æ„é€ å‡½æ•°ï¼ŒæŒ‡å®šé¡¶ç‚¹åæ ‡å’Œçº¹ç†åæ ‡å’Œæ³•å‘é‡ä»¥åŠé¢œè‰²
 */
 CVertex::CVertex(float x, float y, float z, float s, float t, float nx, float ny, float nz, const float color[4]) {
 	m_fPosition[0] = x;
@@ -125,7 +125,7 @@ CVertex::CVertex(float x, float y, float z, float s, float t, float nx, float ny
 }
 
 /**
-* ÉèÖÃ¶¥µãÎ»ÖÃ
+* è®¾ç½®é¡¶ç‚¹ä½ç½®
 */
 void CVertex::SetPosition(const CVector3& pos) {
 	m_fPosition[0] = pos.m_fValue[0];
@@ -134,7 +134,7 @@ void CVertex::SetPosition(const CVector3& pos) {
 }
 
 /**
-* ÉèÖÃ¶¥µãÎ»ÖÃ
+* è®¾ç½®é¡¶ç‚¹ä½ç½®
 */
 void CVertex::SetPosition(const float pos[3]) {
 	m_fPosition[0] = pos[0];
@@ -143,7 +143,7 @@ void CVertex::SetPosition(const float pos[3]) {
 }
 
 /**
-* ÉèÖÃ¶¥µãÎ»ÖÃ
+* è®¾ç½®é¡¶ç‚¹ä½ç½®
 */
 void CVertex::SetPosition(float x, float y, float z) {
 	m_fPosition[0] = x;
@@ -152,7 +152,7 @@ void CVertex::SetPosition(float x, float y, float z) {
 }
 
 /**
-* ÉèÖÃ¶¥µãÎÆÀí×ø±ê
+* è®¾ç½®é¡¶ç‚¹çº¹ç†åæ ‡
 */
 void CVertex::SetTexCoord(const CVector2& texCoord) {
 	m_fTexCoord[0] = texCoord.m_fValue[0];
@@ -160,7 +160,7 @@ void CVertex::SetTexCoord(const CVector2& texCoord) {
 }
 
 /**
-* ÉèÖÃ¶¥µãÎÆÀí×ø±ê
+* è®¾ç½®é¡¶ç‚¹çº¹ç†åæ ‡
 */
 void CVertex::SetTexCoord(const float texCoord[2]) {
 	m_fTexCoord[0] = texCoord[0];
@@ -168,7 +168,7 @@ void CVertex::SetTexCoord(const float texCoord[2]) {
 }
 
 /**
-* ÉèÖÃ¶¥µãÎÆÀí×ø±ê
+* è®¾ç½®é¡¶ç‚¹çº¹ç†åæ ‡
 */
 void CVertex::SetTexCoord(float s, float t) {
 	m_fTexCoord[0] = s;
@@ -176,7 +176,7 @@ void CVertex::SetTexCoord(float s, float t) {
 }
 
 /**
-* ÉèÖÃ¶¥µãÎ»ÖÃ
+* è®¾ç½®é¡¶ç‚¹ä½ç½®
 */
 void CVertex::SetNormal(const CVector3& normal) {
 	m_fNormal[0] = normal.m_fValue[0];
@@ -185,7 +185,7 @@ void CVertex::SetNormal(const CVector3& normal) {
 }
 
 /**
-* ÉèÖÃ¶¥µã·¨Ïà
+* è®¾ç½®é¡¶ç‚¹æ³•ç›¸
 */
 void CVertex::SetNormal(const float normal[3]) {
 	m_fNormal[0] = normal[0];
@@ -194,7 +194,7 @@ void CVertex::SetNormal(const float normal[3]) {
 }
 
 /**
-* ÉèÖÃ¶¥µã·¨Ïà
+* è®¾ç½®é¡¶ç‚¹æ³•ç›¸
 */
 void CVertex::SetNormal(float nx, float ny, float nz) {
 	m_fNormal[0] = nx;
@@ -203,7 +203,7 @@ void CVertex::SetNormal(float nx, float ny, float nz) {
 }
 
 /**
-* ÉèÖÃ¶¥µãÑÕÉ«
+* è®¾ç½®é¡¶ç‚¹é¢œè‰²
 */
 void CVertex::SetColor(const CColor& color) {
 	m_fColor[0] = color.m_fValue[0];
@@ -213,7 +213,7 @@ void CVertex::SetColor(const CColor& color) {
 }
 
 /**
-* ÉèÖÃ¶¥µãÑÕÉ«
+* è®¾ç½®é¡¶ç‚¹é¢œè‰²
 */
 void CVertex::SetColor(const float color[4]) {
 	m_fColor[0] = color[0];
@@ -223,7 +223,7 @@ void CVertex::SetColor(const float color[4]) {
 }
 
 /**
-* ÉèÖÃ¶¥µãÑÕÉ«
+* è®¾ç½®é¡¶ç‚¹é¢œè‰²
 */
 void CVertex::SetColor(float r, float g, float b, float a) {
 	m_fColor[0] = r;
@@ -233,7 +233,7 @@ void CVertex::SetColor(float r, float g, float b, float a) {
 }
 
 /**
-* ·­×ª·¨ÏòÁ¿
+* ç¿»è½¬æ³•å‘é‡
 */
 void CVertex::FlipNormal() {
 	m_fNormal[0] = -m_fNormal[0];
@@ -242,7 +242,7 @@ void CVertex::FlipNormal() {
 }
 
 /**
-* ÏßĞÔ²åÖµ
+* çº¿æ€§æ’å€¼
 */
 CVertex CVertex::Interpolate(const CVertex& vertex, float t) {
 	float x = vertex.m_fPosition[0] * t + m_fPosition[0] * (1.0f - t);
@@ -263,7 +263,7 @@ CVertex CVertex::Interpolate(const CVertex& vertex, float t) {
 }
 
 /**
-* ÔËËã·ûÖØÔØ =
+* è¿ç®—ç¬¦é‡è½½ =
 */
 CVertex& CVertex::operator = (const CVertex& vertex) {
 	m_fPosition[0] = vertex.m_fPosition[0];
@@ -282,7 +282,7 @@ CVertex& CVertex::operator = (const CVertex& vertex) {
 }
 
 /**
-* ÔËËã·ûÖØÔØ ==
+* è¿ç®—ç¬¦é‡è½½ ==
 */
 bool CVertex::operator == (const CVertex& vertex) const {
 	if (m_fPosition[0] != vertex.m_fPosition[0] ||
@@ -301,7 +301,7 @@ bool CVertex::operator == (const CVertex& vertex) const {
 }
 
 /**
-* ÔËËã·ûÖØÔØ !=
+* è¿ç®—ç¬¦é‡è½½ !=
 */
 bool CVertex::operator != (const CVertex& vertex) const {
 	return !(*this == vertex);

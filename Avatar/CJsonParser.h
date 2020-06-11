@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CJSONPARSER_H_
@@ -13,64 +13,64 @@ using std::map;
 using std::vector;
 
 /**
-* @brief JSON ½âÎöÆ÷
+* @brief JSON è§£æå™¨
 */
 class AVATAR_EXPORT CJsonParser {
 public:
-	//! Ä¬ÈÏ¹¹Ôìº¯Êı
+	//! é»˜è®¤æ„é€ å‡½æ•°
 	CJsonParser();
-	//! Ö¸¶¨×Ö·û´®¹¹Ôì
+	//! æŒ‡å®šå­—ç¬¦ä¸²æ„é€ 
 	CJsonParser(const char* content);
-	//! Ê¹ÓÃÖ¸¶¨³¤¶ÈµÄ×Ö·û´®¹¹Ôì
+	//! ä½¿ç”¨æŒ‡å®šé•¿åº¦çš„å­—ç¬¦ä¸²æ„é€ 
 	CJsonParser(const char* content, int length);
 
-	//! ½âÎöÖ¸¶¨×Ö·û´®
+	//! è§£ææŒ‡å®šå­—ç¬¦ä¸²
 	bool Parse(const char* content, int length);
-	//! ÅĞ¶ÏÊÇ·ñ°üº¬Ö¸¶¨Öµ
+	//! åˆ¤æ–­æ˜¯å¦åŒ…å«æŒ‡å®šå€¼
 	bool IsContain(const char* name) const;
-	//! »ñÈ¡Êı×é½ÚµãÊı×é´óĞ¡
+	//! è·å–æ•°ç»„èŠ‚ç‚¹æ•°ç»„å¤§å°
 	int GetCount() const;
 
-	//! »ñÈ¡½ÚµãÄÚÖ¸¶¨Ãû³ÆµÄÖµ
+	//! è·å–èŠ‚ç‚¹å†…æŒ‡å®šåç§°çš„å€¼
 	CJsonParser& GetValue(const char* name);
-	//! »ñÈ¡½ÚµãÄÚÖ¸¶¨Ãû³ÆµÄÖµ
+	//! è·å–èŠ‚ç‚¹å†…æŒ‡å®šåç§°çš„å€¼
 	CJsonParser& GetValue(const string& name);
-	//! »ñÈ¡Êı×é½ÚµãÄÚÖ¸¶¨µÄÖµ
+	//! è·å–æ•°ç»„èŠ‚ç‚¹å†…æŒ‡å®šçš„å€¼
 	CJsonParser& GetValue(int index);
-	//! Í¬ GetValue(const char* name)
+	//! åŒ GetValue(const char* name)
 	CJsonParser& operator [] (const char* name);
-	//! Í¬ GetValue(const string& name)
+	//! åŒ GetValue(const string& name)
 	CJsonParser& operator [] (const string& name);
-	//! Í¬ GetValue(int index)
+	//! åŒ GetValue(int index)
 	CJsonParser& operator [] (int index);
 
 public:
-	//! ÊÇ·ñÎª¿Õ½Úµã
+	//! æ˜¯å¦ä¸ºç©ºèŠ‚ç‚¹
 	bool IsEmpty() const { return m_sValue.type == SValue::NIL; }
-	//! ÊÇ·ñÎª²¼¶ûÀàĞÍ½Úµã
+	//! æ˜¯å¦ä¸ºå¸ƒå°”ç±»å‹èŠ‚ç‚¹
 	bool IsBool() const { return m_sValue.type == SValue::BOOL; }
-	//! ÊÇ·ñÎªÕûÊıÀàĞÍ½Úµã
+	//! æ˜¯å¦ä¸ºæ•´æ•°ç±»å‹èŠ‚ç‚¹
 	bool IsInteger() const { return m_sValue.type == SValue::INTEGER; }
-	//! ÊÇ·ñÎªÊı×ÖÀàĞÍ½Úµã
+	//! æ˜¯å¦ä¸ºæ•°å­—ç±»å‹èŠ‚ç‚¹
 	bool IsFloat() const { return m_sValue.type == SValue::FLOAT; }
-	//! ÊÇ·ñÎª×Ö·û´®ÀàĞÍ½Úµã
+	//! æ˜¯å¦ä¸ºå­—ç¬¦ä¸²ç±»å‹èŠ‚ç‚¹
 	bool IsString() const { return m_sValue.type == SValue::STRING; }
-	//! ÊÇ·ñÎª¶ÔÏóÀàĞÍ½Úµã
+	//! æ˜¯å¦ä¸ºå¯¹è±¡ç±»å‹èŠ‚ç‚¹
 	bool IsObject() const { return m_sValue.type == SValue::OBJECT; }
-	//! ÊÇ·ñÎªÊı×éÀàĞÍ½Úµã
+	//! æ˜¯å¦ä¸ºæ•°ç»„ç±»å‹èŠ‚ç‚¹
 	bool IsArray() const { return m_sValue.type == SValue::ARRAY; }
 
-	//! ×ª»»Îª²¼¶ûÀàĞÍ
+	//! è½¬æ¢ä¸ºå¸ƒå°”ç±»å‹
 	bool ToBool() const;
-	//! ×ª»»ÎªÕûĞÍÀàĞÍ
+	//! è½¬æ¢ä¸ºæ•´å‹ç±»å‹
 	int ToInt() const;
-	//! ×ª»»Îª¸¡µãÀàĞÍ
+	//! è½¬æ¢ä¸ºæµ®ç‚¹ç±»å‹
 	float ToFloat() const;
-	//! ×ª»»Îª×Ö·û´®ÀàĞÍ
+	//! è½¬æ¢ä¸ºå­—ç¬¦ä¸²ç±»å‹
 	string ToString() const;
 
 private:
-	//! JSON Öµ·º¶¨Òå
+	//! JSON å€¼æ³›å®šä¹‰
 	typedef struct _SValue {
 		enum { NIL, BOOL, INTEGER, FLOAT, STRING, OBJECT, ARRAY } type;
 		int length;
@@ -82,25 +82,25 @@ private:
 		};
 	} SValue;
 
-	//! ½âÎö¶ÔÏóÖµ
+	//! è§£æå¯¹è±¡å€¼
 	int ParseObject(const char* data, int length, CJsonParser& parser);
-	//! ½âÎöÊı×éÖµ
+	//! è§£ææ•°ç»„å€¼
 	int ParseArray(const char* data, int length, CJsonParser& parser);
-	//! ½âÎöÆÕÍ¨×Ö·û´®
+	//! è§£ææ™®é€šå­—ç¬¦ä¸²
 	int ParseString(const char* data, int length, CJsonParser& parser);
-	//! ½âÎö¿ÕÖµ
+	//! è§£æç©ºå€¼
 	int ParseNull(const char* data, int length, CJsonParser& parser);
-	//! ½âÎö²¼¶û×Ö·û´®
+	//! è§£æå¸ƒå°”å­—ç¬¦ä¸²
 	int ParseBool(const char* data, int length, CJsonParser& parser);
-	//! ½âÎöÊı×Ö×Ö·û´®
+	//! è§£ææ•°å­—å­—ç¬¦ä¸²
 	int ParseNumber(const char* data, int length, CJsonParser& parser);
 
 private:
-	//! JSON Öµ
+	//! JSON å€¼
 	SValue m_sValue;
-	//! JSON ÄÚ²¿×ÓÔªËØ
+	//! JSON å†…éƒ¨å­å…ƒç´ 
 	map<string, CJsonParser> m_mapValues;
-	//! JSON ÄÚ²¿Êı×é
+	//! JSON å†…éƒ¨æ•°ç»„
 	vector<CJsonParser> m_vecValues;
 };
 

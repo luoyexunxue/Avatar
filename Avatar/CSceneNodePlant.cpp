@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CSceneNodePlant.h"
@@ -9,8 +9,8 @@
 #include <cmath>
 
 /**
-* ¹¹Ôìº¯Êı
-* @note range ÒÔ·Ö²¼Í¼µÄ¿í¶ÈÎª»ù×¼
+* æ„é€ å‡½æ•°
+* @note range ä»¥åˆ†å¸ƒå›¾çš„å®½åº¦ä¸ºåŸºå‡†
 */
 CSceneNodePlant::CSceneNodePlant(const string& name, const string& texture, float width, float height,
 	const string& distributionMap, int count, float density, float range)
@@ -29,7 +29,7 @@ CSceneNodePlant::CSceneNodePlant(const string& name, const string& texture, floa
 }
 
 /**
-* ³õÊ¼»¯³¡¾°½Úµã
+* åˆå§‹åŒ–åœºæ™¯èŠ‚ç‚¹
 */
 bool CSceneNodePlant::Init() {
 	m_pMesh = BuildMesh();
@@ -42,14 +42,14 @@ bool CSceneNodePlant::Init() {
 }
 
 /**
-* Ïú»Ù³¡¾°½Úµã
+* é”€æ¯åœºæ™¯èŠ‚ç‚¹
 */
 void CSceneNodePlant::Destroy() {
 	if (m_pMesh) delete m_pMesh;
 }
 
 /**
-* äÖÈ¾³¡¾°½Úµã
+* æ¸²æŸ“åœºæ™¯èŠ‚ç‚¹
 */
 void CSceneNodePlant::Render() {
 	if (CEngine::GetGraphicsManager()->IsDepthRender()) {
@@ -61,10 +61,10 @@ void CSceneNodePlant::Render() {
 }
 
 /**
-* Éú³ÉÖ²±»²ã
+* ç”Ÿæˆæ¤è¢«å±‚
 */
 CMesh* CSceneNodePlant::BuildMesh() {
-	// ĞèÒªµØĞÎ½Úµã»ñÈ¡Ö²±»·Ö²¼¸ß¶È
+	// éœ€è¦åœ°å½¢èŠ‚ç‚¹è·å–æ¤è¢«åˆ†å¸ƒé«˜åº¦
 	CSceneNode* node = CEngine::GetSceneManager()->GetNodeByType("terrain", 0);
 	if (!node) return 0;
 	CFileManager::FileType fileType;
@@ -76,7 +76,7 @@ CMesh* CSceneNodePlant::BuildMesh() {
 	else return 0;
 	CFileManager::CImageFile file(fileType);
 	if (!CEngine::GetFileManager()->ReadFile(m_strDistributionMap, &file)) return 0;
-	// °´ÕÕÖ²±»·Ö²¼Í¼½øĞĞËæ»ú·Ö²¼
+	// æŒ‰ç…§æ¤è¢«åˆ†å¸ƒå›¾è¿›è¡Œéšæœºåˆ†å¸ƒ
 	const float scaleX = m_fRange;
 	const float scaleY = m_fRange * file.height / file.width;
 	const float rescale = 1.0f / RAND_MAX;
@@ -94,7 +94,7 @@ CMesh* CSceneNodePlant::BuildMesh() {
 			int ix = static_cast<int>((centerx / scaleX + 0.5f) * file.width) % file.width;
 			int iy = static_cast<int>((centery / scaleY + 0.5f) * file.height) % file.height;
 			float t = file.contents[(ix + (file.height - iy - 1) * file.width) * file.channels] * 0.003922f;
-			// Ê¹ÓÃÁË logistic sigmoid º¯Êı
+			// ä½¿ç”¨äº† logistic sigmoid å‡½æ•°
 			float sigmoid = 1.0f / (1.0f + expf(-m_fDensity * (t - 0.5f) * 2.0f));
 			float density = (sigmoid - minimum) / (1.0f - 2.0f * minimum);
 			if (rand() * rescale <= density) break;
@@ -108,7 +108,7 @@ CMesh* CSceneNodePlant::BuildMesh() {
 }
 
 /**
-* ¼ÓÈëÖ²±»µ½Íø¸ñ
+* åŠ å…¥æ¤è¢«åˆ°ç½‘æ ¼
 */
 void CSceneNodePlant::AddPlant(CMesh* mesh, float x, float y, float z, float angle) {
 	const float sina = sinf(angle) * m_fWidth * 0.5f;

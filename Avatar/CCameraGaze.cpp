@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CCameraGaze.h"
@@ -13,7 +13,7 @@
 #endif
 
 /**
-* ¹¹Ôìº¯Êı
+* æ„é€ å‡½æ•°
 */
 CCameraGaze::CCameraGaze() {
 	m_fDamping = 5.0f;
@@ -30,7 +30,7 @@ CCameraGaze::CCameraGaze() {
 }
 
 /**
-* »ñÈ¡Ïà»úÃû³Æ
+* è·å–ç›¸æœºåç§°
 * @return gaze
 */
 const char* CCameraGaze::GetName() const {
@@ -38,7 +38,7 @@ const char* CCameraGaze::GetName() const {
 }
 
 /**
-* ¿ØÖÆĞÅÏ¢ÊäÈë
+* æ§åˆ¶ä¿¡æ¯è¾“å…¥
 */
 void CCameraGaze::Input(CInputManager::SInput* input) {
 	if (!m_bControlAttached) return;
@@ -46,10 +46,10 @@ void CCameraGaze::Input(CInputManager::SInput* input) {
 		CMatrix4 viewMat = m_cViewMatrix;
 		CVector3 movement = CVector3(input->fRightLeft, input->fUpDown, -input->fForthBack, 0.0f);
 		CVector3 offset = viewMat.Transpose() * movement;
-		// ²ÉÓÃÏòÁ¿µã»ı·ÀÖ¹¹ı³å
+		// é‡‡ç”¨å‘é‡ç‚¹ç§¯é˜²æ­¢è¿‡å†²
 		CVector3 lookVecBefore = m_cTargetPos - m_cPosInAdvance;
 		CVector3 lookVecAfter = lookVecBefore - offset;
-		// Èôµã»ıĞ¡ÓÚÁãÔò±íÊ¾ LookVector ·´Ïò£¬¹ı³å
+		// è‹¥ç‚¹ç§¯å°äºé›¶åˆ™è¡¨ç¤º LookVector åå‘ï¼Œè¿‡å†²
 		if (lookVecBefore.DotProduct(lookVecAfter) > 0) {
 			SetPosition(m_cPosInAdvance + offset);
 		}
@@ -58,14 +58,14 @@ void CCameraGaze::Input(CInputManager::SInput* input) {
 		m_fYawInAdvance += input->fYaw;
 		m_fPitchInAdvance += input->fPitch;
 		m_fRollInAdvance += input->fRoll;
-		// ÏŞÖÆ Yaw ·¶Î§
+		// é™åˆ¶ Yaw èŒƒå›´
 		RestrictYawRange(false);
-		// ¸©Ñö½ÇĞı×ª½ÇÏŞÖÆÔÚ -89¡ã µ½ 89¡ãÖ®¼ä
+		// ä¿¯ä»°è§’æ—‹è½¬è§’é™åˆ¶åœ¨ -89Â° åˆ° 89Â°ä¹‹é—´
 		if (m_fPitchInAdvance < m_fPitchRange[0]) m_fPitchInAdvance = m_fPitchRange[0];
 		else if (m_fPitchInAdvance > m_fPitchRange[1]) m_fPitchInAdvance = m_fPitchRange[1];
 		if (m_fRollInAdvance < -1.553343f) m_fRollInAdvance = -1.553343f;
 		else if (m_fRollInAdvance > 1.553343f) m_fRollInAdvance = 1.553343f;
-		// ÖØĞÂ¶¨Î»Ïà»úÎ»ÖÃ
+		// é‡æ–°å®šä½ç›¸æœºä½ç½®
 		float distance = (m_cPosInAdvance - m_cTargetPos).Length();
 		float sina = sinf(m_fYawInAdvance);
 		float cosa = cosf(m_fYawInAdvance);
@@ -76,28 +76,28 @@ void CCameraGaze::Input(CInputManager::SInput* input) {
 }
 
 /**
-* ÉèÖÃÏà»ú¸ß¶È
+* è®¾ç½®ç›¸æœºé«˜åº¦
 */
 void CCameraGaze::SetHeight(float height) {
 	SetPosition(CVector3(m_cPosition[0], m_cPosition[1], height));
 }
 
 /**
-* ÉèÖÃÏà»úÎ»ÖÃ
+* è®¾ç½®ç›¸æœºä½ç½®
 */
 void CCameraGaze::SetPosition(const CVector3& pos) {
 	CVector3 distance = m_cTargetPos - pos;
 	float length = distance.Length();
 	if (length > 0.0f) distance.Scale(1.0f / length);
 	else distance.SetValue(m_cLookVector);
-	// ±£³Ö×îĞ¡ºÍ×î´ó¾àÀë
+	// ä¿æŒæœ€å°å’Œæœ€å¤§è·ç¦»
 	if (length < m_fMinDistance) m_cPosInAdvance = m_cTargetPos - distance * m_fMinDistance;
 	else if (length > m_fMaxDistance) m_cPosInAdvance = m_cTargetPos - distance * m_fMaxDistance;
 	else m_cPosInAdvance = pos;
-	// ¸üĞÂÏà»ú·½Î»½Ç
+	// æ›´æ–°ç›¸æœºæ–¹ä½è§’
 	GetYawPitchRoll(distance, m_cUpVector, &m_fYawInAdvance, &m_fPitchInAdvance, 0);
 	RestrictYawRange(true);
-	// ¸©Ñö½ÇĞı×ª½ÇÏŞÖÆ
+	// ä¿¯ä»°è§’æ—‹è½¬è§’é™åˆ¶
 	if (m_fPitchInAdvance < m_fPitchRange[0]) m_fPitchInAdvance = m_fPitchRange[0];
 	else if (m_fPitchInAdvance > m_fPitchRange[1]) m_fPitchInAdvance = m_fPitchRange[1];
 	if (m_fRollInAdvance < -1.553343f) m_fRollInAdvance = -1.553343f;
@@ -105,20 +105,20 @@ void CCameraGaze::SetPosition(const CVector3& pos) {
 }
 
 /**
-* ÉèÖÃÏà»ú·½Î»
+* è®¾ç½®ç›¸æœºæ–¹ä½
 */
 void CCameraGaze::SetAngle(float yaw, float pitch, float roll) {
 	m_fYawInAdvance = yaw;
 	m_fPitchInAdvance = pitch;
 	m_fRollInAdvance = roll;
-	// ÏŞÖÆ Yaw ·¶Î§
+	// é™åˆ¶ Yaw èŒƒå›´
 	RestrictYawRange(true);
-	// ¸©Ñö½ÇĞı×ª½ÇÏŞÖÆÔÚ -89¡ã µ½ 89¡ãÖ®¼ä
+	// ä¿¯ä»°è§’æ—‹è½¬è§’é™åˆ¶åœ¨ -89Â° åˆ° 89Â°ä¹‹é—´
 	if (m_fPitchInAdvance < m_fPitchRange[0]) m_fPitchInAdvance = m_fPitchRange[0];
 	else if (m_fPitchInAdvance > m_fPitchRange[1]) m_fPitchInAdvance = m_fPitchRange[1];
 	if (m_fRollInAdvance < -1.553343f) m_fRollInAdvance = -1.553343f;
 	else if (m_fRollInAdvance > 1.553343f) m_fRollInAdvance = 1.553343f;
-	// ÖØĞÂ¶¨Î»Ïà»úÎ»ÖÃ
+	// é‡æ–°å®šä½ç›¸æœºä½ç½®
 	float distance = (m_cPosInAdvance - m_cTargetPos).Length();
 	float sina = sinf(m_fYawInAdvance);
 	float cosa = cosf(m_fYawInAdvance);
@@ -128,7 +128,7 @@ void CCameraGaze::SetAngle(float yaw, float pitch, float roll) {
 }
 
 /**
-* ÉèÖÃÏà»úÄ¿±ê
+* è®¾ç½®ç›¸æœºç›®æ ‡
 */
 void CCameraGaze::SetTarget(const CVector3& pos) {
 	CVector3 distance = pos - m_cPosInAdvance;
@@ -138,10 +138,10 @@ void CCameraGaze::SetTarget(const CVector3& pos) {
 	else if (length > m_fMaxDistance) distance.Scale(m_fMaxDistance / length);
 	m_cTargetPos = pos;
 	m_cPosInAdvance = pos - distance;
-	// ¸üĞÂÏà»ú·½Î»½Ç
+	// æ›´æ–°ç›¸æœºæ–¹ä½è§’
 	GetYawPitchRoll(distance.Normalize(), m_cUpVector, &m_fYawInAdvance, &m_fPitchInAdvance, 0);
 	RestrictYawRange(true);
-	// ¸©Ñö½ÇĞı×ª½ÇÏŞÖÆ
+	// ä¿¯ä»°è§’æ—‹è½¬è§’é™åˆ¶
 	if (m_fPitchInAdvance < m_fPitchRange[0]) m_fPitchInAdvance = m_fPitchRange[0];
 	else if (m_fPitchInAdvance > m_fPitchRange[1]) m_fPitchInAdvance = m_fPitchRange[1];
 	if (m_fRollInAdvance < -1.553343f) m_fRollInAdvance = -1.553343f;
@@ -149,18 +149,18 @@ void CCameraGaze::SetTarget(const CVector3& pos) {
 }
 
 /**
-* ¸üĞÂÏà»ú
+* æ›´æ–°ç›¸æœº
 */
 void CCameraGaze::Update(float dt) {
 	dt *= m_fDamping;
 	if (dt > 1.0f) dt = 1.0f;
-	// ²îÖµ¼ÆËã
+	// å·®å€¼è®¡ç®—
 	m_fYaw += (m_fYawInAdvance - m_fYaw) * dt;
 	m_fPitch += (m_fPitchInAdvance - m_fPitch) * dt;
 	m_fRoll += (m_fRollInAdvance - m_fRoll) * dt;
-	// ¼ÆËãÏà»ú²ÎÊı
+	// è®¡ç®—ç›¸æœºå‚æ•°
 	GetLookVecUpVec(m_fYaw, m_fPitch, m_fRoll, m_cLookVector, m_cUpVector);
-	// ¾àÀëÄ¿±êµÄÆ½ÒÆ
+	// è·ç¦»ç›®æ ‡çš„å¹³ç§»
 	float from = (m_cPosition - m_cTargetPos).Length();
 	float to = (m_cPosInAdvance - m_cTargetPos).Length();
 	m_cPosition = m_cTargetPos - m_cLookVector * (from + (to - from) * dt);
@@ -168,31 +168,31 @@ void CCameraGaze::Update(float dt) {
 }
 
 /**
-* ÉèÖÃ×èÄáÏµÊı
-* @param k ×èÄáÏµÊı£¬Ô½´ó¹ßĞÔ±íÏÖÔ½Ğ¡
+* è®¾ç½®é˜»å°¼ç³»æ•°
+* @param k é˜»å°¼ç³»æ•°ï¼Œè¶Šå¤§æƒ¯æ€§è¡¨ç°è¶Šå°
 */
 void CCameraGaze::SetDamping(float k) {
 	m_fDamping = k;
 }
 
 /**
-* ÉèÖÃÏà»ú¾àÀëÄ¿±ê×î½ü¾àÀë
+* è®¾ç½®ç›¸æœºè·ç¦»ç›®æ ‡æœ€è¿‘è·ç¦»
 */
 void CCameraGaze::SetMinDistance(float distance) {
 	m_fMinDistance = distance;
 }
 
 /**
-* ÉèÖÃÏà»ú¾àÀëÄ¿±êµã×îÔ¶¾àÀë
+* è®¾ç½®ç›¸æœºè·ç¦»ç›®æ ‡ç‚¹æœ€è¿œè·ç¦»
 */
 void CCameraGaze::SetMaxDistance(float distance) {
 	m_fMaxDistance = distance;
 }
 
 /**
-* ÉèÖÃÏà»ú¸©Ñö½Ç·¶Î§
-* @param min ×îĞ¡¸©Ñö½Ç£¨»¡¶È£©
-* @param max ×î´ó¸©Ñö½Ç£¨»¡¶È£©
+* è®¾ç½®ç›¸æœºä¿¯ä»°è§’èŒƒå›´
+* @param min æœ€å°ä¿¯ä»°è§’ï¼ˆå¼§åº¦ï¼‰
+* @param max æœ€å¤§ä¿¯ä»°è§’ï¼ˆå¼§åº¦ï¼‰
 */
 void CCameraGaze::SetPitchRange(float min, float max) {
 	if (min < -1.553343f) min  = -1.553343f;
@@ -206,18 +206,18 @@ void CCameraGaze::SetPitchRange(float min, float max) {
 }
 
 /**
-* ÏŞÖÆ·½Î»½Ç
+* é™åˆ¶æ–¹ä½è§’
 */
 void CCameraGaze::RestrictYawRange(bool shortest) {
 	const float PI = 3.141592654f;
 	const float PI2 = 6.283185307f;
-	// ±£´æ½Ç¶È²îÖµ
+	// ä¿å­˜è§’åº¦å·®å€¼
 	float theta = fmodf(m_fYawInAdvance - m_fYaw, PI2);
-	// ÏŞÖÆ·½Î»½ÇÔÚ [0, 2PI) ·¶Î§ÄÚ
+	// é™åˆ¶æ–¹ä½è§’åœ¨ [0, 2PI) èŒƒå›´å†…
 	m_fYawInAdvance = fmodf(m_fYawInAdvance, PI2);
 	if (m_fYawInAdvance < 0) m_fYawInAdvance += PI2;
 
-	// ¸ù¾İ½Ç¶È²îÖµÅĞ¶Ï×ª¶¯·½Ïò
+	// æ ¹æ®è§’åº¦å·®å€¼åˆ¤æ–­è½¬åŠ¨æ–¹å‘
 	if (shortest) {
 		if (theta > PI) m_fYaw = m_fYawInAdvance - theta + PI2;
 		else if (theta < -PI) m_fYaw = m_fYawInAdvance - theta - PI2;

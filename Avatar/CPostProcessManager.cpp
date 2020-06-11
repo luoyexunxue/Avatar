@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CPostProcessManager.h"
@@ -23,11 +23,9 @@
 #include "CPostProcessPanorama.h"
 
 /**
-* ¹¹Ôìº¯Êı
+* æ„é€ å‡½æ•°
 */
 CPostProcessManager::CPostProcessManager() {
-	m_iScreenSize[0] = 1;
-	m_iScreenSize[1] = 1;
 	m_pSavedRenderTarget = 0;
 	m_pRenderMesh = new CMesh();
 	m_pRenderMesh->SetVertexUsage(4);
@@ -41,7 +39,7 @@ CPostProcessManager::CPostProcessManager() {
 }
 
 /**
-* Îö¹¹º¯Êı
+* ææ„å‡½æ•°
 */
 CPostProcessManager::~CPostProcessManager() {
 	delete m_pRenderMesh;
@@ -49,12 +47,12 @@ CPostProcessManager::~CPostProcessManager() {
 }
 
 /**
-* µ¥ÀıÊµÀı
+* å•ä¾‹å®ä¾‹
 */
 CPostProcessManager* CPostProcessManager::m_pInstance = 0;
 
 /**
-* ÊµÀıºó´¦Àí¹ÜÀíÆ÷
+* å®ä¾‹åå¤„ç†ç®¡ç†å™¨
 */
 void CPostProcessManager::Destroy() {
 	map<string, CPostProcess*>::iterator iter = m_mapPostProcess.begin();
@@ -67,12 +65,12 @@ void CPostProcessManager::Destroy() {
 }
 
 /**
-* ×¢²áºó´¦Àí¹ı³Ì
+* æ³¨å†Œåå¤„ç†è¿‡ç¨‹
 */
 bool CPostProcessManager::Register(const string& name, CPostProcess* postProcess) {
 	map<string, CPostProcess*>::iterator iter = m_mapPostProcess.find(name);
 	if (iter != m_mapPostProcess.end()) {
-		// É¾³ıÒÑ×¢²áµÄÍ¬Ãû³Æºó´¦Àí
+		// åˆ é™¤å·²æ³¨å†Œçš„åŒåç§°åå¤„ç†
 		list<CPostProcess*>::iterator listIter = m_lstEnabledPostProcess.begin();
 		while (listIter != m_lstEnabledPostProcess.end()) {
 			if (*listIter == iter->second) {
@@ -92,14 +90,14 @@ bool CPostProcessManager::Register(const string& name, CPostProcess* postProcess
 		delete postProcess;
 		return false;
 	}
-	postProcess->m_iSavedScreenSize[0] = width;
-	postProcess->m_iSavedScreenSize[1] = height;
+	postProcess->m_iScreenSize[0] = width;
+	postProcess->m_iScreenSize[1] = height;
 	m_mapPostProcess.insert(std::pair<string, CPostProcess*>(name, postProcess));
 	return true;
 }
 
 /**
-* ¸½¼Ó»òÈ¡ÏûÖ¸¶¨µÄÍ¼Ïñºó´¦Àí
+* é™„åŠ æˆ–å–æ¶ˆæŒ‡å®šçš„å›¾åƒåå¤„ç†
 */
 bool CPostProcessManager::Enable(const string& name, bool enable) {
 	map<string, CPostProcess*>::iterator iter = m_mapPostProcess.find(name);
@@ -123,7 +121,7 @@ bool CPostProcessManager::Enable(const string& name, bool enable) {
 }
 
 /**
-* Ö¸¶¨µÄºó´¦ÀíÊÇ·ñÆôÓÃ
+* æŒ‡å®šçš„åå¤„ç†æ˜¯å¦å¯ç”¨
 */
 bool CPostProcessManager::IsEnabled(const string& name) {
 	map<string, CPostProcess*>::iterator iter = m_mapPostProcess.find(name);
@@ -140,7 +138,7 @@ bool CPostProcessManager::IsEnabled(const string& name) {
 }
 
 /**
-* »ñÈ¡ÒÑ×¢²áµÄºó´¦ÀíÁĞ±í
+* è·å–å·²æ³¨å†Œçš„åå¤„ç†åˆ—è¡¨
 */
 void CPostProcessManager::GetPostProcessList(vector<string>& postList) {
 	postList.clear();
@@ -152,21 +150,21 @@ void CPostProcessManager::GetPostProcessList(vector<string>& postList) {
 }
 
 /**
-* ×¼±¸ºó´¦Àí
+* å‡†å¤‡åå¤„ç†
 */
-bool CPostProcessManager::PrepareFrame(CTexture* renderTarget) {
+bool CPostProcessManager::PrepareFrame(CTexture* renderTarget, int width, int height) {
 	if (m_lstEnabledPostProcess.empty()) return false;
-	// Í¨ÖªÆÁÄ»´óĞ¡
+	// é€šçŸ¥å±å¹•å¤§å°
 	list<CPostProcess*>::iterator iter = m_lstEnabledPostProcess.begin();
 	while (iter != m_lstEnabledPostProcess.end()) {
 		CPostProcess* item = *iter++;
-		if (item->m_iSavedScreenSize[0] != m_iScreenSize[0] || item->m_iSavedScreenSize[1] != m_iScreenSize[1]) {
-			item->Resize(m_iScreenSize[0], m_iScreenSize[1]);
-			item->m_iSavedScreenSize[0] = m_iScreenSize[0];
-			item->m_iSavedScreenSize[1] = m_iScreenSize[1];
+		if (item->m_iScreenSize[0] != width || item->m_iScreenSize[1] != height) {
+			item->Resize(width, height);
+			item->m_iScreenSize[0] = width;
+			item->m_iScreenSize[1] = height;
 		}
 	}
-	// ½«µÚÒ»¸öºó´¦ÀíÉèÖÃÎªäÖÈ¾Ä¿±ê
+	// å°†ç¬¬ä¸€ä¸ªåå¤„ç†è®¾ç½®ä¸ºæ¸²æŸ“ç›®æ ‡
 	m_pSavedRenderTarget = renderTarget;
 	renderTarget = m_lstEnabledPostProcess.front()->m_pRenderTexture;
 	CEngine::GetGraphicsManager()->SetRenderTarget(renderTarget, 0, true, true, true);
@@ -174,11 +172,11 @@ bool CPostProcessManager::PrepareFrame(CTexture* renderTarget) {
 }
 
 /**
-* ½øĞĞºó´¦Àí
+* è¿›è¡Œåå¤„ç†
 */
 void CPostProcessManager::ApplyFrame() {
 	if (!m_lstEnabledPostProcess.empty()) {
-		// Öğ¸ö½øĞĞºó´¦Àí£¬ºóÒ»¸öµÄÊäÈëÎÆÀí×÷ÎªÇ°Ò»¸öµÄäÖÈ¾Ä¿±ê
+		// é€ä¸ªè¿›è¡Œåå¤„ç†ï¼Œåä¸€ä¸ªçš„è¾“å…¥çº¹ç†ä½œä¸ºå‰ä¸€ä¸ªçš„æ¸²æŸ“ç›®æ ‡
 		list<CPostProcess*>::iterator iter = m_lstEnabledPostProcess.begin();
 		CPostProcess* current = *iter;
 		while (++iter != m_lstEnabledPostProcess.end()) {
@@ -191,15 +189,7 @@ void CPostProcessManager::ApplyFrame() {
 }
 
 /**
-* ¸üĞÂºó´¦ÀíÍ¼Æ¬´óĞ¡
-*/
-void CPostProcessManager::UpdateSize(int width, int height) {
-	m_iScreenSize[0] = width;
-	m_iScreenSize[1] = height;
-}
-
-/**
-* ÉèÖÃºó´¦Àí²ÎÊı£¬int
+* è®¾ç½®åå¤„ç†å‚æ•°ï¼Œint
 */
 void CPostProcessManager::SetProcessParam(const string& name, const string& key, int value) {
 	map<string, CPostProcess*>::iterator iter = m_mapPostProcess.find(name);
@@ -211,7 +201,7 @@ void CPostProcessManager::SetProcessParam(const string& name, const string& key,
 }
 
 /**
-* ÉèÖÃºó´¦Àí²ÎÊı£¬float
+* è®¾ç½®åå¤„ç†å‚æ•°ï¼Œfloat
 */
 void CPostProcessManager::SetProcessParam(const string& name, const string& key, float value) {
 	map<string, CPostProcess*>::iterator iter = m_mapPostProcess.find(name);
@@ -223,7 +213,7 @@ void CPostProcessManager::SetProcessParam(const string& name, const string& key,
 }
 
 /**
-* ÉèÖÃºó´¦Àí²ÎÊı£¬vec2
+* è®¾ç½®åå¤„ç†å‚æ•°ï¼Œvec2
 */
 void CPostProcessManager::SetProcessParam(const string& name, const string& key, const CVector2& value) {
 	map<string, CPostProcess*>::iterator iter = m_mapPostProcess.find(name);
@@ -235,7 +225,7 @@ void CPostProcessManager::SetProcessParam(const string& name, const string& key,
 }
 
 /**
-* ÉèÖÃºó´¦Àí²ÎÊı£¬vec3
+* è®¾ç½®åå¤„ç†å‚æ•°ï¼Œvec3
 */
 void CPostProcessManager::SetProcessParam(const string& name, const string& key, const CVector3& value) {
 	map<string, CPostProcess*>::iterator iter = m_mapPostProcess.find(name);
@@ -247,7 +237,7 @@ void CPostProcessManager::SetProcessParam(const string& name, const string& key,
 }
 
 /**
-* ÉèÖÃºó´¦Àí²ÎÊı£¬mat4
+* è®¾ç½®åå¤„ç†å‚æ•°ï¼Œmat4
 */
 void CPostProcessManager::SetProcessParam(const string& name, const string& key, const CMatrix4& value) {
 	map<string, CPostProcess*>::iterator iter = m_mapPostProcess.find(name);
@@ -259,7 +249,7 @@ void CPostProcessManager::SetProcessParam(const string& name, const string& key,
 }
 
 /**
-* ÉèÖÃºó´¦Àí²ÎÊı£¬Í¨ÓÃĞÎÊ½
+* è®¾ç½®åå¤„ç†å‚æ•°ï¼Œé€šç”¨å½¢å¼
 */
 void CPostProcessManager::SetProcessParam(const string& name, const string& key, const float value[], int size) {
 	map<string, CPostProcess*>::iterator iter = m_mapPostProcess.find(name);
@@ -271,7 +261,7 @@ void CPostProcessManager::SetProcessParam(const string& name, const string& key,
 }
 
 /**
-* ×¢²áÖ¸¶¨µÄÏµÍ³ÄÚÖÃºó´¦Àí
+* æ³¨å†ŒæŒ‡å®šçš„ç³»ç»Ÿå†…ç½®åå¤„ç†
 */
 bool CPostProcessManager::RegisterDefault(const string& name) {
 	if (name == "anaglyph") return Register(name, new CPostProcessAnaglyph());

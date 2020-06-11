@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CTHREADPOOL_H_
@@ -17,44 +17,44 @@ using std::vector;
 using std::queue;
 
 /**
-* @brief Ïß³ÌÈÎÎñ
+* @brief çº¿ç¨‹ä»»åŠ¡
 */
 class CThreadTask {
 public:
-	//! ĞéÎö¹¹º¯Êı
+	//! è™šææ„å‡½æ•°
 	virtual ~CThreadTask() {}
-	//! Ö´ĞĞÈÎÎñÈë¿Ú
+	//! æ‰§è¡Œä»»åŠ¡å…¥å£
 	virtual void Run(class CThreadPool* owner, void* param) = 0;
 };
 
 /**
-* @brief Ïß³Ì³Ø
+* @brief çº¿ç¨‹æ± 
 */
 class AVATAR_EXPORT CThreadPool {
 public:
-	//! Ä¬ÈÏ¹¹Ôìº¯Êı
+	//! é»˜è®¤æ„é€ å‡½æ•°
 	CThreadPool(int size);
-	//! Ä¬ÈÏÎö¹¹º¯Êı
+	//! é»˜è®¤ææ„å‡½æ•°
 	~CThreadPool();
 
-	//! ÊÇ·ñÕıÔÚÔËĞĞ
+	//! æ˜¯å¦æ­£åœ¨è¿è¡Œ
 	bool IsRunning() { return m_bRunning; }
-	//! ĞÂÔöÈÎÎñ
+	//! æ–°å¢ä»»åŠ¡
 	void AddTask(CThreadTask* task, void* param);
 
-	//! »ñÈ¡×ÜµÄÏß³ÌÊıÁ¿
+	//! è·å–æ€»çš„çº¿ç¨‹æ•°é‡
 	int GetThreadCount();
-	//! »ñÈ¡Î´´¦ÀíµÄÈÎÎñÊıÁ¿
+	//! è·å–æœªå¤„ç†çš„ä»»åŠ¡æ•°é‡
 	int GetTaskCount();
 
 private:
-	//! ¹¤×÷Ïß³Ì
+	//! å·¥ä½œçº¿ç¨‹
 #ifdef AVATAR_WINDOWS
 	static DWORD WINAPI TaskThread(LPVOID param);
 #else
 	static void* TaskThread(void* param);
 #endif
-	//! ¹¤×÷ÈÎÎñ²ÎÊı
+	//! å·¥ä½œä»»åŠ¡å‚æ•°
 	typedef struct _STask {
 		CThreadTask* task;
 		void* parameter;
@@ -62,19 +62,19 @@ private:
 	} STask;
 
 private:
-	//! Ïß³Ì³ØÔËĞĞ×´Ì¬
+	//! çº¿ç¨‹æ± è¿è¡ŒçŠ¶æ€
 	bool m_bRunning;
-	//! ÈÎÎñÏß³Ì¶ÓÁĞ
+	//! ä»»åŠ¡çº¿ç¨‹é˜Ÿåˆ—
 	queue<STask> m_queTask;
 #ifdef AVATAR_WINDOWS
-	//! Ïß³ÌÁĞ±í
+	//! çº¿ç¨‹åˆ—è¡¨
 	vector<HANDLE> m_vecThread;
-	//! ÈÎÎñ¶ÓÁĞ»¥³âËø
+	//! ä»»åŠ¡é˜Ÿåˆ—äº’æ–¥é”
 	CRITICAL_SECTION m_sMutex;
 #else
-	//! Ïß³ÌÁĞ±í
+	//! çº¿ç¨‹åˆ—è¡¨
 	vector<pthread_t> m_vecThread;
-	//! ÈÎÎñ¶ÓÁĞ»¥³âËø
+	//! ä»»åŠ¡é˜Ÿåˆ—äº’æ–¥é”
 	pthread_mutex_t m_sMutex;
 #endif
 };

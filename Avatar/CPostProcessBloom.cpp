@@ -1,12 +1,12 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CPostProcessBloom.h"
 #include "CEngine.h"
 
 /**
-* ³õÊ¼»¯ºó´¦Àí¶ÔÏó
+* åˆå§‹åŒ–åŽå¤„ç†å¯¹è±¡
 */
 bool CPostProcessBloom::Init(int width, int height) {
 	// Bloom
@@ -21,7 +21,7 @@ bool CPostProcessBloom::Init(int width, int height) {
 			vec3 glow = texture(uBlurTexture, vTexCoord).rgb;\
 			fragColor = vec4(color + glow, 1.0);\
 		}";
-	// Ä£ºý´¦Àí
+	// æ¨¡ç³Šå¤„ç†
 	const char* blurShader = "\
 		uniform sampler2D uTexture;\
 		uniform vec2 uScreenSize;\
@@ -64,7 +64,7 @@ bool CPostProcessBloom::Init(int width, int height) {
 }
 
 /**
-* äÖÈ¾ÇøÓò´óÐ¡¸Ä±ä
+* æ¸²æŸ“åŒºåŸŸå¤§å°æ”¹å˜
 */
 void CPostProcessBloom::Resize(int width, int height) {
 	CEngine::GetTextureManager()->Resize(m_pRenderTexture, width, height);
@@ -75,7 +75,7 @@ void CPostProcessBloom::Resize(int width, int height) {
 }
 
 /**
-* Ïú»Ùºó´¦Àí¶ÔÏó
+* é”€æ¯åŽå¤„ç†å¯¹è±¡
 */
 void CPostProcessBloom::Destroy() {
 	CEngine::GetTextureManager()->Drop(m_pRenderTexture);
@@ -86,23 +86,23 @@ void CPostProcessBloom::Destroy() {
 }
 
 /**
-* Ó¦ÓÃµ±Ç°ºó´¦Àí
+* åº”ç”¨å½“å‰åŽå¤„ç†
 */
 void CPostProcessBloom::Apply(CTexture* target, CMesh* mesh) {
 	CGraphicsManager* pGraphicsMgr = CEngine::GetGraphicsManager();
-	// Ë®Æ½Ä£ºý
+	// æ°´å¹³æ¨¡ç³Š
 	pGraphicsMgr->SetRenderTarget(m_pHBlurTexture, 0, true, false, false);
 	m_pBlurShader->UseShader();
 	m_pBlurShader->SetUniform("uDirection", CVector2(3.5f, 0.0f));
 	m_pRenderTexture->UseTexture();
 	mesh->Render(false);
-	// ´¹Ö±Ä£ºý
+	// åž‚ç›´æ¨¡ç³Š
 	pGraphicsMgr->SetRenderTarget(m_pVBlurTexture, 0, true, false, false);
 	m_pBlurShader->UseShader();
 	m_pBlurShader->SetUniform("uDirection", CVector2(0.0f, 3.5f));
 	m_pHBlurTexture->UseTexture();
 	mesh->Render(false);
-	// ºÏ³É×îÖÕ³¡¾°
+	// åˆæˆæœ€ç»ˆåœºæ™¯
 	pGraphicsMgr->SetRenderTarget(target, 0, true, false, false);
 	m_pPostProcessShader->UseShader();
 	m_pVBlurTexture->UseTexture(1);

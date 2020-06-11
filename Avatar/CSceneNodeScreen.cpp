@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CSceneNodeScreen.h"
@@ -7,7 +7,7 @@
 #include "CEngine.h"
 
 /**
-* ¹¹Ôìº¯Êı
+* æ„é€ å‡½æ•°
 */
 CSceneNodeScreen::CSceneNodeScreen(const string& name, const string& texture, int width, int height)
 	: CSceneNode("screen", name) {
@@ -18,11 +18,11 @@ CSceneNodeScreen::CSceneNodeScreen(const string& name, const string& texture, in
 }
 
 /**
-* ³õÊ¼»¯³¡¾°½Úµã
+* åˆå§‹åŒ–åœºæ™¯èŠ‚ç‚¹
 */
 bool CSceneNodeScreen::Init() {
 	CTexture* pTexture = CEngine::GetTextureManager()->Create(m_strTexture);
-	// ¿í¸ßÎª0±íÊ¾ÒÔÍ¼Æ¬Îª×¼£¬Îª¸ºÊı±íÊ¾ÒÔÆÁÄ»Îª×¼
+	// å®½é«˜ä¸º0è¡¨ç¤ºä»¥å›¾ç‰‡ä¸ºå‡†ï¼Œä¸ºè´Ÿæ•°è¡¨ç¤ºä»¥å±å¹•ä¸ºå‡†
 	int texture_w = pTexture->GetWidth();
 	int texture_h = pTexture->GetHeight();
 	if (!pTexture->IsValid()) {
@@ -62,21 +62,21 @@ bool CSceneNodeScreen::Init() {
 }
 
 /**
-* Ïú»Ù³¡¾°½Úµã
+* é”€æ¯åœºæ™¯èŠ‚ç‚¹
 */
 void CSceneNodeScreen::Destroy() {
 	delete m_pMeshData;
 }
 
 /**
-* äÖÈ¾³¡¾°½Úµã
+* æ¸²æŸ“åœºæ™¯èŠ‚ç‚¹
 */
 void CSceneNodeScreen::Render() {
 	m_pMeshData->GetMesh(0)->Render();
 }
 
 /**
-* »ñÈ¡Íø¸ñÊı¾İ
+* è·å–ç½‘æ ¼æ•°æ®
 */
 CMeshData* CSceneNodeScreen::GetMeshData() {
 	return m_pMeshData;

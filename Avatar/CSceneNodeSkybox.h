@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CSCENENODESKYBOX_H_
@@ -7,26 +7,26 @@
 #include "CSceneNode.h"
 
 /**
-* @brief Ìì¿ÕºĞ³¡¾°½Úµã
+* @brief å¤©ç©ºç›’åœºæ™¯èŠ‚ç‚¹
 */
 class AVATAR_EXPORT CSceneNodeSkybox: public CSceneNode {
 public:
-	//! ¹¹Ôì·½·¨
+	//! æ„é€ æ–¹æ³•
 	CSceneNodeSkybox(const string& name, const string texture[6]);
 
-	//! ³õÊ¼»¯³¡¾°½Úµã
+	//! åˆå§‹åŒ–åœºæ™¯èŠ‚ç‚¹
 	virtual bool Init();
-	//! Ïú»Ù³¡¾°½Úµã
+	//! é”€æ¯åœºæ™¯èŠ‚ç‚¹
 	virtual void Destroy();
-	//! äÖÈ¾³¡¾°½Úµã
+	//! æ¸²æŸ“åœºæ™¯èŠ‚ç‚¹
 	virtual void Render();
-	//! ¸üĞÂÂß¼­
+	//! æ›´æ–°é€»è¾‘
 	virtual void Update(float dt);
 
 private:
-	//! Ìì¿ÕºĞÎÆÀí
+	//! å¤©ç©ºç›’çº¹ç†
 	string m_strTexture[6];
-	//! Íø¸ñ¶ÔÏó
+	//! ç½‘æ ¼å¯¹è±¡
 	CMesh* m_pMesh;
 };
 

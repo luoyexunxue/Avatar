@@ -1,12 +1,12 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CPostProcessEmboss.h"
 #include "CEngine.h"
 
 /**
-* ³õÊ¼»¯ºó´¦Àí¶ÔÏó
+* åˆå§‹åŒ–åŽå¤„ç†å¯¹è±¡
 */
 bool CPostProcessEmboss::Init(int width, int height) {
 	const char* fragShader = "\
@@ -33,7 +33,7 @@ bool CPostProcessEmboss::Init(int width, int height) {
 }
 
 /**
-* äÖÈ¾ÇøÓò´óÐ¡¸Ä±ä
+* æ¸²æŸ“åŒºåŸŸå¤§å°æ”¹å˜
 */
 void CPostProcessEmboss::Resize(int width, int height) {
 	CEngine::GetTextureManager()->Resize(m_pRenderTexture, width, height);
@@ -42,7 +42,7 @@ void CPostProcessEmboss::Resize(int width, int height) {
 }
 
 /**
-* Ïú»Ùºó´¦Àí¶ÔÏó
+* é”€æ¯åŽå¤„ç†å¯¹è±¡
 */
 void CPostProcessEmboss::Destroy() {
 	CEngine::GetTextureManager()->Drop(m_pRenderTexture);

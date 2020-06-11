@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CCameraViewer.h"
@@ -8,7 +8,7 @@
 #include <cmath>
 
 /**
-* ¹¹Ôìº¯Êı
+* æ„é€ å‡½æ•°
 */
 CCameraViewer::CCameraViewer() {
 	m_fDamping = 5.0f;
@@ -19,7 +19,7 @@ CCameraViewer::CCameraViewer() {
 }
 
 /**
-* »ñÈ¡Ïà»úÃû³Æ
+* è·å–ç›¸æœºåç§°
 * @return viewer
 */
 const char* CCameraViewer::GetName() const {
@@ -27,7 +27,7 @@ const char* CCameraViewer::GetName() const {
 }
 
 /**
-* ¿ØÖÆĞÅÏ¢ÊäÈë
+* æ§åˆ¶ä¿¡æ¯è¾“å…¥
 */
 void CCameraViewer::Input(CInputManager::SInput* input) {
 	if (!m_bControlAttached) return;
@@ -35,14 +35,14 @@ void CCameraViewer::Input(CInputManager::SInput* input) {
 		CMatrix4 viewMat = m_cViewMatrix;
 		CVector3 movement = CVector3(input->fRightLeft, input->fUpDown, -input->fForthBack, 0.0f);
 		CVector3 offset = viewMat.Transpose() * movement;
-		// ¼ÆËãÏà»úÔ¤¶¨Î»ÖÃ
+		// è®¡ç®—ç›¸æœºé¢„å®šä½ç½®
 		CVector3 lookVec = m_cOrientInAdvance * CVector3(0, -m_fDistanceInAdvance, 0);
 		CVector3 position = m_cTargetPos + lookVec;
-		// Èôµã»ıĞ¡ÓÚÁãÔò±íÊ¾ÊÓÏß·´Ïò
+		// è‹¥ç‚¹ç§¯å°äºé›¶åˆ™è¡¨ç¤ºè§†çº¿åå‘
 		if (lookVec.DotProduct(lookVec + offset) > 0.0f) {
 			SetPosition(position + offset);
 		}
-		// ´¦Àí¹Û²ì¾àÀëÎªÁãµÄÇé¿ö
+		// å¤„ç†è§‚å¯Ÿè·ç¦»ä¸ºé›¶çš„æƒ…å†µ
 		else if (m_fDistanceInAdvance < 0.001f && m_cLookVector.DotProduct(offset) > 0.0f) {
 			SetPosition(position + offset);
 		}
@@ -56,7 +56,7 @@ void CCameraViewer::Input(CInputManager::SInput* input) {
 }
 
 /**
-* ÉèÖÃÏà»ú¸ß¶È
+* è®¾ç½®ç›¸æœºé«˜åº¦
 */
 void CCameraViewer::SetHeight(float height) {
 	CVector3 position = m_cTargetPos - m_cOrientInAdvance * CVector3(0, m_fDistanceInAdvance, 0);
@@ -65,7 +65,7 @@ void CCameraViewer::SetHeight(float height) {
 }
 
 /**
-* ÉèÖÃÏà»úÎ»ÖÃ
+* è®¾ç½®ç›¸æœºä½ç½®
 */
 void CCameraViewer::SetPosition(const CVector3& pos) {
 	m_cPosition = pos;
@@ -73,7 +73,7 @@ void CCameraViewer::SetPosition(const CVector3& pos) {
 }
 
 /**
-* ÉèÖÃÏà»ú·½Î»
+* è®¾ç½®ç›¸æœºæ–¹ä½
 */
 void CCameraViewer::SetAngle(float yaw, float pitch, float roll) {
 	CMatrix4 rotMat;
@@ -84,22 +84,22 @@ void CCameraViewer::SetAngle(float yaw, float pitch, float roll) {
 }
 
 /**
-* ÉèÖÃÏà»úÄ¿±ê
+* è®¾ç½®ç›¸æœºç›®æ ‡
 */
 void CCameraViewer::SetTarget(const CVector3& pos) {
 	m_cTargetPos = pos;
 }
 
 /**
-* ¸üĞÂÏà»ú
+* æ›´æ–°ç›¸æœº
 */
 void CCameraViewer::Update(float dt) {
 	dt *= m_fDamping;
 	if (dt > 1.0f) dt = 1.0f;
-	// ²åÖµ¼ÆËã
+	// æ’å€¼è®¡ç®—
 	m_fDistance += (m_fDistanceInAdvance - m_fDistance) * dt;
 	m_cOrientation = m_cOrientation.Slerp(m_cOrientInAdvance, dt);
-	// ¼ÆËãÏà»úÎ»ÖÃ
+	// è®¡ç®—ç›¸æœºä½ç½®
 	m_cPosition = m_cTargetPos + m_cOrientation * CVector3(0, -m_fDistance, 0);
 	m_cLookVector = m_cOrientation * CVector3::Y;
 	m_cUpVector = m_cOrientation * CVector3::Z;
@@ -107,8 +107,8 @@ void CCameraViewer::Update(float dt) {
 }
 
 /**
-* ÉèÖÃ×èÄáÏµÊı
-* @param k ×èÄáÏµÊı£¬Ô½´ó¹ßĞÔ±íÏÖÔ½Ğ¡
+* è®¾ç½®é˜»å°¼ç³»æ•°
+* @param k é˜»å°¼ç³»æ•°ï¼Œè¶Šå¤§æƒ¯æ€§è¡¨ç°è¶Šå°
 */
 void CCameraViewer::SetDamping(float k) {
 	m_fDamping = k;

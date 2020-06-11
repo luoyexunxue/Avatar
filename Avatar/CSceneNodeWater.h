@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CSCENENODEWATER_H_
@@ -7,36 +7,36 @@
 #include "CSceneNode.h"
 
 /**
-* @brief Ë®Ãæ³¡¾°½Úµã
+* @brief æ°´é¢åœºæ™¯èŠ‚ç‚¹
 */
 class AVATAR_EXPORT CSceneNodeWater: public CSceneNode {
 public:
-	//! ¹¹Ôì·½·¨
+	//! æ„é€ æ–¹æ³•
 	CSceneNodeWater(const string& name, const string& normalMap, float depth);
 
-	//! ³õÊ¼»¯³¡¾°½Úµã
+	//! åˆå§‹åŒ–åœºæ™¯èŠ‚ç‚¹
 	virtual bool Init();
-	//! Ïú»Ù³¡¾°½Úµã
+	//! é”€æ¯åœºæ™¯èŠ‚ç‚¹
 	virtual void Destroy();
-	//! äÖÈ¾³¡¾°½Úµã
+	//! æ¸²æŸ“åœºæ™¯èŠ‚ç‚¹
 	virtual void Render();
-	//! ¸üĞÂ³¡¾°½Úµã
+	//! æ›´æ–°åœºæ™¯èŠ‚ç‚¹
 	virtual void Update(float dt);
 
 private:
-	//! ¸üĞÂË®ÏÂÆÁÄ»ÃÉ°æ
+	//! æ›´æ–°æ°´ä¸‹å±å¹•è’™ç‰ˆ
 	void UpdateUnderwaterMask();
 
 private:
-	//! Ä£ÄâµÄ²¨¶¯µÄÊ±¼ä
+	//! æ¨¡æ‹Ÿçš„æ³¢åŠ¨çš„æ—¶é—´
 	float m_fTimeElapse;
-	//! Ë®Ãæ²¨ÎÆ·¨ÏßÌùÍ¼
+	//! æ°´é¢æ³¢çº¹æ³•çº¿è´´å›¾
 	string m_strNormalMap;
-	//! Ë®ÃæÍø¸ñ¶ÔÏó
+	//! æ°´é¢ç½‘æ ¼å¯¹è±¡
 	CMesh* m_pMesh;
-	//! µ¹Ó° RTT ÌùÍ¼
+	//! å€’å½± RTT è´´å›¾
 	CTexture* m_pReflectTexture;
-	//! ÆÁÄ»Ë®ÏÂÃÉ°æ½Úµã
+	//! å±å¹•æ°´ä¸‹è’™ç‰ˆèŠ‚ç‚¹
 	CSceneNode* m_pUnderwaterNode;
 };
 

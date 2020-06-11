@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CGUIENVIRONMENT_H_
@@ -13,48 +13,46 @@ using std::list;
 using std::vector;
 
 /**
-* @brief ÒıÇæ GUI »·¾³
+* @brief å¼•æ“ GUI ç¯å¢ƒ
 *
-* ÊµÏÖ»ù´¡ÎªÊ¹ÓÃÆÁÄ»´óĞ¡µÄÄÚ´æÎÆÀí£¬Ïà¹ØGUIÔªËØ¶¼ÊÇ»æÖÆµ½ÄÚ´æÖĞ£¬È»ºóÔÙ¸üĞÂÖÁ OpenGL ÎÆÀí£¬
+* å®ç°åŸºç¡€ä¸ºä½¿ç”¨å±å¹•å¤§å°çš„å†…å­˜çº¹ç†ï¼Œç›¸å…³GUIå…ƒç´ éƒ½æ˜¯ç»˜åˆ¶åˆ°å†…å­˜ä¸­ï¼Œç„¶åå†æ›´æ–°è‡³ OpenGL çº¹ç†ï¼Œ
 */
 class CGuiEnvironment {
 public:
-	//! »ñÈ¡ GUI »·¾³ÊµÀı
+	//! è·å– GUI ç¯å¢ƒå®ä¾‹
 	static CGuiEnvironment* GetInstance() {
 		if (m_pInstance) return m_pInstance;
 		m_pInstance = new CGuiEnvironment();
 		return m_pInstance;
 	}
-	//! Ïú»Ù GUI »·¾³
+	//! é”€æ¯ GUI ç¯å¢ƒ
 	void Destroy();
 
-	//! äÖÈ¾ GUI ½çÃæ
-	void Render();
-	//! Êó±êÊÂ¼ş
+	//! æ¸²æŸ“ GUI ç•Œé¢
+	void Render(int width, int height);
+	//! é¼ æ ‡äº‹ä»¶
 	bool MouseEvent(int x, int y, int button, int delta);
-	//! ¼üÅÌÊÂ¼ş
+	//! é”®ç›˜äº‹ä»¶
 	bool KeyboardEvent(int key);
-	//! ¸üĞÂÆÁÄ»´óĞ¡
-	void UpdateSize(int width, int height);
 
-	//! Ê¹ÄÜ»ò½ûÓÃ GUI
+	//! ä½¿èƒ½æˆ–ç¦ç”¨ GUI
 	void SetEnable(bool enable);
-	//! »ñÈ¡ GUI »­²¼´óĞ¡
+	//! è·å– GUI ç”»å¸ƒå¤§å°
 	void GetSize(int* width, int* height);
-	//! ÉèÖÃ GUI Ëõ·Å
+	//! è®¾ç½® GUI ç¼©æ”¾
 	void SetScale(float scale);
-	//! ´´½¨ GUI ÔªËØ
+	//! åˆ›å»º GUI å…ƒç´ 
 	bool GuiCreate(const string& name, const string& type, const string& desc);
-	//! ĞŞ¸Ä GUI ÔªËØ
+	//! ä¿®æ”¹ GUI å…ƒç´ 
 	bool GuiModify(const string& name, const string& desc);
-	//! É¾³ı GUI ÔªËØ
+	//! åˆ é™¤ GUI å…ƒç´ 
 	bool GuiDelete(const string& name);
 
 public:
-	//! GUIÔªËØ»ùÀà¶¨Òå
+	//! GUIå…ƒç´ åŸºç±»å®šä¹‰
 	class CGuiElement {
 	public:
-		//! Ä¬ÈÏ¹¹Ôìº¯Êı
+		//! é»˜è®¤æ„é€ å‡½æ•°
 		CGuiElement(const string& name) {
 			m_pParent = 0;
 			m_strName = name;
@@ -62,81 +60,83 @@ public:
 			m_iOffset[0] = 0;
 			m_iOffset[1] = 0;
 		}
-		//! ĞéÎö¹¹º¯Êı
+		//! è™šææ„å‡½æ•°
 		virtual ~CGuiElement() {}
-		//! ÊÇ·ñĞèÒªÖØ»æ
+		//! æ˜¯å¦éœ€è¦é‡ç»˜
 		virtual bool Redraw() { return false; }
-		//! ÏìÓ¦ÍÏ¶¯²Ù×÷
+		//! å“åº”æ‹–åŠ¨æ“ä½œ
 		virtual bool Drag(bool release, int dx, int dy, CRectangle& region) {
 			return m_pParent ? m_pParent->Drag(release, dx, dy, region) : false;
 		}
-		//! ÊôĞÔÉèÖÃ
+		//! å±æ€§è®¾ç½®
 		virtual bool SetAttribute(const string& name, const string& value) = 0;
-		//! »ñÈ¡ÊôĞÔ
+		//! è·å–å±æ€§
 		virtual string GetAttribute(const string& name) = 0;
-		//! ¿Ø¼ş»æÖÆ
+		//! æ§ä»¶ç»˜åˆ¶
 		virtual void Draw(const CRectangle& rect, unsigned char* buffer) = 0;
 
 	public:
-		//! ¸¸¼¶ÔªËØ
+		//! çˆ¶çº§å…ƒç´ 
 		CGuiElement* m_pParent;
-		//! ×ÓÔªËØ
+		//! å­å…ƒç´ 
 		list<CGuiElement*> m_lstChildren;
-		//! ÔªËØÃû³Æ
+		//! å…ƒç´ åç§°
 		string m_strName;
-		//! ¿É¼ûĞÔ
+		//! å¯è§æ€§
 		bool m_bVisible;
-		//! ×ÓÔªËØÆ«ÒÆ
+		//! å­å…ƒç´ åç§»
 		int m_iOffset[2];
-		//! ÔªËØÇøÓò
+		//! å…ƒç´ åŒºåŸŸ
 		CRectangle m_cRegion;
-		//! ÆÁÄ»Î»ÖÃ
+		//! å±å¹•ä½ç½®
 		CRectangle m_cRegionScreen;
 	};
 
-	//! »ñÈ¡Ö¸¶¨Ãû³ÆµÄGUI
+	//! è·å–æŒ‡å®šåç§°çš„GUI
 	CGuiElement* GetElement(const string& name);
-	//! ²éÕÒÖÆ¶¨Î»ÖÃµÄGUI
+	//! æŸ¥æ‰¾åˆ¶å®šä½ç½®çš„GUI
 	CGuiElement* GetElement(CGuiElement* parent, int x, int y);
 
 private:
 	CGuiEnvironment();
 	~CGuiEnvironment();
 
-	//! É¾³ıÖ¸¶¨µÄÔªËØºÍÆä×ÓÔªËØ
+	//! åˆ é™¤æŒ‡å®šçš„å…ƒç´ å’Œå…¶å­å…ƒç´ 
 	void DeleteElement(CGuiElement* element);
-	//! Ê¹»æÍ¼ÇøÎŞĞ§
+	//! ä½¿ç»˜å›¾åŒºæ— æ•ˆ
 	void InvalidateRegion(const CRectangle& region);
-	//! »æÖÆÖ¸¶¨µÄÎŞĞ§ÇøÓò
+	//! ç»˜åˆ¶æŒ‡å®šçš„æ— æ•ˆåŒºåŸŸ
 	void DrawInvalidateRegion();
 
 private:
-	//! GUIÊ¹ÄÜ×´Ì¬
+	//! GUIä½¿èƒ½çŠ¶æ€
 	bool m_bEnabled;
-	//! GUI»­²¼Ëõ·ÅÏµÊı
+	//! GUIç”»å¸ƒç¼©æ”¾ç³»æ•°
 	float m_fScaleFactor;
-	//! äÖÈ¾GUI»º³åÇø
+	//! æ¸²æŸ“GUIç¼“å†²åŒº
 	unsigned char* m_pGuiBuffer;
-	//! »­²¼ÇøÓò´óĞ¡
+	//! è®°å½•å±å¹•å¤§å°
+	int m_iScreenSize[2];
+	//! ç”»å¸ƒåŒºåŸŸå¤§å°
 	CRectangle m_cDrawRegion;
-	//! ĞèÒªË¢ĞÂµÄÎŞĞ§ÇøÓò
+	//! éœ€è¦åˆ·æ–°çš„æ— æ•ˆåŒºåŸŸ
 	vector<CRectangle> m_vecInvalidateRect;
-	//! GUIÔªËØÁĞ±í
+	//! GUIå…ƒç´ åˆ—è¡¨
 	list<CGuiElement*> m_lstElements;
 
-	//! ¼ÇÂ¼Êó±ê×´Ì¬
+	//! è®°å½•é¼ æ ‡çŠ¶æ€
 	int m_iLastMouseButton;
-	//! ¼ÇÂ¼Êó±ê°´ÏÂÎ»ÖÃ
+	//! è®°å½•é¼ æ ‡æŒ‰ä¸‹ä½ç½®
 	int m_iLastMouseDownPos[2];
 
-	//! »ñµÃ½¹µãµÄÔªËØ
+	//! è·å¾—ç„¦ç‚¹çš„å…ƒç´ 
 	CGuiElement* m_pFocusElement;
-	//! µ±Ç°ÍÏ×§µÄÔªËØ
+	//! å½“å‰æ‹–æ‹½çš„å…ƒç´ 
 	CGuiElement* m_pDragElement;
-	//! ÓÃÓÚäÖÈ¾GUIµÄMesh
+	//! ç”¨äºæ¸²æŸ“GUIçš„Mesh
 	class CMesh* m_pRenderMesh;
 
-	//! ÊµÀı
+	//! å®ä¾‹
 	static CGuiEnvironment* m_pInstance;
 };
 

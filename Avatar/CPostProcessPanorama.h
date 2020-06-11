@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2019 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CPOSTPROCESSPANORAMA_H_
@@ -7,7 +7,7 @@
 #include "CPostProcess.h"
 
 /**
-* @brief È«¾°äÖÈ¾ºó´¦Àí
+* @brief å…¨æ™¯æ¸²æŸ“åå¤„ç†
 */
 class CPostProcessPanorama : public CPostProcess {
 public:

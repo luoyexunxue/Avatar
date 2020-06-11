@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CFONTMANAGER_H_
@@ -16,27 +16,27 @@ typedef struct FT_LibraryRec_* FT_Library;
 typedef struct FT_FaceRec_* FT_Face;
 
 /**
-* @brief ×ÖÌå¹ÜÀíÆ÷
+* @brief å­—ä½“ç®¡ç†å™¨
 */
 class AVATAR_EXPORT CFontManager {
 public:
-	//! »ñÈ¡¹ÜÀíÆ÷ÊµÀı
+	//! è·å–ç®¡ç†å™¨å®ä¾‹
 	static CFontManager* GetInstance() {
 		if (m_pInstance) return m_pInstance;
 		m_pInstance = new CFontManager();
 		return m_pInstance;
 	}
-	//! ÊµÀıÏú»Ù
+	//! å®ä¾‹é”€æ¯
 	void Destroy();
 
 public:
-	//! Ö§³ÖµÄÎÄ×Ö¶ÔÆë·½Ê½
+	//! æ”¯æŒçš„æ–‡å­—å¯¹é½æ–¹å¼
 	enum Alignment {
 		BOTTOMLEFT, BOTTOMCENTER, BOTTOMRIGHT,
 		MIDDLELEFT, MIDDLECENTER, MIDDLERIGHT,
 		TOPLEFT, TOPCENTER, TOPRIGHT
 	};
-	//! äÖÈ¾ÎÄ±¾Í¼Æ¬
+	//! æ¸²æŸ“æ–‡æœ¬å›¾ç‰‡
 	class CTextImage {
 	public:
 		int width;
@@ -52,51 +52,51 @@ public:
 	};
 
 public:
-	//! ¼ÓÔØ×ÖÌå¿â
+	//! åŠ è½½å­—ä½“åº“
 	bool Load(const string& file, const string& name);
-	//! Çå¿ÕËùÓĞÒÑ¼ÓÔØ×ÖÌå¿â
+	//! æ¸…ç©ºæ‰€æœ‰å·²åŠ è½½å­—ä½“åº“
 	void Clear();
-	//! ÉèÖÃ»º´æ´óĞ¡
+	//! è®¾ç½®ç¼“å­˜å¤§å°
 	void SetCacheSize(int size);
 
-	//! Ê¹ÓÃ×ÖÌå¿â
+	//! ä½¿ç”¨å­—ä½“åº“
 	bool UseFont(const string& name);
-	//! ÉèÖÃ×ÖÌå´óĞ¡
+	//! è®¾ç½®å­—ä½“å¤§å°
 	void SetSize(int size);
-	//! ¼ÆËãËùĞèÍ¼Æ¬´óĞ¡
+	//! è®¡ç®—æ‰€éœ€å›¾ç‰‡å¤§å°
 	void TextSize(const wchar_t* text, int* width, int* height);
-	//! »æÖÆ»Ò¶ÈÍ¼
+	//! ç»˜åˆ¶ç°åº¦å›¾
 	void DrawText(const wchar_t* text, CTextImage* image, Alignment align, bool stretch);
 
-	//! »ñÈ¡¹ÜÀíµÄËùÓĞ×ÖÌå¿âÁĞ±í
+	//! è·å–ç®¡ç†çš„æ‰€æœ‰å­—ä½“åº“åˆ—è¡¨
 	void GetFontList(vector<string>& fontList);
 
 private:
 	CFontManager();
 	~CFontManager();
 
-	//! ÉèÖÃ×Ö·û¶ÔÆë
+	//! è®¾ç½®å­—ç¬¦å¯¹é½
 	void SetAlignment(CTextImage* src, CTextImage* dst, Alignment align, bool stretch);
-	//! »º´æäÖÈ¾½á¹û
+	//! ç¼“å­˜æ¸²æŸ“ç»“æœ
 	bool CachePut(const wchar_t* text, CTextImage* image);
-	//! È¡³ö»º´æÍ¼Æ¬
+	//! å–å‡ºç¼“å­˜å›¾ç‰‡
 	bool CacheGet(const wchar_t* text, CTextImage*& image);
-	//! Çå¿ÕLRU»º´æ
+	//! æ¸…ç©ºLRUç¼“å­˜
 	void CacheClear();
 
 private:
-	//! ×ÖÌå¶¨Òå
+	//! å­—ä½“å®šä¹‰
 	typedef struct _SFontFace {
 		FT_Face face;
-		//! ×ÖÌåÎÄ¼şÖ¸Õë
+		//! å­—ä½“æ–‡ä»¶æŒ‡é’ˆ
 		void* data;
 	} SFontFace;
-	//! LRU ¼üÖµ¶¨Òå
+	//! LRU é”®å€¼å®šä¹‰
 	typedef struct _SCacheKey {
 		wstring text;
 		FT_Face face;
 		int size;
-		//! map±È½Ïº¯Êı
+		//! mapæ¯”è¾ƒå‡½æ•°
 		bool operator < (const _SCacheKey& other) const {
 			if (text != other.text) return text < other.text;
 			if (face != other.face) return face < other.face;
@@ -104,35 +104,35 @@ private:
 			return false;
 		}
 	} SCacheKey;
-	//! LRU »º´æµ¥Ôª
+	//! LRU ç¼“å­˜å•å…ƒ
 	typedef struct _SCacheEntry {
 		SCacheKey key;
 		CTextImage* image;
-		// LRUË«Á´±í
+		// LRUåŒé“¾è¡¨
 		_SCacheEntry* prev;
 		_SCacheEntry* next;
 	} SCacheEntry;
 
 private:
-	//! FreeType ¿â
+	//! FreeType åº“
 	FT_Library m_pFreeTypeLib;
-	//! µ±Ç°×ÖÌå
+	//! å½“å‰å­—ä½“
 	FT_Face m_pCurrentFace;
-	//! µ±Ç°×ÖÌå´óĞ¡
+	//! å½“å‰å­—ä½“å¤§å°
 	int m_iCurrentSize;
-	//! ×ÖÌå¼¯ºÏ
+	//! å­—ä½“é›†åˆ
 	map<string, SFontFace> m_mapFontFace;
 
-	//! Éè¶¨µÄ»º´æ´óĞ¡
+	//! è®¾å®šçš„ç¼“å­˜å¤§å°
 	int m_iCacheSize;
-	//! LRU»º´æ
+	//! LRUç¼“å­˜
 	map<SCacheKey, SCacheEntry*> m_mapLRUCache;
-	//! LRU»º´æÁ´±íÍ·Ö¸Õë
+	//! LRUç¼“å­˜é“¾è¡¨å¤´æŒ‡é’ˆ
 	SCacheEntry* m_pLRUCacheHead;
-	//! LRU»º´æÁ´±íÎ²Ö¸Õë
+	//! LRUç¼“å­˜é“¾è¡¨å°¾æŒ‡é’ˆ
 	SCacheEntry* m_pLRUCacheTail;
 
-	//! ÊµÀı
+	//! å®ä¾‹
 	static CFontManager* m_pInstance;
 };
 

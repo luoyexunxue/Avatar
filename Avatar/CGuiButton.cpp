@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CGuiButton.h"
@@ -10,7 +10,7 @@
 #include <cstdlib>
 
 /**
-* ¹¹Ôìº¯Êı£¬Ö¸¶¨Ãû³Æ
+* æ„é€ å‡½æ•°ï¼ŒæŒ‡å®šåç§°
 */
 CGuiButton::CGuiButton(const string& name) : CGuiElement(name) {
 	m_cRegion.SetValue(0, 0, 64, 32);
@@ -27,7 +27,7 @@ CGuiButton::CGuiButton(const string& name) : CGuiElement(name) {
 	m_cForeColor[1] = 0xFF;
 	m_cForeColor[2] = 0xFF;
 	m_cForeColor[3] = 0xFF;
-	// ±³¾°Í¼Æ¬
+	// èƒŒæ™¯å›¾ç‰‡
 	m_pImage = 0;
 	m_iImageWidth = 0;
 	m_iImageHeight = 0;
@@ -35,14 +35,14 @@ CGuiButton::CGuiButton(const string& name) : CGuiElement(name) {
 }
 
 /**
-* Îö¹¹º¯Êı
+* ææ„å‡½æ•°
 */
 CGuiButton::~CGuiButton() {
 	if (m_pImage) delete[] m_pImage;
 }
 
 /**
-* ÊôĞÔÉèÖÃ
+* å±æ€§è®¾ç½®
 */
 bool CGuiButton::SetAttribute(const string& name, const string& value) {
 	if (name == "visible") m_bVisible = value == "true";
@@ -77,7 +77,7 @@ bool CGuiButton::SetAttribute(const string& name, const string& value) {
 }
 
 /**
-* »ñÈ¡ÊôĞÔ
+* è·å–å±æ€§
 */
 string CGuiButton::GetAttribute(const string& name) {
 	if (name == "visible") return m_bVisible? "true": "false";
@@ -106,12 +106,12 @@ string CGuiButton::GetAttribute(const string& name) {
 }
 
 /**
-* ¿Ø¼ş»æÖÆ
+* æ§ä»¶ç»˜åˆ¶
 */
 void CGuiButton::Draw(const CRectangle& rect, unsigned char* buffer) {
 	int width = m_cRegion.GetWidth();
 	int height = m_cRegion.GetHeight();
-	// »æÖÆ±êÌâ
+	// ç»˜åˆ¶æ ‡é¢˜
 	CFontManager::CTextImage* pImage = 0;
 	if (m_strText[0]) {
 		pImage = new CFontManager::CTextImage(width, height);
@@ -120,7 +120,7 @@ void CGuiButton::Draw(const CRectangle& rect, unsigned char* buffer) {
 		pFontMgr->SetSize(m_iFontSize);
 		pFontMgr->DrawText(m_strText, pImage, CFontManager::MIDDLECENTER, m_bStretchText);
 	}
-	// Ìî³ä GUI »º³åÇø
+	// å¡«å…… GUI ç¼“å†²åŒº
 	int offsetX = rect.GetLeft() - m_cRegionScreen.GetLeft();
 	int offsetY = rect.GetTop() - m_cRegionScreen.GetTop();
 	int drawWidth = rect.GetWidth();
@@ -129,7 +129,7 @@ void CGuiButton::Draw(const CRectangle& rect, unsigned char* buffer) {
 		for (int w = 0; w < drawWidth; w++) {
 			unsigned int index = (h * drawWidth + w) << 2;
 			unsigned char pixel = pImage? pImage->data[(h + offsetY) * width + w + offsetX]: 0;
-			// ±³¾°Í¼Æ¬£¬Óë±³¾°ÑÕÉ«»ìºÏ²¢À­ÉìÆ½ÆÌ
+			// èƒŒæ™¯å›¾ç‰‡ï¼Œä¸èƒŒæ™¯é¢œè‰²æ··åˆå¹¶æ‹‰ä¼¸å¹³é“º
 			if (m_pImage) {
 				int ix = (w + offsetX) * m_iImageWidth / width;
 				int iy = (h + offsetY) * m_iImageHeight / height;

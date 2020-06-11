@@ -1,12 +1,12 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CPostProcessGray.h"
 #include "CEngine.h"
 
 /**
-* ³õÊ¼»¯ºó´¦Àí¶ÔÏó
+* åˆå§‹åŒ–åŽå¤„ç†å¯¹è±¡
 */
 bool CPostProcessGray::Init(int width, int height) {
 	const char* fragShader = "\
@@ -27,14 +27,14 @@ bool CPostProcessGray::Init(int width, int height) {
 }
 
 /**
-* äÖÈ¾ÇøÓò´óÐ¡¸Ä±ä
+* æ¸²æŸ“åŒºåŸŸå¤§å°æ”¹å˜
 */
 void CPostProcessGray::Resize(int width, int height) {
 	CEngine::GetTextureManager()->Resize(m_pRenderTexture, width, height);
 }
 
 /**
-* Ïú»Ùºó´¦Àí¶ÔÏó
+* é”€æ¯åŽå¤„ç†å¯¹è±¡
 */
 void CPostProcessGray::Destroy() {
 	CEngine::GetTextureManager()->Drop(m_pRenderTexture);

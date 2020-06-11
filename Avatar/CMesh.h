@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CMESH_H_
@@ -15,104 +15,104 @@
 using std::vector;
 
 /**
-* @brief Íø¸ñÃæÀà
+* @brief ç½‘æ ¼é¢ç±»
 */
 class AVATAR_EXPORT CMesh {
 public:
-	//! Ä¬ÈÏ¹¹Ôìº¯Êı
+	//! é»˜è®¤æ„é€ å‡½æ•°
 	CMesh();
-	//! Ä¬ÈÏÎö¹¹º¯Êı
+	//! é»˜è®¤ææ„å‡½æ•°
 	~CMesh();
 
 public:
-	//! »ñÈ¡²ÄÖÊ
+	//! è·å–æè´¨
 	inline CMaterial* GetMaterial() const { return m_pMaterial; }
 
-	//! ÉèÖÃ¶¥µãÊıÁ¿
+	//! è®¾ç½®é¡¶ç‚¹æ•°é‡
 	void SetVertexUsage(unsigned int count);
-	//! Ìí¼ÓÒ»¸ö¶¥µã
+	//! æ·»åŠ ä¸€ä¸ªé¡¶ç‚¹
 	void AddVertex(const CVertex& vertex);
-	//! Ìí¼ÓÒ»¸ö¶¥µã²¢Ö¸¶¨¹Ç÷À°ó¶¨ĞÅÏ¢
+	//! æ·»åŠ ä¸€ä¸ªé¡¶ç‚¹å¹¶æŒ‡å®šéª¨éª¼ç»‘å®šä¿¡æ¯
 	void AddVertex(const CVertex& vertex, const CVertexJoint& bind);
-	//! Ê¹ÓÃË÷Òı·½Ê½Ìí¼ÓÒ»¸öÈı½ÇĞÎ
+	//! ä½¿ç”¨ç´¢å¼•æ–¹å¼æ·»åŠ ä¸€ä¸ªä¸‰è§’å½¢
 	void AddTriangle(unsigned int a, unsigned int b, unsigned int c);
-	//! Ê¹ÓÃ¶¥µã·½Ê½Ìí¼ÓÒ»¸öÈı½ÇĞÎ
+	//! ä½¿ç”¨é¡¶ç‚¹æ–¹å¼æ·»åŠ ä¸€ä¸ªä¸‰è§’å½¢
 	void AddTriangle(const CVertex& a, const CVertex& b, const CVertex& c);
 
-	//! ÒÆ³ıÍø¸ñ¶¥µã
+	//! ç§»é™¤ç½‘æ ¼é¡¶ç‚¹
 	void RemoveVertex(unsigned int index, int count);
-	//! ÒÆ³ıÍø¸ñÈı½ÇĞÎ
+	//! ç§»é™¤ç½‘æ ¼ä¸‰è§’å½¢
 	void RemoveTriangle(unsigned int index, int count);
 
-	//! ¸½¼ÓÒ»¸öÍø¸ñ
+	//! é™„åŠ ä¸€ä¸ªç½‘æ ¼
 	void Append(const CMesh* mesh);
-	//! ¶ÔËùÓĞ¶¥µã½øĞĞ¾ØÕó±ä»»
+	//! å¯¹æ‰€æœ‰é¡¶ç‚¹è¿›è¡ŒçŸ©é˜µå˜æ¢
 	void Transform(const CMatrix4& matrix);
-	//! ×Ô¶¯¼ÆËã¶¥µã·¨ÏòÁ¿
+	//! è‡ªåŠ¨è®¡ç®—é¡¶ç‚¹æ³•å‘é‡
 	void SetupNormal();
-	//! ·´×ª¶¥µã·¨ÏòºÍÎÆÀí×ø±ê
+	//! åè½¬é¡¶ç‚¹æ³•å‘å’Œçº¹ç†åæ ‡
 	void Reverse(bool normal, bool texCoordU, bool texCoordV);
 
-	//! »ñÈ¡¶¥µã¸öÊı
+	//! è·å–é¡¶ç‚¹ä¸ªæ•°
 	int GetVertexCount() const;
-	//! »ñÈ¡Èı½ÇĞÎ¸öÊı
+	//! è·å–ä¸‰è§’å½¢ä¸ªæ•°
 	int GetTriangleCount() const;
-	//! »ñÈ¡°ó¶¨¹Ç÷À¶¥µãÊıÁ¿
+	//! è·å–ç»‘å®šéª¨éª¼é¡¶ç‚¹æ•°é‡
 	int GetBindCount() const;
-	//! »ñÈ¡Íø¸ñ¶¥µã
+	//! è·å–ç½‘æ ¼é¡¶ç‚¹
 	CVertex* GetVertex(unsigned int index);
-	//! »ñÈ¡Íø¸ñ¶¥µã
+	//! è·å–ç½‘æ ¼é¡¶ç‚¹
 	CVertex* GetVertex(unsigned int face, unsigned int index);
-	//! »ñÈ¡Èı½ÇĞÎ¶¥µã
+	//! è·å–ä¸‰è§’å½¢é¡¶ç‚¹
 	void GetTriangle(unsigned int index, CVertex* vertices[3]);
-	//! »ñÈ¡Èı½ÇĞÎ¶¥µãË÷Òı
+	//! è·å–ä¸‰è§’å½¢é¡¶ç‚¹ç´¢å¼•
 	void GetTriangle(unsigned int index, unsigned int vertices[3]);
-	//! »ñÈ¡¶¥µã¹Ç÷À°ó¶¨
+	//! è·å–é¡¶ç‚¹éª¨éª¼ç»‘å®š
 	CVertexJoint* GetBind(unsigned int index);
 
-	//! Éú³ÉÍø¸ñ
+	//! ç”Ÿæˆç½‘æ ¼
 	void Create(bool dynamic);
-	//! ¸üĞÂ»º³å
+	//! æ›´æ–°ç¼“å†²
 	void Update(int bufferType);
-	//! äÖÈ¾Íø¸ñ
+	//! æ¸²æŸ“ç½‘æ ¼
 	void Render(bool material = true);
-	//! Íø¸ñÏ¸·Ö
+	//! ç½‘æ ¼ç»†åˆ†
 	void Subdivision();
 
-	//! »ñÈ¡°üÎ§ºĞ
+	//! è·å–åŒ…å›´ç›’
 	CBoundingBox GetBoundingBox() const;
-	//! ÉäÏßÊ°È¡£¬·µ»Ø¾àÀë
+	//! å°„çº¿æ‹¾å–ï¼Œè¿”å›è·ç¦»
 	float Intersects(const CRay& ray, int* face, float* bu, float* bv) const;
-	//! ¼ÆËãÌå»ı²¢·µ»ØÖÊĞÄ×ø±ê
+	//! è®¡ç®—ä½“ç§¯å¹¶è¿”å›è´¨å¿ƒåæ ‡
 	float Volume(CVector3& centroid) const;
-	//! ¼ÆËã±íÃæ»ı
+	//! è®¡ç®—è¡¨é¢ç§¯
 	float SurfaceArea() const;
 
-	//! ¿ËÂ¡Íø¸ñ¶ÔÏó
+	//! å…‹éš†ç½‘æ ¼å¯¹è±¡
 	CMesh* Clone() const;
 
 private:
-	//! ¶¥µãÊı×é
+	//! é¡¶ç‚¹æ•°ç»„
 	vector<CVertex> m_vecVertexArray;
-	//! ¶¥µãË÷ÒıÊı×é
+	//! é¡¶ç‚¹ç´¢å¼•æ•°ç»„
 	vector<unsigned int> m_vecIndexArray;
-	//! ¹Ç÷À°ó¶¨Êı×é
+	//! éª¨éª¼ç»‘å®šæ•°ç»„
 	vector<CVertexJoint> m_vecBindArray;
-	//! ±ê¼Ç¶¥µãÊı¾İ´óĞ¡
+	//! æ ‡è®°é¡¶ç‚¹æ•°æ®å¤§å°
 	size_t m_iVertexArraySize;
-	//! ±ê¼ÇË÷ÒıÊı¾İ´óĞ¡
+	//! æ ‡è®°ç´¢å¼•æ•°æ®å¤§å°
 	size_t m_iIndexArraySize;
-	//! ²ÄÖÊĞÅÏ¢
+	//! æè´¨ä¿¡æ¯
 	CMaterial* m_pMaterial;
 
-	//! ÊÇ·ñ¶¯Ì¬Íø¸ñÊı¾İ
+	//! æ˜¯å¦åŠ¨æ€ç½‘æ ¼æ•°æ®
 	bool m_bDynamic;
-	//! ±ê¼ÇÊÇ·ñÒÑÉú³É»º³å
+	//! æ ‡è®°æ˜¯å¦å·²ç”Ÿæˆç¼“å†²
 	bool m_bCreated;
 
-	//! ¶¥µã»º³åID
+	//! é¡¶ç‚¹ç¼“å†²ID
 	unsigned int m_iVertexBuffer;
-	//! Ë÷Òı»º³åID
+	//! ç´¢å¼•ç¼“å†²ID
     unsigned int m_iIndexBuffer;
 };
 

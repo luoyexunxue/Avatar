@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CCAMERAFREE_H_
@@ -10,78 +10,78 @@
 using std::vector;
 
 /**
-* @brief È«×ÔÓÉ¶ÈĞÍÏà»ú
+* @brief å…¨è‡ªç”±åº¦å‹ç›¸æœº
 *
-* ÊÊÓÃÓÚ·ÉĞĞÄ£ÄâÀàÓ¦ÓÃ
+* é€‚ç”¨äºé£è¡Œæ¨¡æ‹Ÿç±»åº”ç”¨
 */
 class AVATAR_EXPORT CCameraFree: public CCamera {
 public:
-	//! Ä¬ÈÏ¹¹Ôìº¯Êı
+	//! é»˜è®¤æ„é€ å‡½æ•°
 	CCameraFree();
 
-	//! »ñÈ¡Ïà»úÃû³Æ
+	//! è·å–ç›¸æœºåç§°
 	virtual const char* GetName() const;
 
-	//! ¿ØÖÆĞÅÏ¢ÊäÈë
+	//! æ§åˆ¶ä¿¡æ¯è¾“å…¥
 	virtual void Input(CInputManager::SInput* input);
-	//! ÉèÖÃÏà»ú¸ß¶È
+	//! è®¾ç½®ç›¸æœºé«˜åº¦
 	virtual void SetHeight(float height);
-	//! ÉèÖÃÏà»úÎ»ÖÃ
+	//! è®¾ç½®ç›¸æœºä½ç½®
 	virtual void SetPosition(const CVector3& pos);
-	//! ÉèÖÃÏà»ú·½Î»
+	//! è®¾ç½®ç›¸æœºæ–¹ä½
 	virtual void SetAngle(float yaw, float pitch, float roll);
-	//! ÉèÖÃÏà»úÄ¿±ê
+	//! è®¾ç½®ç›¸æœºç›®æ ‡
 	virtual void SetTarget(const CVector3& pos);
 
-	//! ¸üĞÂÏà»ú
+	//! æ›´æ–°ç›¸æœº
 	virtual void Update(float dt);
 
 public:
-	//! ÉèÖÃ×èÄáÏµÊı
+	//! è®¾ç½®é˜»å°¼ç³»æ•°
 	void SetDamping(float k);
-	//! ¿ªÊ¼ÂşÓÎÂ·Ïß
+	//! å¼€å§‹æ¼«æ¸¸è·¯çº¿
 	void StartLineTrack(const vector<CVector3>& track, float speed, bool follow, bool loop);
-	//! Í£Ö¹ÂşÓÎÏßÂ·
+	//! åœæ­¢æ¼«æ¸¸çº¿è·¯
 	void StopLineTrack();
-	//! ÉèÖÃÂşÓÎÆ«ÒÆ
+	//! è®¾ç½®æ¼«æ¸¸åç§»
 	void OffsetLineTrack(const CVector3& offset);
 
 private:
-	//! ÂşÓÎµã¶¨Òå
+	//! æ¼«æ¸¸ç‚¹å®šä¹‰
 	typedef struct _STrackPoint {
 		float time;
 		CVector3 position;
 	} STrackPoint;
 
 private:
-	//! ¼ÆËãµ±Ç°ÂşÓÎÎ»ÖÃºÍ·½Ïò
+	//! è®¡ç®—å½“å‰æ¼«æ¸¸ä½ç½®å’Œæ–¹å‘
 	void TrackLine(float dt, CVector3& pos, CQuaternion& orient);
 
 private:
-	//! ×èÄáÏµÊı
+	//! é˜»å°¼ç³»æ•°
 	float m_fDamping;
-	//! Ïà»ú·½Î»
+	//! ç›¸æœºæ–¹ä½
 	CQuaternion m_cOrientation;
-	//! Ïà»úÔ¤¶¨·½Î»
+	//! ç›¸æœºé¢„å®šæ–¹ä½
 	CQuaternion m_cOrientInAdvance;
-	//! Ïà»úÔ¤¶¨Î»ÖÃ
+	//! ç›¸æœºé¢„å®šä½ç½®
 	CVector3 m_cPosInAdvance;
 
-	//! ÂşÓÎÏßÂ·
+	//! æ¼«æ¸¸çº¿è·¯
 	vector<STrackPoint> m_vecTrackLine;
-	//! ÂşÓÎËÙ¶È
+	//! æ¼«æ¸¸é€Ÿåº¦
 	float m_fTrackSpeed;
-	//! ÂşÓÎÊ±ÊÓÏß¸úËæ
+	//! æ¼«æ¸¸æ—¶è§†çº¿è·Ÿéš
 	bool m_bTrackFollow;
-	//! Ñ­»·ÂşÓÎ
+	//! å¾ªç¯æ¼«æ¸¸
 	bool m_bTrackLoop;
-	//! µ±Ç°ÂşÓÎÊ±¼ä
+	//! å½“å‰æ¼«æ¸¸æ—¶é—´
 	float m_fTrackTime;
-	//! µ±Ç°ÂşÓÎµã
+	//! å½“å‰æ¼«æ¸¸ç‚¹
 	int m_iTrackPoint;
-	//! Ö®Ç°ÂşÓÎµã
+	//! ä¹‹å‰æ¼«æ¸¸ç‚¹
 	int m_iTrackPointPrev;
-	//! ÂşÓÎ×ø±êÆ«ÒÆ
+	//! æ¼«æ¸¸åæ ‡åç§»
 	CVector3 m_cTrackOffset;
 };
 

@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CQUATERNION_H_
@@ -9,83 +9,83 @@
 #include "CVector3.h"
 
 /**
-* @brief ËÄÔªÊıÀà
+* @brief å››å…ƒæ•°ç±»
 */
 class AVATAR_EXPORT CQuaternion {
 public:
-	//! Ä¬ÈÏ¹¹Ôìº¯Êı
+	//! é»˜è®¤æ„é€ å‡½æ•°
 	CQuaternion();
-	//! ¸´ÖÆ¹¹Ôìº¯Êı
+	//! å¤åˆ¶æ„é€ å‡½æ•°
 	CQuaternion(const CQuaternion& quaternion);
-	//! Ê¹ÓÃÊı×é¹¹ÔìËÄÔªÊı
+	//! ä½¿ç”¨æ•°ç»„æ„é€ å››å…ƒæ•°
 	CQuaternion(const float quaternion[4]);
-	//! Ê¹ÓÃxyzw¹¹ÔìËÄÔªÊı
+	//! ä½¿ç”¨xyzwæ„é€ å››å…ƒæ•°
 	CQuaternion(float x, float y, float z, float w);
 
-	//! ÉèÖÃËÄÔªÊıÖµ
+	//! è®¾ç½®å››å…ƒæ•°å€¼
 	void SetValue(const CQuaternion& quaternion);
-	//! ÉèÖÃËÄÔªÊıÖµ
+	//! è®¾ç½®å››å…ƒæ•°å€¼
 	void SetValue(float x, float y, float z, float w);
 
-	//! µ¥Î»»¯
+	//! å•ä½åŒ–
 	CQuaternion& Normalize();
-	//! ¹²éî
+	//! å…±è½­
 	CQuaternion& Conjugate();
-	//! È¡Äæ
+	//! å–é€†
 	CQuaternion& Inverse();
 
-	//! ÓÉÅ·À­½Ç×ªÎªËÄÔªÊı
+	//! ç”±æ¬§æ‹‰è§’è½¬ä¸ºå››å…ƒæ•°
 	CQuaternion& FromEulerAngles(float x, float y, float z);
-	//! ÓÉÖá½Ç×ªÎªËÄÔªÊı
+	//! ç”±è½´è§’è½¬ä¸ºå››å…ƒæ•°
 	CQuaternion& FromAxisAngle(const CVector3& axis, float angle);
-	//! ÓÉÏòÁ¿×ªÎªËÄÔªÊı
+	//! ç”±å‘é‡è½¬ä¸ºå››å…ƒæ•°
 	CQuaternion& FromVector(const CVector3& from, const CVector3& to);
-	//! ÓÉ¾ØÕó×ªÎªËÄÔªÊı
+	//! ç”±çŸ©é˜µè½¬ä¸ºå››å…ƒæ•°
 	CQuaternion& FromMatrix(const CMatrix4& matrix);
 
-	//! ×ª»»ÎªÅ·À­½Ç±íÊ¾
+	//! è½¬æ¢ä¸ºæ¬§æ‹‰è§’è¡¨ç¤º
 	void ToEulerAngles(float* x, float* y, float* z) const;
-	//! ×ª»»ÎªÖá½Ç±íÊ¾
+	//! è½¬æ¢ä¸ºè½´è§’è¡¨ç¤º
 	void ToAxisAngle(CVector3& axis, float* angle) const;
-	//! ×ª»»Îª¾ØÕó±íÊ¾
+	//! è½¬æ¢ä¸ºçŸ©é˜µè¡¨ç¤º
 	CMatrix4 ToMatrix() const;
 
-	//! ÇòĞÎ²åÖµ
+	//! çƒå½¢æ’å€¼
 	CQuaternion Slerp(const CQuaternion& quaternion, float t) const;
-	//! ×î¶ÌÂ·¾¶ÇòĞÎ²åÖµ
+	//! æœ€çŸ­è·¯å¾„çƒå½¢æ’å€¼
 	CQuaternion SlerpShortest(const CQuaternion& quaternion, float t) const;
 
 public:
-	//! ÏÂ±êÔËËã·û []
+	//! ä¸‹æ ‡è¿ç®—ç¬¦ []
 	float& operator [] (int index);
-	//! ÔËËã·ûÖØÔØ ==
+	//! è¿ç®—ç¬¦é‡è½½ ==
 	bool operator == (const CQuaternion& quaternion) const;
-	//! ÔËËã·ûÖØÔØ !=
+	//! è¿ç®—ç¬¦é‡è½½ !=
 	bool operator != (const CQuaternion& quaternion) const;
 
-	//! ¼Ó·¨ÔËËã
+	//! åŠ æ³•è¿ç®—
 	CQuaternion operator + (const CQuaternion& quaternion) const;
-	//! ¼õ·¨ÔËËã
+	//! å‡æ³•è¿ç®—
 	CQuaternion operator - (const CQuaternion& quaternion) const;
-	//! ³Ë·¨ÔËËã
+	//! ä¹˜æ³•è¿ç®—
 	CQuaternion operator * (const CQuaternion& quaternion) const;
-	//! ±ÈÀıÔËËã
+	//! æ¯”ä¾‹è¿ç®—
 	CQuaternion operator * (float scale) const;
-	//! ³ËÏòÁ¿ÔËËã
+	//! ä¹˜å‘é‡è¿ç®—
 	CVector3 operator * (const CVector3& vector) const;
 
-	//! ÔËËã·ûÖØÔØ +=
+	//! è¿ç®—ç¬¦é‡è½½ +=
 	CQuaternion& operator += (const CQuaternion& quaternion);
-	//! ÔËËã·ûÖØÔØ -=
+	//! è¿ç®—ç¬¦é‡è½½ -=
 	CQuaternion& operator -= (const CQuaternion& quaternion);
-	//! ÔËËã·ûÖØÔØ *=
+	//! è¿ç®—ç¬¦é‡è½½ *=
 	CQuaternion& operator *= (const CQuaternion& quaternion);
-	//! ÔËËã·ûÖØÔØ *=
+	//! è¿ç®—ç¬¦é‡è½½ *=
 	CQuaternion& operator *= (float scale);
 
 public:
 	/**
-	* ËÄÔªÊı´æ´¢·½Ê½
+	* å››å…ƒæ•°å­˜å‚¨æ–¹å¼
 	* [x, y, z, w]
 	*/
 	float m_fValue[4];

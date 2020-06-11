@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CSOUNDMANAGER_H_
@@ -16,92 +16,92 @@ using std::map;
 typedef struct ALCdevice_struct ALCdevice;
 
 /**
-* @brief ÈıÎ¬ÒôĞ§¹ÜÀíÆ÷
+* @brief ä¸‰ç»´éŸ³æ•ˆç®¡ç†å™¨
 *
-* ´´½¨ÒôÔ´Ê±£¬Ó¦¸ÃÊ¹ÓÃµ¥ÉùµÀÒôÔ´£¬²»È»ÎŞ 3D Ğ§¹û
+* åˆ›å»ºéŸ³æºæ—¶ï¼Œåº”è¯¥ä½¿ç”¨å•å£°é“éŸ³æºï¼Œä¸ç„¶æ—  3D æ•ˆæœ
 */
 class AVATAR_EXPORT CSoundManager {
 public:
-	//! »ñÈ¡¹ÜÀíÆ÷ÊµÀı
+	//! è·å–ç®¡ç†å™¨å®ä¾‹
 	static CSoundManager* GetInstance() {
 		if (m_pInstance) return m_pInstance;
 		m_pInstance = new CSoundManager();
 		return m_pInstance;
 	}
-	//! Ïú»ÙÉùÒô¹ÜÀíÆ÷
+	//! é”€æ¯å£°éŸ³ç®¡ç†å™¨
 	void Destroy();
 
-	//! ´ÓÎÄ¼ş´´½¨ÒôÔ´
+	//! ä»æ–‡ä»¶åˆ›å»ºéŸ³æº
 	int Create(const string& file);
-	//! ´ÓÄÚ´æ´´½¨ÒôÔ´
+	//! ä»å†…å­˜åˆ›å»ºéŸ³æº
 	int Create(int channel, int sampleRate, int sampleBits, int size, const void* data);
-	//! ´´½¨Ö¸¶¨ÊôĞÔµÄÒôÔ´
+	//! åˆ›å»ºæŒ‡å®šå±æ€§çš„éŸ³æº
 	int Create(int channel, int sampleRate, int sampleBits);
-	//! »ñÈ¡ÒôÔ´ÊıÁ¿
+	//! è·å–éŸ³æºæ•°é‡
 	int SoundCount();
 
-	//! ¼ì²éÒôÔ´ÊÇ·ñÓĞĞ§
+	//! æ£€æŸ¥éŸ³æºæ˜¯å¦æœ‰æ•ˆ
 	bool IsValid(int soundId);
 
-	//! ²¥·ÅÖ¸¶¨ÒôÔ´
+	//! æ’­æ”¾æŒ‡å®šéŸ³æº
 	void Play(int soundId);
-	//! ÔİÍ£ÒôÔ´²¥·Å
+	//! æš‚åœéŸ³æºæ’­æ”¾
 	void Pause(int soundId);
-	//! ÔİÍ£ËùÓĞÕıÔÚ²¥·ÅµÄÉùÒô
+	//! æš‚åœæ‰€æœ‰æ­£åœ¨æ’­æ”¾çš„å£°éŸ³
 	void Pause(bool pause);
-	//! Í£Ö¹ÒôÔ´²¥·Å
+	//! åœæ­¢éŸ³æºæ’­æ”¾
 	void Stop(int soundId);
-	//! ·½·¨Ö»É¾³ıÒôÔ´£¬²»Çå¿Õ»º³åÇø
+	//! æ–¹æ³•åªåˆ é™¤éŸ³æºï¼Œä¸æ¸…ç©ºç¼“å†²åŒº
 	void Drop(int soundId);
-	//! »ñÈ¡ÒôÁ¿
+	//! è·å–éŸ³é‡
 	int GetVolume();
-	//! ÉèÖÃÒôÁ¿
+	//! è®¾ç½®éŸ³é‡
 	void SetVolume(int volume);
 
-	//! ¸üĞÂÒôÆµÊı¾İ
+	//! æ›´æ–°éŸ³é¢‘æ•°æ®
 	bool Update(const string& original, const string& file);
-	//! ¸üĞÂ»º³åÊı¾İ£¬Ö»¶ÔÒôÆµÁ÷ÓĞĞ§
+	//! æ›´æ–°ç¼“å†²æ•°æ®ï¼Œåªå¯¹éŸ³é¢‘æµæœ‰æ•ˆ
 	bool Update(int soundId, void* data, int size);
 
-	//! ÅĞ¶ÏÖ¸¶¨ÒôÔ´ÊÇ·ñÕıÔÚ²¥·Å
+	//! åˆ¤æ–­æŒ‡å®šéŸ³æºæ˜¯å¦æ­£åœ¨æ’­æ”¾
 	bool IsPlaying(int soundId);
-	//! ÅĞ¶ÏÖ¸¶¨ÒôÔ´ÊÇ·ñÒÑ¾­ÔİÍ£
+	//! åˆ¤æ–­æŒ‡å®šéŸ³æºæ˜¯å¦å·²ç»æš‚åœ
 	bool IsPaused(int soundId);
-	//! ÅĞ¶ÏÖ¸¶¨ÒôÔ´ÊÇ·ñÒÑ¾­Í£Ö¹
+	//! åˆ¤æ–­æŒ‡å®šéŸ³æºæ˜¯å¦å·²ç»åœæ­¢
 	bool IsStopped(int soundId);
 
-	//! ÒôÔ´ÊôĞÔÉèÖÃ
+	//! éŸ³æºå±æ€§è®¾ç½®
 	bool SetAttrib(int soundId, bool loop = false, float gain = 1.0f, float pitch = 1.0f);
-	//! ÉèÖÃÒôÔ´Î»ÖÃ
+	//! è®¾ç½®éŸ³æºä½ç½®
 	void SetPosition(int soundId, const CVector3& pos);
-	//! ÉèÖÃÎª±³¾°ÒôÔ´
+	//! è®¾ç½®ä¸ºèƒŒæ™¯éŸ³æº
 	void SetBackground(int soundId);
 
-	//! ÉèÖÃÌıÖÚÎ»ÖÃ
+	//! è®¾ç½®å¬ä¼—ä½ç½®
 	void ListenerPos(const CVector3& pos);
-	//! ÉèÖÃÌıÖÚËÙ¶È
+	//! è®¾ç½®å¬ä¼—é€Ÿåº¦
 	void ListenerVel(const CVector3& vel);
-	//! ÉèÖÃÌıÖÚ·½Ïò
+	//! è®¾ç½®å¬ä¼—æ–¹å‘
 	void ListenerOri(const CVector3& to, const CVector3& up);
-	//! ÉèÖÃÌıÖÚ·½Ïò½Ç
+	//! è®¾ç½®å¬ä¼—æ–¹å‘è§’
 	void ListenerOri(float yaw, float pitch, float roll);
 
-	//! Æô¶¯Â¼Òô
+	//! å¯åŠ¨å½•éŸ³
 	bool StartRecord(int sampleBits, int frequency, int bufferSize);
-	//! »ñÈ¡Â¼ÒôÊı¾İ
+	//! è·å–å½•éŸ³æ•°æ®
 	int GetRecordData(unsigned char* buffer, int bufferSize);
-	//! Í£Ö¹Â¼Òô
+	//! åœæ­¢å½•éŸ³
 	void StopRecord();
 
-	//! »ñÈ¡¹ÜÀíµÄËùÓĞÒôÆµÎÄ¼şÁĞ±í
+	//! è·å–ç®¡ç†çš„æ‰€æœ‰éŸ³é¢‘æ–‡ä»¶åˆ—è¡¨
 	void GetSoundList(vector<string>& soundList);
 
 public:
-	//! ¶ÁÈ¡ÒôÆµ
+	//! è¯»å–éŸ³é¢‘
 	static CFileManager::CAudioFile* ReadAudio(const string& file);
 
 private:
-	//! ÉùÒô×ÊÔ´»º³å
+	//! å£°éŸ³èµ„æºç¼“å†²
 	typedef struct _SSoundBuffer {
 		string file;
 		bool valid;
@@ -110,7 +110,7 @@ private:
 		int frequency;
 		unsigned int buffer;
 	} SSoundBuffer;
-	//! ÒôÔ´½á¹¹Ìå£¬Ã¿¸öÒôÔ´×î¶à¿ÉÒÔ¸½¼ÓÁ½¸ö»º³åÇøÓÃÓÚÒôÆµÁ÷
+	//! éŸ³æºç»“æ„ä½“ï¼Œæ¯ä¸ªéŸ³æºæœ€å¤šå¯ä»¥é™„åŠ ä¸¤ä¸ªç¼“å†²åŒºç”¨äºéŸ³é¢‘æµ
 	typedef struct _SSoundSource {
 		int soundId;
 		int bufferCount;
@@ -122,21 +122,21 @@ private:
 	CSoundManager();
 	~CSoundManager();
 
-	//! ³õÊ¼»¯ OpenAL
+	//! åˆå§‹åŒ– OpenAL
 	bool InitOpenAL(const char* device);
-	//! Ïú»Ù OpenAL
+	//! é”€æ¯ OpenAL
 	void ExitOpenAL();
 
 private:
-	//! ÒôÆµ»º³åÁĞ±í
+	//! éŸ³é¢‘ç¼“å†²åˆ—è¡¨
 	vector<SSoundBuffer> m_vecBuffer;
-	//! ÒôÔ´ÁĞ±í
+	//! éŸ³æºåˆ—è¡¨
 	map<int, SSoundSource> m_mapSource;
-	//! Â¼ÒôÉè±¸
+	//! å½•éŸ³è®¾å¤‡
 	ALCdevice* m_pCaptureDevice;
-	//! Â¼Òô²ÉÑùÎ»Êı
+	//! å½•éŸ³é‡‡æ ·ä½æ•°
 	int m_iCaptureSampleBits;
-	//! ÊµÀı
+	//! å®ä¾‹
 	static CSoundManager* m_pInstance;
 };
 

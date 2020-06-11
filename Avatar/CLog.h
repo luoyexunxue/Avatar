@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CLOG_H_
@@ -12,11 +12,11 @@ using std::string;
 using std::ofstream;
 
 /**
-* @brief ÈÕÖ¾Àà
+* @brief æ—¥å¿—ç±»
 */
 class AVATAR_EXPORT CLog {
 public:
-	//! ÈÕÖ¾Êä³ö¼¶±ğ
+	//! æ—¥å¿—è¾“å‡ºçº§åˆ«
 	enum Level {
 		LEVEL_INFO = 1,
 		LEVEL_DEBUG = 2,
@@ -26,49 +26,49 @@ public:
 	};
 
 public:
-	//! ´´½¨ÈÕÖ¾Êä³ö
+	//! åˆ›å»ºæ—¥å¿—è¾“å‡º
 	static void Create(bool console, bool file, bool time = true, const string& title = "");
-	//! Ïú»ÙÈÕÖ¾ÏµÍ³
+	//! é”€æ¯æ—¥å¿—ç³»ç»Ÿ
 	static void Destroy();
 
-	//! ÉèÖÃÈÕÖ¾Êä³ö¼¶±ğ
+	//! è®¾ç½®æ—¥å¿—è¾“å‡ºçº§åˆ«
 	static void SetLevel(CLog::Level level);
 
-	//! Êä³öÒ»°ãĞÅÏ¢
+	//! è¾“å‡ºä¸€èˆ¬ä¿¡æ¯
 	static void Info(const char* msg, ...);
-	//! Êä³öµ÷ÊÔĞÅÏ¢
+	//! è¾“å‡ºè°ƒè¯•ä¿¡æ¯
 	static void Debug(const char* msg, ...);
-	//! Êä³ö¾¯¸æĞÅÏ¢
+	//! è¾“å‡ºè­¦å‘Šä¿¡æ¯
 	static void Warn(const char* msg, ...);
-	//! Êä³ö´íÎóĞÅÏ¢
+	//! è¾“å‡ºé”™è¯¯ä¿¡æ¯
 	static void Error(const char* msg, ...);
 
-	//! Êä³ö×Ö·û´®ĞÅÏ¢
+	//! è¾“å‡ºå­—ç¬¦ä¸²ä¿¡æ¯
 	static void Message(const string& msg);
 
 private:
-	//! Ä¬ÈÏË½ÓĞ¹¹Ôìº¯Êı
+	//! é»˜è®¤ç§æœ‰æ„é€ å‡½æ•°
 	CLog();
-	//! Ä¬ÈÏË½ÓĞÎö¹¹º¯Êı
+	//! é»˜è®¤ç§æœ‰ææ„å‡½æ•°
 	~CLog();
 
-	//! ÈÕÖ¾Êä³ö·½·¨
+	//! æ—¥å¿—è¾“å‡ºæ–¹æ³•
 	void Log(CLog::Level level, const char* msg, va_list args);
-	//! ÏûÏ¢Êä³ö·½·¨
+	//! æ¶ˆæ¯è¾“å‡ºæ–¹æ³•
 	void Log(const string& msg);
 
-	//! ´ò¿ªÊä³ö¿ØÖÆÌ¨
+	//! æ‰“å¼€è¾“å‡ºæ§åˆ¶å°
 	void ConsoleOpen(const string& name);
-	//! ¹Ø±ÕÊä³ö¿ØÖÆÌ¨
+	//! å…³é—­è¾“å‡ºæ§åˆ¶å°
 	void ConsoleClose();
 
-	//! ´ò¿ªÊä³öÎÄ¼ş
+	//! æ‰“å¼€è¾“å‡ºæ–‡ä»¶
 	void FileOpen(const string& name);
-	//! ¹Ø±ÕÊä³öÎÄ¼ş
+	//! å…³é—­è¾“å‡ºæ–‡ä»¶
 	void FileClose();
 
 private:
-	//! ÈÕÖ¾²ÎÊı
+	//! æ—¥å¿—å‚æ•°
 	typedef struct _SLogParam {
 		bool locked;
 		bool console;
@@ -78,9 +78,9 @@ private:
 		ofstream filestream;
 	} SLogParam;
 
-	//! ÈÕÖ¾±äÁ¿
+	//! æ—¥å¿—å˜é‡
 	SLogParam* m_pLogParam;
-	//! ÊµÀı
+	//! å®ä¾‹
 	static CLog* m_pInstance;
 };
 

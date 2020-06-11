@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CMESHLOADERCOLLADA_H_
@@ -16,48 +16,48 @@ using std::map;
 using namespace rapidxml;
 
 /**
-* @brief Collada(DAE) Ä£ĞÍ¼ÓÔØÀà
+* @brief Collada(DAE) æ¨¡å‹åŠ è½½ç±»
 */
 class CMeshLoaderCollada: public CMeshLoader {
 protected:
-	//! ¼ÓÔØÄ£ĞÍ
+	//! åŠ è½½æ¨¡å‹
 	virtual CMeshData* LoadFile(const string& filename, const string& type);
 
 private:
-	//! ¶ÁÈ¡Í¼Æ¬½Úµã
+	//! è¯»å–å›¾ç‰‡èŠ‚ç‚¹
 	void ReadImages(xml_node<>* images);
-	//! ¶ÁÈ¡²ÄÖÊ½Úµã
+	//! è¯»å–æè´¨èŠ‚ç‚¹
 	void ReadMaterials(xml_node<>* materials);
-	//! ¶ÁÈ¡³¡¾°½Úµã
+	//! è¯»å–åœºæ™¯èŠ‚ç‚¹
 	void ReadVisualScenes(xml_node<>* visualScenes, const CMatrix4& matrix, CMeshData* meshData);
-	//! ¶ÁÈ¡¿ØÖÆ½Úµã
+	//! è¯»å–æ§åˆ¶èŠ‚ç‚¹
 	void ReadControllers(xml_node<>* controllers, CMeshData* meshData);
-	//! ¶ÁÈ¡¼¸ºÎ½Úµã
+	//! è¯»å–å‡ ä½•èŠ‚ç‚¹
 	void ReadGeometries(xml_node<>* geometries, CMeshData* meshData);
-	//! ¶ÁÈ¡Ğ§¹û½Úµã
+	//! è¯»å–æ•ˆæœèŠ‚ç‚¹
 	void ReadEffects(xml_node<>* effects, CMeshData* meshData);
-	//! ¶ÁÈ¡¶¯»­½Úµã
+	//! è¯»å–åŠ¨ç”»èŠ‚ç‚¹
 	void ReadAnimations(xml_node<>* animations, CMeshData* meshData);
 
-	//! ½âÎö½ÚµãÊı¾İ
+	//! è§£æèŠ‚ç‚¹æ•°æ®
 	void ReadNode(xml_node<>* node, const CMatrix4& matrix, SJoint* joint);
-	//! ½âÎöÃÉÆ¤Êı¾İ
+	//! è§£æè’™çš®æ•°æ®
 	void ReadSkin(xml_node<>* skin, const string& id, CMeshData* meshData);
-	//! ½âÎöÍø¸ñÊı¾İ
+	//! è§£æç½‘æ ¼æ•°æ®
 	void ReadMesh(xml_node<>* mesh, const string& id, CMeshData* meshData);
-	//! ½âÎö²ÄÖÊÊı¾İ
+	//! è§£ææè´¨æ•°æ®
 	void ReadProfile(xml_node<>* profile, const string& id, CMeshData* meshData);
-	//! ¶ÁÈ¡¶¯»­Êı¾İ
+	//! è¯»å–åŠ¨ç”»æ•°æ®
 	void ReadAnimationData(xml_node<>* animation);
-	//! ¶ÁÈ¡¶¯»­¹Ø½Ú
+	//! è¯»å–åŠ¨ç”»å…³èŠ‚
 	void ReadAnimationJoint(xml_node<>* animation);
 
 private:
-	//! Ó³Éä²ÄÖÊÃû³Æ
+	//! æ˜ å°„æè´¨åç§°
 	void MapMaterial(xml_node<>* material);
-	//! Ó³Éä¶¥µã¹Ç÷À
+	//! æ˜ å°„é¡¶ç‚¹éª¨éª¼
 	void MapVertexJoint(const string& id, const vector<string>& joint, CMeshData* meshData);
-	//! »ñÈ¡¼¸ºÎÊı¾İÊäÈë
+	//! è·å–å‡ ä½•æ•°æ®è¾“å…¥
 	int GetElementInput(xml_node<>* element, string source[3], int offset[3]);
 
 private:

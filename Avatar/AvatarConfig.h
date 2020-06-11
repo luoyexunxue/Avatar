@@ -1,38 +1,38 @@
 /**************************************************************
-* Avatar �����ļ�
+* Avatar 配置文件
 * zhourf 2017-12-25
 ***************************************************************/
 
-//! AVATAR �汾��
+//! AVATAR 版本号
 #define AVATAR_VERSION "3.0"
 
 // -------------------------------------------------------------
-// ����֧��
+// 特性支持
 // -------------------------------------------------------------
 
-//! ʹ�� VLD �����й¶��⣬VS �¿���
+//! 使用 VLD 做类存泄露检测，VS 下可用
 #define AVATAR_ENABLE_VLD
 
-//! ʹ���������׽�� VideoCap
+//! 使用摄像机捕捉库 VideoCap
 #define AVATAR_ENABLE_VIDEOCAP
 
-//! ʹ����Ƶ���ſ� VideoPlay
+//! 使用视频播放库 VideoPlay
 #define AVATAR_ENABLE_VIDEOPLAY
 
-//! ��ʾ LOGO
+//! 显示 LOGO
 #define AVATAR_ENABLE_LOGO
 
-//! ʹ������������
+//! 使用鼠标输入控制
 #define AVATAR_ENABLE_MOUSE
 
-//! ʹ�ü����������
+//! 使用键盘输入控制
 #define AVATAR_ENABLE_KEYBOARD
 
-//! ʹ��������Ϸ�ֱ����ƣ�UDPЭ��
+//! 使用网络游戏手柄控制，UDP协议
 #define AVATAR_CONTROL_NETWORK
 
 // -------------------------------------------------------------
-// Ŀ��ƽ̨
+// 目标平台
 // -------------------------------------------------------------
 #ifdef _WIN32
 #pragma warning(disable:4251)
@@ -60,7 +60,7 @@
 #endif
 #endif
 
-//! ƽ̨֧��
+//! 平台支持
 #ifndef AVATAR_WINDOWS
 #ifdef AVATAR_ENABLE_VIDEOCAP
 #undef AVATAR_ENABLE_VIDEOCAP

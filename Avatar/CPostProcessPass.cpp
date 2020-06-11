@@ -1,12 +1,12 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CPostProcessPass.h"
 #include "CEngine.h"
 
 /**
-* ³õÊ¼»¯ºó´¦Àí¶ÔÏó
+* åˆå§‹åŒ–åŽå¤„ç†å¯¹è±¡
 */
 bool CPostProcessPass::Init(int width, int height) {
 	const char* fragShader = "\
@@ -27,14 +27,14 @@ bool CPostProcessPass::Init(int width, int height) {
 }
 
 /**
-* äÖÈ¾ÇøÓò´óÐ¡¸Ä±ä
+* æ¸²æŸ“åŒºåŸŸå¤§å°æ”¹å˜
 */
 void CPostProcessPass::Resize(int width, int height) {
 	CEngine::GetTextureManager()->Resize(m_pRenderTexture, width, height);
 }
 
 /**
-* Ïú»Ùºó´¦Àí¶ÔÏó
+* é”€æ¯åŽå¤„ç†å¯¹è±¡
 */
 void CPostProcessPass::Destroy() {
 	CEngine::GetTextureManager()->Drop(m_pRenderTexture);

@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CRAY_H_
@@ -11,44 +11,44 @@
 #include "CBoundingBox.h"
 
 /**
-* @brief ¿Õ¼äÉäÏßÀà
+* @brief ç©ºé—´å°„çº¿ç±»
 */
 class AVATAR_EXPORT CRay {
 public:
-	//! Ä¬ÈÏ¹¹Ôìº¯Êı
+	//! é»˜è®¤æ„é€ å‡½æ•°
 	CRay();
-	//! ¸´ÖÆ¹¹Ôìº¯Êı
+	//! å¤åˆ¶æ„é€ å‡½æ•°
 	CRay(const CRay& ray);
-	//! Ê¹ÓÃÆğµãºÍ·½ÏòÏòÁ¿¹¹ÔìÉäÏß
+	//! ä½¿ç”¨èµ·ç‚¹å’Œæ–¹å‘å‘é‡æ„é€ å°„çº¿
 	CRay(const CVector3& origin, const CVector3& direction);
 
-	//! ÉèÖÃÉäÏßÖµ
+	//! è®¾ç½®å°„çº¿å€¼
 	void SetValue(const CRay& ray);
-	//! ÉèÖÃÉäÏßÖµ
+	//! è®¾ç½®å°„çº¿å€¼
 	void SetValue(const float origin[3], const float direction[3]);
 
-	//! Ê¹ÓÃ¾ØÕó±ä»»ÉäÏß
+	//! ä½¿ç”¨çŸ©é˜µå˜æ¢å°„çº¿
 	CRay& Transform(const CMatrix4& matrix);
-	//! ½«ÉäÏß·´Ïò
+	//! å°†å°„çº¿åå‘
 	CRay& Reverse();
 
-	//! »ñÈ¡ÉäÏßÓëÆ½ÃæµÄ½»µã
+	//! è·å–å°„çº¿ä¸å¹³é¢çš„äº¤ç‚¹
 	bool IntersectPlane(const CPlane& plane, CVector3& point) const;
-	//! »ñÈ¡ÉäÏßÓëÇòÌåµÄ½»µã
+	//! è·å–å°„çº¿ä¸çƒä½“çš„äº¤ç‚¹
 	bool IntersectSphere(const CVector3& center, float radius, CVector3& point) const;
-	//! »ñÈ¡ÉäÏßÓë°üÎ§ºĞµÄ½»µã
+	//! è·å–å°„çº¿ä¸åŒ…å›´ç›’çš„äº¤ç‚¹
 	bool IntersectAABB(const CBoundingBox& aabb, CVector3& point) const;
 
 public:
-	//! ÖØÔØÔËËã·û ==
+	//! é‡è½½è¿ç®—ç¬¦ ==
 	bool operator == (const CRay& ray) const;
-	//! ÔËËã·ûÖØÔØ !=
+	//! è¿ç®—ç¬¦é‡è½½ !=
 	bool operator != (const CRay& ray) const;
 
 public:
-	//! ÉäÏßÆğµã
+	//! å°„çº¿èµ·ç‚¹
 	CVector3 m_cOrigin;
-	//! ÉäÏß·½Ïò(µ¥Î»ÏòÁ¿)
+	//! å°„çº¿æ–¹å‘(å•ä½å‘é‡)
 	CVector3 m_cDirection;
 };
 

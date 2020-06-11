@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CScriptManager.h"
@@ -45,7 +45,7 @@
 #endif
 
 /**
-* Ïò±íÖĞÌí¼Óº¯Êı
+* å‘è¡¨ä¸­æ·»åŠ å‡½æ•°
 */
 #define SET_TABLE_FUNCTION(NAME, FUNC) \
 	lua_pushstring(lua, NAME); \
@@ -53,7 +53,7 @@
 	lua_rawset(lua, -3)
 
 /**
-* »ñÈ¡±íÖĞ×Ö¶ÎÖµ
+* è·å–è¡¨ä¸­å­—æ®µå€¼
 */
 inline bool LuaTableFieldValue(lua_State* lua, int table, const char* name, bool def) {
 	lua_getfield(lua, table, name);
@@ -73,7 +73,7 @@ inline const char* LuaTableFieldValue(lua_State* lua, int table, const char* nam
 }
 
 /**
-* ¹¹Ôìº¯Êı
+* æ„é€ å‡½æ•°
 */
 CScriptManager::CScriptManager() {
 	m_pContext = new CScriptContext();
@@ -83,19 +83,19 @@ CScriptManager::CScriptManager() {
 }
 
 /**
-* Îö¹¹º¯Êı
+* ææ„å‡½æ•°
 */
 CScriptManager::~CScriptManager() {
 	m_pInstance = 0;
 }
 
 /**
-* µ¥ÀıÊµÀı
+* å•ä¾‹å®ä¾‹
 */
 CScriptManager* CScriptManager::m_pInstance = 0;
 
 /**
-* Ïú»Ù½Å±¾¹ÜÀíÆ÷ÊµÀı
+* é”€æ¯è„šæœ¬ç®¡ç†å™¨å®ä¾‹
 */
 void CScriptManager::Destroy() {
 	lua_close(m_pLuaState);
@@ -104,12 +104,12 @@ void CScriptManager::Destroy() {
 }
 
 /**
-* ´ò¿ªÈë¿Ú½Å±¾
+* æ‰“å¼€å…¥å£è„šæœ¬
 */
 void CScriptManager::OpenScript(const string& script, void* engine) {
 	CFileManager::CBinaryFile file;
 	CEngine::GetFileManager()->ReadFile(script, &file);
-	// Ìø¹ı UTF8 µÄ BOM
+	// è·³è¿‡ UTF8 çš„ BOM
 	int offset = 0;
 	const unsigned char* header = file.contents;
 	if (file.size >= 3 && header[0] == 0xEF && header[1] == 0xBB && header[2] == 0xBF) {
@@ -120,14 +120,14 @@ void CScriptManager::OpenScript(const string& script, void* engine) {
 		CLog::Error("Open script file '%s' error", script.c_str());
 		CLog::Error(lua_tostring(m_pLuaState, -1));
 	}
-	// ¼ÇÂ¼ÒıÇæ¶ÔÏóÖ¸Õë
+	// è®°å½•å¼•æ“å¯¹è±¡æŒ‡é’ˆ
 	lua_pushstring(m_pLuaState, "ENGINE_INSTANCE");
 	lua_pushlightuserdata(m_pLuaState, engine);
 	lua_settable(m_pLuaState, LUA_REGISTRYINDEX);
 }
 
 /**
-* »ñÈ¡½Ó¿ÚÉÏÏÂÎÄ
+* è·å–æ¥å£ä¸Šä¸‹æ–‡
 */
 CScriptContext* CScriptManager::GetContext(lua_State* lua) {
 	if (!lua) lua = m_pLuaState;
@@ -135,7 +135,7 @@ CScriptContext* CScriptManager::GetContext(lua_State* lua) {
 }
 
 /**
-* ³õÊ¼»¯Íê³ÉÊÂ¼ş
+* åˆå§‹åŒ–å®Œæˆäº‹ä»¶
 */
 void CScriptManager::OnReady() {
 	lua_getglobal(m_pLuaState, "OnReady");
@@ -143,10 +143,10 @@ void CScriptManager::OnReady() {
 }
 
 /**
-* ¸üĞÂÄÚ²¿Âß¼­
+* æ›´æ–°å†…éƒ¨é€»è¾‘
 */
 void CScriptManager::OnUpdate(float dt) {
-	// ½Å±¾ÃüÁîÖ´ĞĞ
+	// è„šæœ¬å‘½ä»¤æ‰§è¡Œ
 	while (!m_queScriptQueue.empty()) {
 		string script = std::move(m_queScriptQueue.front());
 		m_queScriptQueue.pop();
@@ -155,14 +155,14 @@ void CScriptManager::OnUpdate(float dt) {
 			CLog::Warn(lua_tostring(m_pLuaState, -1));
 		}
 	}
-	// µ÷ÓÃ OnUpdate ½Å±¾º¯Êı
+	// è°ƒç”¨ OnUpdate è„šæœ¬å‡½æ•°
 	lua_getglobal(m_pLuaState, "OnUpdate");
 	lua_pushnumber(m_pLuaState, dt);
 	lua_pcall(m_pLuaState, 1, 0, 0);
 }
 
 /**
-* ÒıÇæÍË³öÊÂ¼ş
+* å¼•æ“é€€å‡ºäº‹ä»¶
 */
 void CScriptManager::OnExit() {
 	lua_getglobal(m_pLuaState, "OnExit");
@@ -170,7 +170,7 @@ void CScriptManager::OnExit() {
 }
 
 /**
-* ´°Ìå´óĞ¡¸Ä±äÊÂ¼ş
+* çª—ä½“å¤§å°æ”¹å˜äº‹ä»¶
 */
 void CScriptManager::OnSize(int width, int height) {
 	lua_getglobal(m_pLuaState, "OnSize");
@@ -180,7 +180,7 @@ void CScriptManager::OnSize(int width, int height) {
 }
 
 /**
-* ÊäÈëÊÂ¼ş
+* è¾“å…¥äº‹ä»¶
 */
 void CScriptManager::OnInput(const string& name, int value, int arg1, int arg2, int arg3) {
 	lua_getglobal(m_pLuaState, "OnInput");
@@ -193,7 +193,7 @@ void CScriptManager::OnInput(const string& name, int value, int arg1, int arg2, 
 }
 
 /**
-* ÊäÈëÊÂ¼ş
+* è¾“å…¥äº‹ä»¶
 */
 void CScriptManager::OnInput(const string& name, int value, float arg1, float arg2, float arg3) {
 	lua_getglobal(m_pLuaState, "OnInput");
@@ -206,7 +206,7 @@ void CScriptManager::OnInput(const string& name, int value, float arg1, float ar
 }
 
 /**
-* ½Å±¾ÃüÁî
+* è„šæœ¬å‘½ä»¤
 */
 void CScriptManager::Script(const char* script) {
 	m_queScriptQueue.push(script);
@@ -214,8 +214,8 @@ void CScriptManager::Script(const char* script) {
 }
 
 /**
-* ×¢²á×Ô¶¨Òå·½·¨»Øµ÷
-* @remark ²ÎÊı callback ·½·¨Ô­ĞÍÎª int func(const char*)
+* æ³¨å†Œè‡ªå®šä¹‰æ–¹æ³•å›è°ƒ
+* @remark å‚æ•° callback æ–¹æ³•åŸå‹ä¸º int func(const char*)
 */
 void CScriptManager::Register(const string& function, void* callback) {
 	if (callback) m_mapFunction[function] = callback;
@@ -223,7 +223,7 @@ void CScriptManager::Register(const string& function, void* callback) {
 }
 
 /**
-* GUI ½çÃæÊÂ¼ş
+* GUI ç•Œé¢äº‹ä»¶
 */
 void CScriptManager::GuiEvent(const string& name, int evt, int arg1, int arg2) {
 	map<string, int>::iterator iter = m_mapGuiEvent.find(name);
@@ -233,7 +233,7 @@ void CScriptManager::GuiEvent(const string& name, int evt, int arg1, int arg2) {
 }
 
 /**
-* ÎïÀíÅö×²ÊÂ¼ş
+* ç‰©ç†ç¢°æ’äº‹ä»¶
 */
 void CScriptManager::CollideEnter(int callback, const string& name, const CVector3& pos) {
 	lua_rawgeti(m_pLuaState, LUA_REGISTRYINDEX, callback);
@@ -245,7 +245,7 @@ void CScriptManager::CollideEnter(int callback, const string& name, const CVecto
 }
 
 /**
-* ÎïÀíÅö×²È¡ÏûÊÂ¼ş
+* ç‰©ç†ç¢°æ’å–æ¶ˆäº‹ä»¶
 */
 void CScriptManager::CollideLeave(int callback, const string& name) {
 	lua_rawgeti(m_pLuaState, LUA_REGISTRYINDEX, callback);
@@ -254,7 +254,7 @@ void CScriptManager::CollideLeave(int callback, const string& name) {
 }
 
 /**
-* GUI ½Å±¾ÊÂ¼ş»Øµ÷
+* GUI è„šæœ¬äº‹ä»¶å›è°ƒ
 */
 void CScriptManager::HandleEvent() {
 	for (size_t i = 0; i < m_vecEventQueue.size(); i++) {
@@ -269,10 +269,10 @@ void CScriptManager::HandleEvent() {
 }
 
 /**
-* ×¢²á½Å±¾µ÷ÓÃ½Ó¿Ú
+* æ³¨å†Œè„šæœ¬è°ƒç”¨æ¥å£
 */
 void CScriptManager::RegisterInterface(lua_State* lua) {
-	// ÏµÍ³½Ó¿Ú
+	// ç³»ç»Ÿæ¥å£
 	lua_newtable(lua);
 	SET_TABLE_FUNCTION("info", DoEngineInfo);
 	SET_TABLE_FUNCTION("fps", DoEngineFps);
@@ -287,7 +287,7 @@ void CScriptManager::RegisterInterface(lua_State* lua) {
 	SET_TABLE_FUNCTION("write", DoEngineWrite);
 	SET_TABLE_FUNCTION("plugin", DoEnginePlugin);
 	lua_setglobal(lua, "engine");
-	// GUI½Ó¿Ú
+	// GUIæ¥å£
 	lua_newtable(lua);
 	SET_TABLE_FUNCTION("enable", DoGuiEnable);
 	SET_TABLE_FUNCTION("size", DoGuiSize);
@@ -297,7 +297,7 @@ void CScriptManager::RegisterInterface(lua_State* lua) {
 	SET_TABLE_FUNCTION("delete", DoGuiDelete);
 	SET_TABLE_FUNCTION("attrib", DoGuiAttrib);
 	lua_setglobal(lua, "gui");
-	// Ïà»ú½Ó¿Ú
+	// ç›¸æœºæ¥å£
 	lua_newtable(lua);
 	SET_TABLE_FUNCTION("type", DoCameraType);
 	SET_TABLE_FUNCTION("control", DoCameraControl);
@@ -309,7 +309,7 @@ void CScriptManager::RegisterInterface(lua_State* lua) {
 	SET_TABLE_FUNCTION("direction", DoCameraDirection);
 	SET_TABLE_FUNCTION("bind", DoCameraBind);
 	lua_setglobal(lua, "camera");
-	// ³¡¾°½Úµã½Ó¿Ú
+	// åœºæ™¯èŠ‚ç‚¹æ¥å£
 	lua_newtable(lua);
 	SET_TABLE_FUNCTION("insert", DoSceneInsert);
 	SET_TABLE_FUNCTION("delete", DoSceneDelete);
@@ -328,14 +328,14 @@ void CScriptManager::RegisterInterface(lua_State* lua) {
 	SET_TABLE_FUNCTION("boundingBox", DoSceneBoundingBox);
 	SET_TABLE_FUNCTION("handle", DoSceneHandle);
 	lua_setglobal(lua, "scene");
-	// ºó´¦Àí½Ó¿Ú
+	// åå¤„ç†æ¥å£
 	lua_newtable(lua);
 	SET_TABLE_FUNCTION("list", DoPostList);
 	SET_TABLE_FUNCTION("enable", DoPostEnable);
 	SET_TABLE_FUNCTION("register", DoPostRegister);
 	SET_TABLE_FUNCTION("param", DoPostParam);
 	lua_setglobal(lua, "post");
-	// Í¼ĞÎ¹ÜÀí½Ó¿Ú
+	// å›¾å½¢ç®¡ç†æ¥å£
 	lua_newtable(lua);
 	SET_TABLE_FUNCTION("screenshot", DoGraphicsScreenshot);
 	SET_TABLE_FUNCTION("stereo", DoGraphicsStereo);
@@ -352,27 +352,27 @@ void CScriptManager::RegisterInterface(lua_State* lua) {
 	SET_TABLE_FUNCTION("project", DoGraphicsProject);
 	SET_TABLE_FUNCTION("renderTarget", DoGraphicsRenderTarget);
 	lua_setglobal(lua, "graphics");
-	// ÎÆÀí¹ÜÀí½Ó¿Ú
+	// çº¹ç†ç®¡ç†æ¥å£
 	lua_newtable(lua);
 	SET_TABLE_FUNCTION("create", DoTextureCreate);
 	SET_TABLE_FUNCTION("delete", DoTextureDelete);
 	SET_TABLE_FUNCTION("update", DoTextureUpdate);
 	lua_setglobal(lua, "texture");
-	// ×ÅÉ«Æ÷¹ÜÀí½Ó¿Ú
+	// ç€è‰²å™¨ç®¡ç†æ¥å£
 	lua_newtable(lua);
 	SET_TABLE_FUNCTION("create", DoShaderCreate);
 	SET_TABLE_FUNCTION("delete", DoShaderDelete);
 	SET_TABLE_FUNCTION("update", DoShaderUpdate);
 	SET_TABLE_FUNCTION("param", DoShaderParam);
 	lua_setglobal(lua, "shader");
-	// ×ÖÌå¹ÜÀí½Ó¿Ú
+	// å­—ä½“ç®¡ç†æ¥å£
 	lua_newtable(lua);
 	SET_TABLE_FUNCTION("list", DoFontList);
 	SET_TABLE_FUNCTION("load", DoFontLoad);
 	SET_TABLE_FUNCTION("clear", DoFontClear);
 	SET_TABLE_FUNCTION("use", DoFontUse);
 	lua_setglobal(lua, "font");
-	// ÉùÒô¹ÜÀí½Ó¿Ú
+	// å£°éŸ³ç®¡ç†æ¥å£
 	lua_newtable(lua);
 	SET_TABLE_FUNCTION("create", DoSoundCreate);
 	SET_TABLE_FUNCTION("delete", DoSoundDelete);
@@ -383,7 +383,7 @@ void CScriptManager::RegisterInterface(lua_State* lua) {
 	SET_TABLE_FUNCTION("volume", DoSoundVolume);
 	SET_TABLE_FUNCTION("update", DoSoundUpdate);
 	lua_setglobal(lua, "sound");
-	// ÎïÀíÒıÇæ½Ó¿Ú
+	// ç‰©ç†å¼•æ“æ¥å£
 	lua_newtable(lua);
 	SET_TABLE_FUNCTION("bind", DoPhysicsBind);
 	SET_TABLE_FUNCTION("unbind", DoPhysicsUnbind);
@@ -395,7 +395,7 @@ void CScriptManager::RegisterInterface(lua_State* lua) {
 	SET_TABLE_FUNCTION("gravity", DoPhysicsGravity);
 	SET_TABLE_FUNCTION("joint", DoPhysicsJoint);
 	lua_setglobal(lua, "physics");
-	// ¶¯»­½Ó¿Ú
+	// åŠ¨ç”»æ¥å£
 	lua_newtable(lua);
 	SET_TABLE_FUNCTION("param", DoAnimationParam);
 	SET_TABLE_FUNCTION("scale", DoAnimationScale);
@@ -407,7 +407,7 @@ void CScriptManager::RegisterInterface(lua_State* lua) {
 }
 
 /**
-* »ñÈ¡ÒıÇæĞÅÏ¢
+* è·å–å¼•æ“ä¿¡æ¯
 */
 int CScriptManager::DoEngineInfo(lua_State* lua) {
 #ifdef AVATAR_WINDOWS
@@ -430,7 +430,7 @@ int CScriptManager::DoEngineInfo(lua_State* lua) {
 }
 
 /**
-* »ñÈ¡µ±Ç°Ö¡ÂÊ
+* è·å–å½“å‰å¸§ç‡
 */
 int CScriptManager::DoEngineFps(lua_State* lua) {
 	lua_pushnumber(lua, CEngine::GetGraphicsManager()->GetFrameRate());
@@ -438,7 +438,7 @@ int CScriptManager::DoEngineFps(lua_State* lua) {
 }
 
 /**
-* Ê¹ÄÜÈÕÖ¾»òÊä³öÈÕÖ¾ÏûÏ¢
+* ä½¿èƒ½æ—¥å¿—æˆ–è¾“å‡ºæ—¥å¿—æ¶ˆæ¯
 */
 int CScriptManager::DoEngineLog(lua_State* lua) {
 	if (lua_isboolean(lua, 1)) {
@@ -454,7 +454,7 @@ int CScriptManager::DoEngineLog(lua_State* lua) {
 }
 
 /**
-* ÉèÖÃÔËĞĞËÙ¶È
+* è®¾ç½®è¿è¡Œé€Ÿåº¦
 */
 int CScriptManager::DoEngineSpeed(lua_State* lua) {
 	if (lua_isnumber(lua, 1)) {
@@ -470,7 +470,7 @@ int CScriptManager::DoEngineSpeed(lua_State* lua) {
 }
 
 /**
-* »ñÈ¡¶¨Ê±Æ÷¶¨Ê±
+* è·å–å®šæ—¶å™¨å®šæ—¶
 */
 int CScriptManager::DoEngineTimer(lua_State* lua) {
 	if (lua_isstring(lua, 1)) {
@@ -482,7 +482,7 @@ int CScriptManager::DoEngineTimer(lua_State* lua) {
 }
 
 /**
-* »ñÈ¡»òÉèÖÃÊı¾İÄ¿Â¼
+* è·å–æˆ–è®¾ç½®æ•°æ®ç›®å½•
 */
 int CScriptManager::DoEngineDirectory(lua_State* lua) {
 	if (lua_isstring(lua, 1)) {
@@ -494,7 +494,7 @@ int CScriptManager::DoEngineDirectory(lua_State* lua) {
 }
 
 /**
-* ÊäÈë¿ØÖÆĞÅºÅ
+* è¾“å…¥æ§åˆ¶ä¿¡å·
 */
 int CScriptManager::DoEngineInput(lua_State* lua) {
 	if (lua_isstring(lua, 1)) {
@@ -566,7 +566,7 @@ int CScriptManager::DoEngineInput(lua_State* lua) {
 }
 
 /**
-* Ö´ĞĞ lua ½Å±¾
+* æ‰§è¡Œ lua è„šæœ¬
 */
 int CScriptManager::DoEngineScript(lua_State* lua) {
 	bool success = false;
@@ -574,7 +574,7 @@ int CScriptManager::DoEngineScript(lua_State* lua) {
 		const char* filename = lua_tostring(lua, 1);
 		CFileManager::CBinaryFile file;
 		CEngine::GetFileManager()->ReadFile(filename, &file);
-		// Ìø¹ı UTF8 µÄ BOM
+		// è·³è¿‡ UTF8 çš„ BOM
 		int offset = 0;
 		const unsigned char* header = file.contents;
 		if (file.size >= 3 && header[0] == 0xEF && header[1] == 0xBB && header[2] == 0xBF) offset = 3;
@@ -591,7 +591,7 @@ int CScriptManager::DoEngineScript(lua_State* lua) {
 }
 
 /**
-* Ö´ĞĞ»Øµ÷ÊÂ¼ş
+* æ‰§è¡Œå›è°ƒäº‹ä»¶
 */
 int CScriptManager::DoEngineExecute(lua_State* lua) {
 	if (lua_isstring(lua, 1)) {
@@ -611,7 +611,7 @@ int CScriptManager::DoEngineExecute(lua_State* lua) {
 }
 
 /**
-* ¶ÁÈ¡Ö¸¶¨ÎÄ¼şÊı¾İ
+* è¯»å–æŒ‡å®šæ–‡ä»¶æ•°æ®
 */
 int CScriptManager::DoEngineRead(lua_State* lua) {
 	if (lua_isstring(lua, 1)) {
@@ -626,7 +626,7 @@ int CScriptManager::DoEngineRead(lua_State* lua) {
 }
 
 /**
-* Ğ´ÈëÊı¾İÖÁÖ¸¶¨ÎÄ¼ş
+* å†™å…¥æ•°æ®è‡³æŒ‡å®šæ–‡ä»¶
 */
 int CScriptManager::DoEngineWrite(lua_State* lua) {
 	if (lua_isstring(lua, 1) && !lua_isnoneornil(lua, 2)) {
@@ -639,7 +639,7 @@ int CScriptManager::DoEngineWrite(lua_State* lua) {
 }
 
 /**
-* ¼ÓÔØÒıÇæ²å¼ş
+* åŠ è½½å¼•æ“æ’ä»¶
 */
 int CScriptManager::DoEnginePlugin(lua_State* lua) {
 	if (lua_isstring(lua, 1)) {
@@ -658,7 +658,7 @@ int CScriptManager::DoEnginePlugin(lua_State* lua) {
 }
 
 /**
-* GUI Ê¹ÄÜ»ò½ûÖ¹
+* GUI ä½¿èƒ½æˆ–ç¦æ­¢
 */
 int CScriptManager::DoGuiEnable(lua_State* lua) {
 	bool enable = lua_isboolean(lua, 1) ? lua_toboolean(lua, 1) != 0 : true;
@@ -667,7 +667,7 @@ int CScriptManager::DoGuiEnable(lua_State* lua) {
 }
 
 /**
-* »ñÈ¡ GUI »­²¼´óĞ¡
+* è·å– GUI ç”»å¸ƒå¤§å°
 */
 int CScriptManager::DoGuiSize(lua_State* lua) {
 	int width, height;
@@ -678,7 +678,7 @@ int CScriptManager::DoGuiSize(lua_State* lua) {
 }
 
 /**
-* ÉèÖÃ GUI Ëõ·Å
+* è®¾ç½® GUI ç¼©æ”¾
 */
 int CScriptManager::DoGuiScale(lua_State* lua) {
 	if (lua_isnumber(lua, 1)) {
@@ -689,14 +689,14 @@ int CScriptManager::DoGuiScale(lua_State* lua) {
 }
 
 /**
-* ´´½¨ GUI ÔªËØ
+* åˆ›å»º GUI å…ƒç´ 
 */
 int CScriptManager::DoGuiCreate(lua_State* lua) {
 	if (lua_isstring(lua, 1) && lua_isstring(lua, 2) && lua_isstring(lua, 3)) {
 		string name = lua_tostring(lua, 1);
 		string type = lua_tostring(lua, 2);
 		string desc = lua_tostring(lua, 3);
-		// Ìí¼ÓÊÂ¼ş
+		// æ·»åŠ äº‹ä»¶
 		if (CGuiEnvironment::GetInstance()->GuiCreate(name, type, desc) && lua_isfunction(lua, 4)) {
 			int callback = luaL_ref(lua, LUA_REGISTRYINDEX);
 			m_pInstance->m_mapGuiEvent.insert(std::pair<string, int>(name, callback));
@@ -706,7 +706,7 @@ int CScriptManager::DoGuiCreate(lua_State* lua) {
 }
 
 /**
-* ĞŞ¸Ä GUI ÔªËØ
+* ä¿®æ”¹ GUI å…ƒç´ 
 */
 int CScriptManager::DoGuiModify(lua_State* lua) {
 	if (lua_isstring(lua, 1) && lua_isstring(lua, 2)) {
@@ -718,13 +718,13 @@ int CScriptManager::DoGuiModify(lua_State* lua) {
 }
 
 /**
-* É¾³ı GUI ÔªËØ
+* åˆ é™¤ GUI å…ƒç´ 
 */
 int CScriptManager::DoGuiDelete(lua_State* lua) {
 	if (lua_isstring(lua, 1)) {
 		string name = lua_tostring(lua, 1);
 		CGuiEnvironment::GetInstance()->GuiDelete(name);
-		// É¾³ıÊÂ¼ş
+		// åˆ é™¤äº‹ä»¶
 		map<string, int>::iterator iter = m_pInstance->m_mapGuiEvent.find(name);
 		if (iter != m_pInstance->m_mapGuiEvent.end()) {
 			luaL_unref(lua, LUA_REGISTRYINDEX, iter->second);
@@ -735,7 +735,7 @@ int CScriptManager::DoGuiDelete(lua_State* lua) {
 }
 
 /**
-* »ñÈ¡ GUI ÔªËØÊôĞÔ
+* è·å– GUI å…ƒç´ å±æ€§
 */
 int CScriptManager::DoGuiAttrib(lua_State* lua) {
 	if (lua_isstring(lua, 1) && lua_isstring(lua, 2)) {
@@ -752,7 +752,7 @@ int CScriptManager::DoGuiAttrib(lua_State* lua) {
 }
 
 /**
-* »ñÈ¡»òÉèÖÃÏà»úÀàĞÍ
+* è·å–æˆ–è®¾ç½®ç›¸æœºç±»å‹
 */
 int CScriptManager::DoCameraType(lua_State* lua) {
 	CCamera* pCamera = CEngine::GetGraphicsManager()->GetCamera();
@@ -819,7 +819,7 @@ int CScriptManager::DoCameraType(lua_State* lua) {
 }
 
 /**
-* °ó¶¨ÓÃ»§ÊäÈëÖÁÏà»ú
+* ç»‘å®šç”¨æˆ·è¾“å…¥è‡³ç›¸æœº
 */
 int CScriptManager::DoCameraControl(lua_State* lua) {
 	bool enable = lua_isboolean(lua, 1) ? lua_toboolean(lua, 1) != 0 : true;
@@ -828,7 +828,7 @@ int CScriptManager::DoCameraControl(lua_State* lua) {
 }
 
 /**
-* »ñÈ¡»òÉèÖÃÏà»úÊÓ½Ç
+* è·å–æˆ–è®¾ç½®ç›¸æœºè§†è§’
 */
 int CScriptManager::DoCameraFov(lua_State* lua) {
 	CCamera* pCamera = CEngine::GetGraphicsManager()->GetCamera();
@@ -841,7 +841,7 @@ int CScriptManager::DoCameraFov(lua_State* lua) {
 }
 
 /**
-* »ñÈ¡»òÉèÖÃÏà»ú²Ã¼ôÃæ
+* è·å–æˆ–è®¾ç½®ç›¸æœºè£å‰ªé¢
 */
 int CScriptManager::DoCameraClip(lua_State* lua) {
 	CCamera* pCamera = CEngine::GetGraphicsManager()->GetCamera();
@@ -857,7 +857,7 @@ int CScriptManager::DoCameraClip(lua_State* lua) {
 }
 
 /**
-* »ñÈ¡»òÉèÖÃÏà»úÎ»ÖÃ
+* è·å–æˆ–è®¾ç½®ç›¸æœºä½ç½®
 */
 int CScriptManager::DoCameraPosition(lua_State* lua) {
 	CCamera* pCamera = CEngine::GetGraphicsManager()->GetCamera();
@@ -875,7 +875,7 @@ int CScriptManager::DoCameraPosition(lua_State* lua) {
 }
 
 /**
-* »ñÈ¡»òÉèÖÃÏà»úÄ¿±êµã
+* è·å–æˆ–è®¾ç½®ç›¸æœºç›®æ ‡ç‚¹
 */
 int CScriptManager::DoCameraTarget(lua_State* lua) {
 	CCamera* pCamera = CEngine::GetGraphicsManager()->GetCamera();
@@ -893,7 +893,7 @@ int CScriptManager::DoCameraTarget(lua_State* lua) {
 }
 
 /**
-* »ñÈ¡»òÉèÖÃÏà»ú½Ç¶È
+* è·å–æˆ–è®¾ç½®ç›¸æœºè§’åº¦
 */
 int CScriptManager::DoCameraAngle(lua_State* lua) {
 	CCamera* pCamera = CEngine::GetGraphicsManager()->GetCamera();
@@ -915,7 +915,7 @@ int CScriptManager::DoCameraAngle(lua_State* lua) {
 }
 
 /**
-* »ñÈ¡Ïà»ú·½ÏòÏòÁ¿Õı½»»ù
+* è·å–ç›¸æœºæ–¹å‘å‘é‡æ­£äº¤åŸº
 */
 int CScriptManager::DoCameraDirection(lua_State* lua) {
 	CMatrix4& view = CEngine::GetGraphicsManager()->GetCamera()->GetViewMatrix();
@@ -932,7 +932,7 @@ int CScriptManager::DoCameraDirection(lua_State* lua) {
 }
 
 /**
-* °ó¶¨Ö¸¶¨³¡¾°½Úµã»ò½â³ı°ó¶¨
+* ç»‘å®šæŒ‡å®šåœºæ™¯èŠ‚ç‚¹æˆ–è§£é™¤ç»‘å®š
 */
 int CScriptManager::DoCameraBind(lua_State* lua) {
 	CVector3 pos;
@@ -957,20 +957,20 @@ int CScriptManager::DoCameraBind(lua_State* lua) {
 }
 
 /**
-* ²åÈë³¡¾°½Úµã
+* æ’å…¥åœºæ™¯èŠ‚ç‚¹
 */
 int CScriptManager::DoSceneInsert(lua_State* lua) {
 	CSceneNode* pNode = 0;
 	if (lua_isstring(lua, 2) && lua_isstring(lua, 3)) {
 		CSceneNode* pParent = 0;
 		if (lua_isstring(lua, 1)) {
-			// Í¨¹ıÃû³Æ»ñÈ¡¸¸½Úµã
+			// é€šè¿‡åç§°è·å–çˆ¶èŠ‚ç‚¹
 			pParent = CEngine::GetSceneManager()->GetNodeByName(lua_tostring(lua, 1));
 		}
-		// ½ÚµãÀàĞÍºÍÃû³Æ
+		// èŠ‚ç‚¹ç±»å‹å’Œåç§°
 		const char* type = lua_tostring(lua, 2);
 		const char* name = lua_tostring(lua, 3);
-		// ¸ù¾İ³¡¾°½ÚµãÀàĞÍ´´½¨
+		// æ ¹æ®åœºæ™¯èŠ‚ç‚¹ç±»å‹åˆ›å»º
 		if (!strcmp("animation", type)) {
 			const char* meshFile = LuaTableFieldValue(lua, 4, "meshFile", "");
 			bool start = LuaTableFieldValue(lua, 4, "start", true);
@@ -1023,7 +1023,7 @@ int CScriptManager::DoSceneInsert(lua_State* lua) {
 			else if (!strcmp(shape, "cone")) geometry.shape = SGeometry::CONE;
 			else if (!strcmp(shape, "plane")) geometry.shape = SGeometry::PLANE;
 			else if (!strcmp(shape, "circle")) geometry.shape = SGeometry::CIRCLE;
-			// ¼¸ºÎÌå²ÎÊıÉèÖÃ
+			// å‡ ä½•ä½“å‚æ•°è®¾ç½®
 			switch (geometry.shape) {
 			case SGeometry::BOX:
 				geometry.box.x = LuaTableFieldValue(lua, 4, "x", 1.0f);
@@ -1143,7 +1143,7 @@ int CScriptManager::DoSceneInsert(lua_State* lua) {
 }
 
 /**
-* É¾³ı³¡¾°½Úµã
+* åˆ é™¤åœºæ™¯èŠ‚ç‚¹
 */
 int CScriptManager::DoSceneDelete(lua_State* lua) {
 	if (lua_isstring(lua, 1)) {
@@ -1163,7 +1163,7 @@ int CScriptManager::DoSceneDelete(lua_State* lua) {
 }
 
 /**
-* Çå³ıËùÓĞ³¡¾°½Úµã
+* æ¸…é™¤æ‰€æœ‰åœºæ™¯èŠ‚ç‚¹
 */
 int CScriptManager::DoSceneClear(lua_State* lua) {
 	vector<CRigidBody*> rigidList;
@@ -1179,7 +1179,7 @@ int CScriptManager::DoSceneClear(lua_State* lua) {
 }
 
 /**
-* »ñÈ¡³¡¾°½ÚµãÁĞ±í
+* è·å–åœºæ™¯èŠ‚ç‚¹åˆ—è¡¨
 */
 int CScriptManager::DoSceneList(lua_State* lua) {
 	vector<CSceneNode*> nodeList;
@@ -1194,7 +1194,7 @@ int CScriptManager::DoSceneList(lua_State* lua) {
 }
 
 /**
-* Ñ¡Ôñ³¡¾°½Úµã
+* é€‰æ‹©åœºæ™¯èŠ‚ç‚¹
 */
 int CScriptManager::DoScenePick(lua_State* lua) {
 	if (lua_isnumber(lua, 1) && lua_isnumber(lua, 2) && lua_isnumber(lua, 3) &&
@@ -1224,7 +1224,7 @@ int CScriptManager::DoScenePick(lua_State* lua) {
 }
 
 /**
-* »ñÈ¡»òÉèÖÃ³¡¾°½ÚµãËõ·Å
+* è·å–æˆ–è®¾ç½®åœºæ™¯èŠ‚ç‚¹ç¼©æ”¾
 */
 int CScriptManager::DoSceneScale(lua_State* lua) {
 	if (lua_isstring(lua, 1)) {
@@ -1253,7 +1253,7 @@ int CScriptManager::DoSceneScale(lua_State* lua) {
 }
 
 /**
-* »ñÈ¡»òÉèÖÃ³¡¾°½Úµã½Ç¶È
+* è·å–æˆ–è®¾ç½®åœºæ™¯èŠ‚ç‚¹è§’åº¦
 */
 int CScriptManager::DoSceneAngle(lua_State* lua) {
 	if (lua_isstring(lua, 1)) {
@@ -1281,7 +1281,7 @@ int CScriptManager::DoSceneAngle(lua_State* lua) {
 }
 
 /**
-* »ñÈ¡»òÉèÖÃ³¡¾°½Úµã·½Î»
+* è·å–æˆ–è®¾ç½®åœºæ™¯èŠ‚ç‚¹æ–¹ä½
 */
 int CScriptManager::DoSceneOrientation(lua_State* lua) {
 	if (lua_isstring(lua, 1)) {
@@ -1314,7 +1314,7 @@ int CScriptManager::DoSceneOrientation(lua_State* lua) {
 }
 
 /**
-* »ñÈ¡»òÉèÖÃ³¡¾°½ÚµãÎ»ÖÃ
+* è·å–æˆ–è®¾ç½®åœºæ™¯èŠ‚ç‚¹ä½ç½®
 */
 int CScriptManager::DoScenePosition(lua_State* lua) {
 	if (lua_isstring(lua, 1)) {
@@ -1343,7 +1343,7 @@ int CScriptManager::DoScenePosition(lua_State* lua) {
 }
 
 /**
-* »ñÈ¡»òÉèÖÃ³¡¾°½Úµã¿É¼ûĞÔ
+* è·å–æˆ–è®¾ç½®åœºæ™¯èŠ‚ç‚¹å¯è§æ€§
 */
 int CScriptManager::DoSceneVisible(lua_State* lua) {
 	if (lua_isstring(lua, 1)) {
@@ -1359,8 +1359,8 @@ int CScriptManager::DoSceneVisible(lua_State* lua) {
 }
 
 /**
-* ¸üĞÂ³¡¾°½Úµã
-* Ê¹ÓÃ·½·¨ scene.update(node, mesh, {{s=0,t=0}, [3]={r=0.5,g=0.5,b=0.5}, [4]={s=1,t=1}})
+* æ›´æ–°åœºæ™¯èŠ‚ç‚¹
+* ä½¿ç”¨æ–¹æ³• scene.update(node, mesh, {{s=0,t=0}, [3]={r=0.5,g=0.5,b=0.5}, [4]={s=1,t=1}})
 */
 int CScriptManager::DoSceneUpdate(lua_State* lua) {
 	if (lua_isstring(lua, 1) && lua_isinteger(lua, 2) && lua_istable(lua, 3)) {
@@ -1400,7 +1400,7 @@ int CScriptManager::DoSceneUpdate(lua_State* lua) {
 }
 
 /**
-* »ñÈ¡³¡¾°½ÚµãÍø¸ñ¶¥µãĞÅÏ¢
+* è·å–åœºæ™¯èŠ‚ç‚¹ç½‘æ ¼é¡¶ç‚¹ä¿¡æ¯
 */
 int CScriptManager::DoSceneVertex(lua_State* lua) {
 	if (lua_isstring(lua, 1) && lua_isinteger(lua, 2) && lua_isinteger(lua, 3) && lua_isinteger(lua, 4)) {
@@ -1433,7 +1433,7 @@ int CScriptManager::DoSceneVertex(lua_State* lua) {
 }
 
 /**
-* »ñÈ¡»òÉèÖÃ³¡¾°½ÚµãÍø¸ñ²ÄÖÊ
+* è·å–æˆ–è®¾ç½®åœºæ™¯èŠ‚ç‚¹ç½‘æ ¼æè´¨
 */
 int CScriptManager::DoSceneMaterial(lua_State* lua) {
 	if (lua_isstring(lua, 1) && lua_isinteger(lua, 2)) {
@@ -1500,7 +1500,7 @@ int CScriptManager::DoSceneMaterial(lua_State* lua) {
 }
 
 /**
-* ÉèÖÃ³¡¾°½ÚµãäÖÈ¾Ä£Ê½
+* è®¾ç½®åœºæ™¯èŠ‚ç‚¹æ¸²æŸ“æ¨¡å¼
 */
 int CScriptManager::DoSceneRenderMode(lua_State* lua) {
 	if (lua_isstring(lua, 1)) {
@@ -1520,7 +1520,7 @@ int CScriptManager::DoSceneRenderMode(lua_State* lua) {
 }
 
 /**
-* »ñÈ¡³¡¾°½ÚµãµÄ°üÎ§ºĞ
+* è·å–åœºæ™¯èŠ‚ç‚¹çš„åŒ…å›´ç›’
 */
 int CScriptManager::DoSceneBoundingBox(lua_State* lua) {
 	if (lua_isstring(lua, 1)) {
@@ -1540,7 +1540,7 @@ int CScriptManager::DoSceneBoundingBox(lua_State* lua) {
 }
 
 /**
-* µ÷ÓÃ³¡¾°½Úµã·½·¨
+* è°ƒç”¨åœºæ™¯èŠ‚ç‚¹æ–¹æ³•
 */
 int CScriptManager::DoSceneHandle(lua_State* lua) {
 	if (lua_isstring(lua, 1) && lua_isstring(lua, 2)) {
@@ -1719,7 +1719,7 @@ int CScriptManager::DoSceneHandle(lua_State* lua) {
 }
 
 /**
-* »ñÈ¡ÒÑ×¢²áµÄºó´¦ÀíÁĞ±í
+* è·å–å·²æ³¨å†Œçš„åå¤„ç†åˆ—è¡¨
 */
 int CScriptManager::DoPostList(lua_State* lua) {
 	vector<string> postList;
@@ -1734,7 +1734,7 @@ int CScriptManager::DoPostList(lua_State* lua) {
 }
 
 /**
-* »ñÈ¡»òÉèÖÃÖ¸¶¨ºó´¦Àí
+* è·å–æˆ–è®¾ç½®æŒ‡å®šåå¤„ç†
 */
 int CScriptManager::DoPostEnable(lua_State* lua) {
 	if (lua_isstring(lua, 1)) {
@@ -1751,7 +1751,7 @@ int CScriptManager::DoPostEnable(lua_State* lua) {
 }
 
 /**
-* ×¢²áÓÃ»§×Ô¶¨Òåºó´¦Àí
+* æ³¨å†Œç”¨æˆ·è‡ªå®šä¹‰åå¤„ç†
 */
 int CScriptManager::DoPostRegister(lua_State* lua) {
 	bool success = false;
@@ -1768,7 +1768,7 @@ int CScriptManager::DoPostRegister(lua_State* lua) {
 }
 
 /**
-* ÉèÖÃºó´¦Àí²ÎÊı
+* è®¾ç½®åå¤„ç†å‚æ•°
 */
 int CScriptManager::DoPostParam(lua_State* lua) {
 	int paramCount = lua_gettop(lua) - 2;
@@ -1789,7 +1789,7 @@ int CScriptManager::DoPostParam(lua_State* lua) {
 }
 
 /**
-* ÆÁÄ»½ØÍ¼
+* å±å¹•æˆªå›¾
 */
 int CScriptManager::DoGraphicsScreenshot(lua_State* lua) {
 	if (lua_isstring(lua, 1)) {
@@ -1801,7 +1801,7 @@ int CScriptManager::DoGraphicsScreenshot(lua_State* lua) {
 }
 
 /**
-* »ñÈ¡»òÉèÖÃÁ¢ÌåÏÔÊ¾
+* è·å–æˆ–è®¾ç½®ç«‹ä½“æ˜¾ç¤º
 */
 int CScriptManager::DoGraphicsStereo(lua_State* lua) {
 	if (lua_isboolean(lua, 1)) {
@@ -1813,7 +1813,7 @@ int CScriptManager::DoGraphicsStereo(lua_State* lua) {
 }
 
 /**
-* »ñÈ¡´°¿Ú´óĞ¡
+* è·å–çª—å£å¤§å°
 */
 int CScriptManager::DoGraphicsWindowSize(lua_State* lua) {
 	int width;
@@ -1825,7 +1825,7 @@ int CScriptManager::DoGraphicsWindowSize(lua_State* lua) {
 }
 
 /**
-* »ñÈ¡¹âÔ´Î»ÖÃ
+* è·å–å…‰æºä½ç½®
 */
 int CScriptManager::DoGraphicsLightPosition(lua_State* lua) {
 	CVector3 lightPos = CEngine::GetGraphicsManager()->GetLight();
@@ -1837,7 +1837,7 @@ int CScriptManager::DoGraphicsLightPosition(lua_State* lua) {
 }
 
 /**
-* ÉèÖÃ·½Ïò¹â¹âÔ´
+* è®¾ç½®æ–¹å‘å…‰å…‰æº
 */
 int CScriptManager::DoGraphicsDirectionLight(lua_State* lua) {
 	if (lua_isnumber(lua, 1) && lua_isnumber(lua, 2) && lua_isnumber(lua, 3)) {
@@ -1856,7 +1856,7 @@ int CScriptManager::DoGraphicsDirectionLight(lua_State* lua) {
 }
 
 /**
-* ÉèÖÃµã¹âÔ´
+* è®¾ç½®ç‚¹å…‰æº
 */
 int CScriptManager::DoGraphicsPointLight(lua_State* lua) {
 	if (lua_isnumber(lua, 1) && lua_isnumber(lua, 2) && lua_isnumber(lua, 3)) {
@@ -1876,7 +1876,7 @@ int CScriptManager::DoGraphicsPointLight(lua_State* lua) {
 }
 
 /**
-* ÉèÖÃ¾Û¹âµÆ¹âÔ´
+* è®¾ç½®èšå…‰ç¯å…‰æº
 */
 int CScriptManager::DoGraphicsSpotLight(lua_State* lua) {
 	if (lua_isnumber(lua, 1) && lua_isnumber(lua, 2) && lua_isnumber(lua, 3)) {
@@ -1903,7 +1903,7 @@ int CScriptManager::DoGraphicsSpotLight(lua_State* lua) {
 }
 
 /**
-* »ñÈ¡»òÉèÖÃÒõÓ°ÊÇ·ñÏÔÊ¾
+* è·å–æˆ–è®¾ç½®é˜´å½±æ˜¯å¦æ˜¾ç¤º
 */
 int CScriptManager::DoGraphicsShadow(lua_State* lua) {
 	if (lua_isboolean(lua, 1)) {
@@ -1915,7 +1915,7 @@ int CScriptManager::DoGraphicsShadow(lua_State* lua) {
 }
 
 /**
-* »ñÈ¡»òÉèÖÃÎíÊÇ·ñÏÔÊ¾
+* è·å–æˆ–è®¾ç½®é›¾æ˜¯å¦æ˜¾ç¤º
 */
 int CScriptManager::DoGraphicsFog(lua_State* lua) {
 	if (lua_isboolean(lua, 1)) {
@@ -1939,7 +1939,7 @@ int CScriptManager::DoGraphicsFog(lua_State* lua) {
 }
 
 /**
-* »ñÈ¡»òÉèÖÃ»·¾³ÌùÍ¼
+* è·å–æˆ–è®¾ç½®ç¯å¢ƒè´´å›¾
 */
 int CScriptManager::DoGraphicsEnvironmentMap(lua_State* lua) {
 	if (lua_isboolean(lua, 1)) {
@@ -1958,7 +1958,7 @@ int CScriptManager::DoGraphicsEnvironmentMap(lua_State* lua) {
 }
 
 /**
-* ÉèÖÃ»æÍ¼±³¾°ÑÕÉ«
+* è®¾ç½®ç»˜å›¾èƒŒæ™¯é¢œè‰²
 */
 int CScriptManager::DoGraphicsBackground(lua_State* lua) {
 	if (lua_isnumber(lua, 1) && lua_isnumber(lua, 2) && lua_isnumber(lua, 3) && lua_isnumber(lua, 4)) {
@@ -1972,7 +1972,7 @@ int CScriptManager::DoGraphicsBackground(lua_State* lua) {
 }
 
 /**
-* ´ÓÆÁÄ»ÉÏµÄµã»ñÈ¡¿Õ¼äÉäÏß
+* ä»å±å¹•ä¸Šçš„ç‚¹è·å–ç©ºé—´å°„çº¿
 */
 int CScriptManager::DoGraphicsPickingRay(lua_State* lua) {
 	if (lua_isinteger(lua, 1) && lua_isinteger(lua, 2)) {
@@ -1992,7 +1992,7 @@ int CScriptManager::DoGraphicsPickingRay(lua_State* lua) {
 }
 
 /**
-* »ñÈ¡¿Õ¼äµãÍ¶Ó°µ½ÆÁÄ»ÉÏµÄÎ»ÖÃ
+* è·å–ç©ºé—´ç‚¹æŠ•å½±åˆ°å±å¹•ä¸Šçš„ä½ç½®
 */
 int CScriptManager::DoGraphicsProject(lua_State* lua) {
 	if (lua_isnumber(lua, 1) && lua_isnumber(lua, 2) && lua_isnumber(lua, 3)) {
@@ -2010,20 +2010,16 @@ int CScriptManager::DoGraphicsProject(lua_State* lua) {
 }
 
 /**
-* ÉèÖÃÀëÏßäÖÈ¾Ä¿±ê
+* è®¾ç½®ç¦»çº¿æ¸²æŸ“ç›®æ ‡
 */
 int CScriptManager::DoGraphicsRenderTarget(lua_State* lua) {
 	if (lua_isstring(lua, 1)) {
 		const char* name = lua_tostring(lua, 1);
-		bool clear = lua_isboolean(lua, 2) ? lua_toboolean(lua, 2) != 0 : true;
-		bool resize = lua_isboolean(lua, 3) ? lua_toboolean(lua, 3) != 0 : false;
+		bool clear = lua_isboolean(lua, 2) ? lua_toboolean(lua, 2) != 0 : false;
 		CTexture* pTexture = CEngine::GetTextureManager()->GetTexture(name);
 		CGraphicsManager* pGraphicsMgr = CEngine::GetGraphicsManager();
 		CTexture* pRenderTarget = pGraphicsMgr->GetRenderTarget();
 		pGraphicsMgr->SetRenderTarget(pTexture, 0, true, clear, clear);
-		if (resize && pTexture) {
-			pGraphicsMgr->SetWindowSize(pTexture->GetWidth(), pTexture->GetHeight());
-		}
 		lua_pushstring(lua, pRenderTarget ? pRenderTarget->GetFilePath().c_str() : "null");
 		return 1;
 	}
@@ -2031,7 +2027,7 @@ int CScriptManager::DoGraphicsRenderTarget(lua_State* lua) {
 }
 
 /**
-* ´´½¨»òÔØÈëÎÆÀí
+* åˆ›å»ºæˆ–è½½å…¥çº¹ç†
 */
 int CScriptManager::DoTextureCreate(lua_State* lua) {
 	if (lua_isstring(lua, 1)) {
@@ -2060,7 +2056,7 @@ int CScriptManager::DoTextureCreate(lua_State* lua) {
 }
 
 /**
-* É¾³ıÎÆÀí×ÊÔ´
+* åˆ é™¤çº¹ç†èµ„æº
 */
 int CScriptManager::DoTextureDelete(lua_State* lua) {
 	if (lua_isstring(lua, 1)) {
@@ -2071,7 +2067,7 @@ int CScriptManager::DoTextureDelete(lua_State* lua) {
 }
 
 /**
-* ¸üĞÂÎÆÀíÊı¾İ
+* æ›´æ–°çº¹ç†æ•°æ®
 */
 int CScriptManager::DoTextureUpdate(lua_State* lua) {
 	bool success = false;
@@ -2085,7 +2081,7 @@ int CScriptManager::DoTextureUpdate(lua_State* lua) {
 }
 
 /**
-* ´´½¨×ÅÉ«Æ÷
+* åˆ›å»ºç€è‰²å™¨
 */
 int CScriptManager::DoShaderCreate(lua_State* lua) {
 	if (lua_isstring(lua, 1) && lua_isstring(lua, 2) && lua_isstring(lua, 3)) {
@@ -2106,7 +2102,7 @@ int CScriptManager::DoShaderCreate(lua_State* lua) {
 }
 
 /**
-* É¾³ı×ÅÉ«Æ÷×ÊÔ´
+* åˆ é™¤ç€è‰²å™¨èµ„æº
 */
 int CScriptManager::DoShaderDelete(lua_State* lua) {
 	if (lua_isstring(lua, 1)) {
@@ -2117,7 +2113,7 @@ int CScriptManager::DoShaderDelete(lua_State* lua) {
 }
 
 /**
-* ¸üĞÂ×ÅÉ«Æ÷³ÌĞò
+* æ›´æ–°ç€è‰²å™¨ç¨‹åº
 */
 int CScriptManager::DoShaderUpdate(lua_State* lua) {
 	bool success = false;
@@ -2134,7 +2130,7 @@ int CScriptManager::DoShaderUpdate(lua_State* lua) {
 }
 
 /**
-* ÉèÖÃ×ÅÉ«Æ÷²ÎÊı
+* è®¾ç½®ç€è‰²å™¨å‚æ•°
 */
 int CScriptManager::DoShaderParam(lua_State* lua) {
 	int paramCount = lua_gettop(lua) - 2;
@@ -2156,7 +2152,7 @@ int CScriptManager::DoShaderParam(lua_State* lua) {
 }
 
 /**
-* »ñÈ¡ÒÑ¼ÓÔØµÄ×ÖÌåÁĞ±í
+* è·å–å·²åŠ è½½çš„å­—ä½“åˆ—è¡¨
 */
 int CScriptManager::DoFontList(lua_State* lua) {
 	vector<string> fontList;
@@ -2171,7 +2167,7 @@ int CScriptManager::DoFontList(lua_State* lua) {
 }
 
 /**
-* ¼ÓÔØ×ÖÌå
+* åŠ è½½å­—ä½“
 */
 int CScriptManager::DoFontLoad(lua_State* lua) {
 	bool success = false;
@@ -2185,7 +2181,7 @@ int CScriptManager::DoFontLoad(lua_State* lua) {
 }
 
 /**
-* Çå¿ÕÈ«²¿ÒÑ¼ÓÔØµÄ×ÖÌå
+* æ¸…ç©ºå…¨éƒ¨å·²åŠ è½½çš„å­—ä½“
 */
 int CScriptManager::DoFontClear(lua_State* lua) {
 	CEngine::GetFontManager()->Clear();
@@ -2193,7 +2189,7 @@ int CScriptManager::DoFontClear(lua_State* lua) {
 }
 
 /**
-* ÉèÖÃµ±Ç°×ÖÌå
+* è®¾ç½®å½“å‰å­—ä½“
 */
 int CScriptManager::DoFontUse(lua_State* lua) {
 	if (lua_isstring(lua, 1)) {
@@ -2204,7 +2200,7 @@ int CScriptManager::DoFontUse(lua_State* lua) {
 }
 
 /**
-* ´´½¨ÒôÔ´
+* åˆ›å»ºéŸ³æº
 */
 int CScriptManager::DoSoundCreate(lua_State* lua) {
 	if (lua_isstring(lua, 1)) {
@@ -2224,7 +2220,7 @@ int CScriptManager::DoSoundCreate(lua_State* lua) {
 }
 
 /**
-* É¾³ıÒôÔ´
+* åˆ é™¤éŸ³æº
 */
 int CScriptManager::DoSoundDelete(lua_State* lua) {
 	if (lua_isinteger(lua, 1)) {
@@ -2234,7 +2230,7 @@ int CScriptManager::DoSoundDelete(lua_State* lua) {
 }
 
 /**
-* ¿ªÊ¼²¥·ÅÉùÒô
+* å¼€å§‹æ’­æ”¾å£°éŸ³
 */
 int CScriptManager::DoSoundPlay(lua_State* lua) {
 	if (lua_isinteger(lua, 1)) {
@@ -2244,7 +2240,7 @@ int CScriptManager::DoSoundPlay(lua_State* lua) {
 }
 
 /**
-* ÔİÍ£²¥·ÅÉùÒô
+* æš‚åœæ’­æ”¾å£°éŸ³
 */
 int CScriptManager::DoSoundPause(lua_State* lua) {
 	CSoundManager* pSoundMgr = CEngine::GetSoundManager();
@@ -2254,7 +2250,7 @@ int CScriptManager::DoSoundPause(lua_State* lua) {
 }
 
 /**
-* Í£Ö¹²¥·ÅÉùÒô
+* åœæ­¢æ’­æ”¾å£°éŸ³
 */
 int CScriptManager::DoSoundStop(lua_State* lua) {
 	if (lua_isinteger(lua, 1)) {
@@ -2264,7 +2260,7 @@ int CScriptManager::DoSoundStop(lua_State* lua) {
 }
 
 /**
-* ÉèÖÃÒôÔ´Î»ÖÃ
+* è®¾ç½®éŸ³æºä½ç½®
 */
 int CScriptManager::DoSoundPosition(lua_State* lua) {
 	if (lua_isinteger(lua, 1) && lua_isnumber(lua, 2) && lua_isnumber(lua, 3) && lua_isnumber(lua, 4)) {
@@ -2278,7 +2274,7 @@ int CScriptManager::DoSoundPosition(lua_State* lua) {
 }
 
 /**
-* »ñÈ¡»òÉèÖÃÒôÁ¿
+* è·å–æˆ–è®¾ç½®éŸ³é‡
 */
 int CScriptManager::DoSoundVolume(lua_State* lua) {
 	if (lua_isinteger(lua, 1)) {
@@ -2290,7 +2286,7 @@ int CScriptManager::DoSoundVolume(lua_State* lua) {
 }
 
 /**
-* ¸üĞÂÒôÆµÊı¾İ
+* æ›´æ–°éŸ³é¢‘æ•°æ®
 */
 int CScriptManager::DoSoundUpdate(lua_State* lua) {
 	bool success = false;
@@ -2304,13 +2300,13 @@ int CScriptManager::DoSoundUpdate(lua_State* lua) {
 }
 
 /**
-* °ó¶¨³¡¾°½Úµãµ½¸ÕÌå¶ÔÏó
+* ç»‘å®šåœºæ™¯èŠ‚ç‚¹åˆ°åˆšä½“å¯¹è±¡
 */
 int CScriptManager::DoPhysicsBind(lua_State* lua) {
 	if (lua_isstring(lua, 1)) {
 		CSceneNode* pNode = CEngine::GetSceneManager()->GetNodeByName(lua_tostring(lua, 1));
 		if (!pNode) return 0;
-		// ½«¸ÕÌå´óĞ¡³õÊ¼ÉèÎª 1.0
+		// å°†åˆšä½“å¤§å°åˆå§‹è®¾ä¸º 1.0
 		SGeometry geometry;
 		if (pNode->GetType() == "geometry") {
 			geometry = static_cast<CSceneNodeGeometry*>(pNode)->GetGeometry(true);
@@ -2367,7 +2363,7 @@ int CScriptManager::DoPhysicsBind(lua_State* lua) {
 }
 
 /**
-* È¡Ïû³¡¾°½ÚµãµÄÎïÀíÄ£Äâ
+* å–æ¶ˆåœºæ™¯èŠ‚ç‚¹çš„ç‰©ç†æ¨¡æ‹Ÿ
 */
 int CScriptManager::DoPhysicsUnbind(lua_State* lua) {
 	if (lua_isstring(lua, 1)) {
@@ -2383,7 +2379,7 @@ int CScriptManager::DoPhysicsUnbind(lua_State* lua) {
 }
 
 /**
-* ÉèÖÃ³¡¾°½ÚµãÅö×²ÊÂ¼ş»Øµ÷
+* è®¾ç½®åœºæ™¯èŠ‚ç‚¹ç¢°æ’äº‹ä»¶å›è°ƒ
 */
 int CScriptManager::DoPhysicsCollide(lua_State* lua) {
 	if (lua_isstring(lua, 1) && lua_isfunction(lua, 2)) {
@@ -2399,7 +2395,7 @@ int CScriptManager::DoPhysicsCollide(lua_State* lua) {
 }
 
 /**
-* ÖØÖÃ¸ÕÌå×´Ì¬£¬¼´½«¸ÕÌåÏßËÙ¶ÈºÍ½ÇËÙ¶È¶¼ÉèÎªÁã
+* é‡ç½®åˆšä½“çŠ¶æ€ï¼Œå³å°†åˆšä½“çº¿é€Ÿåº¦å’Œè§’é€Ÿåº¦éƒ½è®¾ä¸ºé›¶
 */
 int CScriptManager::DoPhysicsReset(lua_State* lua) {
 	if (lua_isstring(lua, 1)) {
@@ -2411,7 +2407,7 @@ int CScriptManager::DoPhysicsReset(lua_State* lua) {
 }
 
 /**
-* ÉèÖÃ¸ÕÌåÏßËÙ¶ÈºÍ½ÇËÙ¶È
+* è®¾ç½®åˆšä½“çº¿é€Ÿåº¦å’Œè§’é€Ÿåº¦
 */
 int CScriptManager::DoPhysicsVelocity(lua_State* lua) {
 	if (lua_isstring(lua, 1) && lua_isnumber(lua, 2) && lua_isnumber(lua, 3) && lua_isnumber(lua, 4)) {
@@ -2435,7 +2431,7 @@ int CScriptManager::DoPhysicsVelocity(lua_State* lua) {
 }
 
 /**
-* Ïò¸ÕÌåÊ©¼ÓÁ¦
+* å‘åˆšä½“æ–½åŠ åŠ›
 */
 int CScriptManager::DoPhysicsApplyForce(lua_State* lua) {
 	if (lua_isstring(lua, 1) && lua_isnumber(lua, 2) && lua_isnumber(lua, 3) && lua_isnumber(lua, 4)) {
@@ -2460,7 +2456,7 @@ int CScriptManager::DoPhysicsApplyForce(lua_State* lua) {
 }
 
 /**
-* Ïò¸ÕÌåÊ©¼Ó³åÁ¿
+* å‘åˆšä½“æ–½åŠ å†²é‡
 */
 int CScriptManager::DoPhysicsApplyImpulse(lua_State* lua) {
 	if (lua_isstring(lua, 1) && lua_isnumber(lua, 2) && lua_isnumber(lua, 3) && lua_isnumber(lua, 4)) {
@@ -2485,7 +2481,7 @@ int CScriptManager::DoPhysicsApplyImpulse(lua_State* lua) {
 }
 
 /**
-* ÉèÖÃÎïÀíÒıÇæÖØÁ¦
+* è®¾ç½®ç‰©ç†å¼•æ“é‡åŠ›
 */
 int CScriptManager::DoPhysicsGravity(lua_State* lua) {
 	if (lua_gettop(lua) == 1 && lua_isnumber(lua, 1)) {
@@ -2501,7 +2497,7 @@ int CScriptManager::DoPhysicsGravity(lua_State* lua) {
 }
 
 /**
-* Îª¹Ø½ÚÉèÖÃÎïÀíÄ£Äâ
+* ä¸ºå…³èŠ‚è®¾ç½®ç‰©ç†æ¨¡æ‹Ÿ
 */
 int CScriptManager::DoPhysicsJoint(lua_State* lua) {
 	if (lua_isstring(lua, 1) && lua_isstring(lua, 2)) {
@@ -2527,7 +2523,7 @@ int CScriptManager::DoPhysicsJoint(lua_State* lua) {
 }
 
 /**
-* ÉèÖÃ¶¯»­²ÎÊı
+* è®¾ç½®åŠ¨ç”»å‚æ•°
 */
 int CScriptManager::DoAnimationParam(lua_State* lua) {
 	if (lua_isstring(lua, 1) && lua_isstring(lua, 2) && lua_isnumber(lua, 3)) {
@@ -2549,7 +2545,7 @@ int CScriptManager::DoAnimationParam(lua_State* lua) {
 }
 
 /**
-* ÉèÖÃËõ·Å¶¯»­
+* è®¾ç½®ç¼©æ”¾åŠ¨ç”»
 */
 int CScriptManager::DoAnimationScale(lua_State* lua) {
 	if (lua_isstring(lua, 1)) {
@@ -2571,7 +2567,7 @@ int CScriptManager::DoAnimationScale(lua_State* lua) {
 }
 
 /**
-* ÉèÖÃĞı×ª¶¯»­
+* è®¾ç½®æ—‹è½¬åŠ¨ç”»
 */
 int CScriptManager::DoAnimationRotation(lua_State* lua) {
 	if (lua_isstring(lua, 1)) {
@@ -2597,7 +2593,7 @@ int CScriptManager::DoAnimationRotation(lua_State* lua) {
 }
 
 /**
-* ÉèÖÃÎ»ÒÆ¶¯»­
+* è®¾ç½®ä½ç§»åŠ¨ç”»
 */
 int CScriptManager::DoAnimationTranslation(lua_State* lua) {
 	if (lua_isstring(lua, 1)) {
@@ -2619,7 +2615,7 @@ int CScriptManager::DoAnimationTranslation(lua_State* lua) {
 }
 
 /**
-* ¿ªÊ¼Ö´ĞĞ¶¯»­
+* å¼€å§‹æ‰§è¡ŒåŠ¨ç”»
 */
 int CScriptManager::DoAnimationStart(lua_State* lua) {
 	if (lua_isstring(lua, 1)) {
@@ -2633,7 +2629,7 @@ int CScriptManager::DoAnimationStart(lua_State* lua) {
 }
 
 /**
-* Í£Ö¹Ö´ĞĞ¶¯»­
+* åœæ­¢æ‰§è¡ŒåŠ¨ç”»
 */
 int CScriptManager::DoAnimationStop(lua_State* lua) {
 	if (lua_isstring(lua, 1)) {

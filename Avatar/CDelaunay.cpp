@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CDelaunay.h"
@@ -7,34 +7,34 @@
 #include "CColor.h"
 
 /**
-* ¹¹Ôìº¯Êı
+* æ„é€ å‡½æ•°
 */
 CDelaunay::CDelaunay() {
 }
 
 /**
-* Ê¹ÓÃÒ»ÏµÁĞµã¹¹Ôì
+* ä½¿ç”¨ä¸€ç³»åˆ—ç‚¹æ„é€ 
 */
 CDelaunay::CDelaunay(const vector<CVector3>& points) {
 	m_vecPoints = points;
 }
 
 /**
-* Ìí¼Óµã
+* æ·»åŠ ç‚¹
 */
 void CDelaunay::AddPoint(const CVector3& point) {
 	m_vecPoints.push_back(point);
 }
 
 /**
-* Ìí¼Ó×ø±êµã
+* æ·»åŠ åæ ‡ç‚¹
 */
 void CDelaunay::AddPoint(float x, float y, float z) {
 	m_vecPoints.push_back(CVector3(x, y, z));
 }
 
 /**
-* Çå¿ÕÒÑÌí¼ÓµÄµã×ø±ê
+* æ¸…ç©ºå·²æ·»åŠ çš„ç‚¹åæ ‡
 */
 void CDelaunay::ClearPoint() {
 	m_vecPoints.clear();
@@ -42,23 +42,23 @@ void CDelaunay::ClearPoint() {
 }
 
 /**
-* Éú³ÉÈı½ÇÍø(Öğµã²åÈë·¨)
+* ç”Ÿæˆä¸‰è§’ç½‘(é€ç‚¹æ’å…¥æ³•)
 */
 bool CDelaunay::Generate() {
 	m_vecTriangles.clear();
 	if (m_vecPoints.size() < 3) return false;
 
-	// ¶¥µãË÷Òı
+	// é¡¶ç‚¹ç´¢å¼•
 	vector<size_t> indices;
 	SortPointsAlongX(m_vecPoints, indices);
 	AddSuperTriangle(m_vecPoints);
-	// ¼ÆËã³¬¼¶Èı½ÇĞÎÍâ½ÓÔ²²¢¼ÓÈëµ½¿ª·ÅÁĞ±íÖĞ
+	// è®¡ç®—è¶…çº§ä¸‰è§’å½¢å¤–æ¥åœ†å¹¶åŠ å…¥åˆ°å¼€æ”¾åˆ—è¡¨ä¸­
 	list<STriangle> openList;
 	list<STriangle> closedList;
 	STriangle super(indices.size(), indices.size() + 1, indices.size() + 2);
 	openList.push_back(Circumcircle(super));
 
-	// ±éÀúËùÓĞ¶¥µã
+	// éå†æ‰€æœ‰é¡¶ç‚¹
 	for (size_t i = 0; i < indices.size(); i++) {
 		list<SEdge> edgeList;
 		list<STriangle>::iterator iter = openList.begin();
@@ -81,18 +81,18 @@ bool CDelaunay::Generate() {
 			}
 			++iter;
 		}
-		// ÒÆ³ıÖØ±ß²¢½«µ±Ç°µãÓëËùÓĞ±ß×é³ÉÈı½ÇĞÎ¼ÓÈëµ½¿ª·ÅÁĞ±íÖĞ
+		// ç§»é™¤é‡è¾¹å¹¶å°†å½“å‰ç‚¹ä¸æ‰€æœ‰è¾¹ç»„æˆä¸‰è§’å½¢åŠ å…¥åˆ°å¼€æ”¾åˆ—è¡¨ä¸­
 		RemoveDoublyEdge(edgeList);
 		for (list<SEdge>::iterator j = edgeList.begin(); j != edgeList.end(); ++j) {
 			STriangle triangle(j->v1, j->v2, indices[i]);
 			openList.push_back(Circumcircle(triangle));
 		}
 	}
-	// ½«³¬¼¶Èı½ÇĞÎµÄ¶¥µãÒÆ³ı
+	// å°†è¶…çº§ä¸‰è§’å½¢çš„é¡¶ç‚¹ç§»é™¤
 	m_vecPoints.pop_back();
 	m_vecPoints.pop_back();
 	m_vecPoints.pop_back();
-	// ½«¿ª·ÅÁĞ±íÖĞÈı½ÇĞÎ¼ÓÈëµ½±ÕºÏÁĞ±íÖĞ
+	// å°†å¼€æ”¾åˆ—è¡¨ä¸­ä¸‰è§’å½¢åŠ å…¥åˆ°é—­åˆåˆ—è¡¨ä¸­
 	for (list<STriangle>::iterator i = openList.begin(); i != openList.end(); ++i) {
 		closedList.push_back(*i);
 	}
@@ -101,28 +101,28 @@ bool CDelaunay::Generate() {
 }
 
 /**
-* »ñÈ¡¶¥µãÊıÁ¿
+* è·å–é¡¶ç‚¹æ•°é‡
 */
 int CDelaunay::GetPointCount() const {
 	return m_vecPoints.size();
 }
 
 /**
-* »ñÈ¡Ò»¸ö¶¥µã
+* è·å–ä¸€ä¸ªé¡¶ç‚¹
 */
 CVector3 CDelaunay::GetPoint(int index) const {
 	return m_vecPoints[index];
 }
 
 /**
-* »ñÈ¡Èı½ÇĞÎÊıÁ¿
+* è·å–ä¸‰è§’å½¢æ•°é‡
 */
 int CDelaunay::GetTriangleCount() const {
 	return m_vecTriangles.size();
 }
 
 /**
-* »ñÈ¡Ò»¸öÈı½ÇĞÎ
+* è·å–ä¸€ä¸ªä¸‰è§’å½¢
 */
 void CDelaunay::GetTriangle(int index, int vertices[3]) const {
 	const STriangle& tri = m_vecTriangles[index];
@@ -132,7 +132,7 @@ void CDelaunay::GetTriangle(int index, int vertices[3]) const {
 }
 
 /**
-* ¶ÔÈı½ÇÍøÉú³ÉÍø¸ñ¶ÔÏó
+* å¯¹ä¸‰è§’ç½‘ç”Ÿæˆç½‘æ ¼å¯¹è±¡
 */
 CMesh* CDelaunay::CreateMesh(bool dynamic, bool gradient) {
 	CBoundingBox boundingBox;
@@ -161,7 +161,7 @@ CMesh* CDelaunay::CreateMesh(bool dynamic, bool gradient) {
 }
 
 /**
-* ½«ËùÓĞ¶¥µãÑØXÖáÅÅĞò
+* å°†æ‰€æœ‰é¡¶ç‚¹æ²¿Xè½´æ’åº
 */
 void CDelaunay::SortPointsAlongX(vector<CVector3>& vertices, vector<size_t>& indices) {
 	indices.resize(vertices.size());
@@ -178,7 +178,7 @@ void CDelaunay::SortPointsAlongX(vector<CVector3>& vertices, vector<size_t>& ind
 }
 
 /**
-* Ìí¼Ó³¬¼¶Èı½ÇĞÎµ½¶¥µãÁĞ±íÄ©Î²
+* æ·»åŠ è¶…çº§ä¸‰è§’å½¢åˆ°é¡¶ç‚¹åˆ—è¡¨æœ«å°¾
 */
 void CDelaunay::AddSuperTriangle(vector<CVector3>& vertices) {
 	float minx = vertices[0][0];
@@ -205,7 +205,7 @@ void CDelaunay::AddSuperTriangle(vector<CVector3>& vertices) {
 }
 
 /**
-* ¼ÆËãÈı½ÇĞÎÍâ½ÓÔ²
+* è®¡ç®—ä¸‰è§’å½¢å¤–æ¥åœ†
 */
 CDelaunay::STriangle& CDelaunay::Circumcircle(STriangle& triangle) {
 	const CVector3& pa = m_vecPoints[triangle.a];
@@ -231,7 +231,7 @@ CDelaunay::STriangle& CDelaunay::Circumcircle(STriangle& triangle) {
 }
 
 /**
-* ÒÆ³ı±ßÁĞ±íÖĞµÄÖØ¸´±ß
+* ç§»é™¤è¾¹åˆ—è¡¨ä¸­çš„é‡å¤è¾¹
 */
 void CDelaunay::RemoveDoublyEdge(list<SEdge>& edges) {
 	list<SEdge>::iterator iter = edges.begin();
@@ -253,13 +253,13 @@ void CDelaunay::RemoveDoublyEdge(list<SEdge>& edges) {
 }
 
 /**
-* Éú³ÉÈı½ÇĞÎÁĞ±í
+* ç”Ÿæˆä¸‰è§’å½¢åˆ—è¡¨
 */
 void CDelaunay::BuildTriangles(list<STriangle>& triangles) {
 	size_t count = m_vecPoints.size();
 	for (list<STriangle>::iterator i = triangles.begin(); i != triangles.end(); ++i) {
 		if (i->a < count && i->b < count && i->c < count) {
-			// ¼ì²éÈı½ÇĞÎ·½Ïò
+			// æ£€æŸ¥ä¸‰è§’å½¢æ–¹å‘
 			CVector3 ab = m_vecPoints[i->b] - m_vecPoints[i->a];
 			CVector3 ac = m_vecPoints[i->c] - m_vecPoints[i->a];
 			if (ab.CrossProduct(ac).DotProduct(CVector3::Z) < 0) {

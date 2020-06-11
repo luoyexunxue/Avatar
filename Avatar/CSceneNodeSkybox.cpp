@@ -1,12 +1,12 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CSceneNodeSkybox.h"
 #include "CEngine.h"
 
 /**
-* ¹¹Ôìº¯Êý
+* æž„é€ å‡½æ•°
 */
 CSceneNodeSkybox::CSceneNodeSkybox(const string& name, const string texture[6]): CSceneNode("skybox", name) {
 	m_pMesh = 0;
@@ -19,7 +19,7 @@ CSceneNodeSkybox::CSceneNodeSkybox(const string& name, const string texture[6]):
 }
 
 /**
-* ³õÊ¼»¯³¡¾°½Úµã
+* åˆå§‹åŒ–åœºæ™¯èŠ‚ç‚¹
 */
 bool CSceneNodeSkybox::Init() {
 	m_pMesh = new CMesh();
@@ -50,21 +50,21 @@ bool CSceneNodeSkybox::Init() {
 }
 
 /**
-* Ïú»Ù³¡¾°½Úµã
+* é”€æ¯åœºæ™¯èŠ‚ç‚¹
 */
 void CSceneNodeSkybox::Destroy() {
 	delete m_pMesh;
 }
 
 /**
-* äÖÈ¾³¡¾°½Úµã
+* æ¸²æŸ“åœºæ™¯èŠ‚ç‚¹
 */
 void CSceneNodeSkybox::Render() {
 	m_pMesh->Render();
 }
 
 /**
-* ¸üÐÂÂß¼­
+* æ›´æ–°é€»è¾‘
 */
 void CSceneNodeSkybox::Update(float dt) {
 	m_cPosition = CEngine::GetGraphicsManager()->GetCamera()->m_cPosition;

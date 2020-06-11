@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CEngine.h"
@@ -16,7 +16,7 @@
 #include "CStringUtil.h"
 
 /**
-* ¹¹Ôìº¯Êı
+* æ„é€ å‡½æ•°
 */
 CEngine::CEngine() {
 	m_bActive = false;
@@ -27,50 +27,50 @@ CEngine::CEngine() {
 }
 
 /**
-* ÒıÇæ³õÊ¼»¯
-* @param config ÒıÇæ³õÊ¼»¯²ÎÊı
-* @return ÒıÇæ³õÊ¼»¯½á¹û
+* å¼•æ“åˆå§‹åŒ–
+* @param config å¼•æ“åˆå§‹åŒ–å‚æ•°
+* @return å¼•æ“åˆå§‹åŒ–ç»“æœ
 */
 bool CEngine::Init(const SEngineConfig& config) {
-	// ³õÊ¼»¯¶¨Ê±Æ÷
+	// åˆå§‹åŒ–å®šæ—¶å™¨
 	CTimer::Init();
-	// ´´½¨ÈÕÖ¾ÏµÍ³
+	// åˆ›å»ºæ—¥å¿—ç³»ç»Ÿ
 	if (config.log.enable) {
 		CLog::Create(config.log.console, config.log.file, config.log.time, config.log.name);
 		CLog::SetLevel((CLog::Level)config.log.level);
 	}
-	// ´´½¨Éè±¸
+	// åˆ›å»ºè®¾å¤‡
 	const SEngineConfig::SGraphic& g = config.graphic;
 	if (!GetDevice()->Create(g.title, g.width, g.height, g.resizable, g.fullscreen, g.antialias)) {
 		CLog::Error("Create graphic window failed");
 		return false;
 	}
-	// ÉèÖÃ×ÊÔ´ÎÄ¼şÂ·¾¶
+	// è®¾ç½®èµ„æºæ–‡ä»¶è·¯å¾„
 	GetFileManager()->SetDataDirectory(config.directory);
-	// ¼ÓÔØÏµÍ³×ÅÉ«Æ÷
+	// åŠ è½½ç³»ç»Ÿç€è‰²å™¨
 	LoadShader();
 	CLog::Info("Loading system shader completed.");
-	// ¼ÓÔØÒıÇæ²å¼ş
+	// åŠ è½½å¼•æ“æ’ä»¶
 	LoadPlugin();
 	CLog::Info("Loading engine plugins completed.");
-	// ÉèÖÃÄ¬ÈÏ¹âÕÕ¼°Ïà»ú
+	// è®¾ç½®é»˜è®¤å…‰ç…§åŠç›¸æœº
 	GetGraphicsManager()->SetLight(CVector3(0, 1, -1, 0), CVector3::Zero, CVector3(1.0f, 1.0f, 1.0f, 100.0f));
 	GetGraphicsManager()->SetCamera(new CCameraChase());
-	// ¼ÓÔØÏµÍ³ÄÚÖÃ×ÖÌå
+	// åŠ è½½ç³»ç»Ÿå†…ç½®å­—ä½“
 	GetFontManager()->Load("system/default.ttf", "default");
 	CLog::Info("Loading default font completed.");
-	// ¼ÓÔØ½Å±¾³ÌĞò
+	// åŠ è½½è„šæœ¬ç¨‹åº
 	GetScriptManager()->OpenScript("avatar.lua", this);
 	CLog::Info("Loading script completed.");
 	GetScriptManager()->OnReady();
-	// ÉèÖÃ×´Ì¬
+	// è®¾ç½®çŠ¶æ€
 	m_bActive = true;
 	m_bRunning = true;
 	return true;
 }
 
 /**
-* ÒıÇæÏú»Ù
+* å¼•æ“é”€æ¯
 */
 void CEngine::Destroy() {
 	m_bActive = false;
@@ -98,35 +98,35 @@ void CEngine::Destroy() {
 }
 
 /**
-* Âß¼­¸üĞÂ
+* é€»è¾‘æ›´æ–°
 */
 void CEngine::Update() {
-	// Ê±¼ä¼ä¸ô
+	// æ—¶é—´é—´éš”
 	if (!m_bFixedTimeSpan) {
 		m_fTimeSpan = CTimer::Reset("__engine__") * m_fSpeedOfTime;
 		if (m_fTimeSpan > 1.0f) m_fTimeSpan = 1.0f;
 	}
-	// »ñÈ¡ÏµÍ³ÊäÈë
+	// è·å–ç³»ç»Ÿè¾“å…¥
 	CInputManager* pInputMgr = GetInputManager();
 	CScriptManager* pScriptMgr = GetScriptManager();
 	CSoundManager* pSoundMgr = GetSoundManager();
 	GetDevice()->Handle(m_fTimeSpan);
 	pInputMgr->Update();
 	pScriptMgr->HandleEvent();
-	// ´¦ÀíÊäÈëÏûÏ¢
+	// å¤„ç†è¾“å…¥æ¶ˆæ¯
 	CInputManager::SInput* pInput = pInputMgr->GetInput();
-	// ÅĞ¶Ï´°¿ÚÊÇ·ñ¸Ä±ä´óĞ¡
+	// åˆ¤æ–­çª—å£æ˜¯å¦æ”¹å˜å¤§å°
 	if (pInput->iWidth > 0 || pInput->iHeight > 0) {
 		GetGraphicsManager()->SetWindowSize(pInput->iWidth, pInput->iHeight);
 		pScriptMgr->OnSize(pInput->iWidth, pInput->iHeight);
 	}
-	// ÅĞ¶ÏÊÇ·ñÍË³ö
+	// åˆ¤æ–­æ˜¯å¦é€€å‡º
 	if (pInput->bQuit) {
 		CLog::Info("Input exit message");
 		m_bRunning = false;
 		return;
 	}
-	// ÅĞ¶Ï¿ªÊ¼ÔİÍ£
+	// åˆ¤æ–­å¼€å§‹æš‚åœ
 	if (m_bActive == pInput->bPause) {
 		CLog::Info("Input start/pause message");
 		CTimer::Pause(pInput->bPause);
@@ -135,54 +135,54 @@ void CEngine::Update() {
 	}
 	if (!m_bActive) return;
 
-	// ½Å±¾ÊäÈë´¦Àí
+	// è„šæœ¬è¾“å…¥å¤„ç†
 	if (pInput->bGravity) GetPhysicsManager()->SetGravity(CVector3(pInput->fGravity));
 	if (pInput->iFunction) pScriptMgr->OnInput("function", pInput->iFunction, 0, 0, 0);
 	if (pInput->iInputKey) pScriptMgr->OnInput("key", pInput->iInputKey, 0, 0, 0);
 	if (pInput->bFire) pScriptMgr->OnInput("fire", 1, pInput->iInputX, pInput->iInputY, 0);
 	if (pInput->bMove) pScriptMgr->OnInput("move", 1, pInput->fRightLeft, pInput->fForthBack, pInput->fUpDown);
 	if (pInput->bTurn) pScriptMgr->OnInput("turn", 1, pInput->fYaw, pInput->fPitch, pInput->fRoll);
-	// ¸üĞÂÏà»ú×´Ì¬
+	// æ›´æ–°ç›¸æœºçŠ¶æ€
 	CCamera* pCamera = GetGraphicsManager()->GetCamera();
 	pCamera->Input(pInput);
 	pCamera->Update(m_fTimeSpan);
-	// ´¦Àí×¢²áµÄÊÂ¼ş»Øµ÷
+	// å¤„ç†æ³¨å†Œçš„äº‹ä»¶å›è°ƒ
 	list<CNotifyHandler*>::iterator iter = m_lstUpdateListener.begin();
 	while (iter != m_lstUpdateListener.end()) {
 		(*iter)->Handle();
 		++iter;
 	}
-	// ¸üĞÂÏµÍ³×é¼ş
+	// æ›´æ–°ç³»ç»Ÿç»„ä»¶
 	GetPhysicsManager()->Update(m_fTimeSpan);
 	GetAnimationManager()->Update(m_fTimeSpan);
 	GetSceneManager()->Update(m_fTimeSpan);
 	pScriptMgr->OnUpdate(m_fTimeSpan);
-	// ¸üĞÂÌıÖÚÎ»ÖÃ£¬¼´ÉãÏñ»úÎ»ÖÃ
+	// æ›´æ–°å¬ä¼—ä½ç½®ï¼Œå³æ‘„åƒæœºä½ç½®
 	pSoundMgr->ListenerPos(pCamera->m_cPosition);
 	pSoundMgr->ListenerOri(pCamera->m_cLookVector, pCamera->m_cUpVector);
 }
 
 /**
-* Í¼ĞÎäÖÈ¾
+* å›¾å½¢æ¸²æŸ“
 */
 void CEngine::Render() {
-	// »æÖÆ³¡¾°
+	// ç»˜åˆ¶åœºæ™¯
 	GetGraphicsManager()->Render();
-	// ´¦Àí×¢²áµÄÊÂ¼ş»Øµ÷
+	// å¤„ç†æ³¨å†Œçš„äº‹ä»¶å›è°ƒ
 	list<CNotifyHandler*>::iterator iter = m_lstRenderListener.begin();
 	while (iter != m_lstRenderListener.end()) {
 		(*iter)->Handle();
 		++iter;
 	}
-	// »æÖÆµ½Éè±¸ÉÏ
+	// ç»˜åˆ¶åˆ°è®¾å¤‡ä¸Š
 	GetDevice()->Render();
 }
 
 /**
-* ÉèÖÃÔËĞĞËÙ¶È
-* @param speed Ê±¼äÏµÊı£¬´óÓÚ1ÔòÊ±¼ä±ä¿ì£¬Ğ¡ÓÚ1Ôò±äÂı
-* @param fixed ÊÇ·ñ¹Ì¶¨µÄÊ±¼ä²½³¤
-* @attention µ± fixed = true Ê± speed ±íÊ¾Ê±¼ä²½³¤£¬¼´Ã¿Ö¡Ê±¼ä¼ä¸ô
+* è®¾ç½®è¿è¡Œé€Ÿåº¦
+* @param speed æ—¶é—´ç³»æ•°ï¼Œå¤§äº1åˆ™æ—¶é—´å˜å¿«ï¼Œå°äº1åˆ™å˜æ…¢
+* @param fixed æ˜¯å¦å›ºå®šçš„æ—¶é—´æ­¥é•¿
+* @attention å½“ fixed = true æ—¶ speed è¡¨ç¤ºæ—¶é—´æ­¥é•¿ï¼Œå³æ¯å¸§æ—¶é—´é—´éš”
 */
 void CEngine::SetTimeSpeed(float speed, bool fixed) {
 	if (speed > 0.0f) {
@@ -195,9 +195,9 @@ void CEngine::SetTimeSpeed(float speed, bool fixed) {
 }
 
 /**
-* »ñÈ¡ÒıÇæ°æ±¾
-* @param version Êä³öµÄ°æ±¾ºÅ×Ö·û´®Ö¸Õë
-* @return ·µ»ØÖ÷°æ±¾ºÅ
+* è·å–å¼•æ“ç‰ˆæœ¬
+* @param version è¾“å‡ºçš„ç‰ˆæœ¬å·å­—ç¬¦ä¸²æŒ‡é’ˆ
+* @return è¿”å›ä¸»ç‰ˆæœ¬å·
 */
 int CEngine::GetVersion(const char** version) {
 	if (version) *version = AVATAR_VERSION;
@@ -205,102 +205,102 @@ int CEngine::GetVersion(const char** version) {
 }
 
 /**
-* ¼ÆËãÊ±¼ä¼ä¸ô
-* @return µ±Ç°Ö¡µÄÊ±¼ä³¤¶È
+* è®¡ç®—æ—¶é—´é—´éš”
+* @return å½“å‰å¸§çš„æ—¶é—´é•¿åº¦
 */
 float CEngine::GetTimeSpan() {
 	return m_fTimeSpan;
 }
 
 /**
-* »ñÈ¡Í¼ĞÎ¹ÜÀíÆ÷ÊµÀı
+* è·å–å›¾å½¢ç®¡ç†å™¨å®ä¾‹
 */
 CGraphicsManager* CEngine::GetGraphicsManager() {
 	return CGraphicsManager::GetInstance();
 }
 
 /**
-* »ñÈ¡ÎÄ¼ş¹ÜÀíÆ÷ÊµÀı
+* è·å–æ–‡ä»¶ç®¡ç†å™¨å®ä¾‹
 */
 CFileManager* CEngine::GetFileManager() {
 	return CFileManager::GetInstance();
 }
 
 /**
-* »ñÈ¡ÊäÈë¹ÜÀíÆ÷ÊµÀı
+* è·å–è¾“å…¥ç®¡ç†å™¨å®ä¾‹
 */
 CInputManager* CEngine::GetInputManager() {
 	return CInputManager::GetInstance();
 }
 
 /**
-* »ñÈ¡ÉùÒô¹ÜÀíÆ÷ÊµÀı
+* è·å–å£°éŸ³ç®¡ç†å™¨å®ä¾‹
 */
 CSoundManager* CEngine::GetSoundManager() {
 	return CSoundManager::GetInstance();
 }
 
 /**
-* »ñÈ¡³¡¾°¹ÜÀíÆ÷ÊµÀı
+* è·å–åœºæ™¯ç®¡ç†å™¨å®ä¾‹
 */
 CSceneManager* CEngine::GetSceneManager() {
 	return CSceneManager::GetInstance();
 }
 
 /**
-* »ñÈ¡×ÖÌå¹ÜÀíÆ÷ÊµÀı
+* è·å–å­—ä½“ç®¡ç†å™¨å®ä¾‹
 */
 CFontManager* CEngine::GetFontManager() {
 	return CFontManager::GetInstance();
 }
 
 /**
-* »ñÈ¡ÎÆÀí¹ÜÀíÆ÷ÊµÀı
+* è·å–çº¹ç†ç®¡ç†å™¨å®ä¾‹
 */
 CTextureManager* CEngine::GetTextureManager() {
 	return CTextureManager::GetInstance();
 }
 
 /**
-* »ñÈ¡×ÅÉ«Æ÷¹ÜÀíÆ÷ÊµÀı
+* è·å–ç€è‰²å™¨ç®¡ç†å™¨å®ä¾‹
 */
 CShaderManager* CEngine::GetShaderManager() {
 	return CShaderManager::GetInstance();
 }
 
 /**
-* »ñÈ¡ÎïÀí¹ÜÀíÆ÷ÊµÀı
+* è·å–ç‰©ç†ç®¡ç†å™¨å®ä¾‹
 */
 CPhysicsManager* CEngine::GetPhysicsManager() {
 	return CPhysicsManager::GetInstance();
 }
 
 /**
-* »ñÈ¡½Å±¾¹ÜÀíÆ÷ÊµÀı
+* è·å–è„šæœ¬ç®¡ç†å™¨å®ä¾‹
 */
 CScriptManager* CEngine::GetScriptManager() {
 	return CScriptManager::GetInstance();
 }
 
 /**
-* »ñÈ¡ºó´¦Àí¹ÜÀíÆ÷ÊµÀı
+* è·å–åå¤„ç†ç®¡ç†å™¨å®ä¾‹
 */
 CPostProcessManager* CEngine::GetPostProcessManager() {
 	return CPostProcessManager::GetInstance();
 }
 
 /**
-* »ñÈ¡¶¯»­¹ÜÀíÆ÷ÊµÀı
+* è·å–åŠ¨ç”»ç®¡ç†å™¨å®ä¾‹
 */
 CAnimationManager* CEngine::GetAnimationManager() {
 	return CAnimationManager::GetInstance();
 }
 
 /**
-* ×¢²áÊÂ¼ş»Øµ÷
-* @param eventType ÊÂ¼şÀàĞÍ£¬¿ÉÎª update, render
-* @param handle »Øµ÷´¦Àí¶ÔÏóÖ¸Õë
-* @return ×¢²áÊÇ·ñ³É¹¦
+* æ³¨å†Œäº‹ä»¶å›è°ƒ
+* @param eventType äº‹ä»¶ç±»å‹ï¼Œå¯ä¸º update, render
+* @param handle å›è°ƒå¤„ç†å¯¹è±¡æŒ‡é’ˆ
+* @return æ³¨å†Œæ˜¯å¦æˆåŠŸ
 */
 bool CEngine::RegisterEvent(const string& eventType, CNotifyHandler* handle) {
 	if (eventType == "update") {
@@ -314,10 +314,10 @@ bool CEngine::RegisterEvent(const string& eventType, CNotifyHandler* handle) {
 }
 
 /**
-* È¡ÏûÊÂ¼ş×¢²á
-* @param eventType ÊÂ¼şÀàĞÍ£¬¿ÉÎª update, render
-* @param handle »Øµ÷´¦Àí¶ÔÏóÖ¸Õë
-* @param release ÊÇ·ñÊÍ·Å handle Ö¸ÏòµÄ¶ÔÏó
+* å–æ¶ˆäº‹ä»¶æ³¨å†Œ
+* @param eventType äº‹ä»¶ç±»å‹ï¼Œå¯ä¸º update, render
+* @param handle å›è°ƒå¤„ç†å¯¹è±¡æŒ‡é’ˆ
+* @param release æ˜¯å¦é‡Šæ”¾ handle æŒ‡å‘çš„å¯¹è±¡
 */
 void CEngine::UnRegisterEvent(const string& eventType, CNotifyHandler* handle, bool release) {
 	list<CNotifyHandler*>* listeners = 0;
@@ -341,7 +341,7 @@ void CEngine::UnRegisterEvent(const string& eventType, CNotifyHandler* handle, b
 }
 
 /**
-* »ñÈ¡Éè±¸ÊµÀı
+* è·å–è®¾å¤‡å®ä¾‹
 */
 CDevice* CEngine::GetDevice() {
 #ifdef AVATAR_WINDOWS
@@ -356,7 +356,7 @@ CDevice* CEngine::GetDevice() {
 }
 
 /**
-* ¼ÓÔØÏµÍ³ÄÚÖÃ×ÅÉ«Æ÷
+* åŠ è½½ç³»ç»Ÿå†…ç½®ç€è‰²å™¨
 */
 void CEngine::LoadShader() {
 	const string shaderName[] = {
@@ -373,7 +373,7 @@ void CEngine::LoadShader() {
 			"system/shader/" + shaderName[i] + ".frag"
 		};
 		CShader* pShader = pShaderMgr->Create(shaderName[i], shaderFile);
-		// Ä¬ÈÏµÄÎÆÀíµ¥Ôª
+		// é»˜è®¤çš„çº¹ç†å•å…ƒ
 		if (pShader->IsUniform("uTexture")) pShader->SetUniform("uTexture", 0);
 		if (pShader->IsUniform("uAlphaMap")) pShader->SetUniform("uAlphaMap", 0);
 		if (pShader->IsUniform("uPointSize")) pShader->SetUniform("uPointSize", 4.0f);
@@ -381,7 +381,7 @@ void CEngine::LoadShader() {
 }
 
 /**
-* ¼ÓÔØÏµÍ³²å¼ş
+* åŠ è½½ç³»ç»Ÿæ’ä»¶
 */
 void CEngine::LoadPlugin() {
 	vector<string> plugins;

@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CSceneNodeParticles.h"
@@ -7,7 +7,7 @@
 #include "CVector3.h"
 
 /**
-* ¹¹Ôìº¯Êı
+* æ„é€ å‡½æ•°
 */
 CSceneNodeParticles::CSceneNodeParticles(const string& name, const string& texture,
 	float size, int count, bool dark, const CColor& color, const float speed[3], float spread,
@@ -30,7 +30,7 @@ CSceneNodeParticles::CSceneNodeParticles(const string& name, const string& textu
 }
 
 /**
-* ³õÊ¼»¯³¡¾°½Úµã
+* åˆå§‹åŒ–åœºæ™¯èŠ‚ç‚¹
 */
 bool CSceneNodeParticles::Init() {
 	m_pMesh = new CMesh();
@@ -53,7 +53,7 @@ bool CSceneNodeParticles::Init() {
 }
 
 /**
-* Ïú»Ù³¡¾°½Úµã
+* é”€æ¯åœºæ™¯èŠ‚ç‚¹
 */
 void CSceneNodeParticles::Destroy() {
 	delete[] m_pSortIndex;
@@ -61,31 +61,31 @@ void CSceneNodeParticles::Destroy() {
 }
 
 /**
-* äÖÈ¾³¡¾°½Úµã
+* æ¸²æŸ“åœºæ™¯èŠ‚ç‚¹
 */
 void CSceneNodeParticles::Render() {
 	m_pMesh->Render();
 }
 
 /**
-* ¸üĞÂ³¡¾°½Úµã
+* æ›´æ–°åœºæ™¯èŠ‚ç‚¹
 */
 void CSceneNodeParticles::Update(float dt) {
 	CCamera* pCamera = CEngine::GetGraphicsManager()->GetCamera();
-	// µÃµ½Ïà»ú¾Ö²¿×ø±êÏµÏÂµÄ·½Ïò
+	// å¾—åˆ°ç›¸æœºå±€éƒ¨åæ ‡ç³»ä¸‹çš„æ–¹å‘
 	CMatrix4 worldMatInv(m_cWorldMatrix);
 	CVector3 cameraPos = worldMatInv.Invert() * pCamera->m_cPosition;
-	// ¾Ö²¿×ø±êÏµÏÂµÄËÙ¶ÈËõ·ÅÏµÊı
+	// å±€éƒ¨åæ ‡ç³»ä¸‹çš„é€Ÿåº¦ç¼©æ”¾ç³»æ•°
 	float sx = CVector3(worldMatInv(0, 0), worldMatInv(1, 0), worldMatInv(2, 0)).Length() * dt;
 	float sy = CVector3(worldMatInv(0, 1), worldMatInv(1, 1), worldMatInv(2, 1)).Length() * dt;
 	float sz = CVector3(worldMatInv(0, 2), worldMatInv(1, 2), worldMatInv(2, 2)).Length() * dt;
 
-	// ¸üĞÂÁ£×ÓÊôĞÔ
+	// æ›´æ–°ç²’å­å±æ€§
 	bool changed = false;
 	for (size_t i = 0; i < m_vecParticles.size(); i++) {
 		SParticle* particle = &m_vecParticles[i];
 		if (!particle->active) continue;
-		// Á£×ÓË¥¼õ
+		// ç²’å­è¡°å‡
 		particle->fade -= m_fFadeSpeed * dt;
 		if (particle->fade < 0.0f) {
 			particle->active = m_bLoopParticles;
@@ -101,7 +101,7 @@ void CSceneNodeParticles::Update(float dt) {
 			}
 			continue;
 		}
-		// ¸üĞÂÎ»ÖÃºÍÑÕÉ«
+		// æ›´æ–°ä½ç½®å’Œé¢œè‰²
 		particle->position[0] += particle->speed[0] * sx;
 		particle->position[1] += particle->speed[1] * sy;
 		particle->position[2] += particle->speed[2] * sz;
@@ -112,7 +112,7 @@ void CSceneNodeParticles::Update(float dt) {
 	}
 	if (!changed) return;
 
-	// ¶ÔÁ£×Ó°´ÉãÏñ»úÊÓÏß·½ÏòÅÅĞò£¬Ê¹ÓÃ²åÈëÅÅĞòËã·¨
+	// å¯¹ç²’å­æŒ‰æ‘„åƒæœºè§†çº¿æ–¹å‘æ’åºï¼Œä½¿ç”¨æ’å…¥æ’åºç®—æ³•
 	for (size_t i = 1; i < m_vecParticles.size(); i++) {
 		if (m_vecParticles[m_pSortIndex[i - 1]].distance < m_vecParticles[m_pSortIndex[i]].distance) {
 			size_t j = i - 1;
@@ -130,13 +130,13 @@ void CSceneNodeParticles::Update(float dt) {
 			m_pSortIndex[j] = temp;
 		}
 	}
-	// ¼ÆËãÁ£×ÓÆ½ÃæÓÒÉÏÁ½¸öÏòÁ¿
+	// è®¡ç®—ç²’å­å¹³é¢å³ä¸Šä¸¤ä¸ªå‘é‡
 	CMatrix4& viewMat = pCamera->GetViewMatrix();
 	CVector3 vec_r = worldMatInv * CVector3(viewMat(0, 0), viewMat(0, 1), viewMat(0, 2), 0);
 	CVector3 vec_u = worldMatInv * CVector3(viewMat(1, 0), viewMat(1, 1), viewMat(1, 2), 0);
 	vec_r.Scale(m_fParticleSize);
 	vec_u.Scale(m_fParticleSize);
-	// ¸üĞÂÍø¸ñ¶ÔÏó
+	// æ›´æ–°ç½‘æ ¼å¯¹è±¡
 	for (size_t i = 0; i < m_vecParticles.size(); i++) {
 		SParticle* particle = &m_vecParticles[m_pSortIndex[i]];
 		size_t index = i << 2;
@@ -153,7 +153,7 @@ void CSceneNodeParticles::Update(float dt) {
 }
 
 /**
-* ³õÊ¼»¯Á£×Ó
+* åˆå§‹åŒ–ç²’å­
 */
 void CSceneNodeParticles::InitParticles(const CVector3& initSpeed, float spreadSpeed, float fadeSpeed) {
 	m_fInitSpeed[0] = initSpeed.m_fValue[0];
@@ -179,7 +179,7 @@ void CSceneNodeParticles::InitParticles(const CVector3& initSpeed, float spreadS
 }
 
 /**
-* Ëæ»úÊıÉú³Éº¯Êı£¬·µ»ØÖµ -1.0 ÖÁ 1.0 Ö®¼ä
+* éšæœºæ•°ç”Ÿæˆå‡½æ•°ï¼Œè¿”å›å€¼ -1.0 è‡³ 1.0 ä¹‹é—´
 */
 float CSceneNodeParticles::Random() {
 	static unsigned int seed = 20170328;

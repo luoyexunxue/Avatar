@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CDYNAMICBVT_H_
@@ -9,42 +9,42 @@
 using std::vector;
 
 /**
-* @brief ¶¯Ì¬°üÎ§ºĞÊ÷
+* @brief åŠ¨æ€åŒ…å›´ç›’æ ‘
 *
-* ²Î¿¼ Bullet Ô´Âë btDbvt ÖĞµÄ CollideTT ·½·¨
+* å‚è€ƒ Bullet æºç  btDbvt ä¸­çš„ CollideTT æ–¹æ³•
 */
 class CDynamicBvt {
 public:
-	//! ÖØµşÊı¾İ
+	//! é‡å æ•°æ®
 	struct SCollidePair {
-		//! ÓÃ»§Êı¾İA
+		//! ç”¨æˆ·æ•°æ®A
 		void* userData1;
-		//! ÓÃ»§Êı¾İB
+		//! ç”¨æˆ·æ•°æ®B
 		void* userData2;
 	};
 
 public:
-	//! Ä¬ÈÏ¹¹Ôìº¯Êı
+	//! é»˜è®¤æ„é€ å‡½æ•°
 	CDynamicBvt();
-	//! Ä¬ÈÏÎö¹¹º¯Êı
+	//! é»˜è®¤ææ„å‡½æ•°
 	~CDynamicBvt();
 
-	//! ²åÈë½Úµã
+	//! æ’å…¥èŠ‚ç‚¹
 	void Insert(void* data, const CBoundingBox& volume);
-	//! É¾³ıÖ¸¶¨½Úµã
+	//! åˆ é™¤æŒ‡å®šèŠ‚ç‚¹
 	void Delete(void* data);
-	//! Ê¹ÓÃĞÂµÄ°üÎ§ºĞ¸üĞÂ½Úµã
+	//! ä½¿ç”¨æ–°çš„åŒ…å›´ç›’æ›´æ–°èŠ‚ç‚¹
 	void Update(void* data, const CBoundingBox& volume);
-	//! É¾³ıËùÓĞ½Úµã
+	//! åˆ é™¤æ‰€æœ‰èŠ‚ç‚¹
 	void Clear();
 
-	//! »ñÈ¡Ê÷µÄ×î´óÉî¶È
+	//! è·å–æ ‘çš„æœ€å¤§æ·±åº¦
 	int GetMaxDepth();
-	//! »ñÈ¡°üÎ§ºĞÖØµşµÄÊı¾İ¶Ô
+	//! è·å–åŒ…å›´ç›’é‡å çš„æ•°æ®å¯¹
 	int CollisionPair(vector<SCollidePair>& collidePair);
 
 private:
-	//! ½Úµã¶¨Òå
+	//! èŠ‚ç‚¹å®šä¹‰
 	typedef struct _SDbvtNode {
 		const void* data;
 		CBoundingBox volume;
@@ -56,7 +56,7 @@ private:
 		inline int ChildIndex() const { return parent->children[0] == this ? 0: 1; }
 	} SDbvtNode;
 
-	//! ·Çµİ¹é±éÀúÊ÷Õ»ÔªËØ¶¨Òå
+	//! éé€’å½’éå†æ ‘æ ˆå…ƒç´ å®šä¹‰
 	typedef struct _SNodePair {
 		const SDbvtNode* a;
 		const SDbvtNode* b;
@@ -65,21 +65,21 @@ private:
 	} SNodePair;
 
 private:
-	//! ¼ÆËãÁ½¸ö°üÎ§ºĞÖĞĞÄµÄ½Ó½ü¶È
+	//! è®¡ç®—ä¸¤ä¸ªåŒ…å›´ç›’ä¸­å¿ƒçš„æ¥è¿‘åº¦
 	inline float Proximity(const CBoundingBox& a, const CBoundingBox& b);
-	//! µİ¹é»ñÈ¡½ÚµãµÄ×î´óÉî¶È
+	//! é€’å½’è·å–èŠ‚ç‚¹çš„æœ€å¤§æ·±åº¦
 	int GetMaxDepth(SDbvtNode* node, int depth);
-	//! µİ¹é»ñÈ¡°üº¬Ö¸¶¨Êı¾İµÄÒ¶½Úµã
+	//! é€’å½’è·å–åŒ…å«æŒ‡å®šæ•°æ®çš„å¶èŠ‚ç‚¹
 	SDbvtNode* GetLeaf(SDbvtNode* root, void* data);
-	//! µİ¹éÉ¾³ıÖ¸¶¨½Úµã
+	//! é€’å½’åˆ é™¤æŒ‡å®šèŠ‚ç‚¹
 	void DeleteNode(SDbvtNode* node);
 
 private:
-	//! ¸ù½Úµã
+	//! æ ¹èŠ‚ç‚¹
 	SDbvtNode* m_pRoot;
-	//! Ò¶½Úµã¸öÊı
+	//! å¶èŠ‚ç‚¹ä¸ªæ•°
 	int m_iLeavesCount;
-	//! Åö×²¼ì²â·Çµİ¹é±éÀúÕ»
+	//! ç¢°æ’æ£€æµ‹éé€’å½’éå†æ ˆ
 	vector<SNodePair> m_vecStack;
 };
 

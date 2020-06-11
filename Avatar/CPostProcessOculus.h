@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CPOSTPROCESSOCULUS_H_
@@ -7,7 +7,7 @@
 #include "CPostProcess.h"
 
 /**
-* @brief Á¢ÌåÊÓ¾õ¾µÍ·½ÃÕıºó´¦Àí
+* @brief ç«‹ä½“è§†è§‰é•œå¤´çŸ«æ­£åå¤„ç†
 */
 class CPostProcessOculus: public CPostProcess {
 public:

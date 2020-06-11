@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CMESHLOADER_H_
@@ -10,41 +10,41 @@
 using std::map;
 
 /**
-* @brief Ä£ĞÍ¼ÓÔØÀà
+* @brief æ¨¡å‹åŠ è½½ç±»
 */
 class AVATAR_EXPORT CMeshLoader {
 public:
-	//! ×¢²áÄ£ĞÍ¼ÓÔØÆ÷
+	//! æ³¨å†Œæ¨¡å‹åŠ è½½å™¨
 	static bool Register(const string& type, CMeshLoader* loader);
-	//! Ïú»ÙÒÑ×¢²áµÄ¼ÓÔØÆ÷
+	//! é”€æ¯å·²æ³¨å†Œçš„åŠ è½½å™¨
 	static void Destroy();
-	//! ¼ÓÔØÍø¸ñÄ£ĞÍ
+	//! åŠ è½½ç½‘æ ¼æ¨¡å‹
 	static CMeshData* Load(const string& filename, bool cache);
-	//! ±£´æÍø¸ñÄ£ĞÍ
+	//! ä¿å­˜ç½‘æ ¼æ¨¡å‹
 	static bool Save(const string& filename, CMeshData* meshData);
-	//! ÒÆ³ıÒÑ»º´æµÄÄ£ĞÍ
+	//! ç§»é™¤å·²ç¼“å­˜çš„æ¨¡å‹
 	static void Remove(CMeshData* meshData);
 
 protected:
-	//! Ä¬ÈÏ¹¹Ôìº¯Êı
+	//! é»˜è®¤æ„é€ å‡½æ•°
 	CMeshLoader() {}
-	//! ĞéÎö¹¹º¯Êı
+	//! è™šææ„å‡½æ•°
 	virtual ~CMeshLoader() {}
-	//! ¼ÓÔØÄ£ĞÍÎÄ¼ş
+	//! åŠ è½½æ¨¡å‹æ–‡ä»¶
 	virtual CMeshData* LoadFile(const string& filename, const string& type) = 0;
 
 private:
-	//! ¼ÓÔØ AVT ÎÄ¼ş
+	//! åŠ è½½ AVT æ–‡ä»¶
 	static CMeshData* LoadAvatar(const string& filename);
-	//! ±£´æ AVT ÎÄ¼ş
+	//! ä¿å­˜ AVT æ–‡ä»¶
 	static bool SaveAvatar(const string& filename, CMeshData* meshData);
-	//! ×¢²áÄÚÖÃ¼ÓÔØÆ÷
+	//! æ³¨å†Œå†…ç½®åŠ è½½å™¨
 	static void RegisterLoader();
-	//! Ä£ĞÍ¼ÓÔØÆ÷ÁĞ±í
+	//! æ¨¡å‹åŠ è½½å™¨åˆ—è¡¨
 	static map<string, CMeshLoader*> m_mapMeshLoader;
-	//! ÒÑ»º´æµÄÍø¸ñÄ£ĞÍ
+	//! å·²ç¼“å­˜çš„ç½‘æ ¼æ¨¡å‹
 	static map<string, CMeshData*> m_mapMeshDataCache;
-	//! ÒÑ»º´æµÄÍø¸ñÄ£ĞÍÒıÓÃ
+	//! å·²ç¼“å­˜çš„ç½‘æ ¼æ¨¡å‹å¼•ç”¨
 	static map<CMeshData*, int> m_mapCacheRefCount;
 };
 

@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CGuiTrackBar.h"
@@ -9,7 +9,7 @@
 #include <cstdlib>
 
 /**
-* ¹¹Ôìº¯Êı£¬Ö¸¶¨Ãû³Æ
+* æ„é€ å‡½æ•°ï¼ŒæŒ‡å®šåç§°
 */
 CGuiTrackBar::CGuiTrackBar(const string& name) : CGuiElement(name) {
 	m_cRegion.SetValue(0, 0, 200, 24);
@@ -32,7 +32,7 @@ CGuiTrackBar::CGuiTrackBar(const string& name) : CGuiElement(name) {
 }
 
 /**
-* ÊôĞÔÉèÖÃ
+* å±æ€§è®¾ç½®
 */
 bool CGuiTrackBar::SetAttribute(const string& name, const string& value) {
 	if (name == "visible") m_bVisible = value == "true";
@@ -58,7 +58,7 @@ bool CGuiTrackBar::SetAttribute(const string& name, const string& value) {
 }
 
 /**
-* »ñÈ¡ÊôĞÔ
+* è·å–å±æ€§
 */
 string CGuiTrackBar::GetAttribute(const string& name) {
 	if (name == "visible") return m_bVisible? "true": "false";
@@ -86,7 +86,7 @@ string CGuiTrackBar::GetAttribute(const string& name) {
 }
 
 /**
-* ¿Ø¼ş»æÖÆ
+* æ§ä»¶ç»˜åˆ¶
 */
 void CGuiTrackBar::Draw(const CRectangle& rect, unsigned char* buffer) {
 	float scale = (m_fValue - m_fMinValue) / (m_fMaxValue - m_fMinValue);
@@ -101,7 +101,7 @@ void CGuiTrackBar::Draw(const CRectangle& rect, unsigned char* buffer) {
 		pFontMgr->SetSize(m_iFontSize);
 		pFontMgr->DrawText(m_strText, pImage, CFontManager::MIDDLECENTER, false);
 	}
-	// Ìî³ä GUI »º³åÇø
+	// å¡«å…… GUI ç¼“å†²åŒº
 	int width = m_cRegion.GetWidth();
 	int offsetX = rect.GetLeft() - m_cRegionScreen.GetLeft();
 	int offsetY = rect.GetTop() - m_cRegionScreen.GetTop();

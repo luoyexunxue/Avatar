@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CZIPREADER_H_
@@ -11,31 +11,31 @@ typedef void* unzFile;
 typedef struct unz_file_info64_s unz_file_info64;
 
 /**
-* @brief ZIP ÎÄ¼ş¶ÁÈ¡Àà
+* @brief ZIP æ–‡ä»¶è¯»å–ç±»
 */
 class AVATAR_EXPORT CZipReader {
 public:
-	//! Ê¹ÓÃÎÄ¼şÂ·¾¶ºÍ½âÑ¹ÃÜÂë¹¹Ôì¶ÁÈ¡Æ÷
+	//! ä½¿ç”¨æ–‡ä»¶è·¯å¾„å’Œè§£å‹å¯†ç æ„é€ è¯»å–å™¨
 	CZipReader(const string& path, const string& password);
-	//! Ä¬ÈÏÎö¹¹º¯Êı
+	//! é»˜è®¤ææ„å‡½æ•°
 	~CZipReader();
 
 public:
-	//! ´ò¿ªÑ¹Ëõ°üÖĞµÄÖ¸¶¨ÎÄ¼ş
+	//! æ‰“å¼€å‹ç¼©åŒ…ä¸­çš„æŒ‡å®šæ–‡ä»¶
 	bool Open(const string& file);
-	//! ¹Ø±ÕÉÏ´Î´ò¿ªµÄÎÄ¼ş
+	//! å…³é—­ä¸Šæ¬¡æ‰“å¼€çš„æ–‡ä»¶
 	void Close();
-	//! »ñÈ¡µ±Ç°´ò¿ªµÄÎÄ¼ş´óĞ¡
+	//! è·å–å½“å‰æ‰“å¼€çš„æ–‡ä»¶å¤§å°
 	unsigned int Size();
-	//! ¶ÁÈ¡µ±Ç°´ò¿ªµÄÎÄ¼ş
+	//! è¯»å–å½“å‰æ‰“å¼€çš„æ–‡ä»¶
 	unsigned int Read(unsigned char* buff, unsigned int size);
 
 private:
-	//! ½âÑ¹¾ä±ú
+	//! è§£å‹å¥æŸ„
 	unzFile m_pZipFile;
-	//! ´ò¿ªµÄÎÄ¼şĞÅÏ¢
+	//! æ‰“å¼€çš„æ–‡ä»¶ä¿¡æ¯
 	unz_file_info64* m_pFileInfo;
-	//! Ñ¹Ëõ°ü½âÑ¹ÃÜÂë
+	//! å‹ç¼©åŒ…è§£å‹å¯†ç 
 	string m_strPassword;
 };
 

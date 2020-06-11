@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CPOSTPROCESSEDGE_H_
@@ -7,7 +7,7 @@
 #include "CPostProcess.h"
 
 /**
-* @brief ±ßÔµÔöÇ¿ºó´¦Àí
+* @brief è¾¹ç¼˜å¢å¼ºåå¤„ç†
 */
 class CPostProcessEdge: public CPostProcess {
 public:

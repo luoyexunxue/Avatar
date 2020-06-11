@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CPROFILE_H_
@@ -9,114 +9,114 @@
 using std::list;
 
 /**
-* @brief ²ÉÑùºê¶¨Òå
+* @brief é‡‡æ ·å®å®šä¹‰
 *
-* Ê¹ÓÃÇ°£¬ĞèÒª±£Ö¤ÒÑ³õÊ¼»¯¶¨Ê±Æ÷ºÍ´´½¨ÈÕÖ¾Êä³ö£¬È»ºóÍ¨¹ı PROFILE_RESULT() »ñÈ¡²ÉÑù½á¹û.
+* ä½¿ç”¨å‰ï¼Œéœ€è¦ä¿è¯å·²åˆå§‹åŒ–å®šæ—¶å™¨å’Œåˆ›å»ºæ—¥å¿—è¾“å‡ºï¼Œç„¶åé€šè¿‡ PROFILE_RESULT() è·å–é‡‡æ ·ç»“æœ.
 * @see CTimer::InitTimer()
 * @see CLog::Create()
 */
 #define PROFILE(name) CProfileSample _profile(name)
 
 /**
-* @brief ´òÓ¡²ÉÑù½á¹û
+* @brief æ‰“å°é‡‡æ ·ç»“æœ
 */
 #define PROFILE_RESULT() CProfileManager::Print()
 
 /**
-* @brief ÖØÖÃ²ÉÑù½á¹û
+* @brief é‡ç½®é‡‡æ ·ç»“æœ
 */
 #define PROFILE_RESET() CProfileManager::Clear()
 
 /**
-* @brief ²ÉÑù½Úµã
+* @brief é‡‡æ ·èŠ‚ç‚¹
 */
 class CProfileNode {
 public:
-	//! Ê¹ÓÃÃû³Æ¹¹Ôì½Úµã
+	//! ä½¿ç”¨åç§°æ„é€ èŠ‚ç‚¹
 	CProfileNode(const char* name);
 
-	//! »ñÈ¡½ÚµãÃû³Æ
+	//! è·å–èŠ‚ç‚¹åç§°
 	inline const char* GetName();
-	//! Éú³ÉÒ»¸ö×Ó½Úµã
+	//! ç”Ÿæˆä¸€ä¸ªå­èŠ‚ç‚¹
 	inline CProfileNode* GetChild(const char* name);
-	//! »ñÈ¡¸¸½Úµã
+	//! è·å–çˆ¶èŠ‚ç‚¹
 	inline CProfileNode* GetParent();
 
-	//! Æô¶¯¼ÆÊ±
+	//! å¯åŠ¨è®¡æ—¶
 	void StartTimer();
-	//! Í£Ö¹¼ÆÊ±
+	//! åœæ­¢è®¡æ—¶
 	void StopTimer();
-	//! »ñÈ¡×î½ü²ÉÑùÊ±¼ä
+	//! è·å–æœ€è¿‘é‡‡æ ·æ—¶é—´
 	inline float GetTimeElapse() { return m_fStopTime - m_fStartTime; }
-	//! »ñÈ¡Æ½¾ù²ÉÑùÊ±¼ä
+	//! è·å–å¹³å‡é‡‡æ ·æ—¶é—´
 	inline float GetTimeElapseAverage() { return m_fTotalTime / m_iTotalCount; }
-	//! »ñÈ¡×î¶Ì²ÉÑùÊ±¼ä
+	//! è·å–æœ€çŸ­é‡‡æ ·æ—¶é—´
 	inline float GetTimeElapseBest() { return m_fBestTime; }
-	//! »ñÈ¡×î³¤²ÉÑùÊ±¼ä
+	//! è·å–æœ€é•¿é‡‡æ ·æ—¶é—´
 	inline float GetTimeElapseWorst() { return m_fWorstTime; }
-	//! »ñÈ¡×Üµ÷ÓÃ´ÎÊı
+	//! è·å–æ€»è°ƒç”¨æ¬¡æ•°
 	inline int GetTotalCount() { return m_iTotalCount; }
 
 private:
-	//! ¼ÇÂ¼²ÉÑù½ÚµãÃû³Æ×Ö·û´®
+	//! è®°å½•é‡‡æ ·èŠ‚ç‚¹åç§°å­—ç¬¦ä¸²
 	const char* m_pName;
-	//! ÆğÊ¼Ê±¼ä
+	//! èµ·å§‹æ—¶é—´
 	float m_fStartTime;
-	//! ½áÊøÊ±¼ä
+	//! ç»“æŸæ—¶é—´
 	float m_fStopTime;
-	//! ×Üµ÷ÓÃÊ±¼ä
+	//! æ€»è°ƒç”¨æ—¶é—´
 	float m_fTotalTime;
-	//! ×î¶Ì²ÉÑùÊ±¼ä
+	//! æœ€çŸ­é‡‡æ ·æ—¶é—´
 	float m_fBestTime;
-	//! ×î³¤²ÉÑùÊ±¼ä
+	//! æœ€é•¿é‡‡æ ·æ—¶é—´
 	float m_fWorstTime;
-	//! µ÷ÓÃ´ÎÊı
+	//! è°ƒç”¨æ¬¡æ•°
 	int m_iTotalCount;
-	//! Æô¶¯×´Ì¬
+	//! å¯åŠ¨çŠ¶æ€
 	bool m_bActive;
-	//! ¸¸½Úµã
+	//! çˆ¶èŠ‚ç‚¹
 	CProfileNode* m_pParent;
-	//! ×Ó½Úµã
+	//! å­èŠ‚ç‚¹
 	list<CProfileNode*> m_lstChildren;
-	//! ÉèÖÃÓÑÔªÀà
+	//! è®¾ç½®å‹å…ƒç±»
 	friend class CProfileManager;
 };
 
 /**
-* @brief ĞÔÄÜÆÀ²â¹ÜÀíÆ÷
+* @brief æ€§èƒ½è¯„æµ‹ç®¡ç†å™¨
 */
 class AVATAR_EXPORT CProfileManager {
 public:
-	//! Æô¶¯²ÉÑù
+	//! å¯åŠ¨é‡‡æ ·
 	static void Start(const char* name);
-	//! Í£Ö¹²ÉÑù
+	//! åœæ­¢é‡‡æ ·
 	static float Stop();
-	//! ÏÔÊ¾²ÉÑù½á¹û
+	//! æ˜¾ç¤ºé‡‡æ ·ç»“æœ
 	static void Print();
-	//! Çå³ı²ÉÑù½Úµã
+	//! æ¸…é™¤é‡‡æ ·èŠ‚ç‚¹
 	static void Clear();
 
 private:
-	//! µİ¹éÊä³ö²ÉÑùĞÅÏ¢
+	//! é€’å½’è¾“å‡ºé‡‡æ ·ä¿¡æ¯
 	static void PrintNode(CProfileNode* node, int level);
-	//! µİ¹éÇå³ı²ÉÑù½Úµã
+	//! é€’å½’æ¸…é™¤é‡‡æ ·èŠ‚ç‚¹
 	static void ClearNode(CProfileNode* node);
 
 private:
-	//! ²ÉÑù½Úµã
+	//! é‡‡æ ·èŠ‚ç‚¹
 	static CProfileNode* m_pCurrentNode;
 };
 
 /**
-* @brief ĞÔÄÜ²ÉÑùÆ÷
+* @brief æ€§èƒ½é‡‡æ ·å™¨
 */
 class CProfileSample {
 public:
-	//! ¹¹Ôìº¯ÊıÆô¶¯²ÉÑù
+	//! æ„é€ å‡½æ•°å¯åŠ¨é‡‡æ ·
 	CProfileSample(const char* name) {
 		CProfileManager::Start(name);
 	}
-	//! Îö¹¹º¯Êı½áÊø²ÉÑù
+	//! ææ„å‡½æ•°ç»“æŸé‡‡æ ·
 	~CProfileSample() {
 		CProfileManager::Stop();
 	}

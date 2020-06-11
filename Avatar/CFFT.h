@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CFFT_H_
@@ -9,31 +9,31 @@
 using std::complex;
 
 /**
-* @brief ¿ìËÙ¸µÀïÒ¶±ä»»Àà
-* @note FFT Éú³ÉµÄÆµÆ×Í¼·¶Î§Îª(0Hz ~ Fs/2)ÇÒ×óÓÒ¶Ô³Æ£¬ÆµÆ×Í¼·Ö±æÂÊÎª Fs/N.
-*	Ö±Á÷·ÖÁ¿·ù¶È abs(Fn)/N [n=0]£¬·ÇÖ±Á÷·ÖÁ¿·ù¶È abs(Fn)/(N/2)£¬ÏàÎ»Îª atan2(Fn.imag, Fn.real).
-*	×¢£ºFsÊÇ²ÉÑùÆµÂÊ£¬NÊÇ²ÉÑùµãÊı£¬FnÊÇÆµÆ×Í¼ÉÏµãnµÄ¸´ÊıÖµ
+* @brief å¿«é€Ÿå‚…é‡Œå¶å˜æ¢ç±»
+* @note FFT ç”Ÿæˆçš„é¢‘è°±å›¾èŒƒå›´ä¸º(0Hz ~ Fs/2)ä¸”å·¦å³å¯¹ç§°ï¼Œé¢‘è°±å›¾åˆ†è¾¨ç‡ä¸º Fs/N.
+*	ç›´æµåˆ†é‡å¹…åº¦ abs(Fn)/N [n=0]ï¼Œéç›´æµåˆ†é‡å¹…åº¦ abs(Fn)/(N/2)ï¼Œç›¸ä½ä¸º atan2(Fn.imag, Fn.real).
+*	æ³¨ï¼šFsæ˜¯é‡‡æ ·é¢‘ç‡ï¼ŒNæ˜¯é‡‡æ ·ç‚¹æ•°ï¼ŒFnæ˜¯é¢‘è°±å›¾ä¸Šç‚¹nçš„å¤æ•°å€¼
 */
 class AVATAR_EXPORT CFFT {
 public:
-	//! FFT ±ä»»
+	//! FFT å˜æ¢
 	static bool Forward(complex<float>* data, int count);
-	//! FFT ±ä»»
+	//! FFT å˜æ¢
 	static bool Forward(const complex<float>* input, complex<float>* output, int count);
-	//! FFT Äæ±ä»»
+	//! FFT é€†å˜æ¢
 	static bool Inverse(complex<float>* data, int count, bool scale = true);
-	//! FFT Äæ±ä»»
+	//! FFT é€†å˜æ¢
 	static bool Inverse(const complex<float>* input, complex<float>* output, int count, bool scale = true);
 
-	//! »ñÈ¡ÆµÆ×Ö÷Æµ
+	//! è·å–é¢‘è°±ä¸»é¢‘
 	static float DominantFrequency(const complex<float>* data, int count, float sampleRate);
 
 private:
-	//! ÖØĞÂÅÅÁĞÊı×é
+	//! é‡æ–°æ’åˆ—æ•°ç»„
 	static void Rearrange(complex<float>* data, int count);
-	//! ÖØĞÂÅÅÁĞÊı×é
+	//! é‡æ–°æ’åˆ—æ•°ç»„
 	static void Rearrange(const complex<float>* input, complex<float>* output, int count);
-	//! FFT ·½·¨
+	//! FFT æ–¹æ³•
 	static void Perform(complex<float>* data, int count, bool inverse);
 };
 

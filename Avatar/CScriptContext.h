@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CSCRIPTCONTEXT_H_
@@ -9,67 +9,67 @@
 using std::string;
 
 /**
-* @brief ½Å±¾ÔËĞĞÊ±½Ó¿Ú
+* @brief è„šæœ¬è¿è¡Œæ—¶æ¥å£
 */
 class AVATAR_EXPORT CScriptContext {
 public:
-	//! »ñÈ¡µ±Ç°ÊµÀı
+	//! è·å–å½“å‰å®ä¾‹
 	CScriptContext* GetCurrent(struct lua_State* lua);
 
-	//! °ó¶¨½Å±¾·½·¨
+	//! ç»‘å®šè„šæœ¬æ–¹æ³•
 	void BindFunction(const string& name, void* function);
-	//! °ó¶¨½Å±¾·½·¨
+	//! ç»‘å®šè„šæœ¬æ–¹æ³•
 	void BindFunction(const string& group, const string& name, void* function);
 
-	//! ÅĞ¶ÏÊÇ·ñ bool ÀàĞÍ
+	//! åˆ¤æ–­æ˜¯å¦ bool ç±»å‹
 	bool IsBoolean(int index);
-	//! ÅĞ¶ÏÊÇ·ñ int ÀàĞÍ
+	//! åˆ¤æ–­æ˜¯å¦ int ç±»å‹
 	bool IsInteger(int index);
-	//! ÅĞ¶ÏÊÇ·ñ float ÀàĞÍ
+	//! åˆ¤æ–­æ˜¯å¦ float ç±»å‹
 	bool IsNumber(int index);
-	//! ÅĞ¶ÏÊÇ·ñ string ÀàĞÍ
+	//! åˆ¤æ–­æ˜¯å¦ string ç±»å‹
 	bool IsString(int index);
-	//! ÅĞ¶ÏÊÇ·ñ function ÀàĞÍ
+	//! åˆ¤æ–­æ˜¯å¦ function ç±»å‹
 	bool IsFunction(int index);
 
-	//! »ñÈ¡ bool Öµ
+	//! è·å– bool å€¼
 	bool ToBoolean(int index);
-	//! »ñÈ¡ int Öµ
+	//! è·å– int å€¼
 	int ToInteger(int index);
-	//! »ñÈ¡ float Öµ
+	//! è·å– float å€¼
 	float ToNumber(int index);
-	//! »ñÈ¡ string Öµ
+	//! è·å– string å€¼
 	const char* ToString(int index);
 
-	//! ½« bool ÖµÑ¹Õ»
+	//! å°† bool å€¼å‹æ ˆ
 	void PushValue(bool value);
-	//! ½« int ÖµÑ¹Õ»
+	//! å°† int å€¼å‹æ ˆ
 	void PushValue(int value);
-	//! ½« float ÖµÑ¹Õ»
+	//! å°† float å€¼å‹æ ˆ
 	void PushValue(float value);
-	//! ½« string ÖµÑ¹Õ»
+	//! å°† string å€¼å‹æ ˆ
 	void PushValue(const char* value);
 
-	//! ÒıÓÃ»Øµ÷·½·¨
+	//! å¼•ç”¨å›è°ƒæ–¹æ³•
 	int RefCallback();
-	//! È¡Ïû»Øµ÷ÒıÓÃ
+	//! å–æ¶ˆå›è°ƒå¼•ç”¨
 	void UnrefCallback(int callback);
 
-	//! ¿ªÊ¼µ÷ÓÃ»Øµ÷·½·¨
+	//! å¼€å§‹è°ƒç”¨å›è°ƒæ–¹æ³•
 	void InvokeBegin(int callback);
-	//! ¿ªÊ¼µ÷ÓÃ»Øµ÷·½·¨
+	//! å¼€å§‹è°ƒç”¨å›è°ƒæ–¹æ³•
 	void InvokeBegin(const string& function);
-	//! ½áÊøµ÷ÓÃ»Øµ÷·½·¨
+	//! ç»“æŸè°ƒç”¨å›è°ƒæ–¹æ³•
 	void InvokeEnd(int params);
 
 private:
-	//! Ë½ÓĞ¹¹Ôìº¯Êı
+	//! ç§æœ‰æ„é€ å‡½æ•°
 	CScriptContext();
 
 private:
-	//! µ±Ç°×´Ì¬»ú
+	//! å½“å‰çŠ¶æ€æœº
 	struct lua_State* m_pLuaState;
-	//! ½ö´Ó CScriptManager ´´½¨
+	//! ä»…ä» CScriptManager åˆ›å»º
 	friend class CScriptManager;
 };
 

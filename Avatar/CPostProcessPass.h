@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CPOSTPROCESSPASS_H_
@@ -7,7 +7,7 @@
 #include "CPostProcess.h"
 
 /**
-* @brief Í¼Ïñ¸´ÖÆºó´¦Àí
+* @brief å›¾åƒå¤åˆ¶åå¤„ç†
 */
 class CPostProcessPass: public CPostProcess {
 public:

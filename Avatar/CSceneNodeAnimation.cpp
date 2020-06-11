@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CSceneNodeAnimation.h"
@@ -8,7 +8,7 @@
 #include <cmath>
 
 /**
-* ¹¹Ôìº¯Êı
+* æ„é€ å‡½æ•°
 */
 CSceneNodeAnimation::CSceneNodeAnimation(const string& name, const string& meshFile, bool start, bool skeleton)
 	: CSceneNode("animation", name) {
@@ -32,7 +32,7 @@ CSceneNodeAnimation::CSceneNodeAnimation(const string& name, const string& meshF
 }
 
 /**
-* ³õÊ¼»¯³¡¾°½Úµã
+* åˆå§‹åŒ–åœºæ™¯èŠ‚ç‚¹
 */
 bool CSceneNodeAnimation::Init() {
 	m_pMeshData = CMeshLoader::Load(m_strFile, false);
@@ -69,14 +69,14 @@ bool CSceneNodeAnimation::Init() {
 }
 
 /**
-* Ïú»Ù³¡¾°½Úµã
+* é”€æ¯åœºæ™¯èŠ‚ç‚¹
 */
 void CSceneNodeAnimation::Destroy() {
 	if (m_pMeshData) delete m_pMeshData;
 }
 
 /**
-* äÖÈ¾³¡¾°½Úµã
+* æ¸²æŸ“åœºæ™¯èŠ‚ç‚¹
 */
 void CSceneNodeAnimation::Render() {
 	if (CEngine::GetGraphicsManager()->IsDepthRender()) {
@@ -109,7 +109,7 @@ void CSceneNodeAnimation::Render() {
 }
 
 /**
-* ¸üĞÂ³¡¾°½Úµã
+* æ›´æ–°åœºæ™¯èŠ‚ç‚¹
 */
 void CSceneNodeAnimation::Update(float dt) {
 	if (!m_bAnimation) return;
@@ -142,14 +142,14 @@ void CSceneNodeAnimation::Update(float dt) {
 }
 
 /**
-* »ñÈ¡Íø¸ñÊı¾İ
+* è·å–ç½‘æ ¼æ•°æ®
 */
 CMeshData* CSceneNodeAnimation::GetMeshData() {
 	return m_pMeshData;
 }
 
 /**
-* ¶¯»­²¥·Å¿ªÊ¼
+* åŠ¨ç”»æ’­æ”¾å¼€å§‹
 */
 void CSceneNodeAnimation::StartAnimation(const string& name, bool loop, float transition) {
 	int animation = m_pMeshData->GetAnimationIndex(name);
@@ -182,8 +182,8 @@ void CSceneNodeAnimation::StartAnimation(const string& name, bool loop, float tr
 }
 
 /**
-* »ìºÏÁ½¸ö¶¯»­
-* ¼ÆËãÁ½¸ö¶¯»­µÄ m_fSyncFactor ÒÔ±£Ö¤Á½¸ö¶¯»­ÖÜÆÚÒ»ÖÂ£¬¶¯»­¹ı¶ÉÆ½»¬
+* æ··åˆä¸¤ä¸ªåŠ¨ç”»
+* è®¡ç®—ä¸¤ä¸ªåŠ¨ç”»çš„ m_fSyncFactor ä»¥ä¿è¯ä¸¤ä¸ªåŠ¨ç”»å‘¨æœŸä¸€è‡´ï¼ŒåŠ¨ç”»è¿‡æ¸¡å¹³æ»‘
 */
 void CSceneNodeAnimation::BlendAnimation(const string& anim1, const string& anim2, float k) {
 	int animation1 = m_pMeshData->GetAnimationIndex(anim1);
@@ -206,28 +206,28 @@ void CSceneNodeAnimation::BlendAnimation(const string& anim1, const string& anim
 }
 
 /**
-* ¶¯»­²¥·ÅÍ£Ö¹
+* åŠ¨ç”»æ’­æ”¾åœæ­¢
 */
 void CSceneNodeAnimation::StopAnimation() {
 	m_bAnimation = false;
 }
 
 /**
-* ÉèÖÃ¶¯»­ËÙÂÊ
+* è®¾ç½®åŠ¨ç”»é€Ÿç‡
 */
 void CSceneNodeAnimation::SetAnimationFrameRate(float rate) {
 	m_fAnimationRate = rate;
 }
 
 /**
-* ÉèÖÃ¹Ç÷ÀÏÔÊ¾
+* è®¾ç½®éª¨éª¼æ˜¾ç¤º
 */
 void CSceneNodeAnimation::ShowSkeleton(bool visible, bool skeletonOnly) {
 	m_iSkeletonMode = visible ? (skeletonOnly ? 0x02 : 0x01) : 0x00;
 }
 
 /**
-* »ñÈ¡¶¯»­Ãû³Æ
+* è·å–åŠ¨ç”»åç§°
 */
 string CSceneNodeAnimation::GetAnimationName(int index) {
 	if (index >= m_pMeshData->GetAnimationCount()) return "";
@@ -235,14 +235,14 @@ string CSceneNodeAnimation::GetAnimationName(int index) {
 }
 
 /**
-* ¹Ç÷À×¢ÊÓ¹¦ÄÜ
+* éª¨éª¼æ³¨è§†åŠŸèƒ½
 */
 void CSceneNodeAnimation::PointFacing(const string& joint, const CVector3& front, const CVector3& point, float angle) {
 	m_pMeshData->SetFacing(joint, front, point, angle, -0.1f);
 }
 
 /**
-* ÉèÖÃ¶¯»­Ö¡
+* è®¾ç½®åŠ¨ç”»å¸§
 */
 void CSceneNodeAnimation::SetupFrame(float dt) {
 	CQuaternion rotation;
@@ -268,7 +268,7 @@ void CSceneNodeAnimation::SetupFrame(float dt) {
 			JointTransform(pJoint, 1, rotation, position);
 			animateMat.MakeTransform(CVector3::One, rotation, position);
 		}
-		// ¹Ç÷À±ä»»¾ØÕóÎª worldMatrix = parent.worldMatrix * localMatrix * animateMat
+		// éª¨éª¼å˜æ¢çŸ©é˜µä¸º worldMatrix = parent.worldMatrix * localMatrix * animateMat
 		pJoint->worldMatrix.SetValue(pJoint->localMatrix * animateMat);
 		if (pJoint->parent) pJoint->worldMatrix = pJoint->parent->worldMatrix * pJoint->worldMatrix;
 		pJoint->finalMatrix = pJoint->worldMatrix * pJoint->bindMatrixInv;
@@ -277,7 +277,7 @@ void CSceneNodeAnimation::SetupFrame(float dt) {
 }
 
 /**
-* ÉèÖÃ¹Ø½Ú¹Ø¼üÖ¡
+* è®¾ç½®å…³èŠ‚å…³é”®å¸§
 */
 void CSceneNodeAnimation::SetupJointKey() {
 	int jointCount = m_pMeshData->GetJointCount();
@@ -301,7 +301,7 @@ void CSceneNodeAnimation::SetupJointKey() {
 }
 
 /**
-* ¼ÆËã¹Ø½Ú¶¯»­±ä»»
+* è®¡ç®—å…³èŠ‚åŠ¨ç”»å˜æ¢
 */
 void CSceneNodeAnimation::JointTransform(SJoint* joint, int channel, CQuaternion& rot, CVector3& pos) {
 	const int numRotKeys = joint->keyRot.size();
@@ -335,7 +335,7 @@ void CSceneNodeAnimation::JointTransform(SJoint* joint, int channel, CQuaternion
 }
 
 /**
-* ¸üĞÂÍø¸ñ¶¥µã
+* æ›´æ–°ç½‘æ ¼é¡¶ç‚¹
 */
 void CSceneNodeAnimation::UpdateVertex() {
 	m_cLocalBoundingBox.SetInvalid();
@@ -363,7 +363,7 @@ void CSceneNodeAnimation::UpdateVertex() {
 }
 
 /**
-* »æÖÆ¹Ç÷À
+* ç»˜åˆ¶éª¨éª¼
 */
 void CSceneNodeAnimation::DrawSkeleton(bool topMost) {
 	int jointCount = m_pMeshData->GetJointCount();
@@ -375,7 +375,7 @@ void CSceneNodeAnimation::DrawSkeleton(bool topMost) {
 			m_vecJointVertex[i + 1].SetColor(CColor::Green);
 		}
 	}
-	// ¼ÆËã¹Ç÷À½ÚµãÄ£ĞÍ×ø±êÏµÎ»ÖÃ
+	// è®¡ç®—éª¨éª¼èŠ‚ç‚¹æ¨¡å‹åæ ‡ç³»ä½ç½®
 	int index = 0;
 	const CVector3 orgin(0.0f, 0.0f, 0.0f, 1.0f);
 	for (int i = 0; i < jointCount; i++) {
@@ -408,7 +408,7 @@ void CSceneNodeAnimation::DrawSkeleton(bool topMost) {
 }
 
 /**
-* ¹Ø½ÚÎïÀíÄ£Äâ
+* å…³èŠ‚ç‰©ç†æ¨¡æ‹Ÿ
 */
 void CSceneNodeAnimation::PhysicalSimulation(SJoint* joint, const CVector3& gravity, float dt, CMatrix4& anim) {
 	const float maxStep = 1.0f / 60.0f;
@@ -417,10 +417,10 @@ void CSceneNodeAnimation::PhysicalSimulation(SJoint* joint, const CVector3& grav
 	if (!physics->enabled) return;
 	CMatrix4 mat1 = joint->parent ? m_cWorldMatrix * joint->parent->worldMatrix : m_cWorldMatrix;
 	CMatrix4 mat2 = mat1 * joint->localMatrix;
-	// ÊÀ½ç×ø±êÏµ¹Ø½ÚÄ¿±êÎ»ÖÃ
+	// ä¸–ç•Œåæ ‡ç³»å…³èŠ‚ç›®æ ‡ä½ç½®
 	const CVector3 targetPosParent = mat1 * orgin;
 	const CVector3 targetVector = mat2 * orgin - targetPosParent;
-	// »ı·Ö
+	// ç§¯åˆ†
 	float stepTime = dt;
 	float currTime = 0.0f;
 	if (physics->mass <= 0.0f) {
@@ -445,27 +445,27 @@ void CSceneNodeAnimation::PhysicalSimulation(SJoint* joint, const CVector3& grav
 		if (cosa < -1.0f) cosa = -1.0f;
 		else if (cosa > 1.0f) cosa = 1.0f;
 		if (cosa < 0.0f && v2.DotProduct(v2) < 1E-9) v2.SetValue(v0.Tangent().Normalize());
-		// ÏŞÖÆ¹Ç÷ÀÀ­Éì¼«ÏŞÎª2±¶
+		// é™åˆ¶éª¨éª¼æ‹‰ä¼¸æé™ä¸º2å€
 		if (lv0 > lv1 * 2.0f) {
 			lv0 = lv1 * 2.0f;
 			physics->position = v0 * lv0 + parentPos;
 		}
-		// ¼ÆËãÊÜÁ¦
+		// è®¡ç®—å—åŠ›
 		CVector3 hForce = v0 * (physics->hElasticity * (lv1 - lv0));
 		CVector3 vForce = v2 * (physics->vElasticity * acosf(cosa));
 		CVector3 force = gravity * physics->mass + hForce + vForce;
-		// ËÙ¶È»ı·Ö
+		// é€Ÿåº¦ç§¯åˆ†
 		physics->velocity += force * (time / physics->mass);
 		physics->velocity += physics->velocity * physics->damping;
 		physics->position += physics->velocity * time;
 	}
 	physics->parentPos.SetValue(targetPosParent);
-	// ¼ÆËã¹Ø½Ú±ä»»
+	// è®¡ç®—å…³èŠ‚å˜æ¢
 	CQuaternion rotation;
 	CVector3 localPos = mat2.Invert() * physics->position;
 	CVector3 localPosParent = mat2 * physics->parentPos;
 	rotation.FromVector(localPosParent, localPosParent - localPos);
-	// µã¹Ø×¢Ä£Ê½
+	// ç‚¹å…³æ³¨æ¨¡å¼
 	if (physics->isFacing) {
 		CQuaternion rot;
 		CVector3 src = m_cWorldMatrix * physics->frontDir;

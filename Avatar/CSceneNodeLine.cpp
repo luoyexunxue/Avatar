@@ -1,12 +1,12 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CSceneNodeLine.h"
 #include "CEngine.h"
 
 /**
-* ¹¹Ôìº¯Êı
+* æ„é€ å‡½æ•°
 */
 CSceneNodeLine::CSceneNodeLine(const string& name, const CColor& color, float width)
 	: CSceneNode("line", name) {
@@ -20,21 +20,21 @@ CSceneNodeLine::CSceneNodeLine(const string& name, const CColor& color, float wi
 }
 
 /**
-* ³õÊ¼»¯³¡¾°½Úµã
+* åˆå§‹åŒ–åœºæ™¯èŠ‚ç‚¹
 */
 bool CSceneNodeLine::Init() {
 	return true;
 }
 
 /**
-* Ïú»Ù³¡¾°½Úµã
+* é”€æ¯åœºæ™¯èŠ‚ç‚¹
 */
 void CSceneNodeLine::Destroy() {
 	CEngine::GetShaderManager()->Drop(m_pShader);
 }
 
 /**
-* äÖÈ¾³¡¾°½Úµã
+* æ¸²æŸ“åœºæ™¯èŠ‚ç‚¹
 */
 void CSceneNodeLine::Render() {
 	if (m_vecVertices.empty()) return;
@@ -48,7 +48,7 @@ void CSceneNodeLine::Render() {
 		shader->SetUniform("uCameraPos", pCamera->m_cPosition);
 		shader->SetUniform("uModelMatrix", m_cWorldMatrix);
 	} else shader = CEngine::GetShaderManager()->GetCurrentShader();
-	// ¸ù¾İ±êÖ¾½øĞĞÑ¡ÔñĞÔ»æÖÆ
+	// æ ¹æ®æ ‡å¿—è¿›è¡Œé€‰æ‹©æ€§ç»˜åˆ¶
 	if (m_bShowPoints) {
 		shader->SetUniform("uPointSize", m_fPointSize);
 		if (m_bDisableDepth) pGraphicsMgr->SetDepthTestEnable(false);
@@ -62,7 +62,7 @@ void CSceneNodeLine::Render() {
 }
 
 /**
-* ¸üĞÂ³¡¾°½Úµã
+* æ›´æ–°åœºæ™¯èŠ‚ç‚¹
 */
 void CSceneNodeLine::Update(float dt) {
 	if (m_bScreenSpace) {
@@ -82,7 +82,7 @@ void CSceneNodeLine::Update(float dt) {
 }
 
 /**
-* Ìí¼Ó¶¥µã
+* æ·»åŠ é¡¶ç‚¹
 */
 void CSceneNodeLine::AddPoint(const CVector3& position) {
 	CVertex vertex;
@@ -99,14 +99,14 @@ void CSceneNodeLine::AddPoint(const CVector3& position) {
 }
 
 /**
-* Çå¿Õ¶¥µã
+* æ¸…ç©ºé¡¶ç‚¹
 */
 void CSceneNodeLine::ClearPoint() {
 	m_vecVertices.clear();
 }
 
 /**
-* Ê¹ÓÃ B ÑùÌõÇúÏßÆ½»¬
+* ä½¿ç”¨ B æ ·æ¡æ›²çº¿å¹³æ»‘
 */
 void CSceneNodeLine::SmoothLine(float ds) {
 	if (m_vecVertices.size() < 2) return;
@@ -117,7 +117,7 @@ void CSceneNodeLine::SmoothLine(float ds) {
 	point[1] = m_vecVertices[0].m_fPosition;
 	point[2] = m_vecVertices[0].m_fPosition;
 	point[3] = m_vecVertices[0].m_fPosition;
-	// ±éÀúÁĞ±íÑùÌõ²åÖµ
+	// éå†åˆ—è¡¨æ ·æ¡æ’å€¼
 	vector<CVector3> vecSpline;
 	for (size_t i = 0; i < m_vecVertices.size() + 3; i++) {
 		size_t cur = i < m_vecVertices.size() ? i : m_vecVertices.size() - 1;
@@ -127,7 +127,7 @@ void CSceneNodeLine::SmoothLine(float ds) {
 		point[3] = m_vecVertices[cur].m_fPosition;
 		BSpline(point, static_cast<int>((point[2] - point[1]).Length() / ds), vecSpline);
 	}
-	// Ìí¼ÓÖÁ¶¥µãÁĞ±í
+	// æ·»åŠ è‡³é¡¶ç‚¹åˆ—è¡¨
 	CVertex vertex;
 	vertex.SetPosition(vecSpline[0]);
 	vertex.SetColor(m_cColor);
@@ -144,7 +144,7 @@ void CSceneNodeLine::SmoothLine(float ds) {
 }
 
 /**
-* ½öÏÔÊ¾¶¥µã
+* ä»…æ˜¾ç¤ºé¡¶ç‚¹
 */
 void CSceneNodeLine::ShowPoints(bool show, float pointSize) {
 	m_bShowPoints = show;
@@ -152,29 +152,29 @@ void CSceneNodeLine::ShowPoints(bool show, float pointSize) {
 }
 
 /**
-* ½ûÓÃÉî¶È²âÊÔ
+* ç¦ç”¨æ·±åº¦æµ‹è¯•
 */
 void CSceneNodeLine::DisableDepth(bool disable) {
 	m_bDisableDepth = disable;
 }
 
 /**
-* Ê¹ÓÃÆÁÄ»×ø±ê»æÖÆ
-* @attention ¶¥µãxy×ø±êµ¥Î»ÎªÏñËØ
+* ä½¿ç”¨å±å¹•åæ ‡ç»˜åˆ¶
+* @attention é¡¶ç‚¹xyåæ ‡å•ä½ä¸ºåƒç´ 
 */
 void CSceneNodeLine::ScreenSpace(bool enable) {
 	m_bScreenSpace = enable;
 }
 
 /**
-* Ïß¶ÎÄ£Ê½»æÖÆ
+* çº¿æ®µæ¨¡å¼ç»˜åˆ¶
 */
 void CSceneNodeLine::Segment(bool enable) {
 	m_bSegmentMode = enable;
 }
 
 /**
-* ÉèÖÃ×Ô¶¨Òå×ÅÉ«Æ÷
+* è®¾ç½®è‡ªå®šä¹‰ç€è‰²å™¨
 */
 void CSceneNodeLine::SetShader(const string& shader) {
 	m_pShader = CEngine::GetShaderManager()->GetShader(shader);
@@ -182,14 +182,14 @@ void CSceneNodeLine::SetShader(const string& shader) {
 }
 
 /**
-* »ñÈ¡¶¥µã¸öÊı
+* è·å–é¡¶ç‚¹ä¸ªæ•°
 */
 int CSceneNodeLine::GetPointCount() {
 	return m_vecVertices.size();
 }
 
 /**
-* »ñÈ¡Ö¸¶¨¶¥µã
+* è·å–æŒ‡å®šé¡¶ç‚¹
 */
 CVertex* CSceneNodeLine::GetPoint(unsigned int index) {
 	if (index >= m_vecVertices.size()) return 0;
@@ -197,11 +197,11 @@ CVertex* CSceneNodeLine::GetPoint(unsigned int index) {
 }
 
 /**
-* Èı´Î B ÑùÌõÇúÏß²åÖµ
+* ä¸‰æ¬¡ B æ ·æ¡æ›²çº¿æ’å€¼
 */
 void CSceneNodeLine::BSpline(const CVector3 pt[4], int divisions, vector<CVector3>& spline) {
 	float basis[4][3];
-	// ÈıÎ¬×ø±ê
+	// ä¸‰ç»´åæ ‡
 	for (int i = 0; i < 3; i++) {
 		basis[0][i] = (-pt[0].m_fValue[i] + 3.0f * pt[1].m_fValue[i] - 3.0f * pt[2].m_fValue[i] + pt[3].m_fValue[i]) / 6.0f;
 		basis[1][i] = (3.0f * pt[0].m_fValue[i] - 6.0f * pt[1].m_fValue[i] + 3.0f * pt[2].m_fValue[i]) / 6.0f;

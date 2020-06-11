@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CPHYSICSMANAGER_H_
@@ -17,91 +17,91 @@ using std::list;
 using std::vector;
 
 /**
-* @brief ÎïÀíÄ£Äâ¹ÜÀíÆ÷
+* @brief ç‰©ç†æ¨¡æ‹Ÿç®¡ç†å™¨
 */
 class AVATAR_EXPORT CPhysicsManager {
 public:
-	//! »ñÈ¡¹ÜÀíÆ÷ÊµÀı
+	//! è·å–ç®¡ç†å™¨å®ä¾‹
 	static CPhysicsManager* GetInstance() {
 		if (m_pInstance) return m_pInstance;
 		m_pInstance = new CPhysicsManager();
 		return m_pInstance;
 	}
 
-	//! ÊµÀıÏú»Ù
+	//! å®ä¾‹é”€æ¯
 	void Destroy();
-	//! ÎïÀíÄ£Äâ¸üĞÂ
+	//! ç‰©ç†æ¨¡æ‹Ÿæ›´æ–°
 	void Update(float dt);
 
-	//! Ìí¼Ó¸ÕÌå
+	//! æ·»åŠ åˆšä½“
 	void AddRigidBody(CRigidBody* body);
-	//! É¾³ı¸ÕÌå
+	//! åˆ é™¤åˆšä½“
 	void DelRigidBody(CRigidBody* body);
-	//! Çå³ıËùÓĞ¸ÕÌå
+	//! æ¸…é™¤æ‰€æœ‰åˆšä½“
 	void ClearRigidBody();
-	//! Í¨¹ı°ó¶¨µÄ³¡¾°½Úµã»ñÈ¡¸ÕÌå
+	//! é€šè¿‡ç»‘å®šçš„åœºæ™¯èŠ‚ç‚¹è·å–åˆšä½“
 	CRigidBody* GetRigidBody(CSceneNode* node);
-	//! »ñÈ¡¹ÜÀíµÄËùÓĞ¸ÕÌåÁĞ±í
+	//! è·å–ç®¡ç†çš„æ‰€æœ‰åˆšä½“åˆ—è¡¨
 	void GetRigidBodyList(vector<CRigidBody*>& rigidList);
 
-	//! ÉèÖÃÖØÁ¦¼ÓËÙ¶È
+	//! è®¾ç½®é‡åŠ›åŠ é€Ÿåº¦
 	void SetGravity(const CVector3& gravity);
-	//! »ñÈ¡ÖØÁ¦¼ÓËÙ¶È
+	//! è·å–é‡åŠ›åŠ é€Ÿåº¦
 	CVector3 GetGravity();
 
-	//! Ê©¼ÓÁ¦µ½¸ÕÌåÖØĞÄ
+	//! æ–½åŠ åŠ›åˆ°åˆšä½“é‡å¿ƒ
 	void ApplyForce(CRigidBody* body, const CVector3& force);
-	//! Ê©¼ÓÁ¦µ½¸ÕÌå
+	//! æ–½åŠ åŠ›åˆ°åˆšä½“
 	void ApplyForce(CRigidBody* body, const CVector3& force, const CVector3& relPos);
 
-	//! Ê©¼Ó³åÁ¿µ½¸ÕÌåÖØĞÄ
+	//! æ–½åŠ å†²é‡åˆ°åˆšä½“é‡å¿ƒ
 	void ApplyImpulse(CRigidBody* body, const CVector3& impulse);
-	//! Ê©¼Ó³åÁ¿µ½¸ÕÌå
+	//! æ–½åŠ å†²é‡åˆ°åˆšä½“
 	void ApplyImpulse(CRigidBody* body, const CVector3& impulse, const CVector3& pos);
 
 private:
 	CPhysicsManager();
 	~CPhysicsManager();
 
-	//! ¸üĞÂËÙ¶È
+	//! æ›´æ–°é€Ÿåº¦
 	void IntegrateForce();
-	//! ¸üĞÂÎ»ÖÃ
+	//! æ›´æ–°ä½ç½®
 	void IntegrateVelocity();
-	//! Åö×²¼ì²â
+	//! ç¢°æ’æ£€æµ‹
 	void CollisionDetect();
-	//! ´¦ÀíÔ¼Êø
+	//! å¤„ç†çº¦æŸ
 	void SolveConstraint();
 
-	//! Ô¤´¦Àí½Ó´¥Ô¼Êø
+	//! é¢„å¤„ç†æ¥è§¦çº¦æŸ
 	void PreSolve(SArbiter& arbiter);
-	//! ´¦Àí½Ó´¥Ô¼Êø
+	//! å¤„ç†æ¥è§¦çº¦æŸ
 	void Solve(SArbiter& arbiter);
-	//! ´¦ÀíÅö×²ÊÂ¼ş
+	//! å¤„ç†ç¢°æ’äº‹ä»¶
 	void CollideEvent();
 
 private:
-	//! Åö×²ĞÅÏ¢
+	//! ç¢°æ’ä¿¡æ¯
 	typedef struct _SCollideInfo{
 		bool enter;
 		CRigidBody* body1;
 		CRigidBody* body2;
 	} SCollideInfo;
 
-	//! Ö´ĞĞµÄÊ±¼ä¼ä¸ô
+	//! æ‰§è¡Œçš„æ—¶é—´é—´éš”
 	const float m_fTimeStep;
-	//! ÖØÁ¦
+	//! é‡åŠ›
 	CVector3 m_cGravity;
-	//! ¸ÕÌåÁĞ±í
+	//! åˆšä½“åˆ—è¡¨
 	list<CRigidBody*> m_lstRigidBody;
-	//! DBVT Åö×²¼ì²â½á¹û
+	//! DBVT ç¢°æ’æ£€æµ‹ç»“æœ
 	vector<CDynamicBvt::SCollidePair> m_vecCollidePair;
-	//! ½Ó´¥ÁĞ±í
+	//! æ¥è§¦åˆ—è¡¨
 	vector<SArbiter> m_vecArbiterList;
-	//! Åö×²¼¯ºÏ
+	//! ç¢°æ’é›†åˆ
 	map<size_t, SCollideInfo> m_mapCollide;
-	//! ¶¯Ì¬°üÎ§²ã´ÎÊ÷
+	//! åŠ¨æ€åŒ…å›´å±‚æ¬¡æ ‘
 	CDynamicBvt* m_pDynamicBvt;
-	//! ÊµÀı
+	//! å®ä¾‹
 	static CPhysicsManager* m_pInstance;
 };
 

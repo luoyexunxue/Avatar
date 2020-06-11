@@ -1,12 +1,12 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CPlane.h"
 #include <cmath>
 
 /**
-* ¹¹Ôìº¯Êı
+* æ„é€ å‡½æ•°
 */
 CPlane::CPlane() {
 	m_fNormal[0] = 0;
@@ -16,7 +16,7 @@ CPlane::CPlane() {
 }
 
 /**
-* ¸´ÖÆ¹¹Ôìº¯Êı
+* å¤åˆ¶æ„é€ å‡½æ•°
 */
 CPlane::CPlane(const CPlane& plane) {
 	m_fNormal[0] = plane.m_fNormal[0];
@@ -26,7 +26,7 @@ CPlane::CPlane(const CPlane& plane) {
 }
 
 /**
-* ¹¹Ôìº¯Êı£¬plane ÎªÆ½ÃæÒ»°ã·½³ÌµÄËÄ¸ö²ÎÊı
+* æ„é€ å‡½æ•°ï¼Œplane ä¸ºå¹³é¢ä¸€èˆ¬æ–¹ç¨‹çš„å››ä¸ªå‚æ•°
 */
 CPlane::CPlane(const float plane[4]) {
 	float scale = 1.0f / sqrtf(plane[0] * plane[0] + plane[1] * plane[1] + plane[2] * plane[2]);
@@ -37,7 +37,7 @@ CPlane::CPlane(const float plane[4]) {
 }
 
 /**
-* ¹¹Ôìº¯Êı£¬x y z d ÎªÆ½ÃæÒ»°ã·½³ÌµÄËÄ¸ö²ÎÊı
+* æ„é€ å‡½æ•°ï¼Œx y z d ä¸ºå¹³é¢ä¸€èˆ¬æ–¹ç¨‹çš„å››ä¸ªå‚æ•°
 */
 CPlane::CPlane(float x, float y, float z, float d) {
 	float scale = 1.0f / sqrtf(x * x + y * y + z * z);
@@ -48,7 +48,7 @@ CPlane::CPlane(float x, float y, float z, float d) {
 }
 
 /**
-* ¹¹Ôìº¯Êı£¬ÓÉÆ½Ãæ·¨ÏòÁ¿ºÍÀë¿ªÔ­µã¾àÀëÖ¸¶¨
+* æ„é€ å‡½æ•°ï¼Œç”±å¹³é¢æ³•å‘é‡å’Œç¦»å¼€åŸç‚¹è·ç¦»æŒ‡å®š
 */
 CPlane::CPlane(const CVector3& normal, float d) {
 	float scale = 1.0f / normal.Length();
@@ -59,7 +59,7 @@ CPlane::CPlane(const CVector3& normal, float d) {
 }
 
 /**
-* ¹¹Ôìº¯Êı£¬ÓÉÆ½ÃæÄÚÒ»µãºÍÆ½Ãæ·¨ÏòÁ¿Ö¸¶¨
+* æ„é€ å‡½æ•°ï¼Œç”±å¹³é¢å†…ä¸€ç‚¹å’Œå¹³é¢æ³•å‘é‡æŒ‡å®š
 */
 CPlane::CPlane(const CVector3& point, const CVector3& normal) {
 	float scale = 1.0f / normal.Length();
@@ -70,8 +70,8 @@ CPlane::CPlane(const CVector3& point, const CVector3& normal) {
 }
 
 /**
-* ÉèÖÃÆ½ÃæÒ»°ã·½³Ì
-* @note normalized=true ±íÊ¾Æ½Ãæ·¨ÏòÁ¿ÒÑµ¥Î»»¯
+* è®¾ç½®å¹³é¢ä¸€èˆ¬æ–¹ç¨‹
+* @note normalized=true è¡¨ç¤ºå¹³é¢æ³•å‘é‡å·²å•ä½åŒ–
 */
 void CPlane::SetValue(const float plane[4], bool normalized) {
 	if (normalized) {
@@ -89,8 +89,8 @@ void CPlane::SetValue(const float plane[4], bool normalized) {
 }
 
 /**
-* ÉèÖÃÆ½ÃæÒ»°ã·½³Ì
-* @note normalized=true ±íÊ¾Æ½Ãæ·¨ÏòÁ¿ÒÑµ¥Î»»¯
+* è®¾ç½®å¹³é¢ä¸€èˆ¬æ–¹ç¨‹
+* @note normalized=true è¡¨ç¤ºå¹³é¢æ³•å‘é‡å·²å•ä½åŒ–
 */
 void CPlane::SetValue(float x, float y, float z, float d, bool normalized) {
 	if (normalized) {
@@ -108,14 +108,14 @@ void CPlane::SetValue(float x, float y, float z, float d, bool normalized) {
 }
 
 /**
-* µÃµ½Æ½ÃæÉÏµÄÒ»µã
+* å¾—åˆ°å¹³é¢ä¸Šçš„ä¸€ç‚¹
 */
 CVector3 CPlane::GetPlanePoint() const {
 	return CVector3(m_fNormal) * (-m_fDistance);
 }
 
 /**
-* »ñÈ¡Ö¸¶¨µãµÄ¾µÏñµã
+* è·å–æŒ‡å®šç‚¹çš„é•œåƒç‚¹
 */
 CVector3 CPlane::GetMirrorPoint(const CVector3& point) const {
 	CVector3 normal(m_fNormal);
@@ -124,7 +124,7 @@ CVector3 CPlane::GetMirrorPoint(const CVector3& point) const {
 }
 
 /**
-* »ñÈ¡Æ½Ãæ¶ÔÓ¦µÄ·´Éä¾ØÕó
+* è·å–å¹³é¢å¯¹åº”çš„åå°„çŸ©é˜µ
 */
 CMatrix4 CPlane::GetReflectMatrix() const {
 	float mat[16] = {
@@ -137,13 +137,13 @@ CMatrix4 CPlane::GetReflectMatrix() const {
 }
 
 /**
-* Ê¹ÓÃ¾ØÕó±ä»»Æ½Ãæ
-* @param matrix ±ä»»¾ØÕó
-* @note ¼ÆËãÔ­Àí
-*	1.ÉèÆ½ÃæÄÚÄ³µãÎª v(x,y,z,1) Æ½Ãæ±íÊ¾Îª p(a,b,c,d) ±ä»»¾ØÕóÎª M ±ä»»ºóµÄÆ½Ãæ±íÊ¾Îª p'
-*	2.µÈÊ½ pT * v = 0 ºã³ÉÁ¢, ÇÒ p'T * M * v = 0 Ò²ºã³ÉÁ¢
-*	3.Í¨¹ıÉÏÊ½¿ÉµÃ p'T * M = pT
-*	4.¾­±ä»»¿ÉµÃ p' = (M-1)T * p
+* ä½¿ç”¨çŸ©é˜µå˜æ¢å¹³é¢
+* @param matrix å˜æ¢çŸ©é˜µ
+* @note è®¡ç®—åŸç†
+*	1.è®¾å¹³é¢å†…æŸç‚¹ä¸º v(x,y,z,1) å¹³é¢è¡¨ç¤ºä¸º p(a,b,c,d) å˜æ¢çŸ©é˜µä¸º M å˜æ¢åçš„å¹³é¢è¡¨ç¤ºä¸º p'
+*	2.ç­‰å¼ pT * v = 0 æ’æˆç«‹, ä¸” p'T * M * v = 0 ä¹Ÿæ’æˆç«‹
+*	3.é€šè¿‡ä¸Šå¼å¯å¾— p'T * M = pT
+*	4.ç»å˜æ¢å¯å¾— p' = (M-1)T * p
 */
 CPlane& CPlane::Transform(const CMatrix4& matrix) {
 	CMatrix4 invertMat(matrix);
@@ -160,7 +160,7 @@ CPlane& CPlane::Transform(const CMatrix4& matrix) {
 }
 
 /**
-* ·­×ª·¨ÏòÁ¿
+* ç¿»è½¬æ³•å‘é‡
 */
 CPlane& CPlane::FlipNormal() {
 	m_fNormal[0] = -m_fNormal[0];
@@ -171,20 +171,20 @@ CPlane& CPlane::FlipNormal() {
 }
 
 /**
-* ÊÇ·ñÃæÏò¹Û²ìÕß
-* @param lookDir ÊÓÏß·½Ïò
-* @return ÈôÆ½Ãæ·¨ÏàÔÚ¹Û²ìÕßÒ»²à£¬Ôò·µ»Øtrue
+* æ˜¯å¦é¢å‘è§‚å¯Ÿè€…
+* @param lookDir è§†çº¿æ–¹å‘
+* @return è‹¥å¹³é¢æ³•ç›¸åœ¨è§‚å¯Ÿè€…ä¸€ä¾§ï¼Œåˆ™è¿”å›true
 */
 bool CPlane::IsFrontFacing(const CVector3& lookDir) const {
 	return lookDir.DotProduct(CVector3(m_fNormal)) < 0;
 }
 
 /**
-* »ñÈ¡Æ½ÃæÓëÆ½ÃæµÄ½»Ïß
-* @param plane ²âÊÔÆ½Ãæ
-* @param linePoint Êä³ö½»ÏßÉÏµÄÒ»µã
-* @param lineDir Êä³ö½»Ïß·½ÏòÏòÁ¿
-* @return ÈôÁ½¸öÆ½ÃæÆ½ĞĞ£¬Ôò·µ»Øfalse
+* è·å–å¹³é¢ä¸å¹³é¢çš„äº¤çº¿
+* @param plane æµ‹è¯•å¹³é¢
+* @param linePoint è¾“å‡ºäº¤çº¿ä¸Šçš„ä¸€ç‚¹
+* @param lineDir è¾“å‡ºäº¤çº¿æ–¹å‘å‘é‡
+* @return è‹¥ä¸¤ä¸ªå¹³é¢å¹³è¡Œï¼Œåˆ™è¿”å›false
 */
 bool CPlane::IntersectPlane(const CPlane& plane, CVector3& linePoint, CVector3& lineDir) const {
 	CVector3 normal1(m_fNormal);
@@ -198,11 +198,11 @@ bool CPlane::IntersectPlane(const CPlane& plane, CVector3& linePoint, CVector3& 
 }
 
 /**
-* »ñÈ¡Æ½ÃæÓëÖ±ÏßµÄ½»µã
-* @param linePoint ²âÊÔÖ±ÏßÉÏµÄµã
-* @param lineDir ²âÊÔÖ±Ïß·½ÏòÏòÁ¿
-* @param point Êä³ö½»µã×ø±ê
-* @return ÈôÖ±ÏßÓëÆ½ÃæÆ½ĞĞ£¬Ôò·µ»Øfalse
+* è·å–å¹³é¢ä¸ç›´çº¿çš„äº¤ç‚¹
+* @param linePoint æµ‹è¯•ç›´çº¿ä¸Šçš„ç‚¹
+* @param lineDir æµ‹è¯•ç›´çº¿æ–¹å‘å‘é‡
+* @param point è¾“å‡ºäº¤ç‚¹åæ ‡
+* @return è‹¥ç›´çº¿ä¸å¹³é¢å¹³è¡Œï¼Œåˆ™è¿”å›false
 */
 bool CPlane::IntersectLine(const CVector3& linePoint, const CVector3& lineDir, CVector3& point) const {
 	CVector3 normal(m_fNormal);
@@ -214,11 +214,11 @@ bool CPlane::IntersectLine(const CVector3& linePoint, const CVector3& lineDir, C
 }
 
 /**
-* »ñÈ¡Æ½ÃæÓëÏß¶ÎµÄ½»µã
-* @param p1 ²âÊÔÏß¶Îµã1
-* @param p2 ²âÊÔÏß¶Îµã2
-* @param point Êä³ö½»µã×ø±ê
-* @return ÈôÏß¶ÎÓëÆ½ÃæÎŞ½»µã£¬Ôò·µ»Øfalse
+* è·å–å¹³é¢ä¸çº¿æ®µçš„äº¤ç‚¹
+* @param p1 æµ‹è¯•çº¿æ®µç‚¹1
+* @param p2 æµ‹è¯•çº¿æ®µç‚¹2
+* @param point è¾“å‡ºäº¤ç‚¹åæ ‡
+* @return è‹¥çº¿æ®µä¸å¹³é¢æ— äº¤ç‚¹ï¼Œåˆ™è¿”å›false
 */
 bool CPlane::IntersectLineSegment(const CVector3& p1, const CVector3& p2, CVector3& point) const {
 	CVector3 normal(m_fNormal);
@@ -233,16 +233,16 @@ bool CPlane::IntersectLineSegment(const CVector3& p1, const CVector3& p2, CVecto
 }
 
 /**
-* »ñÈ¡µãµ½Æ½ÃæµÄ¾àÀë
-* @param point ²âÊÔµã
-* @return ¾àÀë£¬¸ºÖµ±íÊ¾µãÔÚÆ½Ãæ±³Ãæ
+* è·å–ç‚¹åˆ°å¹³é¢çš„è·ç¦»
+* @param point æµ‹è¯•ç‚¹
+* @return è·ç¦»ï¼Œè´Ÿå€¼è¡¨ç¤ºç‚¹åœ¨å¹³é¢èƒŒé¢
 */
 float CPlane::Distance(const CVector3& point) const {
 	return point.DotProduct(CVector3(m_fNormal)) + m_fDistance;
 }
 
 /**
-* ÖØÔØÔËËã·û ==
+* é‡è½½è¿ç®—ç¬¦ ==
 */
 bool CPlane::operator == (const CPlane& plane) const {
 	if (m_fNormal[0] == plane.m_fNormal[0] &&
@@ -255,7 +255,7 @@ bool CPlane::operator == (const CPlane& plane) const {
 }
 
 /**
-* ÖØÔØÔËËã·û !=
+* é‡è½½è¿ç®—ç¬¦ !=
 */
 bool CPlane::operator != (const CPlane& plane) const {
 	return !(*this == plane);

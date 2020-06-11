@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CCamera.h"
@@ -8,7 +8,7 @@
 #include <cmath>
 
 /**
-* ¹¹Ôìº¯Êı
+* æ„é€ å‡½æ•°
 */
 CCamera::CCamera() {
 	m_cPosition.SetValue(0.0f, 0.0f, 0.0f);
@@ -27,13 +27,13 @@ CCamera::CCamera() {
 }
 
 /**
-* Îö¹¹º¯Êı
+* ææ„å‡½æ•°
 */
 CCamera::~CCamera() {
 }
 
 /**
-* »ñÈ¡Ïà»úÃû³Æ
+* è·å–ç›¸æœºåç§°
 * @return default
 */
 const char* CCamera::GetName() const {
@@ -41,7 +41,7 @@ const char* CCamera::GetName() const {
 }
 
 /**
-* ¿ØÖÆĞÅÏ¢ÊäÈë
+* æ§åˆ¶ä¿¡æ¯è¾“å…¥
 */
 void CCamera::Input(CInputManager::SInput* input) {
 	if (!m_bControlAttached) return;
@@ -62,50 +62,50 @@ void CCamera::Input(CInputManager::SInput* input) {
 }
 
 /**
-* ÉèÖÃÏà»ú¸ß¶È
+* è®¾ç½®ç›¸æœºé«˜åº¦
 */
 void CCamera::SetHeight(float height) {
 	m_cPosition[2] = height;
 }
 
 /**
-* ÉèÖÃÏà»úÎ»ÖÃ
+* è®¾ç½®ç›¸æœºä½ç½®
 */
 void CCamera::SetPosition(const CVector3& pos) {
 	m_cPosition = pos;
 }
 
 /**
-* ÉèÖÃÏà»ú·½Î»
+* è®¾ç½®ç›¸æœºæ–¹ä½
 */
 void CCamera::SetAngle(float yaw, float pitch, float roll) {
 	m_fYaw = yaw;
 	m_fPitch = pitch;
 	m_fRoll = roll;
-	// ¸©Ñö½ÇĞı×ª½ÇÏŞÖÆÔÚ -89¡ã µ½ 89¡ãÖ®¼ä
+	// ä¿¯ä»°è§’æ—‹è½¬è§’é™åˆ¶åœ¨ -89Â° åˆ° 89Â°ä¹‹é—´
 	const float maxAngle = 1.553343f;
 	if (m_fPitch < -maxAngle) m_fPitch  = -maxAngle;
 	else if (m_fPitch > maxAngle) m_fPitch  = maxAngle;
 	if (m_fRoll < -maxAngle) m_fRoll  = -maxAngle;
 	else if (m_fRoll > maxAngle) m_fRoll  = maxAngle;
-	// ¸üĞÂ LookVector UpVector ÏòÁ¿
+	// æ›´æ–° LookVector UpVector å‘é‡
 	GetLookVecUpVec(m_fYaw, m_fPitch, m_fRoll, m_cLookVector, m_cUpVector);
 }
 
 /**
-* ÉèÖÃÏà»úÄ¿±ê
+* è®¾ç½®ç›¸æœºç›®æ ‡
 */
 void CCamera::SetTarget(const CVector3& pos) {
 	CVector3 lookVec = pos - m_cPosition;
 	if (lookVec.Length() == 0) return;
 	lookVec.Normalize();
 	m_cLookVector = lookVec;
-	// ¸üĞÂ Yaw¡¢Pitch¡¢Roll Öµ
+	// æ›´æ–° Yawã€Pitchã€Roll å€¼
 	GetYawPitchRoll(m_cLookVector, m_cUpVector, &m_fYaw, &m_fPitch, &m_fRoll);
 }
 
 /**
-* ¸üĞÂÏà»ú
+* æ›´æ–°ç›¸æœº
 */
 void CCamera::Update(float dt) {
 	if (m_pBindNode) {
@@ -120,28 +120,28 @@ void CCamera::Update(float dt) {
 }
 
 /**
-* »ñÈ¡ÊÓ¿Ú¿í¶È
+* è·å–è§†å£å®½åº¦
 */
 int CCamera::GetViewWidth() const {
 	return m_iViewWidth;
 }
 
 /**
-* »ñÈ¡ÊÓ¿Ú¸ß¶È
+* è·å–è§†å£é«˜åº¦
 */
 int CCamera::GetViewHeight() const {
 	return m_iViewHeight;
 }
 
 /**
-* »ñÈ¡Ïà»úÊÓ½Ç
+* è·å–ç›¸æœºè§†è§’
 */
 float CCamera::GetFieldOfView() const {
 	return m_fFieldOfView;
 }
 
 /**
-* »ñÈ¡ÊÓ¿Ú¿í¸ß±È
+* è·å–è§†å£å®½é«˜æ¯”
 */
 float CCamera::GetAspectRatio() const {
 	const float vw = static_cast<float>(m_iViewWidth);
@@ -150,21 +150,21 @@ float CCamera::GetAspectRatio() const {
 }
 
 /**
-* »ñÈ¡½ü²Ã¼ôÃæ¾àÀë
+* è·å–è¿‘è£å‰ªé¢è·ç¦»
 */
 float CCamera::GetNearClipDistance() const {
 	return m_fClipNear;
 }
 
 /**
-* »ñÈ¡Ô¶²Ã¼ôÃæ¾àÀë
+* è·å–è¿œè£å‰ªé¢è·ç¦»
 */
 float CCamera::GetFarClipDistance() const {
 	return m_fClipFar;
 }
 
 /**
-* ÉèÖÃÏà»úÊÓ¿Ú´óĞ¡
+* è®¾ç½®ç›¸æœºè§†å£å¤§å°
 */
 void CCamera::SetViewSize(int width, int height) {
 	m_iViewWidth = width;
@@ -172,15 +172,15 @@ void CCamera::SetViewSize(int width, int height) {
 }
 
 /**
-* ÉèÖÃÏà»úÊÓ½Ç
-* @param fov ÎªºáÏòË®Æ½·½ÏòÊÓ½Ç£¬µ¥Î»Îª½Ç¶È
+* è®¾ç½®ç›¸æœºè§†è§’
+* @param fov ä¸ºæ¨ªå‘æ°´å¹³æ–¹å‘è§†è§’ï¼Œå•ä½ä¸ºè§’åº¦
 */
 void CCamera::SetFieldOfView(float fov) {
 	m_fFieldOfView = fov;
 }
 
 /**
-* ÉèÖÃ²Ã¼ôÃæ¾àÀë
+* è®¾ç½®è£å‰ªé¢è·ç¦»
 */
 void CCamera::SetClipDistance(float zNear, float zFar) {
 	m_fClipNear = zNear;
@@ -188,8 +188,8 @@ void CCamera::SetClipDistance(float zNear, float zFar) {
 }
 
 /**
-* ¸üĞÂÍ¶Ó°¾ØÕó
-* @param ortho ÊÇ·ñÎªÕı½»Í¶Ó°
+* æ›´æ–°æŠ•å½±çŸ©é˜µ
+* @param ortho æ˜¯å¦ä¸ºæ­£äº¤æŠ•å½±
 */
 void CCamera::UpdateProjMatrix(bool ortho) {
 	const float w = static_cast<float>(m_iViewWidth);
@@ -202,54 +202,54 @@ void CCamera::UpdateProjMatrix(bool ortho) {
 }
 
 /**
-* ¸üĞÂÊÓÍ¼¾ØÕó
+* æ›´æ–°è§†å›¾çŸ©é˜µ
 */
 void CCamera::UpdateViewMatrix() {
 	m_cViewMatrix.LookAt(m_cPosition, m_cLookVector, m_cUpVector);
 }
 
 /**
-* ¸üĞÂÊÓ×¶Ìå
+* æ›´æ–°è§†é”¥ä½“
 */
 void CCamera::UpdateFrustum() {
 	m_cFrustum.FromViewProj(m_cProjMatrix * m_cViewMatrix);
 }
 
 /**
-* »ñÈ¡Í¶Ó°¾ØÕóÒıÓÃ
+* è·å–æŠ•å½±çŸ©é˜µå¼•ç”¨
 */
 CMatrix4& CCamera::GetProjMatrix() {
 	return m_cProjMatrix;
 }
 
 /**
-* »ñÈ¡ÊÓÍ¼¾ØÕóÒıÓÃ
+* è·å–è§†å›¾çŸ©é˜µå¼•ç”¨
 */
 CMatrix4& CCamera::GetViewMatrix() {
 	return m_cViewMatrix;
 }
 
 /**
-* »ñÈ¡ÊÓ×¶ÌåÒıÓÃ
+* è·å–è§†é”¥ä½“å¼•ç”¨
 */
 const CFrustum& CCamera::GetFrustum() {
 	return m_cFrustum;
 }
 
 /**
-* °ó¶¨ÊäÈë¿ØÖÆ
-* @param enable ÊÇ·ñ°ó¶¨ÊäÈë½øĞĞÏà»ú¿ØÖÆ
+* ç»‘å®šè¾“å…¥æ§åˆ¶
+* @param enable æ˜¯å¦ç»‘å®šè¾“å…¥è¿›è¡Œç›¸æœºæ§åˆ¶
 */
 void CCamera::Control(bool enable) {
 	m_bControlAttached = enable;
 }
 
 /**
-* °ó¶¨ÖÁÖ¸¶¨³¡¾°½Úµã
-* @param sceneNode °ó¶¨µÄ³¡¾°½Úµã£¬Îª¿Õ½â³ıÒÀ¸½
-* @param pos Î»ÖÃÆ«ÒÆ
-* @param orient ½Ç¶ÈÆ«ÒÆ
-* @attention °ó¶¨ÖÁ³¡¾°½ÚµãºóÏàµ±ÓÚ½«Ïà»ú¹Ì¶¨ÔÚ sceneNode ÉÏÃæ£¬²¢ÇÒ½öÊÜ sceneNode µÄ¿ØÖÆ
+* ç»‘å®šè‡³æŒ‡å®šåœºæ™¯èŠ‚ç‚¹
+* @param sceneNode ç»‘å®šçš„åœºæ™¯èŠ‚ç‚¹ï¼Œä¸ºç©ºè§£é™¤ä¾é™„
+* @param pos ä½ç½®åç§»
+* @param orient è§’åº¦åç§»
+* @attention ç»‘å®šè‡³åœºæ™¯èŠ‚ç‚¹åç›¸å½“äºå°†ç›¸æœºå›ºå®šåœ¨ sceneNode ä¸Šé¢ï¼Œå¹¶ä¸”ä»…å— sceneNode çš„æ§åˆ¶
 */
 void CCamera::Bind(CSceneNode* sceneNode, const CVector3& pos, const CQuaternion& orient) {
 	m_pBindNode = sceneNode;
@@ -258,28 +258,28 @@ void CCamera::Bind(CSceneNode* sceneNode, const CVector3& pos, const CQuaternion
 }
 
 /**
-* ¼ÆËãÏà»ú·½Î»½Ç£¬¸©Ñö½Ç£¬Ğı×ª½Ç
-* @param lookVec Ïà»úÊÓÏßÏòÁ¿
-* @param upVec Ïà»úÉÏÏòÁ¿
-* @param yaw ¼ÆËãµÃµ½µÄË®Æ½½Ç
-* @param pitch ¼ÆËãµÃµ½µÄ¸©Ñö½Ç
-* @param roll ¼ÆËãµÃµ½µÄ·­¹ö½Ç
+* è®¡ç®—ç›¸æœºæ–¹ä½è§’ï¼Œä¿¯ä»°è§’ï¼Œæ—‹è½¬è§’
+* @param lookVec ç›¸æœºè§†çº¿å‘é‡
+* @param upVec ç›¸æœºä¸Šå‘é‡
+* @param yaw è®¡ç®—å¾—åˆ°çš„æ°´å¹³è§’
+* @param pitch è®¡ç®—å¾—åˆ°çš„ä¿¯ä»°è§’
+* @param roll è®¡ç®—å¾—åˆ°çš„ç¿»æ»šè§’
 */
 void CCamera::GetYawPitchRoll(const CVector3& lookVec, const CVector3& upVec, float* yaw, float* pitch, float* roll) {
 	float y = -atan2f(lookVec.m_fValue[0], lookVec.m_fValue[1]);
 	float p = asinf(lookVec.m_fValue[2]);
-	// Roll ½Ç¶È¼ÆËã½Ï¸´ÔÓ£¨-90 ~ 90£©
+	// Roll è§’åº¦è®¡ç®—è¾ƒå¤æ‚ï¼ˆ-90 ~ 90ï¼‰
 	float siny = sinf(y);
 	float cosy = cosf(y);
 	float sinp = sinf(p);
 	float cosp = cosf(p);
-	// Î´ Roll Ğı×ªµÄ Up ÏòÁ¿
+	// æœª Roll æ—‹è½¬çš„ Up å‘é‡
 	CVector3 upVecOrg(sinp * siny, -sinp * cosy, cosp);
 	float cosr = upVecOrg.DotProduct(upVec);
 	if (cosr < -1.0f) cosr = -1.0f;
 	else if (cosr > 1.0f) cosr = 1.0f;
 	float r = acosf(cosr);
-	// Roll ·½Ïò
+	// Roll æ–¹å‘
 	if (upVecOrg.CrossProduct(upVec).DotProduct(lookVec) < 0) r = -r;
 	if (yaw) *yaw = y;
 	if (pitch) *pitch = p;
@@ -287,15 +287,15 @@ void CCamera::GetYawPitchRoll(const CVector3& lookVec, const CVector3& upVec, fl
 }
 
 /**
-* ¼ÆËãÏà»úÊÓÏßÏòÁ¿ºÍÉÏÏòÁ¿
-* @param yaw Ïà»úË®Æ½½Ç
-* @param pitch Ïà»ú¸©Ñö½Ç
-* @param roll Ïà»ú·­¹ö½Ç
-* @param lookVec ¼ÆËãµÃµ½µÄÏà»úÊÓÏßÏòÁ¿
-* @param upVec ¼ÆËãµÃµ½µÄÏà»úÉÏÏòÁ¿
+* è®¡ç®—ç›¸æœºè§†çº¿å‘é‡å’Œä¸Šå‘é‡
+* @param yaw ç›¸æœºæ°´å¹³è§’
+* @param pitch ç›¸æœºä¿¯ä»°è§’
+* @param roll ç›¸æœºç¿»æ»šè§’
+* @param lookVec è®¡ç®—å¾—åˆ°çš„ç›¸æœºè§†çº¿å‘é‡
+* @param upVec è®¡ç®—å¾—åˆ°çš„ç›¸æœºä¸Šå‘é‡
 */
 void CCamera::GetLookVecUpVec(float yaw, float pitch, float roll, CVector3& lookVec, CVector3& upVec) {
-	// ×ª¶¯Ë³Ğò 1-roll£¬2-pitch£¬3-yaw
+	// è½¬åŠ¨é¡ºåº 1-rollï¼Œ2-pitchï¼Œ3-yaw
 	CMatrix4 matrix;
 	float cr = cosf(roll);
 	float sr = sinf(roll);
@@ -312,7 +312,7 @@ void CCamera::GetLookVecUpVec(float yaw, float pitch, float roll, CVector3& look
 	matrix(0, 2) = cy * sr + sy * sp * cr;
 	matrix(1, 2) = sy * sr - cy * sp * cr;
 	matrix(2, 2) = cp * cr;
-	// ¼ÆËã LookVector£¬UpVector µÄÖµ
+	// è®¡ç®— LookVectorï¼ŒUpVector çš„å€¼
 	lookVec = matrix * CVector3::Y;
 	upVec = matrix * CVector3::Z;
 }

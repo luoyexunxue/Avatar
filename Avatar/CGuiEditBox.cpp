@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CGuiEditBox.h"
@@ -11,7 +11,7 @@
 #include <cstring>
 
 /**
-* ¹¹Ôìº¯Êı£¬Ö¸¶¨Ãû³Æ
+* æ„é€ å‡½æ•°ï¼ŒæŒ‡å®šåç§°
 */
 CGuiEditBox::CGuiEditBox(const string& name) : CGuiElement(name) {
 	m_cRegion.SetValue(0, 0, 64, 32);
@@ -33,7 +33,7 @@ CGuiEditBox::CGuiEditBox(const string& name) : CGuiElement(name) {
 }
 
 /**
-* ÊÇ·ñÖØ»æ
+* æ˜¯å¦é‡ç»˜
 */
 bool CGuiEditBox::Redraw() {
 	m_fTimeElapsed += CTimer::Reset("editbox");
@@ -46,7 +46,7 @@ bool CGuiEditBox::Redraw() {
 }
 
 /**
-* ÊôĞÔÉèÖÃ
+* å±æ€§è®¾ç½®
 */
 bool CGuiEditBox::SetAttribute(const string& name, const string& value) {
 	if (name == "visible") m_bVisible = value == "true";
@@ -83,7 +83,7 @@ bool CGuiEditBox::SetAttribute(const string& name, const string& value) {
 }
 
 /**
-* »ñÈ¡ÊôĞÔ
+* è·å–å±æ€§
 */
 string CGuiEditBox::GetAttribute(const string& name) {
 	if (name == "visible") return m_bVisible? "true": "false";
@@ -115,10 +115,10 @@ string CGuiEditBox::GetAttribute(const string& name) {
 }
 
 /**
-* ¿Ø¼ş»æÖÆ
+* æ§ä»¶ç»˜åˆ¶
 */
 void CGuiEditBox::Draw(const CRectangle& rect, unsigned char* buffer) {
-	// »æÖÆÎÄ±¾
+	// ç»˜åˆ¶æ–‡æœ¬
 	int width = m_cRegion.GetWidth();
 	int height = m_cRegion.GetHeight();
 	CFontManager::CTextImage image(width, height);
@@ -132,7 +132,7 @@ void CGuiEditBox::Draw(const CRectangle& rect, unsigned char* buffer) {
 	} else {
 		pFontMgr->DrawText(m_strText, &image, (CFontManager::Alignment)m_iAlignment, false);
 	}
-	// ¹â±êÎ»ÖÃ
+	// å…‰æ ‡ä½ç½®
 	if (m_bShowCursor) {
 		int dx = 0;
 		int dy = (image.height - image.textHeight) >> 1;
@@ -147,7 +147,7 @@ void CGuiEditBox::Draw(const CRectangle& rect, unsigned char* buffer) {
 			}
 		}
 	}
-	// Ìî³ä GUI »º³åÇø
+	// å¡«å…… GUI ç¼“å†²åŒº
 	int offsetX = rect.GetLeft() - m_cRegionScreen.GetLeft();
 	int offsetY = rect.GetTop() - m_cRegionScreen.GetTop();
 	int drawWidth = rect.GetWidth();

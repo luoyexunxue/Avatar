@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CSCENENODE_H_
@@ -16,88 +16,88 @@ using std::string;
 using std::list;
 
 /**
-* @brief ³¡¾°½Úµã³éÏóÀà
+* @brief åœºæ™¯èŠ‚ç‚¹æŠ½è±¡ç±»
 */
 class AVATAR_EXPORT CSceneNode {
 public:
-	//! ¹¹Ôìº¯Êı
+	//! æ„é€ å‡½æ•°
 	CSceneNode(const string& type, const string& name);
-	//! ĞéÎö¹¹º¯Êı
+	//! è™šææ„å‡½æ•°
 	virtual ~CSceneNode();
 
 public:
-	//! ³õÊ¼»¯½Ó¿Ú
+	//! åˆå§‹åŒ–æ¥å£
 	virtual bool Init() = 0;
-	//! äÖÈ¾½Ó¿Ú
+	//! æ¸²æŸ“æ¥å£
 	virtual void Render() = 0;
-	//! Ïú»Ù½Ó¿Ú
+	//! é”€æ¯æ¥å£
 	virtual void Destroy() = 0;
 
-	//! ½Úµã¸üĞÂ
+	//! èŠ‚ç‚¹æ›´æ–°
 	virtual void Update(float dt) {}
-	//! ÉèÖÃËõ·Å
+	//! è®¾ç½®ç¼©æ”¾
 	virtual void SetScale(const CVector3& scale);
-	//! ÉèÖÃ³¯Ïò
+	//! è®¾ç½®æœå‘
 	virtual void SetOrientation(const CQuaternion& orientation);
-	//! ÉèÖÃÎ»ÖÃ
+	//! è®¾ç½®ä½ç½®
 	virtual void SetPosition(const CVector3& position);
-	//! ¸üĞÂ±ä»»¾ØÕó
+	//! æ›´æ–°å˜æ¢çŸ©é˜µ
 	virtual void Transform();
 
-	//! »ñÈ¡Íø¸ñÊı¾İ
+	//! è·å–ç½‘æ ¼æ•°æ®
 	virtual CMeshData* GetMeshData();
 
-	//! »ñÈ¡½ÚµãID
+	//! è·å–èŠ‚ç‚¹ID
 	int& GetId();
-	//! »ñÈ¡½ÚµãÀàĞÍ
+	//! è·å–èŠ‚ç‚¹ç±»å‹
 	const string& GetType() const;
-	//! »ñÈ¡½ÚµãÃû³Æ
+	//! è·å–èŠ‚ç‚¹åç§°
 	const string& GetName() const;
 
-	//! µÃµ½ÊÀ½ç×ø±êÏµÏÂµÄËõ·Å
+	//! å¾—åˆ°ä¸–ç•Œåæ ‡ç³»ä¸‹çš„ç¼©æ”¾
 	CVector3 GetWorldScale() const;
-	//! µÃµ½ÊÀ½ç×ø±êÏµÏÂµÄ³¯Ïò
+	//! å¾—åˆ°ä¸–ç•Œåæ ‡ç³»ä¸‹çš„æœå‘
 	CQuaternion GetWorldOrientation() const;
-	//! µÃµ½ÊÀ½ç×ø±êÏµÏÂµÄÎ»ÖÃ
+	//! å¾—åˆ°ä¸–ç•Œåæ ‡ç³»ä¸‹çš„ä½ç½®
 	CVector3 GetWorldPosition() const;
-	//! »ñÈ¡ÊÀ½ç×ø±êÏµÏÂµÄ°üÎ§ºĞ
+	//! è·å–ä¸–ç•Œåæ ‡ç³»ä¸‹çš„åŒ…å›´ç›’
 	CBoundingBox GetBoundingBox() const;
 
 public:
-	//! ½ÚµãËõ·Å
+	//! èŠ‚ç‚¹ç¼©æ”¾
 	CVector3 m_cScale;
-	//! ½ÚµãĞı×ª
+	//! èŠ‚ç‚¹æ—‹è½¬
 	CQuaternion m_cOrientation;
-	//! ½ÚµãÎ»ÒÆ
+	//! èŠ‚ç‚¹ä½ç§»
 	CVector3 m_cPosition;
-	//! ¾Ö²¿×ø±êÏµÏÂµÄ°üÎ§ºĞ
+	//! å±€éƒ¨åæ ‡ç³»ä¸‹çš„åŒ…å›´ç›’
 	CBoundingBox m_cLocalBoundingBox;
 
-	//! ÊÇ·ñ¿É¼û
+	//! æ˜¯å¦å¯è§
 	bool m_bVisible;
-	//! ÊÇ·ñÆôÓÃ
+	//! æ˜¯å¦å¯ç”¨
 	bool m_bEnabled;
-	//! ÊÇ·ñÑ¡ÖĞ
+	//! æ˜¯å¦é€‰ä¸­
 	bool m_bSelected;
 
-	//! ¾Ö²¿±ä»»¾ØÕó
+	//! å±€éƒ¨å˜æ¢çŸ©é˜µ
 	CMatrix4 m_cModelMatrix;
-	//! ÊÀ½ç±ä»»¾ØÕó
+	//! ä¸–ç•Œå˜æ¢çŸ©é˜µ
 	CMatrix4 m_cWorldMatrix;
 
 protected:
-	//! ½ÚµãID
+	//! èŠ‚ç‚¹ID
 	int m_iNodeId;
-	//! ½ÚµãÀàĞÍ
+	//! èŠ‚ç‚¹ç±»å‹
 	string m_strType;
-	//! ½ÚµãÃû³Æ
+	//! èŠ‚ç‚¹åç§°
 	string m_strName;
-	//! ¸¸½Úµã
+	//! çˆ¶èŠ‚ç‚¹
 	CSceneNode* m_pParent;
-	//! ×Ó½Úµã
+	//! å­èŠ‚ç‚¹
 	list<CSceneNode*> m_lstChildren;
 
-	//! ÉèÖÃ³¡¾°¹ÜÀíÆ÷¿É·ÃÎÊ
+	//! è®¾ç½®åœºæ™¯ç®¡ç†å™¨å¯è®¿é—®
 	friend class CSceneManager;
 };
 

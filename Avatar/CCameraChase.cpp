@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CCameraChase.h"
@@ -8,7 +8,7 @@
 #include <cmath>
 
 /**
-* ¹¹Ôìº¯Êı
+* æ„é€ å‡½æ•°
 */
 CCameraChase::CCameraChase() {
 	m_fDamping = 5.0f;
@@ -19,7 +19,7 @@ CCameraChase::CCameraChase() {
 }
 
 /**
-* »ñÈ¡Ïà»úÃû³Æ
+* è·å–ç›¸æœºåç§°
 * @return chase
 */
 const char* CCameraChase::GetName() const {
@@ -27,7 +27,7 @@ const char* CCameraChase::GetName() const {
 }
 
 /**
-* ¿ØÖÆĞÅÏ¢ÊäÈë
+* æ§åˆ¶ä¿¡æ¯è¾“å…¥
 */
 void CCameraChase::Input(CInputManager::SInput* input) {
 	if (!m_bControlAttached) return;
@@ -41,7 +41,7 @@ void CCameraChase::Input(CInputManager::SInput* input) {
 		m_fPitchInAdvance += input->fPitch;
 		m_fRollInAdvance += input->fRoll;
 		RestrictYawRange(false);
-		// ¸©Ñö½ÇĞı×ª½ÇÏŞÖÆÔÚ -89¡ã µ½ 89¡ãÖ®¼ä
+		// ä¿¯ä»°è§’æ—‹è½¬è§’é™åˆ¶åœ¨ -89Â° åˆ° 89Â°ä¹‹é—´
 		if (m_fPitchInAdvance < -1.553343f) m_fPitchInAdvance = -1.553343f;
 		else if (m_fPitchInAdvance > 1.553343f) m_fPitchInAdvance = 1.553343f;
 		if (m_fRollInAdvance < -1.553343f) m_fRollInAdvance = -1.553343f;
@@ -50,7 +50,7 @@ void CCameraChase::Input(CInputManager::SInput* input) {
 }
 
 /**
-* ÉèÖÃÏà»ú¸ß¶È
+* è®¾ç½®ç›¸æœºé«˜åº¦
 */
 void CCameraChase::SetHeight(float height) {
 	m_cPosInAdvance[2] = height;
@@ -58,21 +58,21 @@ void CCameraChase::SetHeight(float height) {
 }
 
 /**
-* ÉèÖÃÏà»úÎ»ÖÃ
+* è®¾ç½®ç›¸æœºä½ç½®
 */
 void CCameraChase::SetPosition(const CVector3& pos) {
 	m_cPosInAdvance = pos;
 }
 
 /**
-* ÉèÖÃÏà»ú·½Î»
+* è®¾ç½®ç›¸æœºæ–¹ä½
 */
 void CCameraChase::SetAngle(float yaw, float pitch, float roll) {
 	m_fYawInAdvance = yaw;
 	m_fPitchInAdvance = pitch;
 	m_fRollInAdvance = roll;
 	RestrictYawRange(true);
-	// ¸©Ñö½ÇĞı×ª½ÇÏŞÖÆÔÚ -89¡ã µ½ 89¡ãÖ®¼ä
+	// ä¿¯ä»°è§’æ—‹è½¬è§’é™åˆ¶åœ¨ -89Â° åˆ° 89Â°ä¹‹é—´
 	if (m_fPitchInAdvance < -1.553343f) m_fPitchInAdvance  = -1.553343f;
 	else if (m_fPitchInAdvance > 1.553343f) m_fPitchInAdvance  = 1.553343f;
 	if (m_fRollInAdvance < -1.553343f) m_fRollInAdvance  = -1.553343f;
@@ -80,55 +80,55 @@ void CCameraChase::SetAngle(float yaw, float pitch, float roll) {
 }
 
 /**
-* ÉèÖÃÏà»úÄ¿±ê
+* è®¾ç½®ç›¸æœºç›®æ ‡
 */
 void CCameraChase::SetTarget(const CVector3& pos) {
 	CVector3 lookVec = pos - m_cPosInAdvance;
 	if (lookVec.Length() == 0) return;
-	// ¸üĞÂÏà»ú·½Î»½Ç
+	// æ›´æ–°ç›¸æœºæ–¹ä½è§’
 	lookVec.Normalize();
 	GetYawPitchRoll(lookVec, m_cUpVector, &m_fYawInAdvance, &m_fPitchInAdvance, 0);
-	// ÏŞÖÆ Yaw ·¶Î§
+	// é™åˆ¶ Yaw èŒƒå›´
 	RestrictYawRange(true);
 }
 
 /**
-* ¸üĞÂÏà»ú
+* æ›´æ–°ç›¸æœº
 */
 void CCameraChase::Update(float dt) {
 	dt *= m_fDamping;
 	if (dt > 1.0f) dt = 1.0f;
-	// ²îÖµ¼ÆËã
+	// å·®å€¼è®¡ç®—
 	m_fYaw += (m_fYawInAdvance - m_fYaw) * dt;
 	m_fPitch += (m_fPitchInAdvance - m_fPitch) * dt;
 	m_fRoll += (m_fRollInAdvance - m_fRoll) * dt;
 	m_cPosition += (m_cPosInAdvance - m_cPosition) * dt;
-	// ¸üĞÂ Look ºÍ Up ÏòÁ¿
+	// æ›´æ–° Look å’Œ Up å‘é‡
 	GetLookVecUpVec(m_fYaw, m_fPitch, m_fRoll, m_cLookVector, m_cUpVector);
 	CCamera::Update(dt);
 }
 
 /**
-* ÉèÖÃ×èÄáÏµÊı
-* @param k ×èÄáÏµÊı£¬Ô½´ó¹ßĞÔ±íÏÖÔ½Ğ¡
+* è®¾ç½®é˜»å°¼ç³»æ•°
+* @param k é˜»å°¼ç³»æ•°ï¼Œè¶Šå¤§æƒ¯æ€§è¡¨ç°è¶Šå°
 */
 void CCameraChase::SetDamping(float k) {
 	m_fDamping = k;
 }
 
 /**
-* ÏŞÖÆ·½Î»½Ç
+* é™åˆ¶æ–¹ä½è§’
 */
 void CCameraChase::RestrictYawRange(bool shortest) {
 	const float PI = 3.141592654f;
 	const float PI2 = 6.283185307f;
-	// ±£´æ½Ç¶È²îÖµ
+	// ä¿å­˜è§’åº¦å·®å€¼
 	float theta = fmodf(m_fYawInAdvance - m_fYaw, PI2);
-	// ÏŞÖÆ·½Î»½ÇÔÚ [0, 2PI) ·¶Î§ÄÚ
+	// é™åˆ¶æ–¹ä½è§’åœ¨ [0, 2PI) èŒƒå›´å†…
 	m_fYawInAdvance = fmodf(m_fYawInAdvance, PI2);
 	if (m_fYawInAdvance < 0) m_fYawInAdvance += PI2;
 
-	// ¸ù¾İ½Ç¶È²îÖµÅĞ¶Ï×ª¶¯·½Ïò
+	// æ ¹æ®è§’åº¦å·®å€¼åˆ¤æ–­è½¬åŠ¨æ–¹å‘
 	if (shortest) {
 		if (theta > PI) m_fYaw = m_fYawInAdvance - theta + PI2;
 		else if (theta < -PI) m_fYaw = m_fYawInAdvance - theta - PI2;

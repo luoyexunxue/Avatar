@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CProfile.h"
@@ -8,7 +8,7 @@
 #include <cstring>
 
 /**
-* ¹¹Ôìº¯Êı
+* æ„é€ å‡½æ•°
 */
 CProfileNode::CProfileNode(const char* name) {
 	m_pName = name;
@@ -23,14 +23,14 @@ CProfileNode::CProfileNode(const char* name) {
 }
 
 /**
-* »ñÈ¡½ÚµãÃû³Æ
+* è·å–èŠ‚ç‚¹åç§°
 */
 inline const char* CProfileNode::GetName() {
 	return m_pName;
 }
 
 /**
-* Éú³ÉÒ»¸ö×Ó½Úµã
+* ç”Ÿæˆä¸€ä¸ªå­èŠ‚ç‚¹
 */
 inline CProfileNode* CProfileNode::GetChild(const char* name) {
 	list<CProfileNode*>::iterator iter = m_lstChildren.begin();
@@ -47,14 +47,14 @@ inline CProfileNode* CProfileNode::GetChild(const char* name) {
 }
 
 /**
-* »ñÈ¡¸¸½Úµã
+* è·å–çˆ¶èŠ‚ç‚¹
 */
 inline CProfileNode* CProfileNode::GetParent() {
 	return m_pParent;
 }
 
 /**
-* Æô¶¯¼ÆÊ±
+* å¯åŠ¨è®¡æ—¶
 */
 void CProfileNode::StartTimer() {
 	if (!m_bActive) {
@@ -65,7 +65,7 @@ void CProfileNode::StartTimer() {
 }
 
 /**
-* Í£Ö¹¼ÆÊ±
+* åœæ­¢è®¡æ—¶
 */
 void CProfileNode::StopTimer() {
 	if (m_bActive) {
@@ -79,7 +79,7 @@ void CProfileNode::StopTimer() {
 }
 
 /**
-* Æô¶¯²ÉÑù
+* å¯åŠ¨é‡‡æ ·
 */
 void CProfileManager::Start(const char* name) {
 	if (!m_pCurrentNode) m_pCurrentNode = new CProfileNode(name);
@@ -90,7 +90,7 @@ void CProfileManager::Start(const char* name) {
 }
 
 /**
-* Í£Ö¹²ÉÑù
+* åœæ­¢é‡‡æ ·
 */
 float CProfileManager::Stop() {
 	float elapse = 0.0f;
@@ -105,7 +105,7 @@ float CProfileManager::Stop() {
 }
 
 /**
-* ´òÓ¡²ÉÑù½á¹û
+* æ‰“å°é‡‡æ ·ç»“æœ
 */
 void CProfileManager::Print() {
 	CLog::Debug("================ Profile ====================");
@@ -117,7 +117,7 @@ void CProfileManager::Print() {
 }
 
 /**
-* Çå³ı²ÉÑù½Úµã
+* æ¸…é™¤é‡‡æ ·èŠ‚ç‚¹
 */
 void CProfileManager::Clear() {
 	if (m_pCurrentNode) {
@@ -128,7 +128,7 @@ void CProfileManager::Clear() {
 }
 
 /**
-* µİ¹éÊä³ö²ÉÑùĞÅÏ¢
+* é€’å½’è¾“å‡ºé‡‡æ ·ä¿¡æ¯
 */
 void CProfileManager::PrintNode(CProfileNode* node, int level) {
 	if (!node || level >= 256) return;
@@ -148,7 +148,7 @@ void CProfileManager::PrintNode(CProfileNode* node, int level) {
 }
 
 /**
-* µİ¹éÇå³ı²ÉÑù½Úµã
+* é€’å½’æ¸…é™¤é‡‡æ ·èŠ‚ç‚¹
 */
 void CProfileManager::ClearNode(CProfileNode* node) {
 	if (!node) return;
@@ -161,6 +161,6 @@ void CProfileManager::ClearNode(CProfileNode* node) {
 }
 
 /**
-* ²ÉÑù¸ù½Úµã
+* é‡‡æ ·æ ¹èŠ‚ç‚¹
 */
 CProfileNode* CProfileManager::m_pCurrentNode = 0;

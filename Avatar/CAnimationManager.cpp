@@ -1,51 +1,51 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CAnimationManager.h"
 #include <cmath>
 
 /**
-* ¹¹Ôìº¯Êı
+* æ„é€ å‡½æ•°
 */
 CAnimationManager::CAnimationManager() {
 }
 
 /**
-* Îö¹¹º¯Êı
+* ææ„å‡½æ•°
 */
 CAnimationManager::~CAnimationManager() {
 	m_pInstance = 0;
 }
 
 /**
-* µ¥ÀıÊµÀı
+* å•ä¾‹å®ä¾‹
 */
 CAnimationManager* CAnimationManager::m_pInstance = 0;
 
 /**
-* Ïú»Ù¶¯»­¹ÜÀíÆ÷
+* é”€æ¯åŠ¨ç”»ç®¡ç†å™¨
 */
 void CAnimationManager::Destroy() {
 	delete this;
 }
 
 /**
-* ¶¯»­¸üĞÂ£¬´Ë·½·¨ÓÉÒıÇæÄÚ²¿µ÷ÓÃ
-* @param dt Ê±¼ä²½³¤
+* åŠ¨ç”»æ›´æ–°ï¼Œæ­¤æ–¹æ³•ç”±å¼•æ“å†…éƒ¨è°ƒç”¨
+* @param dt æ—¶é—´æ­¥é•¿
 */
 void CAnimationManager::Update(float dt) {
 	if (m_lstAnimation.empty()) return;
 
-	// ±éÀú¶¯»­£¬¶ÔÃ¿¸ö¶¯»­½øĞĞ¸üĞÂ
+	// éå†åŠ¨ç”»ï¼Œå¯¹æ¯ä¸ªåŠ¨ç”»è¿›è¡Œæ›´æ–°
 	list<SAnimationData>::iterator iter = m_lstAnimation.begin();
 	while (iter != m_lstAnimation.end()) {
 		SAnimationData* anim = &*iter;
 		++iter;
-		// ¶¯»­Î´Æô¶¯
+		// åŠ¨ç”»æœªå¯åŠ¨
 		if (!anim->animationStart) continue;
 		bool animationFinish = false;
-		// ¼ÆËã¶¯»­Ê±¼ä
+		// è®¡ç®—åŠ¨ç”»æ—¶é—´
 		if (anim->animationDelay > 0.0f) {
 			anim->animationDelay -= dt;
 			if (anim->animationDelay > 0.0f) continue;
@@ -65,7 +65,7 @@ void CAnimationManager::Update(float dt) {
 				break;
 			}
 		}
-		// Í¨¹ı animationTime ºÍ duration ÒÔ¼°²åÖµ·½·¨¼ÆËãµ±Ç°²åÖµ
+		// é€šè¿‡ animationTime å’Œ duration ä»¥åŠæ’å€¼æ–¹æ³•è®¡ç®—å½“å‰æ’å€¼
 		float t = anim->animationTime / anim->duration;
 		switch (anim->intepolator) {
 		case LINEAR: break;
@@ -73,7 +73,7 @@ void CAnimationManager::Update(float dt) {
 		case DECELERATE: t = 1.0f - (1.0f - t) * (1.0f - t); break;
 		case ACCELERATEDECELERATE: t = cosf((t + 1) * 3.141593f) * 0.5f + 0.5f; break;
 		}
-		// ²åÖµ¼ÆËã Ëõ·Å Ğı×ª Æ½ÒÆ
+		// æ’å€¼è®¡ç®— ç¼©æ”¾ æ—‹è½¬ å¹³ç§»
 		CSceneNode* node = anim->sceneNode;
 		if (anim->useScale) {
 			if (anim->reversing) node->m_cScale = anim->toScale.Lerp(anim->fromScale, t);
@@ -95,15 +95,15 @@ void CAnimationManager::Update(float dt) {
 }
 
 /**
-* ÉèÖÃ¶¯»­²ÎÊı
-* @param node ¹ØÁªµÄ³¡¾°½Úµã
-* @param intepolator ¶¯»­²åÖµ·½Ê½
-* @param duration Ò»´Î¶¯»­µÄÊ±³¤
-* @param repeat ÖØ¸´´ÎÊı£¬Îª¸ºÊı±íÊ¾ÎŞÏŞÖØ¸´
-* @param swing ÊÇ·ñÍù¸´ÔË¶¯
+* è®¾ç½®åŠ¨ç”»å‚æ•°
+* @param node å…³è”çš„åœºæ™¯èŠ‚ç‚¹
+* @param intepolator åŠ¨ç”»æ’å€¼æ–¹å¼
+* @param duration ä¸€æ¬¡åŠ¨ç”»çš„æ—¶é•¿
+* @param repeat é‡å¤æ¬¡æ•°ï¼Œä¸ºè´Ÿæ•°è¡¨ç¤ºæ— é™é‡å¤
+* @param swing æ˜¯å¦å¾€å¤è¿åŠ¨
 */
 void CAnimationManager::SetAnimation(CSceneNode* node, Interpolator intepolator, float duration, int repeat, bool swing) {
-	// ¼ì²é³¡¾°½ÚµãµÄ¶¯»­ÊÇ·ñÒÑ´æÔÚ
+	// æ£€æŸ¥åœºæ™¯èŠ‚ç‚¹çš„åŠ¨ç”»æ˜¯å¦å·²å­˜åœ¨
 	list<SAnimationData>::iterator iter = m_lstAnimation.begin();
 	while (iter != m_lstAnimation.end()) {
 		SAnimationData* anim = &*iter;
@@ -120,7 +120,7 @@ void CAnimationManager::SetAnimation(CSceneNode* node, Interpolator intepolator,
 		}
 		++iter;
 	}
-	// Èô²»´æÔÚ£¬Ôò³õÊ¼»¯¶¯»­Êı¾İ£¬²¢¼ÓÈë¶¯»­ÁĞ±í
+	// è‹¥ä¸å­˜åœ¨ï¼Œåˆ™åˆå§‹åŒ–åŠ¨ç”»æ•°æ®ï¼Œå¹¶åŠ å…¥åŠ¨ç”»åˆ—è¡¨
 	SAnimationData anim;
 	anim.sceneNode = node;
 	anim.intepolator = intepolator;
@@ -138,11 +138,11 @@ void CAnimationManager::SetAnimation(CSceneNode* node, Interpolator intepolator,
 }
 
 /**
-* ÉèÖÃËõ·Å¶¯»­
-* @param node ¹ØÁªµÄ³¡¾°½Úµã
-* @param from ¶¯»­¿ªÊ¼Ê±µÄËõ·Å
-* @param to ¶¯»­½áÊøÊ±µÄËõ·Å
-* @return ³É¹¦·µ»Ø true
+* è®¾ç½®ç¼©æ”¾åŠ¨ç”»
+* @param node å…³è”çš„åœºæ™¯èŠ‚ç‚¹
+* @param from åŠ¨ç”»å¼€å§‹æ—¶çš„ç¼©æ”¾
+* @param to åŠ¨ç”»ç»“æŸæ—¶çš„ç¼©æ”¾
+* @return æˆåŠŸè¿”å› true
 */
 bool CAnimationManager::AnimateScale(CSceneNode* node, const CVector3& from, const CVector3& to) {
 	list<SAnimationData>::iterator iter = m_lstAnimation.begin();
@@ -160,11 +160,11 @@ bool CAnimationManager::AnimateScale(CSceneNode* node, const CVector3& from, con
 }
 
 /**
-* ÉèÖÃĞı×ª¶¯»­
-* @param node ¹ØÁªµÄ³¡¾°½Úµã
-* @param from ¶¯»­¿ªÊ¼Ê±µÄĞı×ª
-* @param to ¶¯»­½áÊøÊ±µÄĞı×ª
-* @return ³É¹¦·µ»Ø true
+* è®¾ç½®æ—‹è½¬åŠ¨ç”»
+* @param node å…³è”çš„åœºæ™¯èŠ‚ç‚¹
+* @param from åŠ¨ç”»å¼€å§‹æ—¶çš„æ—‹è½¬
+* @param to åŠ¨ç”»ç»“æŸæ—¶çš„æ—‹è½¬
+* @return æˆåŠŸè¿”å› true
 */
 bool CAnimationManager::AnimateRotation(CSceneNode* node, const CQuaternion& from, const CQuaternion& to) {
 	list<SAnimationData>::iterator iter = m_lstAnimation.begin();
@@ -182,11 +182,11 @@ bool CAnimationManager::AnimateRotation(CSceneNode* node, const CQuaternion& fro
 }
 
 /**
-* ÉèÖÃÆ½ÒÆ¶¯»­
-* @param node ¹ØÁªµÄ³¡¾°½Úµã
-* @param from ¶¯»­¿ªÊ¼Ê±µÄÎ»ÖÃ
-* @param to ¶¯»­½áÊøÊ±µÄÎ»ÖÃ
-* @return ³É¹¦·µ»Ø true
+* è®¾ç½®å¹³ç§»åŠ¨ç”»
+* @param node å…³è”çš„åœºæ™¯èŠ‚ç‚¹
+* @param from åŠ¨ç”»å¼€å§‹æ—¶çš„ä½ç½®
+* @param to åŠ¨ç”»ç»“æŸæ—¶çš„ä½ç½®
+* @return æˆåŠŸè¿”å› true
 */
 bool CAnimationManager::AnimateTranslation(CSceneNode* node, const CVector3& from, const CVector3& to) {
 	list<SAnimationData>::iterator iter = m_lstAnimation.begin();
@@ -204,10 +204,10 @@ bool CAnimationManager::AnimateTranslation(CSceneNode* node, const CVector3& fro
 }
 
 /**
-* ¿ªÊ¼¶¯»­
-* @param node ¹ØÁªµÄ³¡¾°½Úµã
-* @param delay ÑÓÊ± delay Ãëºó¿ªÊ¼¶¯»­
-* @return ³É¹¦·µ»Ø true
+* å¼€å§‹åŠ¨ç”»
+* @param node å…³è”çš„åœºæ™¯èŠ‚ç‚¹
+* @param delay å»¶æ—¶ delay ç§’åå¼€å§‹åŠ¨ç”»
+* @return æˆåŠŸè¿”å› true
 */
 bool CAnimationManager::Start(CSceneNode* node, float delay) {
 	list<SAnimationData>::iterator iter = m_lstAnimation.begin();
@@ -224,9 +224,9 @@ bool CAnimationManager::Start(CSceneNode* node, float delay) {
 }
 
 /**
-* ÔİÍ£¶¯»­
-* @param node ¹ØÁªµÄ³¡¾°½Úµã
-* @return ³É¹¦·µ»Ø true
+* æš‚åœåŠ¨ç”»
+* @param node å…³è”çš„åœºæ™¯èŠ‚ç‚¹
+* @return æˆåŠŸè¿”å› true
 */
 bool CAnimationManager::Pause(CSceneNode* node) {
 	list<SAnimationData>::iterator iter = m_lstAnimation.begin();
@@ -242,16 +242,16 @@ bool CAnimationManager::Pause(CSceneNode* node) {
 }
 
 /**
-* Í£Ö¹¶¯»­
-* @param node ¹ØÁªµÄ³¡¾°½Úµã
-* @return ³É¹¦·µ»Ø true
+* åœæ­¢åŠ¨ç”»
+* @param node å…³è”çš„åœºæ™¯èŠ‚ç‚¹
+* @return æˆåŠŸè¿”å› true
 */
 bool CAnimationManager::Stop(CSceneNode* node) {
 	list<SAnimationData>::iterator iter = m_lstAnimation.begin();
 	while (iter != m_lstAnimation.end()) {
 		SAnimationData* anim = &*iter;
 		if (anim->sceneNode == node) {
-			// ¶Ô³¡¾°½Úµã±ä»»µ½×îÖÕ×´Ì¬ºóÍ£Ö¹
+			// å¯¹åœºæ™¯èŠ‚ç‚¹å˜æ¢åˆ°æœ€ç»ˆçŠ¶æ€ååœæ­¢
 			if (anim->useScale) anim->sceneNode->m_cScale = anim->toScale;
 			if (anim->useOrientation) anim->sceneNode->m_cOrientation = anim->toOrientation;
 			if (anim->usePosition) anim->sceneNode->m_cPosition = anim->toPosition;
@@ -265,15 +265,15 @@ bool CAnimationManager::Stop(CSceneNode* node) {
 }
 
 /**
-* Çå³ıËùÓĞ¶¯»­
+* æ¸…é™¤æ‰€æœ‰åŠ¨ç”»
 */
 void CAnimationManager::Clear() {
 	m_lstAnimation.clear();
 }
 
 /**
-* »ñÈ¡Ö´ĞĞµÄËùÓĞ¶¯»­½ÚµãÁĞ±í
-* @param animationList Êä³ö³¡¾°½ÚµãÁĞ±í
+* è·å–æ‰§è¡Œçš„æ‰€æœ‰åŠ¨ç”»èŠ‚ç‚¹åˆ—è¡¨
+* @param animationList è¾“å‡ºåœºæ™¯èŠ‚ç‚¹åˆ—è¡¨
 */
 void CAnimationManager::GetAnimationList(vector<CSceneNode*>& animationList) {
 	animationList.resize(m_lstAnimation.size());

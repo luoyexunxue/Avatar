@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CDEVICE_H_
@@ -8,21 +8,21 @@
 using std::string;
 
 /**
-* @brief Éè±¸³éÏóÀà
+* @brief è®¾å¤‡æŠ½è±¡ç±»
 */
 class CDevice {
 public:
-	//! ´´½¨´°¿Ú
+	//! åˆ›å»ºçª—å£
 	virtual bool Create(const string& title, int width, int height, bool resizable, bool fullscreen, bool antialias) = 0;
-	//! Ïú»Ù´°¿Ú
+	//! é”€æ¯çª—å£
 	virtual void Destroy() = 0;
-	//! »æÖÆÊä³ö
+	//! ç»˜åˆ¶è¾“å‡º
 	virtual void Render() = 0;
-	//! ÏûÏ¢´¦Àí
+	//! æ¶ˆæ¯å¤„ç†
 	virtual void Handle(float dt) = 0;
 
 protected:
-	//! ĞéÎö¹¹º¯Êı
+	//! è™šææ„å‡½æ•°
 	virtual ~CDevice() {}
 };
 

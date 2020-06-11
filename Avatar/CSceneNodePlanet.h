@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CSCENENODEPLANET_H_
@@ -7,34 +7,34 @@
 #include "CSceneNode.h"
 
 /**
-* @brief ĞÇÇòÄ£ĞÍ³¡¾°½Úµã
+* @brief æ˜Ÿçƒæ¨¡å‹åœºæ™¯èŠ‚ç‚¹
 */
 class AVATAR_EXPORT CSceneNodePlanet: public CSceneNode {
 public:
-	//! ¹¹Ôì·½·¨
+	//! æ„é€ æ–¹æ³•
 	CSceneNodePlanet(const string& name, const string& texture, const string& textureNight, float radius, int slices);
 
-	//! ³õÊ¼»¯³¡¾°½Úµã
+	//! åˆå§‹åŒ–åœºæ™¯èŠ‚ç‚¹
 	virtual bool Init();
-	//! Ïú»Ù³¡¾°½Úµã
+	//! é”€æ¯åœºæ™¯èŠ‚ç‚¹
 	virtual void Destroy();
-	//! äÖÈ¾³¡¾°½Úµã
+	//! æ¸²æŸ“åœºæ™¯èŠ‚ç‚¹
 	virtual void Render();
-	//! »ñÈ¡Íø¸ñÊı¾İ
+	//! è·å–ç½‘æ ¼æ•°æ®
 	virtual CMeshData* GetMeshData();
 
 private:
-	//! ĞÇÇò°ë¾¶
+	//! æ˜ŸçƒåŠå¾„
 	float m_fRadius;
-	//! Ï¸·Ö¶È
+	//! ç»†åˆ†åº¦
 	int m_iTessellation;
-	//! ±íÃæÎÆÀí
+	//! è¡¨é¢çº¹ç†
 	string m_strTexture;
-	//! Ò¹¼ä±íÃæÎÆÀí
+	//! å¤œé—´è¡¨é¢çº¹ç†
 	string m_strTextureNight;
-	//! ´óÆø²ãÍø¸ñ¶ÔÏó
+	//! å¤§æ°”å±‚ç½‘æ ¼å¯¹è±¡
 	CMesh* m_pMeshSky;
-	//! Íø¸ñÊı¾İ
+	//! ç½‘æ ¼æ•°æ®
 	CMeshData* m_pMeshData;
 };
 

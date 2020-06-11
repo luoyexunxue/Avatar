@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CPOSTPROCESSRAIN_H_
@@ -7,7 +7,7 @@
 #include "CPostProcess.h"
 
 /**
-* @brief ÏÂÓêĞ§¹ûºó´¦Àí
+* @brief ä¸‹é›¨æ•ˆæœåå¤„ç†
 */
 class CPostProcessRain: public CPostProcess {
 public:

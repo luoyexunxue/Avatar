@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÷‹» ∑Ê. All rights reserved.
+// Copyright (c) 2020 Âë®‰ªÅÈîã. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CDeviceWindows.h"
@@ -18,13 +18,13 @@
 #pragma comment(lib, "opengl32.lib")
 #pragma comment(lib, "thirdparty/glew/glew32.lib")
 
-// ∑ΩœÚº¸∞¥º¸º«¬º
+// ÊñπÂêëÈîÆÊåâÈîÆËÆ∞ÂΩï
 static bool KeyPressed[5];
-// Windows œ˚œ¢ªÿµ˜∫Ø ˝
+// Windows Ê∂àÊÅØÂõûË∞ÉÂáΩÊï∞
 LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 /**
-* ππ‘Ï∫Ø ˝
+* ÊûÑÈÄ†ÂáΩÊï∞
 */
 CDeviceWindows::CDeviceWindows() {
 	m_pContext = new SContext;
@@ -36,22 +36,22 @@ CDeviceWindows::CDeviceWindows() {
 }
 
 /**
-* Œˆππ∫Ø ˝
+* ÊûêÊûÑÂáΩÊï∞
 */
 CDeviceWindows::~CDeviceWindows() {
 	m_pInstance = 0;
 }
 
 /**
-* µ•¿˝ µ¿˝
+* Âçï‰æãÂÆû‰æã
 */
 CDeviceWindows* CDeviceWindows::m_pInstance = 0;
 
 /**
-* ¥¥Ω®¥∞ø⁄
+* ÂàõÂª∫Á™óÂè£
 */
 bool CDeviceWindows::Create(const string& title, int width, int height, bool resizable, bool fullscreen, bool antialias) {
-	// ¥”“—”–µƒ¥∞ø⁄æ‰±˙¥¥Ω®
+	// ‰ªéÂ∑≤ÊúâÁöÑÁ™óÂè£Âè•ÊüÑÂàõÂª∫
 	if (title.length() > 1 && title.at(0) == '$') {
 		RECT windowRect;
 		m_pContext->hwnd = (HWND)strtoul(title.substr(1).c_str(), 0, 0);
@@ -61,7 +61,7 @@ bool CDeviceWindows::Create(const string& title, int width, int height, bool res
 		height = windowRect.bottom - windowRect.top;
 	}
 	if (!m_pContext->hwnd) {
-		// ◊¢≤·¥∞ø⁄
+		// Ê≥®ÂÜåÁ™óÂè£
 		m_pContext->instance = GetModuleHandle(NULL);
 		WNDCLASSEX wc;
 		wc.cbSize = sizeof(WNDCLASSEX);
@@ -80,7 +80,7 @@ bool CDeviceWindows::Create(const string& title, int width, int height, bool res
 			CLog::Error("Register window failed");
 			return false;
 		}
-		// ¥∞ø⁄—˘ Ω(ƒ¨»œæ”÷–œ‘ æ)
+		// Á™óÂè£Ê†∑Âºè(ÈªòËÆ§Â±Ö‰∏≠ÊòæÁ§∫)
 		RECT windowRect;
 		windowRect.left = (GetSystemMetrics(SM_CXSCREEN) - width) / 2;
 		windowRect.top = (GetSystemMetrics(SM_CYSCREEN) - height) / 2;
@@ -91,7 +91,7 @@ bool CDeviceWindows::Create(const string& title, int width, int height, bool res
 		if (resizable) dwStyle |= WS_MINIMIZEBOX | WS_MAXIMIZEBOX;
 		AdjustWindowRectEx(&windowRect, dwStyle, false, dwExStyle);
 
-		// ¥¥Ω®¥∞ø⁄
+		// ÂàõÂª∫Á™óÂè£
 		if (!(m_pContext->hwnd = CreateWindowExA(
 			dwExStyle, "Avatar", title.c_str(), dwStyle | WS_CLIPSIBLINGS | WS_CLIPCHILDREN,
 			windowRect.left, windowRect.top, windowRect.right - windowRect.left, windowRect.bottom - windowRect.top,
@@ -101,13 +101,13 @@ bool CDeviceWindows::Create(const string& title, int width, int height, bool res
 			return false;
 		}
 	}
-	// ªÒ»° HDC
+	// Ëé∑Âèñ HDC
 	if (!(m_pContext->hdc = GetDC(m_pContext->hwnd))) {
 		Destroy();
 		CLog::Error("Get HDC failed");
 		return false;
 	}
-	// œÒÀÿ∏Ò Ω
+	// ÂÉèÁ¥†Ê†ºÂºè
 	PIXELFORMATDESCRIPTOR pfd = { 0 };
 	pfd.nSize = sizeof(PIXELFORMATDESCRIPTOR);
 	pfd.nVersion = 1;
@@ -118,15 +118,15 @@ bool CDeviceWindows::Create(const string& title, int width, int height, bool res
 	pfd.cStencilBits = 8;
 	pfd.iLayerType = PFD_MAIN_PLANE;
 
-	// ¥¥Ω®¡Ÿ ±…œœ¬Œƒ
+	// ÂàõÂª∫‰∏¥Êó∂‰∏ä‰∏ãÊñá
 	int pixelFormat = ChoosePixelFormat(m_pContext->hdc, &pfd);
 	SetPixelFormat(m_pContext->hdc, pixelFormat, &pfd);
 	HGLRC hrc = wglCreateContext(m_pContext->hdc);
 	wglMakeCurrent(m_pContext->hdc, hrc);
-	// ªÒ»°¿©’π»Îø⁄
+	// Ëé∑ÂèñÊâ©Â±ïÂÖ•Âè£
 	wglSwapIntervalEXT = (PFNWGLSWAPINTERVALEXTPROC)wglGetProcAddress("wglSwapIntervalEXT");
 	wglChoosePixelFormatARB = (PFNWGLCHOOSEPIXELFORMATARBPROC)wglGetProcAddress("wglChoosePixelFormatARB");
-	// ªÒ»°÷ß≥÷ MSAA œÒÀÿ∏Ò Ω
+	// Ëé∑ÂèñÊîØÊåÅ MSAA ÂÉèÁ¥†Ê†ºÂºè
 	if (antialias && wglChoosePixelFormatARB) {
 		UINT numFormats;
 		int newPixelFormat = 0;
@@ -145,14 +145,14 @@ bool CDeviceWindows::Create(const string& title, int width, int height, bool res
 		}
 	}
 	SetPixelFormat(m_pContext->hdc, pixelFormat, &pfd);
-	// …Ë÷√‰÷»æ…œœ¬Œƒ
+	// ËÆæÁΩÆÊ∏≤Êüì‰∏ä‰∏ãÊñá
 	m_pContext->hrc = wglCreateContext(m_pContext->hdc);
 	wglMakeCurrent(m_pContext->hdc, m_pContext->hrc);
 	wglDeleteContext(hrc);
-	// πÿ±’¥π÷±Õ¨≤Ω
+	// ÂÖ≥Èó≠ÂûÇÁõ¥ÂêåÊ≠•
 	if (wglSwapIntervalEXT) wglSwapIntervalEXT(0);
 
-	// ≥ı ºªØ GLEW ø‚
+	// ÂàùÂßãÂåñ GLEW Â∫ì
 	glewInit();
 	CLog::Info("OpenGL version %s", glGetString(GL_VERSION));
 	if (!glewIsSupported("GL_VERSION_3_3")) {
@@ -160,7 +160,7 @@ bool CDeviceWindows::Create(const string& title, int width, int height, bool res
 	}
 	if (antialias) glEnable(GL_MULTISAMPLE);
 
-	// ºÏ≤ÈœµÕ≥ «∑Ò÷ß≥÷∏√∑÷±Ê¬ œ¬µƒ»´∆¡ƒ£ Ω
+	// Ê£ÄÊü•Á≥ªÁªüÊòØÂê¶ÊîØÊåÅËØ•ÂàÜËæ®Áéá‰∏ãÁöÑÂÖ®Â±èÊ®°Âºè
 	if (fullscreen) {
 		int i = 0;
 		DEVMODE mode;
@@ -173,7 +173,7 @@ bool CDeviceWindows::Create(const string& title, int width, int height, bool res
 				break;
 			}
 		}
-		// …Ë÷√»´∆¡œ‘ æ
+		// ËÆæÁΩÆÂÖ®Â±èÊòæÁ§∫
 		if (fullscreen) {
 			DEVMODE dmScreenSettings;
 			memset(&dmScreenSettings, 0, sizeof(dmScreenSettings));
@@ -192,20 +192,20 @@ bool CDeviceWindows::Create(const string& title, int width, int height, bool res
 			CLog::Warn("AVATAR is going to run in windows mode");
 		}
 	}
-	// œ‘ æ¥∞ø⁄
+	// ÊòæÁ§∫Á™óÂè£
 	ShowWindow(m_pContext->hwnd, SW_SHOW);
 	SetForegroundWindow(m_pContext->hwnd);
 	SetFocus(m_pContext->hwnd);
-	// À¢–¬¥∞ÃÂ¥Û–°
+	// Âà∑Êñ∞Á™ó‰ΩìÂ§ßÂ∞è
 	CEngine::GetGraphicsManager()->SetWindowSize(width, height);
 	return true;
 }
 
 /**
-*  µ¿˝œ˙ªŸ
+* ÂÆû‰æãÈîÄÊØÅ
 */
 void CDeviceWindows::Destroy() {
-	// ª÷∏¥œ‘ æ…Ë÷√
+	// ÊÅ¢Â§çÊòæÁ§∫ËÆæÁΩÆ
 	if (m_pContext->changed) {
 		ChangeDisplaySettings(NULL, 0);
 	}
@@ -229,14 +229,14 @@ void CDeviceWindows::Destroy() {
 }
 
 /**
-* ªÊ÷∆¥∞ø⁄
+* ÁªòÂà∂Á™óÂè£
 */
 void CDeviceWindows::Render() {
 	SwapBuffers(m_pContext->hdc);
 }
 
 /**
-* ¥¶¿Ìœ˚œ¢
+* Â§ÑÁêÜÊ∂àÊÅØ
 */
 void CDeviceWindows::Handle(float dt) {
 	if (m_pContext->created) {
@@ -246,7 +246,7 @@ void CDeviceWindows::Handle(float dt) {
 			DispatchMessage(&message);
 		}
 		CInputManager* pInputMgr = CEngine::GetInputManager();
-		// ¥¶¿Ì∑ΩœÚ∞¥º¸
+		// Â§ÑÁêÜÊñπÂêëÊåâÈîÆ
 		float fMoveSpeed = 5.0f * dt;
 		if (KeyPressed[0]) fMoveSpeed *= 4.0f;
 		if (KeyPressed[1]) pInputMgr->ForthBack(fMoveSpeed);
@@ -257,14 +257,14 @@ void CDeviceWindows::Handle(float dt) {
 }
 
 /**
-* Windows ¥∞ø⁄œ˚œ¢ªÿµ˜∫Ø ˝
+* Windows Á™óÂè£Ê∂àÊÅØÂõûË∞ÉÂáΩÊï∞
 */
 LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 	int button, delta;
 	POINT point;
 	CInputManager* pInputMgr = CEngine::GetInputManager();
 
-	// ¥¶¿Ì¥∞ø⁄œ˚œ¢
+	// Â§ÑÁêÜÁ™óÂè£Ê∂àÊÅØ
 	switch (uMsg) {
 	case WM_SHOWWINDOW:
 		if (HIWORD(wParam)) pInputMgr->Pause();
@@ -331,7 +331,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 		point.y = GET_Y_LPARAM(lParam);
 		if (MK_LBUTTON == wParam) {
 			button = 1;
-			// IME Œª÷√
+			// IME ‰ΩçÁΩÆ
 			if (HIMC himc = ImmGetContext(hWnd)) {
 				COMPOSITIONFORM cf;
 				cf.ptCurrentPos.x = point.x;

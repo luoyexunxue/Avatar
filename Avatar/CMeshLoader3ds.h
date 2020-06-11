@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CMESHLOADER3DS_H_
@@ -9,23 +9,23 @@
 using std::vector;
 
 /**
-* @brief 3DS Ä£ĞÍ¼ÓÔØÀà
+* @brief 3DS æ¨¡å‹åŠ è½½ç±»
 */
 class CMeshLoader3ds: public CMeshLoader {
 protected:
-	//! ¼ÓÔØÄ£ĞÍ
+	//! åŠ è½½æ¨¡å‹
 	virtual CMeshData* LoadFile(const string& filename, const string& type);
 
 private:
-	//! µİ¹é¶ÁÈ¡¿é
+	//! é€’å½’è¯»å–å—
 	void ReadChunk(unsigned char* buffer, unsigned int size);
-	//! ¶ÁÈ¡Íø¸ñ¿é
+	//! è¯»å–ç½‘æ ¼å—
 	void ReadMeshChunk(unsigned char* buffer, unsigned int size, CMesh* mesh);
-	//! ¶ÁÈ¡²ÄÖÊ¿é
+	//! è¯»å–æè´¨å—
 	void ReadMaterialChunk(unsigned char* buffer, unsigned int size, CMaterial* material);
-	//! ¶ÁÈ¡ÑÕÉ«¿é
+	//! è¯»å–é¢œè‰²å—
 	void ReadColorChunk(unsigned char* buffer, unsigned int size, float color[3]);
-	//! ¶ÁÈ¡ÎÆÀí¿é
+	//! è¯»å–çº¹ç†å—
 	void ReadTextureChunk(unsigned char* buffer, unsigned int size, string& texture);
 
 private:

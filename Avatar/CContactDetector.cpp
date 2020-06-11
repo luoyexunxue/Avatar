@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CContactDetector.h"
@@ -11,7 +11,7 @@
 #endif
 
 /**
-* ¸ÕÌå½Ó´¥¼ì²â
+* åˆšä½“æ¥è§¦æ£€æµ‹
 */
 bool CContactDetector::Detect(const CRigidBody* body1, const CRigidBody* body2, SArbiter* arbiter) {
 	const SGeometry& g1 = body1->GetGeometry();
@@ -26,7 +26,7 @@ bool CContactDetector::Detect(const CRigidBody* body1, const CRigidBody* body2, 
 		shp1 = static_cast<int>(g2.shape);
 		shp2 = static_cast<int>(g1.shape);
 	}
-	// ¸ù¾İ²»Í¬ĞÎ×´Ñ¡Ôñ²»Í¬·½·¨¼ì²â£¬ĞÎ×´¶¨Òå²Î¼û CGeometryCreator.h
+	// æ ¹æ®ä¸åŒå½¢çŠ¶é€‰æ‹©ä¸åŒæ–¹æ³•æ£€æµ‹ï¼Œå½¢çŠ¶å®šä¹‰å‚è§ CGeometryCreator.h
 	switch (shp1 * 100 + shp2) {
 	case 101: arbiter->numContacts = BoxBoxTest(b1, b2, arbiter->contact); break;
 	case 102: arbiter->numContacts = BoxSphereTest(b1, b2, arbiter->contact); break;
@@ -44,7 +44,7 @@ bool CContactDetector::Detect(const CRigidBody* body1, const CRigidBody* body2, 
 	case 607: arbiter->numContacts = ConePlaneTest(b1, b2, arbiter->contact); break;
 	default: arbiter->numContacts = 0; break;
 	}
-	// ÅĞ¶ÏÊÇ·ñĞèÒª½»»»¸ÕÌå
+	// åˆ¤æ–­æ˜¯å¦éœ€è¦äº¤æ¢åˆšä½“
 	if (b1 > b2) {
 		arbiter->body1 = const_cast<CRigidBody*>(b2);
 		arbiter->body2 = const_cast<CRigidBody*>(b1);
@@ -62,7 +62,7 @@ bool CContactDetector::Detect(const CRigidBody* body1, const CRigidBody* body2, 
 }
 
 /**
-* ¼ÆËãºĞÌåÓëºĞÌå£¬Ê¹ÓÃ·ÖÀëÖá²âÊÔ
+* è®¡ç®—ç›’ä½“ä¸ç›’ä½“ï¼Œä½¿ç”¨åˆ†ç¦»è½´æµ‹è¯•
 */
 int CContactDetector::BoxBoxTest(const CRigidBody* body1, const CRigidBody* body2, SContact* contact) {
 	CVector3 pos1 = body1->GetSceneNode()->GetWorldPosition();
@@ -73,10 +73,10 @@ int CContactDetector::BoxBoxTest(const CRigidBody* body1, const CRigidBody* body
 	CVector3 size1(geo1.box.x / 2, geo1.box.y / 2, geo1.box.z / 2);
 	CVector3 size2(geo2.box.x / 2, geo2.box.y / 2, geo2.box.z / 2);
 
-	// Á½¸öºĞÌåµÄĞı×ªËõ·ÅÆ½ÒÆ¾ØÕó
+	// ä¸¤ä¸ªç›’ä½“çš„æ—‹è½¬ç¼©æ”¾å¹³ç§»çŸ©é˜µ
 	CMatrix4 R1 = body1->GetSceneNode()->m_cWorldMatrix;
 	CMatrix4 R2 = body2->GetSceneNode()->m_cWorldMatrix;
-	// È¥³ıËõ·ÅºÍÆ½ÒÆ·ÖÁ¿£¬×ª»»ÎªÕı½»¾ØÕó
+	// å»é™¤ç¼©æ”¾å’Œå¹³ç§»åˆ†é‡ï¼Œè½¬æ¢ä¸ºæ­£äº¤çŸ©é˜µ
 	R1(0, 3) = R1(1, 3) = R1(2, 3) = 0.0f;
 	R2(0, 3) = R2(1, 3) = R2(2, 3) = 0.0f;
 	for (int i = 0; i < 3; i++) {
@@ -89,22 +89,22 @@ int CContactDetector::BoxBoxTest(const CRigidBody* body1, const CRigidBody* body
 		R2(1, i) *= scale2;
 		R2(2, i) *= scale2;
 	}
-	// ¼ÆËã Box2 Ïà¶ÔÓÚ Box1 µÄĞı×ª¾ØÕó
+	// è®¡ç®— Box2 ç›¸å¯¹äº Box1 çš„æ—‹è½¬çŸ©é˜µ
 	CMatrix4 Inv_R1 = R1;
 	CMatrix4 R = Inv_R1.Transpose() * R2;
-	// Ïà¶ÔÓÚ Box1 µÄ distance
+	// ç›¸å¯¹äº Box1 çš„ distance
 	CVector3 refDis1 = Inv_R1 * distance;
-	// ¾ØÕó R ÖĞËùÓĞ·ÖÁ¿µÄ¾ø¶ÔÖµ
+	// çŸ©é˜µ R ä¸­æ‰€æœ‰åˆ†é‡çš„ç»å¯¹å€¼
 	float Q11 = fabs(R(0, 0)); float Q12 = fabs(R(0, 1)); float Q13 = fabs(R(0, 2));
 	float Q21 = fabs(R(1, 0)); float Q22 = fabs(R(1, 1)); float Q23 = fabs(R(1, 2));
 	float Q31 = fabs(R(2, 0)); float Q32 = fabs(R(2, 1)); float Q33 = fabs(R(2, 2));
 
-	// ·ÖÀëÖá²âÊÔ
+	// åˆ†ç¦»è½´æµ‹è¯•
 	int normalIndex = 0;
 	bool invertNormal = false;
 	float smallestGap = -FLT_MAX;
 	float s, ds;
-	// A1 Öá
+	// A1 è½´
 	s = fabs(refDis1[0]) - (size1[0] + size2[0] * Q11 + size2[1] * Q12 + size2[2] * Q13);
 	if (s > 0) return 0;
 	if (s > smallestGap) {
@@ -112,7 +112,7 @@ int CContactDetector::BoxBoxTest(const CRigidBody* body1, const CRigidBody* body
 		normalIndex = 0;
 		invertNormal = refDis1[0] < 0;
 	}
-	// A2 Öá
+	// A2 è½´
 	s = fabs(refDis1[1]) - (size1[1] + size2[0] * Q21 + size2[1] * Q22 + size2[2] * Q23);
 	if (s > 0) return 0;
 	if (s > smallestGap) {
@@ -120,7 +120,7 @@ int CContactDetector::BoxBoxTest(const CRigidBody* body1, const CRigidBody* body
 		normalIndex = 1;
 		invertNormal = refDis1[1] < 0;
 	}
-	// A3 Öá
+	// A3 è½´
 	s = fabs(refDis1[2]) - (size1[2] + size2[0] * Q31 + size2[1] * Q32 + size2[2] * Q33);
 	if (s > 0) return 0;
 	if (s > smallestGap) {
@@ -128,10 +128,10 @@ int CContactDetector::BoxBoxTest(const CRigidBody* body1, const CRigidBody* body
 		normalIndex = 2;
 		invertNormal = refDis1[2] < 0;
 	}
-	// Ïà¶ÔÓÚ Box2 µÄ distance
+	// ç›¸å¯¹äº Box2 çš„ distance
 	CMatrix4 Inv_R2 = R2;
 	CVector3 refDis2 = Inv_R2.Transpose() * distance;
-	// B1 Öá
+	// B1 è½´
 	s = fabs(refDis2[0]) - (size2[0] + size1[0] * Q11 + size1[1] * Q21 + size1[2] * Q31);
 	if (s > 0) return 0;
 	if (s > smallestGap) {
@@ -139,7 +139,7 @@ int CContactDetector::BoxBoxTest(const CRigidBody* body1, const CRigidBody* body
 		normalIndex = 3;
 		invertNormal = refDis2[0] < 0;
 	}
-	// B2 Öá
+	// B2 è½´
 	s = fabs(refDis2[1]) - (size2[1] + size1[0] * Q12 + size1[1] * Q22 + size1[2] * Q32);
 	if (s > 0) return 0;
 	if (s > smallestGap) {
@@ -147,7 +147,7 @@ int CContactDetector::BoxBoxTest(const CRigidBody* body1, const CRigidBody* body
 		normalIndex = 4;
 		invertNormal = refDis2[1] < 0;
 	}
-	// B3 Öá
+	// B3 è½´
 	s = fabs(refDis2[2]) - (size2[2] + size1[0] * Q13 + size1[1] * Q23 + size1[2] * Q33);
 	if (s > 0) return 0;
 	if (s > smallestGap) {
@@ -156,7 +156,7 @@ int CContactDetector::BoxBoxTest(const CRigidBody* body1, const CRigidBody* body
 		invertNormal = refDis2[2] < 0;
 	}
 
-	// A1 x B1 Öá£¨0,-R31,R21£©
+	// A1 x B1 è½´ï¼ˆ0,-R31,R21ï¼‰
 	ds = refDis1[2] * R(1, 0) - refDis1[1] * R(2, 0);
 	s = fabs(ds) - (size1[1] * Q31 + size1[2] * Q21 + size2[1] * Q13 + size2[2] * Q12);
 	if (s > 0) return 0;
@@ -169,7 +169,7 @@ int CContactDetector::BoxBoxTest(const CRigidBody* body1, const CRigidBody* body
 			invertNormal = ds < 0;
 		}
 	}
-	// A1 x B2 Öá£¨0,-R32,R22£©
+	// A1 x B2 è½´ï¼ˆ0,-R32,R22ï¼‰
 	ds = refDis1[2] * R(1, 1) - refDis1[1] * R(2, 1);
 	s = fabs(ds) - (size1[1] * Q32 + size1[2] * Q22 + size2[0] * Q13 + size2[2] * Q11);
 	if (s > 0) return 0;
@@ -182,7 +182,7 @@ int CContactDetector::BoxBoxTest(const CRigidBody* body1, const CRigidBody* body
 			invertNormal = ds < 0;
 		}
 	}
-	// A1 x B3 Öá£¨0,-R33,R23£©
+	// A1 x B3 è½´ï¼ˆ0,-R33,R23ï¼‰
 	ds = refDis1[2] * R(1, 2) - refDis1[1] * R(2, 2);
 	s = fabs(ds) - (size1[1] * Q33 + size1[2] * Q23 + size2[0] * Q12 + size2[1] * Q11);
 	if (s > 0) return 0;
@@ -195,7 +195,7 @@ int CContactDetector::BoxBoxTest(const CRigidBody* body1, const CRigidBody* body
 			invertNormal = ds < 0;
 		}
 	}
-	// A2 x B1 Öá£¨R31,0,-R11£©
+	// A2 x B1 è½´ï¼ˆR31,0,-R11ï¼‰
 	ds = refDis1[0] * R(2, 0) - refDis1[2] * R(0, 0);
 	s = fabs(ds) - (size1[0] * Q31 + size1[2] * Q11 + size2[1] * Q23 + size2[2] * Q22);
 	if (s > 0) return 0;
@@ -208,7 +208,7 @@ int CContactDetector::BoxBoxTest(const CRigidBody* body1, const CRigidBody* body
 			invertNormal = ds < 0;
 		}
 	}
-	// A2 x B2 Öá£¨R32,0,-R12£©
+	// A2 x B2 è½´ï¼ˆR32,0,-R12ï¼‰
 	ds = refDis1[0] * R(2, 1) - refDis1[2] * R(0, 1);
 	s = fabs(ds) - (size1[0] * Q32 + size1[2] * Q12 + size2[0] * Q23 + size2[2] * Q21);
 	if (s > 0) return 0;
@@ -221,7 +221,7 @@ int CContactDetector::BoxBoxTest(const CRigidBody* body1, const CRigidBody* body
 			invertNormal = ds < 0;
 		}
 	}
-	// A2 x B3 Öá£¨R33,0,-R13£©
+	// A2 x B3 è½´ï¼ˆR33,0,-R13ï¼‰
 	ds = refDis1[0] * R(2, 2) - refDis1[2] * R(0, 2);
 	s = fabs(ds) - (size1[0] * Q33 + size1[2] * Q13 + size2[0] * Q22 + size2[1] * Q21);
 	if (s > 0) return 0;
@@ -234,7 +234,7 @@ int CContactDetector::BoxBoxTest(const CRigidBody* body1, const CRigidBody* body
 			invertNormal = ds < 0;
 		}
 	}
-	// A3 x B1 Öá£¨-R21,R11,0£©
+	// A3 x B1 è½´ï¼ˆ-R21,R11,0ï¼‰
 	ds = refDis1[1] * R(0, 0) - refDis1[0] * R(1, 0);
 	s = fabs(ds) - (size1[0] * Q21 + size1[1] * Q11 + size2[1] * Q33 + size2[2] * Q32);
 	if (s > 0) return 0;
@@ -247,7 +247,7 @@ int CContactDetector::BoxBoxTest(const CRigidBody* body1, const CRigidBody* body
 			invertNormal = ds < 0;
 		}
 	}
-	// A3 x B2 Öá£¨-R22,R12,0£©
+	// A3 x B2 è½´ï¼ˆ-R22,R12,0ï¼‰
 	ds = refDis1[1] * R(0, 1) - refDis1[0] * R(1, 1);
 	s = fabs(ds) - (size1[0] * Q22 + size1[1] * Q12 + size2[0] * Q33 + size2[2] * Q31);
 	if (s > 0) return 0;
@@ -260,7 +260,7 @@ int CContactDetector::BoxBoxTest(const CRigidBody* body1, const CRigidBody* body
 			invertNormal = ds < 0;
 		}
 	}
-	// A3 x B3 Öá£¨-R23,R13,0£©
+	// A3 x B3 è½´ï¼ˆ-R23,R13,0ï¼‰
 	ds = refDis1[1] * R(0, 2) - refDis1[0] * R(1, 2);
 	s = fabs(ds) - (size1[0] * Q23 + size1[1] * Q13 + size2[0] * Q32 + size2[1] * Q31);
 	if (s > 0) return 0;
@@ -274,7 +274,7 @@ int CContactDetector::BoxBoxTest(const CRigidBody* body1, const CRigidBody* body
 		}
 	}
 
-	// ¼ÆËãÅö×²·¨ÏòÁ¿
+	// è®¡ç®—ç¢°æ’æ³•å‘é‡
 	CVector3 norm_world;
 	switch (normalIndex) {
 	case 0:
@@ -303,23 +303,23 @@ int CContactDetector::BoxBoxTest(const CRigidBody* body1, const CRigidBody* body
 	}
 	if (invertNormal) norm_world.Scale(-1.0f);
 
-	// ±ß-±ß½Ó´¥
+	// è¾¹-è¾¹æ¥è§¦
 	if (normalIndex > 5) {
-		// ÕÒµ½ÔÚ Box1 Ïà½»±ßÉÏµÄÒ»µã pa
+		// æ‰¾åˆ°åœ¨ Box1 ç›¸äº¤è¾¹ä¸Šçš„ä¸€ç‚¹ pa
 		CVector3 norm1 = Inv_R1 * norm_world;
 		for (int i = 0; i < 3; i++) norm1[i] = norm1[i] < 0? size1[i]: -size1[i];
 		CVector3 pa = pos1 + (R1 * norm1);
-		// ÕÒµ½ÔÚ Box2 Ïà½»±ßÉÏµÄÒ»µã pb
+		// æ‰¾åˆ°åœ¨ Box2 ç›¸äº¤è¾¹ä¸Šçš„ä¸€ç‚¹ pb
 		CVector3 norm2 = Inv_R2 * norm_world;
 		for (int i = 0; i < 3; i++) norm2[i] = norm2[i] > 0? size2[i]: -size2[i];
 		CVector3 pb = pos2 + (R2 * norm2);
-		// Box1 ºÍ Box2 ÉÏÏà½»±ßµÄ·½ÏòÏòÁ¿
+		// Box1 å’Œ Box2 ä¸Šç›¸äº¤è¾¹çš„æ–¹å‘å‘é‡
 		int axis1 = (normalIndex - 6) / 3;
 		int axis2 = (normalIndex - 6) % 3;
 		CVector3 ua(R1(0, axis1), R1(1, axis1), R1(2, axis1), 0);
 		CVector3 ub(R2(0, axis2), R2(1, axis2), R2(2, axis2), 0);
 
-		// ¼ÆËãÁ½Ìõ±ßµÄ×î½üµã
+		// è®¡ç®—ä¸¤æ¡è¾¹çš„æœ€è¿‘ç‚¹
 		CVector3 uab = ua.CrossProduct(ub);
 		float d = uab[0] * uab[0] + uab[1] * uab[1] + uab[2] * uab[2];
 		if (d > 0.000001f) {
@@ -330,7 +330,7 @@ int CContactDetector::BoxBoxTest(const CRigidBody* body1, const CRigidBody* body
 			pa += ua * t1;
 			pb += ub * t2;
 		}
-        // È¡Á½¸öµãµÄÖĞµã×÷Îª½»µã
+        // å–ä¸¤ä¸ªç‚¹çš„ä¸­ç‚¹ä½œä¸ºäº¤ç‚¹
 		CVector3 contactPoint = (pa + pb) * 0.5f;
 		contact[0].point = contactPoint;
 		contact[0].normal = norm_world;
@@ -340,12 +340,12 @@ int CContactDetector::BoxBoxTest(const CRigidBody* body1, const CRigidBody* body
         return 1;
 	}
 
-	// Ãæ-µã½Ó´¥
+	// é¢-ç‚¹æ¥è§¦
 	const float *Rb, *Sa, *Sb;
 	CVector3 center;
 	CVector3 normLocal;
 
-	// ¼ÆËã·Ç²Î¿¼ºĞÌå¾Ö²¿×ø±êÏµÄÚµÄ½Ó´¥·¨ÏòÁ¿
+	// è®¡ç®—éå‚è€ƒç›’ä½“å±€éƒ¨åæ ‡ç³»å†…çš„æ¥è§¦æ³•å‘é‡
 	if (normalIndex < 3) {
 		Rb = R2.m_fValue;
 		Sa = size1.m_fValue;
@@ -360,7 +360,7 @@ int CContactDetector::BoxBoxTest(const CRigidBody* body1, const CRigidBody* body
 		normLocal.Scale(-1.0f);
 		center = pos1 - pos2;
 	}
-	// ¼ÆËã¸Ã·¨ÏòÁ¿µÄ×î´ó·ÖÁ¿·½Ïò
+	// è®¡ç®—è¯¥æ³•å‘é‡çš„æœ€å¤§åˆ†é‡æ–¹å‘
 	int lanr;
 	if (fabs(normLocal[0]) > fabs(normLocal[1])) {
 		if (fabs(normLocal[0]) > fabs(normLocal[2])) lanr = 0;
@@ -369,30 +369,30 @@ int CContactDetector::BoxBoxTest(const CRigidBody* body1, const CRigidBody* body
 		if (fabs(normLocal[1]) > fabs(normLocal[2])) lanr = 1;
 		else lanr = 2;
 	}
-	// ¼ÆËãÏà¶ÔÓÚ²Î¿¼ÃæµÄÍ¶Ó°ÃæÖĞĞÄµã
+	// è®¡ç®—ç›¸å¯¹äºå‚è€ƒé¢çš„æŠ•å½±é¢ä¸­å¿ƒç‚¹
 	if (normLocal[lanr] < 0) center -= CVector3(Rb[lanr * 4], Rb[lanr * 4 + 1], Rb[lanr * 4 + 2]) * Sb[lanr];
 	else center += CVector3(Rb[lanr * 4], Rb[lanr * 4 + 1], Rb[lanr * 4 + 2]) * Sb[lanr];
 
-	// ²Î¿¼ÃæµÄ×ø±êÖá·ÖÁ¿ÏÂ±ê ix, iy Çø±ğÓÚ·ÖÀëÃæ·¨ÏòÁ¿
+	// å‚è€ƒé¢çš„åæ ‡è½´åˆ†é‡ä¸‹æ ‡ ix, iy åŒºåˆ«äºåˆ†ç¦»é¢æ³•å‘é‡
 	int ix = (normalIndex % 3 + 1) % 3;
 	int iy = (normalIndex % 3 + 2) % 3;
 	int iz = normalIndex % 3;
-	// Í¶Ó°ÃæµÄ×ø±êÖá·ÖÁ¿ÏÂ±ê jx, jy Çø±ğÓÚÍ¶Ó°Ãæ·¨ÏòÁ¿
+	// æŠ•å½±é¢çš„åæ ‡è½´åˆ†é‡ä¸‹æ ‡ jx, jy åŒºåˆ«äºæŠ•å½±é¢æ³•å‘é‡
 	int jx = (lanr + 1) % 3;
 	int jy = (lanr + 2) % 3;
 
-	// ¼ÆËãÍ¶Ó°µ½²Î¿¼ÃæµÄËÄ¸öµãµÄ×ø±ê
+	// è®¡ç®—æŠ•å½±åˆ°å‚è€ƒé¢çš„å››ä¸ªç‚¹çš„åæ ‡
 	CMatrix4& matProj = normalIndex < 3? Inv_R1: Inv_R2;
 	CVector3 ao = matProj * center;
 	CVector3 ax = matProj * (CVector3(Rb[jx * 4], Rb[jx * 4 + 1], Rb[jx * 4 + 2]) * Sb[jx]);
 	CVector3 ay = matProj * (CVector3(Rb[jy * 4], Rb[jy * 4 + 1], Rb[jy * 4 + 2]) * Sb[jy]);
 	CVector3 proj[4] = { ao + ax + ay, ao + ax - ay, ao - ax - ay, ao - ax + ay };
 
-	// Çó½Ó´¥µãÊÀ½ç×ø±êµÄ±ä»»¾ØÕóºÍÆ«ÒÆ
+	// æ±‚æ¥è§¦ç‚¹ä¸–ç•Œåæ ‡çš„å˜æ¢çŸ©é˜µå’Œåç§»
 	CMatrix4& matUnProj = normalIndex < 3? R1: R2;
 	CVector3& offset = normalIndex < 3? pos1: pos2;
 
-	// ¶ÔÍ¶Ó°ËÄ±ßĞÎÓë²Î¿¼Ãæ£¨¾ØĞÎ£©½øĞĞÏà½»²âÊÔ
+	// å¯¹æŠ•å½±å››è¾¹å½¢ä¸å‚è€ƒé¢ï¼ˆçŸ©å½¢ï¼‰è¿›è¡Œç›¸äº¤æµ‹è¯•
 	float rect[2] = { Sa[ix], Sa[iy] };
 	float point[24] = {
 		proj[0][ix], proj[0][iy], proj[0][iz],
@@ -403,9 +403,9 @@ int CContactDetector::BoxBoxTest(const CRigidBody* body1, const CRigidBody* body
 	int numPoint = 4;
 	float buffer[24];
 
-	// ½«ËÄ±ßĞÎ¶¥µã×÷Îª³õÊ¼µãÓë¾ØĞÎËÄÌõ±ß²âÊÔ£¬Ã¿´ÎÊ¹ÓÃÒ»Ìõ¾ØĞÎ±ß²âÊÔ
-	// ÈôÒ»¸ö¶¥µãÔÚ¾ØĞÎ±ßµÄÄÚ²àÔò½«¸Ãµã¼ÓÈë£¬µÈ´ıºóĞø²âÊÔ
-	// ÈôÒ»¸ö¶¥µãÓëÏàÁÚµÄÏÂÒ»¸ö¶¥µãÖĞÖ»ÓĞÒ»¸öÔÚ¾ØĞÎ±ßµÄÄÚ²à£¬Ôò¼ÆËã½»µã²¢¼ÓÈë£¬µÈ´ıºóĞø²âÊÔ
+	// å°†å››è¾¹å½¢é¡¶ç‚¹ä½œä¸ºåˆå§‹ç‚¹ä¸çŸ©å½¢å››æ¡è¾¹æµ‹è¯•ï¼Œæ¯æ¬¡ä½¿ç”¨ä¸€æ¡çŸ©å½¢è¾¹æµ‹è¯•
+	// è‹¥ä¸€ä¸ªé¡¶ç‚¹åœ¨çŸ©å½¢è¾¹çš„å†…ä¾§åˆ™å°†è¯¥ç‚¹åŠ å…¥ï¼Œç­‰å¾…åç»­æµ‹è¯•
+	// è‹¥ä¸€ä¸ªé¡¶ç‚¹ä¸ç›¸é‚»çš„ä¸‹ä¸€ä¸ªé¡¶ç‚¹ä¸­åªæœ‰ä¸€ä¸ªåœ¨çŸ©å½¢è¾¹çš„å†…ä¾§ï¼Œåˆ™è®¡ç®—äº¤ç‚¹å¹¶åŠ å…¥ï¼Œç­‰å¾…åç»­æµ‹è¯•
 	float* pp = point;
 	float* pb = buffer;
 	for (int dir = 0; dir < 2; dir++) {
@@ -424,7 +424,7 @@ int CContactDetector::BoxBoxTest(const CRigidBody* body1, const CRigidBody* body
 				}
 				float* pSrcNext = pp + ((i + 1) % numPoint) * 3;
 				if (inside ^ ((sign? pSrcNext[dir]: -pSrcNext[dir]) < rect[dir])) {
-					// ¼ÆËãÁ½µã pSrc, pSrcNext ×é³ÉµÄÏß¶ÎÓë±ß sign rect[dir] µÄ½»µã
+					// è®¡ç®—ä¸¤ç‚¹ pSrc, pSrcNext ç»„æˆçš„çº¿æ®µä¸è¾¹ sign rect[dir] çš„äº¤ç‚¹
 					float k = ((sign? rect[dir]: -rect[dir]) - pSrc[dir]) / (pSrcNext[dir] - pSrc[dir]);
 					const int dstX = dir;
 					const int dstY = 1 - dir;
@@ -435,7 +435,7 @@ int CContactDetector::BoxBoxTest(const CRigidBody* body1, const CRigidBody* body
 					pDst += 3;
 					count++;
 				}
-				// ÏÂÒ»¸ö¶¥µã
+				// ä¸‹ä¸€ä¸ªé¡¶ç‚¹
 				pSrc += 3;
 			}
 			numPoint = count;
@@ -444,7 +444,7 @@ int CContactDetector::BoxBoxTest(const CRigidBody* body1, const CRigidBody* body
 		}
 	}
 
-	// ¶Ô¼ÆËã³öÀ´µÄ½Ó´¥µã½øĞĞÉî¶È±È½Ï£¬Ö»·µ»ØÓĞ½Ó´¥Éî¶ÈµÄµã£¬×¢Òâ½Ó´¥·¨ÏòÁ¿ÊÇÖ¸ÏòÎïÌå A µÄ
+	// å¯¹è®¡ç®—å‡ºæ¥çš„æ¥è§¦ç‚¹è¿›è¡Œæ·±åº¦æ¯”è¾ƒï¼Œåªè¿”å›æœ‰æ¥è§¦æ·±åº¦çš„ç‚¹ï¼Œæ³¨æ„æ¥è§¦æ³•å‘é‡æ˜¯æŒ‡å‘ç‰©ä½“ A çš„
 	int penetrate = 0;
 	const bool compare = normalIndex < 3 ? invertNormal : !invertNormal;
 	const float reference = compare ? Sa[iz] : -Sa[iz];
@@ -456,7 +456,7 @@ int CContactDetector::BoxBoxTest(const CRigidBody* body1, const CRigidBody* body
 			contactPoint[ix] = pt[0];
 			contactPoint[iy] = pt[1];
 			contactPoint[iz] = pt[2];
-			// ×ª»»½Ó´¥µãµ½ÊÀ½ç×ø±êÏµ
+			// è½¬æ¢æ¥è§¦ç‚¹åˆ°ä¸–ç•Œåæ ‡ç³»
 			contact[penetrate].point = matUnProj * CVector3(contactPoint) + offset;
 			contact[penetrate].normal = norm_world;
 			contact[penetrate].rel1 = contact[penetrate].point - pos1;
@@ -469,7 +469,7 @@ int CContactDetector::BoxBoxTest(const CRigidBody* body1, const CRigidBody* body
 }
 
 /**
-* ¼ÆËãºĞÌåÓëÇòÌå
+* è®¡ç®—ç›’ä½“ä¸çƒä½“
 */
 int CContactDetector::BoxSphereTest(const CRigidBody* body1, const CRigidBody* body2, SContact* contact) {
 	CVector3 pos1 = body1->GetSceneNode()->GetWorldPosition();
@@ -480,14 +480,14 @@ int CContactDetector::BoxSphereTest(const CRigidBody* body1, const CRigidBody* b
 	CVector3 size(geo1.box.x * 0.5f, geo1.box.y * 0.5f, geo1.box.z * 0.5f);
 	float radius = geo2.sphere.r;
 
-	// ºĞÌåÈı¸öÖáÏòµ¥Î»ÏòÁ¿
+	// ç›’ä½“ä¸‰ä¸ªè½´å‘å•ä½å‘é‡
 	CMatrix4& m = body1->GetSceneNode()->m_cWorldMatrix;
 	CVector3 axis[3] = {
 		CVector3(m(0, 0), m(1, 0), m(2, 0)).Normalize(),
 		CVector3(m(0, 1), m(1, 1), m(2, 1)).Normalize(),
 		CVector3(m(0, 2), m(1, 2), m(2, 2)).Normalize()
 	};
-	// ¼ÆËãºĞÌåÉÏÃæ¾àÀëÇòĞÄµÄ×î½üµã
+	// è®¡ç®—ç›’ä½“ä¸Šé¢è·ç¦»çƒå¿ƒçš„æœ€è¿‘ç‚¹
 	CVector3 closest = pos1;
 	for (int i = 0; i < 3; i++) {
 		float len = distance.DotProduct(axis[i]);
@@ -495,7 +495,7 @@ int CContactDetector::BoxSphereTest(const CRigidBody* body1, const CRigidBody* b
 		else if (len < -size[i]) len = -size[i];
 		closest += axis[i] * len;
 	}
-	// ¼ì²éÊÇ·ñÅö×²
+	// æ£€æŸ¥æ˜¯å¦ç¢°æ’
 	distance = closest - pos2;
 	float len = distance.DotProduct(distance);
 	if (len >= radius * radius) return 0;
@@ -503,7 +503,7 @@ int CContactDetector::BoxSphereTest(const CRigidBody* body1, const CRigidBody* b
 		len = sqrtf(len);
 		distance.Scale(1.0f / len);
 	} else {
-		// ÇòĞÄÓë½Ó´¥µãÖØºÏÇé¿ö
+		// çƒå¿ƒä¸æ¥è§¦ç‚¹é‡åˆæƒ…å†µ
 		distance = (pos1 - pos2).Normalize();
 	}
 	contact[0].point = closest;
@@ -515,13 +515,13 @@ int CContactDetector::BoxSphereTest(const CRigidBody* body1, const CRigidBody* b
 }
 
 /**
-* ¼ÆËãºĞÌåÓëÆ½Ãæ
+* è®¡ç®—ç›’ä½“ä¸å¹³é¢
 */
 int CContactDetector::BoxPlaneTest(const CRigidBody* body1, const CRigidBody* body2, SContact* contact) {
 	CVector3 pos1 = body1->GetSceneNode()->GetWorldPosition();
 	CVector3 pos2 = body2->GetSceneNode()->GetWorldPosition();
 
-	// ºĞÌåÈı¸öÖáÏòÓëÆ½Ãæ·¨ÏòµÄµ¥Î»ÏòÁ¿
+	// ç›’ä½“ä¸‰ä¸ªè½´å‘ä¸å¹³é¢æ³•å‘çš„å•ä½å‘é‡
 	CMatrix4& m1 = body1->GetSceneNode()->m_cWorldMatrix;
 	CMatrix4& m2 = body2->GetSceneNode()->m_cWorldMatrix;
 	CVector3 axis[4] = {
@@ -530,7 +530,7 @@ int CContactDetector::BoxPlaneTest(const CRigidBody* body1, const CRigidBody* bo
 		CVector3(m1(0, 2), m1(1, 2), m1(2, 2)).Normalize(),
 		CVector3(m2(0, 2), m2(1, 2), m2(2, 2)).Normalize()
 	};
-	// »ñÈ¡ºĞÌåÖ÷Öá(ÓëÆ½Ãæ·¨Ïò×î½Ó½ü)
+	// è·å–ç›’ä½“ä¸»è½´(ä¸å¹³é¢æ³•å‘æœ€æ¥è¿‘)
 	float dot[3] = {
 		axis[0].DotProduct(axis[3]),
 		axis[1].DotProduct(axis[3]),
@@ -543,7 +543,7 @@ int CContactDetector::BoxPlaneTest(const CRigidBody* body1, const CRigidBody* bo
 	if (fx > fy && fx > fz) dominate = 0;
 	else if (fy > fx && fy > fz) dominate = 1;
 	else dominate = 2;
-	// ¼ÆËã½Ó´¥ÃæÉÏµÄËÄ¸öµã
+	// è®¡ç®—æ¥è§¦é¢ä¸Šçš„å››ä¸ªç‚¹
 	axis[0].Scale(body1->GetGeometry().box.x * 0.5f);
 	axis[1].Scale(body1->GetGeometry().box.y * 0.5f);
 	axis[2].Scale(body1->GetGeometry().box.z * 0.5f);
@@ -555,7 +555,7 @@ int CContactDetector::BoxPlaneTest(const CRigidBody* body1, const CRigidBody* bo
 		center - axis[(dominate + 1) % 3] + axis[(dominate + 2) % 3],
 		center - axis[(dominate + 1) % 3] - axis[(dominate + 2) % 3]
 	};
-	// ¼ÆËãÓëÆ½ÃæµÄ½»µã
+	// è®¡ç®—ä¸å¹³é¢çš„äº¤ç‚¹
 	CPlane plane(pos2, axis[3]);
 	int count = 0;
 	for (int i = 0; i < 4; i++) {
@@ -573,7 +573,7 @@ int CContactDetector::BoxPlaneTest(const CRigidBody* body1, const CRigidBody* bo
 }
 
 /**
-* ¼ÆËãÇòÌåÓëÇòÌå
+* è®¡ç®—çƒä½“ä¸çƒä½“
 */
 int CContactDetector::SphereSphereTest(const CRigidBody* body1, const CRigidBody* body2, SContact* contact) {
 	CVector3 pos1 = body1->GetSceneNode()->GetWorldPosition();
@@ -582,7 +582,7 @@ int CContactDetector::SphereSphereTest(const CRigidBody* body1, const CRigidBody
 	float radius1 = body1->GetGeometry().sphere.r;
 	float radius2 = body2->GetGeometry().sphere.r;
 
-	// ¼ÆËãÁ½¸öÇòÌåÖ®¼äµÄ¾àÀëÆ½·½
+	// è®¡ç®—ä¸¤ä¸ªçƒä½“ä¹‹é—´çš„è·ç¦»å¹³æ–¹
 	float len = distance.DotProduct(distance);
 	float rad = radius1 + radius2;
 	if (len > 0 && len < rad * rad) {
@@ -599,7 +599,7 @@ int CContactDetector::SphereSphereTest(const CRigidBody* body1, const CRigidBody
 }
 
 /**
-* ¼ÆËãÇòÌåÓë½ºÄÒÌå
+* è®¡ç®—çƒä½“ä¸èƒ¶å›Šä½“
 */
 int CContactDetector::SphereCapsuleTest(const CRigidBody* body1, const CRigidBody* body2, SContact* contact) {
 	CVector3 pos1 = body1->GetSceneNode()->GetWorldPosition();
@@ -608,11 +608,11 @@ int CContactDetector::SphereCapsuleTest(const CRigidBody* body1, const CRigidBod
 	float capsuleRadius = body2->GetGeometry().capsule.r;
 	float capsuleHeight = body2->GetGeometry().capsule.h;
 
-	// ½ºÄÒÌå Z Öá·½ÏòµÄµ¥Î»ÏòÁ¿
+	// èƒ¶å›Šä½“ Z è½´æ–¹å‘çš„å•ä½å‘é‡
 	CMatrix4& m = body2->GetSceneNode()->m_cWorldMatrix;
 	CVector3 nz = CVector3(m(0, 2), m(1, 2), m(2, 2)).Normalize();
 
-	// ½«Í¶Ó°Î»ÖÃÏŞÖÆµ½Á½¸ö¶ËµãÖ®¼ä
+	// å°†æŠ•å½±ä½ç½®é™åˆ¶åˆ°ä¸¤ä¸ªç«¯ç‚¹ä¹‹é—´
 	const float halfHeight = capsuleHeight * 0.5f;
 	float t = nz.DotProduct(pos1);
 	if (t > halfHeight) t = halfHeight;
@@ -637,7 +637,7 @@ int CContactDetector::SphereCapsuleTest(const CRigidBody* body1, const CRigidBod
 }
 
 /**
-* ¼ÆËãÇòÌåÓëÔ²ÖùÌå
+* è®¡ç®—çƒä½“ä¸åœ†æŸ±ä½“
 */
 int CContactDetector::SphereCylinderTest(const CRigidBody* body1, const CRigidBody* body2, SContact* contact) {
 	CVector3 pos1 = body1->GetSceneNode()->GetWorldPosition();
@@ -647,14 +647,14 @@ int CContactDetector::SphereCylinderTest(const CRigidBody* body1, const CRigidBo
 	float cylinderHeight = body2->GetGeometry().cylinder.h * 0.5f;
 	float cylinderRadius = body2->GetGeometry().cylinder.r;
 
-	// Ô²ÖùÌå Z Öá·½ÏòµÄµ¥Î»ÏòÁ¿
+	// åœ†æŸ±ä½“ Z è½´æ–¹å‘çš„å•ä½å‘é‡
 	CMatrix4& m = body2->GetSceneNode()->m_cWorldMatrix;
 	CVector3 nz = CVector3(m(0, 2), m(1, 2), m(2, 2)).Normalize();
-	// ¼ÆËãÔ²ÖùÌåÖáÏßµ½Åö×²µãµÄÏòÁ¿ r
+	// è®¡ç®—åœ†æŸ±ä½“è½´çº¿åˆ°ç¢°æ’ç‚¹çš„å‘é‡ r
 	float lenz = distance.DotProduct(nz);
 	CVector3 r = distance - (nz * lenz);
 
-	// Èç¹ûÇòĞÄÔÚÔ²ÖùÌåÁ½¶Ë£¬Ôò¼ì²éÇòĞÄ¾àÀëÔ²ÖùÌåÖáÏßµÄ¾àÀëÊÇ·ñĞ¡ÓÚÔ²ÖùÌå°ë¾¶
+	// å¦‚æœçƒå¿ƒåœ¨åœ†æŸ±ä½“ä¸¤ç«¯ï¼Œåˆ™æ£€æŸ¥çƒå¿ƒè·ç¦»åœ†æŸ±ä½“è½´çº¿çš„è·ç¦»æ˜¯å¦å°äºåœ†æŸ±ä½“åŠå¾„
 	if (lenz > cylinderHeight || lenz < -cylinderHeight) {
 		float lenr = r.Length();
 		if (lenr > cylinderRadius) r.Scale(cylinderRadius / lenr);
@@ -662,13 +662,13 @@ int CContactDetector::SphereCylinderTest(const CRigidBody* body1, const CRigidBo
 		r.Normalize();
 		r.Scale(cylinderRadius);
 	}
-	// ×î½üµãÑØÔ²ÖùÌåÖáÏò·½ÏòµÄÆ«ÒÆ
+	// æœ€è¿‘ç‚¹æ²¿åœ†æŸ±ä½“è½´å‘æ–¹å‘çš„åç§»
 	if (lenz > cylinderHeight) lenz = cylinderHeight;
 	else if (lenz < -cylinderHeight) lenz = -cylinderHeight;
 
-	// ¼ÆËã¾àÀëÇòÌåÔ²ÖùÌåÉÏÃæµÄ×î½üµã
+	// è®¡ç®—è·ç¦»çƒä½“åœ†æŸ±ä½“ä¸Šé¢çš„æœ€è¿‘ç‚¹
 	CVector3 closest = pos2 + r + nz.Scale(lenz);
-	// ¼ì²éÊÇ·ñÅö×²
+	// æ£€æŸ¥æ˜¯å¦ç¢°æ’
 	distance = pos1 - closest;
 	float len = distance.DotProduct(distance);
 	if (len < radius * radius) {
@@ -685,7 +685,7 @@ int CContactDetector::SphereCylinderTest(const CRigidBody* body1, const CRigidBo
 }
 
 /**
-* ¼ÆËãÇòÌåÓëÔ²»·
+* è®¡ç®—çƒä½“ä¸åœ†ç¯
 */
 int CContactDetector::SphereTorusTest(const CRigidBody* body1, const CRigidBody* body2, SContact* contact) {
 	CVector3 pos1 = body1->GetSceneNode()->GetWorldPosition();
@@ -695,16 +695,16 @@ int CContactDetector::SphereTorusTest(const CRigidBody* body1, const CRigidBody*
 	float torusR = body2->GetGeometry().torus.r;
 	float torusC = body2->GetGeometry().torus.c;
 
-	// Ô²»· Z ÖáÏòµ¥Î»ÏòÁ¿
+	// åœ†ç¯ Z è½´å‘å•ä½å‘é‡
 	CMatrix4& m = body2->GetSceneNode()->m_cWorldMatrix;
 	CVector3 nz = CVector3(m(0, 2), m(1, 2), m(2, 2)).Normalize();
 
-	// ¼ÆËãÔ²»·½ØÔ²µ½ÇòÌåÇòĞÄµÄÏòÁ¿
+	// è®¡ç®—åœ†ç¯æˆªåœ†åˆ°çƒä½“çƒå¿ƒçš„å‘é‡
 	CVector3 xoy = distance - nz * distance.DotProduct(nz);
 	CVector3 tempCenter = xoy.Normalize() * torusR;
 	distance -= tempCenter;
 
-	// ±È½ÏÆ½·½¾àÀë£¬¼ì²éÊÇ·ñ·¢Éú½Ó´¥
+	// æ¯”è¾ƒå¹³æ–¹è·ç¦»ï¼Œæ£€æŸ¥æ˜¯å¦å‘ç”Ÿæ¥è§¦
 	float len = distance.DotProduct(distance);
 	float rad = radius + torusC;
 	if (len > 0 && len < rad * rad) {
@@ -721,7 +721,7 @@ int CContactDetector::SphereTorusTest(const CRigidBody* body1, const CRigidBody*
 }
 
 /**
-* ¼ÆËãÇòÌåÓëÔ²×¶Ìå
+* è®¡ç®—çƒä½“ä¸åœ†é”¥ä½“
 */
 int CContactDetector::SphereConeTest(const CRigidBody* body1, const CRigidBody* body2, SContact* contact) {
 	CVector3 pos1 = body1->GetSceneNode()->GetWorldPosition();
@@ -732,11 +732,11 @@ int CContactDetector::SphereConeTest(const CRigidBody* body1, const CRigidBody* 
 	float coneRadius = body2->GetGeometry().cone.r;
 	const float coneHeightTop = 0.75f * coneHeight;
 	const float coneHeightBottom = -0.25f * coneHeight;
-	// Ô²×¶Ìå Z Öá·½ÏòµÄµ¥Î»ÏòÁ¿
+	// åœ†é”¥ä½“ Z è½´æ–¹å‘çš„å•ä½å‘é‡
 	CMatrix4& m = body2->GetSceneNode()->m_cWorldMatrix;
 	CVector3 nz = CVector3(m(0, 2), m(1, 2), m(2, 2)).Normalize();
 	CVector3 closest = pos2;
-	// Èç¹ûÇòĞÄÔÚÔ²×¶ÌåµÄµ×ÃæÖ®ÏÂ
+	// å¦‚æœçƒå¿ƒåœ¨åœ†é”¥ä½“çš„åº•é¢ä¹‹ä¸‹
 	float lenz = distance.DotProduct(nz);
 	CVector3 r = distance - (nz * lenz);
 	float lenr = r.Length();
@@ -744,7 +744,7 @@ int CContactDetector::SphereConeTest(const CRigidBody* body1, const CRigidBody* 
 		if (lenr > coneRadius) r.Scale(coneRadius / lenr);
 		closest += nz.Scale(coneHeightBottom) + r;
 	} else {
-		// ÇòĞÄÔÚÔ²×¶Ìå¶¥¶Ë
+		// çƒå¿ƒåœ¨åœ†é”¥ä½“é¡¶ç«¯
 		if (lenr == 0.0f) {
 			if (lenz > coneHeightTop) lenz = coneHeightTop;
 			closest += nz.Scale(lenz);
@@ -761,7 +761,7 @@ int CContactDetector::SphereConeTest(const CRigidBody* body1, const CRigidBody* 
 			closest += nz1.Scale(lenz1) + nr1.Scale(r1);
 		}
 	}
-	// ¼ÆËã¾àÀëÇòÌåÔ²ÖùÌåÉÏÃæµÄ×î½üµã¼ì²éÊÇ·ñÅö×²
+	// è®¡ç®—è·ç¦»çƒä½“åœ†æŸ±ä½“ä¸Šé¢çš„æœ€è¿‘ç‚¹æ£€æŸ¥æ˜¯å¦ç¢°æ’
 	distance = pos1 - closest;
 	float len = distance.DotProduct(distance);
 	if (len < radius * radius) {
@@ -778,7 +778,7 @@ int CContactDetector::SphereConeTest(const CRigidBody* body1, const CRigidBody* 
 }
 
 /**
-* ¼ÆËãÇòÌåÓëÆ½Ãæ
+* è®¡ç®—çƒä½“ä¸å¹³é¢
 */
 int CContactDetector::SpherePlaneTest(const CRigidBody* body1, const CRigidBody* body2, SContact* contact) {
 	CVector3 pos1 = body1->GetSceneNode()->GetWorldPosition();
@@ -786,10 +786,10 @@ int CContactDetector::SpherePlaneTest(const CRigidBody* body1, const CRigidBody*
 	CVector3 distance = pos1 - pos2;
 	float radius = body1->GetGeometry().sphere.r;
 
-	// Æ½Ãæ·¨ÏòµÄµ¥Î»ÏòÁ¿
+	// å¹³é¢æ³•å‘çš„å•ä½å‘é‡
 	CMatrix4& m = body2->GetSceneNode()->m_cWorldMatrix;
 	CVector3 nz = CVector3(m(0, 2), m(1, 2), m(2, 2)).Normalize();
-	// ¼ÆËãÇòÌåµ½Æ½ÃæµÄ¾àÀë
+	// è®¡ç®—çƒä½“åˆ°å¹³é¢çš„è·ç¦»
 	float len = distance.DotProduct(nz);
 	if (len < radius) {
 		contact[0].point = pos1 - nz * radius;
@@ -803,7 +803,7 @@ int CContactDetector::SpherePlaneTest(const CRigidBody* body1, const CRigidBody*
 }
 
 /**
-* ¼ÆËã½ºÄÒÌåÓë½ºÄÒÌå
+* è®¡ç®—èƒ¶å›Šä½“ä¸èƒ¶å›Šä½“
 */
 int CContactDetector::CapsuleCapsuleTest(const CRigidBody* body1, const CRigidBody* body2, SContact* contact) {
 	CVector3 pos1 = body1->GetSceneNode()->GetWorldPosition();
@@ -812,13 +812,13 @@ int CContactDetector::CapsuleCapsuleTest(const CRigidBody* body1, const CRigidBo
 	float radius2 = body2->GetGeometry().capsule.r;
 	float height1 = body1->GetGeometry().capsule.h;
 	float height2 = body2->GetGeometry().capsule.h;
-	// ½ºÄÒÌå Z Öá·½ÏòµÄÏòÁ¿
+	// èƒ¶å›Šä½“ Z è½´æ–¹å‘çš„å‘é‡
 	CMatrix4& m1 = body1->GetSceneNode()->m_cWorldMatrix;
 	CMatrix4& m2 = body2->GetSceneNode()->m_cWorldMatrix;
 	CVector3 nz1 = CVector3(m1(0, 2), m1(1, 2), m1(2, 2)).Normalize().Scale(height1);
 	CVector3 nz2 = CVector3(m2(0, 2), m2(1, 2), m2(2, 2)).Normalize().Scale(height2);
 
-	// ¼ÆËãÓÉ´ú±í½ºÄÒÌåµÄÁ½Ïß¶ÎÖ®¼äµÄ×î½üµã
+	// è®¡ç®—ç”±ä»£è¡¨èƒ¶å›Šä½“çš„ä¸¤çº¿æ®µä¹‹é—´çš„æœ€è¿‘ç‚¹
 	CVector3 bottomPoint1 = pos1 - nz1 * 0.5f;
 	CVector3 bottomPoint2 = pos2 - nz2 * 0.5f;
 	CVector3 distance = bottomPoint1 - bottomPoint2;
@@ -828,7 +828,7 @@ int CContactDetector::CapsuleCapsuleTest(const CRigidBody* body1, const CRigidBo
 	const float d = nz1.DotProduct(distance);
 	const float e = nz2.DotProduct(distance);
 	float dt = a * c - b * b;
-	// Ö±Ïß²ÎÊı s(0, 1) ÇÒ t(0, 1)
+	// ç›´çº¿å‚æ•° s(0, 1) ä¸” t(0, 1)
 	float s = 0.0f;
 	float t = 0.0f;
 	if (dt > 1E-6) {
@@ -853,7 +853,7 @@ int CContactDetector::CapsuleCapsuleTest(const CRigidBody* body1, const CRigidBo
 	} else {
 		t = t / c;
 	}
-	// µÃµ½Ïß¶ÎÉÏÁ½¸ö×î½üµã
+	// å¾—åˆ°çº¿æ®µä¸Šä¸¤ä¸ªæœ€è¿‘ç‚¹
 	CVector3 p1 = bottomPoint1 + nz1 * s;
 	CVector3 p2 = bottomPoint2 + nz2 * t;
 	distance = p1 - p2;
@@ -874,7 +874,7 @@ int CContactDetector::CapsuleCapsuleTest(const CRigidBody* body1, const CRigidBo
 }
 
 /**
-* ¼ÆËã½ºÄÒÌåÓëÆ½Ãæ
+* è®¡ç®—èƒ¶å›Šä½“ä¸å¹³é¢
 */
 int CContactDetector::CapsulePlaneTest(const CRigidBody* body1, const CRigidBody* body2, SContact* contact) {
 	CVector3 pos1 = body1->GetSceneNode()->GetWorldPosition();
@@ -882,17 +882,17 @@ int CContactDetector::CapsulePlaneTest(const CRigidBody* body1, const CRigidBody
 	float radius = body1->GetGeometry().capsule.r;
 	float height = body1->GetGeometry().capsule.h * 0.5f;
 
-	// ½ºÄÒÌåÓëÆ½Ãæ·¨ÏòµÄµ¥Î»ÏòÁ¿
+	// èƒ¶å›Šä½“ä¸å¹³é¢æ³•å‘çš„å•ä½å‘é‡
 	CMatrix4& m1 = body1->GetSceneNode()->m_cWorldMatrix;
 	CMatrix4& m2 = body2->GetSceneNode()->m_cWorldMatrix;
 	CVector3 nz1 = CVector3(m1(0, 2), m1(1, 2), m1(2, 2)).Normalize();
 	CVector3 nz2 = CVector3(m2(0, 2), m2(1, 2), m2(2, 2)).Normalize();
 
-	// ¼ÆËã½ºÄÒÌåÁ½¸ö¶Ëµã
+	// è®¡ç®—èƒ¶å›Šä½“ä¸¤ä¸ªç«¯ç‚¹
 	nz1.Scale(height);
 	CVector3 point1 = pos1 + nz1;
 	CVector3 point2 = pos1 - nz1;
-	// ¼ÆËãÓëÆ½ÃæµÄ½»µã
+	// è®¡ç®—ä¸å¹³é¢çš„äº¤ç‚¹
 	CPlane plane(pos2, nz2);
 	float len1 = plane.Distance(point1);
 	float len2 = plane.Distance(point2);
@@ -917,7 +917,7 @@ int CContactDetector::CapsulePlaneTest(const CRigidBody* body1, const CRigidBody
 }
 
 /**
-* ¼ÆËãÔ²ÖùÌåÓëÆ½Ãæ
+* è®¡ç®—åœ†æŸ±ä½“ä¸å¹³é¢
 */
 int CContactDetector::CylinderPlaneTest(const CRigidBody* body1, const CRigidBody* body2, SContact* contact) {
 	CVector3 pos1 = body1->GetSceneNode()->GetWorldPosition();
@@ -925,19 +925,19 @@ int CContactDetector::CylinderPlaneTest(const CRigidBody* body1, const CRigidBod
 	float radius = body1->GetGeometry().cylinder.r;
 	float height = body1->GetGeometry().cylinder.h * 0.5f;
 
-	// Ô²ÖùÌåÓëÆ½Ãæ·¨ÏòµÄµ¥Î»ÏòÁ¿
+	// åœ†æŸ±ä½“ä¸å¹³é¢æ³•å‘çš„å•ä½å‘é‡
 	CMatrix4& m1 = body1->GetSceneNode()->m_cWorldMatrix;
 	CMatrix4& m2 = body2->GetSceneNode()->m_cWorldMatrix;
 	CVector3 nz1 = CVector3(m1(0, 2), m1(1, 2), m1(2, 2)).Normalize();
 	CVector3 nz2 = CVector3(m2(0, 2), m2(1, 2), m2(2, 2)).Normalize();
-	// ¼ÆËãÔ²Öù½ü²àÃæÔÚÆ½ÃæÉÏ¿É±íÊ¾µÄÏß¶Î
+	// è®¡ç®—åœ†æŸ±è¿‘ä¾§é¢åœ¨å¹³é¢ä¸Šå¯è¡¨ç¤ºçš„çº¿æ®µ
 	CVector3 tangent = nz1.CrossProduct(nz2);
 	if (tangent.Length() == 0.0f) tangent.SetValue(nz1.Tangent());
 	CVector3 lineCenter = pos1 + nz1.CrossProduct(tangent).Normalize().Scale(radius);
 	nz1.Scale(height);
 	CVector3 point1 = lineCenter + nz1;
 	CVector3 point2 = lineCenter - nz1;
-	// ¼ÆËãÓëÆ½ÃæµÄ½»µã
+	// è®¡ç®—ä¸å¹³é¢çš„äº¤ç‚¹
 	CPlane plane(pos2, nz2);
 	float len1 = plane.Distance(point1);
 	float len2 = plane.Distance(point2);
@@ -962,7 +962,7 @@ int CContactDetector::CylinderPlaneTest(const CRigidBody* body1, const CRigidBod
 }
 
 /**
-* ¼ÆËãÔ²»·ÓëÆ½Ãæ
+* è®¡ç®—åœ†ç¯ä¸å¹³é¢
 */
 int CContactDetector::TorusPlaneTest(const CRigidBody* body1, const CRigidBody* body2, SContact* contact) {
 	CVector3 pos1 = body1->GetSceneNode()->GetWorldPosition();
@@ -970,18 +970,18 @@ int CContactDetector::TorusPlaneTest(const CRigidBody* body1, const CRigidBody* 
 	float torusR = body1->GetGeometry().torus.r;
 	float torusC = body1->GetGeometry().torus.c;
 
-	// Ô²»·ÓëÆ½Ãæ·¨ÏòµÄµ¥Î»ÏòÁ¿
+	// åœ†ç¯ä¸å¹³é¢æ³•å‘çš„å•ä½å‘é‡
 	CMatrix4& m1 = body1->GetSceneNode()->m_cWorldMatrix;
 	CMatrix4& m2 = body2->GetSceneNode()->m_cWorldMatrix;
 	CVector3 nz1 = CVector3(m1(0, 2), m1(1, 2), m1(2, 2)).Normalize();
 	CVector3 nz2 = CVector3(m2(0, 2), m2(1, 2), m2(2, 2)).Normalize();
-	// ¼ÆËãÔ²»·»·ÃæÔÚÆ½ÃæÉÏ¿É±íÊ¾µÄÏß¶Î
+	// è®¡ç®—åœ†ç¯ç¯é¢åœ¨å¹³é¢ä¸Šå¯è¡¨ç¤ºçš„çº¿æ®µ
 	CVector3 tangent = nz2.CrossProduct(nz1);
 	if (tangent.Length() == 0.0f) tangent.SetValue(nz1.Tangent());
 	CVector3 lineVec = nz1.CrossProduct(tangent).Normalize().Scale(torusR);
 	CVector3 point1 = pos1 + lineVec;
 	CVector3 point2 = pos1 - lineVec;
-	// ¼ÆËãÓëÆ½ÃæµÄ½»µã
+	// è®¡ç®—ä¸å¹³é¢çš„äº¤ç‚¹
 	CPlane plane(pos2, nz2);
 	float len1 = plane.Distance(point1);
 	float len2 = plane.Distance(point2);
@@ -1006,7 +1006,7 @@ int CContactDetector::TorusPlaneTest(const CRigidBody* body1, const CRigidBody* 
 }
 
 /**
-* ¼ÆËãÔ²×¶ÌåÓëÆ½Ãæ
+* è®¡ç®—åœ†é”¥ä½“ä¸å¹³é¢
 */
 int CContactDetector::ConePlaneTest(const CRigidBody* body1, const CRigidBody* body2, SContact* contact) {
 	CVector3 pos1 = body1->GetSceneNode()->GetWorldPosition();
@@ -1014,19 +1014,19 @@ int CContactDetector::ConePlaneTest(const CRigidBody* body1, const CRigidBody* b
 	float radius = body1->GetGeometry().cylinder.r;
 	float height = body1->GetGeometry().cylinder.h * 0.5f;
 
-	// Ô²×¶ÌåÓëÆ½Ãæ·¨ÏòµÄµ¥Î»ÏòÁ¿
+	// åœ†é”¥ä½“ä¸å¹³é¢æ³•å‘çš„å•ä½å‘é‡
 	CMatrix4& m1 = body1->GetSceneNode()->m_cWorldMatrix;
 	CMatrix4& m2 = body2->GetSceneNode()->m_cWorldMatrix;
 	CVector3 nz1 = CVector3(m1(0, 2), m1(1, 2), m1(2, 2)).Normalize();
 	CVector3 nz2 = CVector3(m2(0, 2), m2(1, 2), m2(2, 2)).Normalize();
-	// ¼ÆËãÔ²×¶Ìåµ×ÃæÔÚÆ½ÃæÉÏ¿É±íÊ¾µÄÏß¶Î
+	// è®¡ç®—åœ†é”¥ä½“åº•é¢åœ¨å¹³é¢ä¸Šå¯è¡¨ç¤ºçš„çº¿æ®µ
 	CVector3 tangent = nz2.CrossProduct(nz1);
 	if (tangent.Length() == 0.0f) tangent.SetValue(nz1.Tangent());
 	CVector3 lineVec = nz1.CrossProduct(tangent).Normalize().Scale(radius);
 	CVector3 point0 = pos1 + (nz1 * 0.75f);
 	CVector3 point1 = pos1 - (nz1 * 0.25f) + lineVec;
 	CVector3 point2 = pos1 - (nz1 * 0.25f) - lineVec;
-	// ¼ÆËã×¶¶¥¼°Ïß¶ÎÁ½¶ËÓëÆ½ÃæµÄ½»µã
+	// è®¡ç®—é”¥é¡¶åŠçº¿æ®µä¸¤ç«¯ä¸å¹³é¢çš„äº¤ç‚¹
 	CPlane plane(pos2, nz2);
 	float len0 = plane.Distance(point0);
 	float len1 = plane.Distance(point1);

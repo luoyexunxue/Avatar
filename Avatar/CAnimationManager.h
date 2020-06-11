@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CANIMATIONMANAGER_H_
@@ -14,46 +14,46 @@ using std::vector;
 using std::list;
 
 /**
-* @brief ¶¯»­¹ÜÀíÆ÷
+* @brief åŠ¨ç”»ç®¡ç†å™¨
 */
 class AVATAR_EXPORT CAnimationManager {
 public:
-	//! »ñÈ¡¹ÜÀíÆ÷ÊµÀı
+	//! è·å–ç®¡ç†å™¨å®ä¾‹
 	static CAnimationManager* GetInstance() {
 		if (m_pInstance) return m_pInstance;
 		m_pInstance = new CAnimationManager();
 		return m_pInstance;
 	}
 
-	//! ÊµÀıÏú»Ù
+	//! å®ä¾‹é”€æ¯
 	void Destroy();
-	//! ¶¯»­¸üĞÂ
+	//! åŠ¨ç”»æ›´æ–°
 	void Update(float dt);
 
 public:
-	//! Ö§³ÖµÄ¶¯»­²åÖµ·½Ê½
+	//! æ”¯æŒçš„åŠ¨ç”»æ’å€¼æ–¹å¼
 	enum Interpolator { LINEAR, ACCELERATE, DECELERATE, ACCELERATEDECELERATE };
 
 public:
-	//! ÉèÖÃ¶¯»­²ÎÊı
+	//! è®¾ç½®åŠ¨ç”»å‚æ•°
 	void SetAnimation(CSceneNode* node, Interpolator intepolator, float duration, int repeat, bool swing);
-	//! ÉèÖÃËõ·Å¶¯»­
+	//! è®¾ç½®ç¼©æ”¾åŠ¨ç”»
 	bool AnimateScale(CSceneNode* node, const CVector3& from, const CVector3& to);
-	//! ÉèÖÃĞı×ª¶¯»­
+	//! è®¾ç½®æ—‹è½¬åŠ¨ç”»
 	bool AnimateRotation(CSceneNode* node, const CQuaternion& from, const CQuaternion& to);
-	//! ÉèÖÃÆ½ÒÆ¶¯»­
+	//! è®¾ç½®å¹³ç§»åŠ¨ç”»
 	bool AnimateTranslation(CSceneNode* node, const CVector3& from, const CVector3& to);
 
-	//! ¿ªÊ¼¶¯»­
+	//! å¼€å§‹åŠ¨ç”»
 	bool Start(CSceneNode* node, float delay = 0.0f);
-	//! ÔİÍ£¶¯»­
+	//! æš‚åœåŠ¨ç”»
 	bool Pause(CSceneNode* node);
-	//! Í£Ö¹¶¯»­
+	//! åœæ­¢åŠ¨ç”»
 	bool Stop(CSceneNode* node);
-	//! Çå³ıËùÓĞ¶¯»­
+	//! æ¸…é™¤æ‰€æœ‰åŠ¨ç”»
 	void Clear();
 
-	//! »ñÈ¡Ö´ĞĞµÄËùÓĞ¶¯»­½ÚµãÁĞ±í
+	//! è·å–æ‰§è¡Œçš„æ‰€æœ‰åŠ¨ç”»èŠ‚ç‚¹åˆ—è¡¨
 	void GetAnimationList(vector<CSceneNode*>& animationList);
 
 private:
@@ -61,7 +61,7 @@ private:
 	~CAnimationManager();
 
 private:
-	//! ¶¯»­Êı¾İ¶¨Òå
+	//! åŠ¨ç”»æ•°æ®å®šä¹‰
 	typedef struct _SAnimationData {
 		CSceneNode* sceneNode;
 		Interpolator intepolator;
@@ -74,7 +74,7 @@ private:
 		CQuaternion toOrientation;
 		CVector3 fromPosition;
 		CVector3 toPosition;
-		//! ÄÚ²¿±äÁ¿
+		//! å†…éƒ¨å˜é‡
 		bool useScale;
 		bool useOrientation;
 		bool usePosition;
@@ -83,16 +83,16 @@ private:
 		float animationTime;
 		float animationDelay;
 		int animationCount;
-		//! ±È½ÏÔËËã·ûÖØÔØ
+		//! æ¯”è¾ƒè¿ç®—ç¬¦é‡è½½
 		bool operator == (const _SAnimationData& other) const {
 			return this->sceneNode == other.sceneNode;
 		}
 	} SAnimationData;
 
 private:
-	//! ¶¯»­ÁĞ±í
+	//! åŠ¨ç”»åˆ—è¡¨
 	list<SAnimationData> m_lstAnimation;
-	//! ÊµÀı
+	//! å®ä¾‹
 	static CAnimationManager* m_pInstance;
 };
 

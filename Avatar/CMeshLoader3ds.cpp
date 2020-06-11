@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CMeshLoader3ds.h"
@@ -8,14 +8,14 @@
 #include <cstdint>
 
 /**
-* ¼ÓÔØ 3DS Ä£ĞÍ
+* åŠ è½½ 3DS æ¨¡å‹
 */
 CMeshData* CMeshLoader3ds::LoadFile(const string& filename, const string& type) {
 	CFileManager::CBinaryFile file;
 	if (!CEngine::GetFileManager()->ReadFile(filename, &file)) {
 		return 0;
 	}
-	// ²»ÊÇÓĞĞ§µÄ 3DS ÎÄ¼ş
+	// ä¸æ˜¯æœ‰æ•ˆçš„ 3DS æ–‡ä»¶
 	if (file.size < 16 || file.contents[0] != 0x4D || file.contents[1] != 0x4D) {
 		return 0;
 	}
@@ -23,12 +23,12 @@ CMeshData* CMeshLoader3ds::LoadFile(const string& filename, const string& type) 
 	m_vecMeshes.clear();
 	m_vecMaterials.clear();
 	ReadChunk(file.contents, file.size);
-	// ½«²ÄÖÊ°ó¶¨ÖÁÖ¸¶¨Íø¸ñ¶ÔÏó
+	// å°†æè´¨ç»‘å®šè‡³æŒ‡å®šç½‘æ ¼å¯¹è±¡
 	for (size_t i = 0; i < m_vecMaterials.size(); i++) {
 		for (size_t j = 0; j < m_vecMeshes.size(); j++) {
 			if (m_vecMaterials[i]->GetName() == m_vecMeshes[j]->GetMaterial()->GetName()) {
 				m_vecMeshes[j]->GetMaterial()->CopyFrom(m_vecMaterials[i]);
-				// Èç¹ûÃ»ÓĞÎÆÀíÔòÊ¹ÓÃ»ÒÉ«ÎÆÀí
+				// å¦‚æœæ²¡æœ‰çº¹ç†åˆ™ä½¿ç”¨ç°è‰²çº¹ç†
 				if (!m_vecMaterials[i]->GetTexture()) {
 					m_vecMeshes[j]->GetMaterial()->SetTexture("");
 				}
@@ -36,7 +36,7 @@ CMeshData* CMeshLoader3ds::LoadFile(const string& filename, const string& type) 
 		}
 		delete m_vecMaterials[i];
 	}
-	// ´´½¨Íø¸ñ¶ÔÏó
+	// åˆ›å»ºç½‘æ ¼å¯¹è±¡
 	CMeshData* pMeshData = new CMeshData();
 	for (size_t i = 0; i < m_vecMeshes.size(); i++) {
 		m_vecMeshes[i]->SetupNormal();
@@ -48,7 +48,7 @@ CMeshData* CMeshLoader3ds::LoadFile(const string& filename, const string& type) 
 }
 
 /**
-* µİ¹é¶ÁÈ¡¿é
+* é€’å½’è¯»å–å—
 */
 void CMeshLoader3ds::ReadChunk(unsigned char* buffer, unsigned int size) {
 	CStreamReader reader(buffer, size);
@@ -81,7 +81,7 @@ void CMeshLoader3ds::ReadChunk(unsigned char* buffer, unsigned int size) {
 }
 
 /**
-* ¶ÁÈ¡Íø¸ñ¿é
+* è¯»å–ç½‘æ ¼å—
 */
 void CMeshLoader3ds::ReadMeshChunk(unsigned char* buffer, unsigned int size, CMesh* mesh) {
 	int numVertices = 0;
@@ -130,7 +130,7 @@ void CMeshLoader3ds::ReadMeshChunk(unsigned char* buffer, unsigned int size, CMe
 }
 
 /**
-* ¶ÁÈ¡²ÄÖÊ¿é
+* è¯»å–æè´¨å—
 */
 void CMeshLoader3ds::ReadMaterialChunk(unsigned char* buffer, unsigned int size, CMaterial* material) {
 	float color[3];
@@ -165,7 +165,7 @@ void CMeshLoader3ds::ReadMaterialChunk(unsigned char* buffer, unsigned int size,
 }
 
 /**
-* ¶ÁÈ¡ÑÕÉ«¿é
+* è¯»å–é¢œè‰²å—
 */
 void CMeshLoader3ds::ReadColorChunk(unsigned char* buffer, unsigned int size, float color[3]) {
 	uint8_t r, g, b;
@@ -191,7 +191,7 @@ void CMeshLoader3ds::ReadColorChunk(unsigned char* buffer, unsigned int size, fl
 }
 
 /**
-* ¶ÁÈ¡ÎÆÀí¿é
+* è¯»å–çº¹ç†å—
 */
 void CMeshLoader3ds::ReadTextureChunk(unsigned char* buffer, unsigned int size, string& texture) {
 	CStreamReader reader(buffer, size);

@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CTextureManager.h"
@@ -25,7 +25,7 @@
 #endif
 
 /**
-* ¹¹Ôìº¯Êı
+* æ„é€ å‡½æ•°
 */
 CTextureManager::CTextureManager() {
 	m_iDummyFrameBuffer = 0;
@@ -38,19 +38,19 @@ CTextureManager::CTextureManager() {
 }
 
 /**
-* Îö¹¹º¯Êı
+* ææ„å‡½æ•°
 */
 CTextureManager::~CTextureManager() {
 	m_pInstance = 0;
 }
 
 /**
-* µ¥ÀıÊµÀı
+* å•ä¾‹å®ä¾‹
 */
 CTextureManager* CTextureManager::m_pInstance = 0;
 
 /**
-* Ïú»ÙÎÆÀí¹ÜÀíÆ÷
+* é”€æ¯çº¹ç†ç®¡ç†å™¨
 */
 void CTextureManager::Destroy() {
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -64,12 +64,12 @@ void CTextureManager::Destroy() {
 }
 
 /**
-* ´ÓÎÄ¼ş´´½¨ÎÆÀí
-* @param file Í¼Æ¬ÎÄ¼şÂ·¾¶
-* @return ´´½¨µÄÎÆÀí
+* ä»æ–‡ä»¶åˆ›å»ºçº¹ç†
+* @param file å›¾ç‰‡æ–‡ä»¶è·¯å¾„
+* @return åˆ›å»ºçš„çº¹ç†
 */
 CTexture* CTextureManager::Create(const string& file) {
-	// ¼ì²éÊÇ·ñÒÑ¾­ÔØÈëÏàÍ¬µÄÎÆÀí×ÊÔ´
+	// æ£€æŸ¥æ˜¯å¦å·²ç»è½½å…¥ç›¸åŒçš„çº¹ç†èµ„æº
 	map<string, CTexture*>::iterator iter = m_mapTexture.find(file);
 	if (iter != m_mapTexture.end()) {
 		iter->second->m_iRefCount++;
@@ -80,14 +80,14 @@ CTexture* CTextureManager::Create(const string& file) {
 	pTexture->m_strFilePath = file;
 	m_mapTexture.insert(std::pair<string, CTexture*>(file, pTexture));
 
-	// ¶ÁÈ¡Í¼Æ¬ÎÄ¼ş
+	// è¯»å–å›¾ç‰‡æ–‡ä»¶
 	CFileManager::CImageFile* pFile = ReadImage(file, true);
 	if (!pFile) return pTexture;
-	// ÎÆÀíĞÅÏ¢
+	// çº¹ç†ä¿¡æ¯
 	pTexture->m_iChannel = pFile->channels;
 	pTexture->m_iWidth = pFile->width;
 	pTexture->m_iHeight = pFile->height;
-	// Ö§³Ö1,2,3,4Í¨µÀ°ËÎ»Éî¶ÈÍ¼Æ¬
+	// æ”¯æŒ1,2,3,4é€šé“å…«ä½æ·±åº¦å›¾ç‰‡
 	if (pTexture->m_iChannel >= 1 && pTexture->m_iChannel <= 4) {
 		glGenTextures(1, &pTexture->m_iTexture);
 		glBindTexture(GL_TEXTURE_2D, pTexture->m_iTexture);
@@ -109,10 +109,10 @@ CTexture* CTextureManager::Create(const string& file) {
 }
 
 /**
-* ´ÓÎÄ¼ş´´½¨Á¢·½ÌåÎÆÀí
-* @param name ÎÆÀíÃû³Æ£¬¿ÉÎª¿Õ
-* @param files R-L-F-B-U-DÍ¼Æ¬ÎÄ¼şÂ·¾¶
-* @return ´´½¨µÄÎÆÀí
+* ä»æ–‡ä»¶åˆ›å»ºç«‹æ–¹ä½“çº¹ç†
+* @param name çº¹ç†åç§°ï¼Œå¯ä¸ºç©º
+* @param files R-L-F-B-U-Då›¾ç‰‡æ–‡ä»¶è·¯å¾„
+* @return åˆ›å»ºçš„çº¹ç†
 */
 CTexture* CTextureManager::Create(const string& name, const string files[6]) {
 	string file = name;
@@ -130,10 +130,10 @@ CTexture* CTextureManager::Create(const string& name, const string files[6]) {
 	pTexture->m_iTextureType = GL_TEXTURE_CUBE_MAP;
 	pTexture->m_strFilePath = file;
 	m_mapTexture.insert(std::pair<string, CTexture*>(file, pTexture));
-	// ÒıÇæ×ø±êÏµ(Z-UP)ºÍ OpenGL ×ø±êÏµ(Y-UP)²»Ò»ÖÂ£¬ĞèÒªĞı×ªÍ¼Æ¬
+	// å¼•æ“åæ ‡ç³»(Z-UP)å’Œ OpenGL åæ ‡ç³»(Y-UP)ä¸ä¸€è‡´ï¼Œéœ€è¦æ—‹è½¬å›¾ç‰‡
 	static const int angle[6] = { 270, 90, 180, 0, 0, 180 };
 	CFileManager::CImageFile* pFile[6];
-	// ¶ÁÈ¡Í¼Æ¬ÎÄ¼ş
+	// è¯»å–å›¾ç‰‡æ–‡ä»¶
 	for (int i = 0; i < 6; i++) {
 		pFile[i] = ReadImage(files[i], true);
 		if (!pFile[i] || pFile[i]->channels < 1 || pFile[i]->channels > 4) {
@@ -161,7 +161,7 @@ CTexture* CTextureManager::Create(const string& name, const string files[6]) {
 	glGenerateMipmap(GL_TEXTURE_CUBE_MAP);
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
-	// ·ÀÖ¹³öÏÖÊÓ¾õ¿É¼ûµÄÁÑ·ì
+	// é˜²æ­¢å‡ºç°è§†è§‰å¯è§çš„è£‚ç¼
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 	pTexture->m_iPixelFormat = pixelFormat;
@@ -169,17 +169,17 @@ CTexture* CTextureManager::Create(const string& name, const string files[6]) {
 }
 
 /**
-* ´ÓÄÚ´æ´´½¨ÎÆÀí
-* @param name ÎÆÀíÃû³Æ£¬¿ÉÎª¿Õ
-* @param width ¿í¶È
-* @param height ¸ß¶È
-* @param channel Í¨µÀÊı
-* @param data Êı¾İÖ¸Õë
-* @param mipmap ÊÇ·ñÉú³ÉMIPMAP
-* @return ´´½¨µÄÎÆÀí
+* ä»å†…å­˜åˆ›å»ºçº¹ç†
+* @param name çº¹ç†åç§°ï¼Œå¯ä¸ºç©º
+* @param width å®½åº¦
+* @param height é«˜åº¦
+* @param channel é€šé“æ•°
+* @param data æ•°æ®æŒ‡é’ˆ
+* @param mipmap æ˜¯å¦ç”ŸæˆMIPMAP
+* @return åˆ›å»ºçš„çº¹ç†
 */
 CTexture* CTextureManager::Create(const string& name, int width, int height, int channel, const void* data, bool mipmap) {
-	// ÄÚ´æÎÆÀíÃû³Æ£¬ÈôÎ´Ö¸¶¨Ãû³ÆÔò°´¹æÔòÉú³É
+	// å†…å­˜çº¹ç†åç§°ï¼Œè‹¥æœªæŒ‡å®šåç§°åˆ™æŒ‰è§„åˆ™ç”Ÿæˆ
 	string file = name;
 	if (file.empty()) {
 		file.append("mem_");
@@ -188,7 +188,7 @@ CTexture* CTextureManager::Create(const string& name, int width, int height, int
 		file.append(std::to_string(channel)).append("_");
 		file.append(CStringUtil::Guid());
 	}
-	// ¼ì²éÊÇ·ñÒÑ¾­ÔØÈëÏàÍ¬µÄÎÆÀí×ÊÔ´
+	// æ£€æŸ¥æ˜¯å¦å·²ç»è½½å…¥ç›¸åŒçš„çº¹ç†èµ„æº
 	map<string, CTexture*>::iterator iter = m_mapTexture.find(file);
 	if (iter != m_mapTexture.end()) {
 		iter->second->m_iRefCount++;
@@ -201,7 +201,7 @@ CTexture* CTextureManager::Create(const string& name, int width, int height, int
 	pTexture->m_iWidth = width;
 	pTexture->m_iHeight = height;
 	m_mapTexture.insert(std::pair<string, CTexture*>(file, pTexture));
-	// Éú³É OpenGL ÎÆÀí£¬×î¶àÖ§³ÖËÄ¸öÍ¨µÀ
+	// ç”Ÿæˆ OpenGL çº¹ç†ï¼Œæœ€å¤šæ”¯æŒå››ä¸ªé€šé“
 	if (channel >= 1 && channel <= 4) {
 		glGenTextures(1, &pTexture->m_iTexture);
 		glBindTexture(GL_TEXTURE_2D, pTexture->m_iTexture);
@@ -226,17 +226,17 @@ CTexture* CTextureManager::Create(const string& name, int width, int height, int
 }
 
 /**
-* ´´½¨äÖÈ¾ÎÆÀí
-* @param name ÎÆÀíÃû³Æ
-* @param width ÎÆÀí¿í¶È
-* @param height ÎÆÀí¸ß¶È
-* @param floating ÊÇ·ñ¸¡µãÎÆÀí
-* @param useDepth ÊÇ·ñĞèÒªÉî¶ÈĞÅÏ¢
-* @param mipmap ÊÇ·ñÉú³ÉMIPMAP
-* @return ´´½¨µÄÎÆÀí
+* åˆ›å»ºæ¸²æŸ“çº¹ç†
+* @param name çº¹ç†åç§°
+* @param width çº¹ç†å®½åº¦
+* @param height çº¹ç†é«˜åº¦
+* @param floating æ˜¯å¦æµ®ç‚¹çº¹ç†
+* @param useDepth æ˜¯å¦éœ€è¦æ·±åº¦ä¿¡æ¯
+* @param mipmap æ˜¯å¦ç”ŸæˆMIPMAP
+* @return åˆ›å»ºçš„çº¹ç†
 */
 CTexture* CTextureManager::Create(const string& name, int width, int height, bool floating, bool useDepth, bool mipmap) {
-	// ¼ì²éÊÇ·ñÒÑ¾­ÔØÈëÏàÍ¬µÄÎÆÀí×ÊÔ´
+	// æ£€æŸ¥æ˜¯å¦å·²ç»è½½å…¥ç›¸åŒçš„çº¹ç†èµ„æº
 	map<string, CTexture*>::iterator iter = m_mapTexture.find(name);
 	if (iter != m_mapTexture.end()) {
 		iter->second->m_iRefCount++;
@@ -250,12 +250,12 @@ CTexture* CTextureManager::Create(const string& name, int width, int height, boo
 	pTexture->m_iHeight = height;
 	pTexture->m_iPixelFormat = floating ? GL_R32F : GL_RGBA;
 	m_mapTexture.insert(std::pair<string, CTexture*>(name, pTexture));
-	// Ö¡»º´æ
+	// å¸§ç¼“å­˜
 	GLint current;
 	glGetIntegerv(GL_FRAMEBUFFER_BINDING, &current);
 	glGenFramebuffers(1, &pTexture->m_iFrameBuffer);
 	glBindFramebuffer(GL_FRAMEBUFFER, pTexture->m_iFrameBuffer);
-	// äÖÈ¾ÎÆÀí
+	// æ¸²æŸ“çº¹ç†
 	glGenTextures(1, &pTexture->m_iTexture);
 	glBindTexture(GL_TEXTURE_2D, pTexture->m_iTexture);
 	if (floating) glTexImage2D(GL_TEXTURE_2D, 0, GL_R32F, width, height, 0, GL_RED, GL_FLOAT, 0);
@@ -264,7 +264,7 @@ CTexture* CTextureManager::Create(const string& name, int width, int height, boo
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, mipmap ? GL_LINEAR_MIPMAP_LINEAR : GL_LINEAR);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, pTexture->m_iTexture, 0);
-	// Èç¹ûĞèÒªÉî¶ÈĞÅÏ¢£¬Ôò´´½¨äÖÈ¾»º´æ
+	// å¦‚æœéœ€è¦æ·±åº¦ä¿¡æ¯ï¼Œåˆ™åˆ›å»ºæ¸²æŸ“ç¼“å­˜
 	if (useDepth) {
 		glGenRenderbuffers(1, &pTexture->m_iRenderBuffer);
 		glBindRenderbuffer(GL_RENDERBUFFER, pTexture->m_iRenderBuffer);
@@ -278,16 +278,16 @@ CTexture* CTextureManager::Create(const string& name, int width, int height, boo
 }
 
 /**
-* ´´½¨Á¢·½ÌåäÖÈ¾ÎÆÀí
-* @param name ÎÆÀíÃû³Æ
-* @param size ÎÆÀí´óĞ¡
-* @param floating ÊÇ·ñ¸¡µãÎÆÀí
-* @param useDepth ÊÇ·ñĞèÒªÉî¶ÈĞÅÏ¢
-* @param mipmap ÊÇ·ñÉú³ÉMIPMAP
-* @return ´´½¨µÄÎÆÀí
+* åˆ›å»ºç«‹æ–¹ä½“æ¸²æŸ“çº¹ç†
+* @param name çº¹ç†åç§°
+* @param size çº¹ç†å¤§å°
+* @param floating æ˜¯å¦æµ®ç‚¹çº¹ç†
+* @param useDepth æ˜¯å¦éœ€è¦æ·±åº¦ä¿¡æ¯
+* @param mipmap æ˜¯å¦ç”ŸæˆMIPMAP
+* @return åˆ›å»ºçš„çº¹ç†
 */
 CTexture* CTextureManager::Create(const string& name, int size, bool floating, bool useDepth, bool mipmap) {
-	// ¼ì²éÊÇ·ñÒÑ¾­ÔØÈëÏàÍ¬µÄÎÆÀí×ÊÔ´
+	// æ£€æŸ¥æ˜¯å¦å·²ç»è½½å…¥ç›¸åŒçš„çº¹ç†èµ„æº
 	map<string, CTexture*>::iterator iter = m_mapTexture.find(name);
 	if (iter != m_mapTexture.end()) {
 		iter->second->m_iRefCount++;
@@ -301,10 +301,10 @@ CTexture* CTextureManager::Create(const string& name, int size, bool floating, b
 	pTexture->m_iHeight = size;
 	pTexture->m_iPixelFormat = floating ? GL_R32F : GL_RGBA;
 	m_mapTexture.insert(std::pair<string, CTexture*>(name, pTexture));
-	// ´´½¨²¢ÉèÖÃÎÆÀí
+	// åˆ›å»ºå¹¶è®¾ç½®çº¹ç†
 	glGenTextures(1, &pTexture->m_iTexture);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, pTexture->m_iTexture);
-	// Ö¡»º´æºÍäÖÈ¾»º´æ
+	// å¸§ç¼“å­˜å’Œæ¸²æŸ“ç¼“å­˜
 	GLint current;
 	glGetIntegerv(GL_FRAMEBUFFER_BINDING, &current);
 	glGenFramebuffers(1, &pTexture->m_iFrameBuffer);
@@ -333,16 +333,16 @@ CTexture* CTextureManager::Create(const string& name, int size, bool floating, b
 }
 
 /**
-* ´´½¨³ÌĞòÎÆÀí
-* @param name ÎÆÀíÃû³Æ
-* @param width ÎÆÀí¿í¶È
-* @param height ÎÆÀí¸ß¶È
-* @param shader ÏñËØ×ÅÉ«Æ÷×Ö·û´®
-* @return ´´½¨µÄÎÆÀí
-* @note shader ÖĞ¿É°üº¬ uElapsedTime ºÍ uResolution »ñÈ¡Ê±¼äºÍ·Ö±æÂÊ
+* åˆ›å»ºç¨‹åºçº¹ç†
+* @param name çº¹ç†åç§°
+* @param width çº¹ç†å®½åº¦
+* @param height çº¹ç†é«˜åº¦
+* @param shader åƒç´ ç€è‰²å™¨å­—ç¬¦ä¸²
+* @return åˆ›å»ºçš„çº¹ç†
+* @note shader ä¸­å¯åŒ…å« uElapsedTime å’Œ uResolution è·å–æ—¶é—´å’Œåˆ†è¾¨ç‡
 */
 CTexture* CTextureManager::Create(const string& name, int width, int height, const string& shader) {
-	// ¶¥µã×ÅÉ«Æ÷
+	// é¡¶ç‚¹ç€è‰²å™¨
 	const char* vertShader = "\
 		in vec4 aPosition;\
 		in vec4 aNormal;\
@@ -356,7 +356,7 @@ CTexture* CTextureManager::Create(const string& name, int width, int height, con
 		}";
 	CTexture* pTexture = Create(name, width, height, false, false, false);
 	if (m_mapProceduralTexture.count(name) == 0) {
-		// ´´½¨³ÌĞòÎÆÀí×ÅÉ«Æ÷
+		// åˆ›å»ºç¨‹åºçº¹ç†ç€è‰²å™¨
 		string shaderName = name + "_textureshader";
 		SProceduralTexture proceduralTexture;
 		proceduralTexture.texture = pTexture;
@@ -372,16 +372,16 @@ CTexture* CTextureManager::Create(const string& name, int width, int height, con
 }
 
 /**
-* ÊÍ·ÅÖ¸¶¨µÄÎÆÀí×ÊÔ´
-* @param texture ĞèÒªÏú»ÙµÄÎÆÀí
+* é‡Šæ”¾æŒ‡å®šçš„çº¹ç†èµ„æº
+* @param texture éœ€è¦é”€æ¯çš„çº¹ç†
 */
 void CTextureManager::Drop(CTexture* texture) {
 	if (!texture) return;
-	// ÒıÓÃ¼ÆÊı¼õÒ»
+	// å¼•ç”¨è®¡æ•°å‡ä¸€
 	texture->m_iRefCount--;
 	if (texture->m_iRefCount <= 0) {
 		m_mapTexture.erase(texture->m_strFilePath);
-		// É¾³ı³ÌĞòÎÆÀí¶ÔÓ¦µÄ×ÅÉ«Æ÷
+		// åˆ é™¤ç¨‹åºçº¹ç†å¯¹åº”çš„ç€è‰²å™¨
 		map<string, SProceduralTexture>::iterator iter = m_mapProceduralTexture.find(texture->m_strFilePath);
 		if (iter != m_mapProceduralTexture.end()) {
 			CEngine::GetShaderManager()->Drop(iter->second.shader);
@@ -392,12 +392,12 @@ void CTextureManager::Drop(CTexture* texture) {
 }
 
 /**
-* ¸üĞÂ³ÌĞòÎÆÀí
-* @attention µ÷ÓÃ´Ë·½·¨»áĞŞ¸Äµ±Ç°äÖÈ¾Ä¿±ê£¬ĞèÒªÏÈ±£´æäÖÈ¾Ä¿±ê
+* æ›´æ–°ç¨‹åºçº¹ç†
+* @attention è°ƒç”¨æ­¤æ–¹æ³•ä¼šä¿®æ”¹å½“å‰æ¸²æŸ“ç›®æ ‡ï¼Œéœ€è¦å…ˆä¿å­˜æ¸²æŸ“ç›®æ ‡
 */
 bool CTextureManager::Update() {
 	if (m_mapProceduralTexture.empty()) return false;
-	// ÒÀ´Î»æÖÆËùÓĞ³ÌĞòÎÆÀí
+	// ä¾æ¬¡ç»˜åˆ¶æ‰€æœ‰ç¨‹åºçº¹ç†
 	CGraphicsManager* pGraphicsMgr = CEngine::GetGraphicsManager();
 	float proceduralTime = CTimer::Reset("__texturemanager__", false);
 	map<string, SProceduralTexture>::iterator iter = m_mapProceduralTexture.begin();
@@ -415,20 +415,20 @@ bool CTextureManager::Update() {
 }
 
 /**
-* ¸üĞÂÎÆÀíÍ¼Æ¬
-* @param texture ĞèÒª¸üĞÂµÄÎÆÀí
-* @param file ĞÂÍ¼Æ¬µØÖ·
+* æ›´æ–°çº¹ç†å›¾ç‰‡
+* @param texture éœ€è¦æ›´æ–°çš„çº¹ç†
+* @param file æ–°å›¾ç‰‡åœ°å€
 */
 bool CTextureManager::Update(CTexture* texture, const string& file) {
 	if (!texture || texture->IsCubeMap() || texture->IsRenderTarget()) return false;
-	// ¶ÁÈ¡Í¼Æ¬ÎÄ¼ş
+	// è¯»å–å›¾ç‰‡æ–‡ä»¶
 	CFileManager::CImageFile* pFile = ReadImage(file, true);
 	if (!pFile) return false;
 	if (pFile->channels < 1 || pFile->channels > 4) {
 		delete pFile;
 		return false;
 	}
-	// ÎÆÀíĞÅÏ¢
+	// çº¹ç†ä¿¡æ¯
 	texture->m_iChannel = pFile->channels;
 	texture->m_iWidth = pFile->width;
 	texture->m_iHeight = pFile->height;
@@ -452,9 +452,9 @@ bool CTextureManager::Update(CTexture* texture, const string& file) {
 }
 
 /**
-* ¸üĞÂÎÆÀíÊı¾İ
-* @param texture ĞèÒª¸üĞÂµÄÎÆÀí
-* @param data ĞÂÎÆÀíÊı¾İ
+* æ›´æ–°çº¹ç†æ•°æ®
+* @param texture éœ€è¦æ›´æ–°çš„çº¹ç†
+* @param data æ–°çº¹ç†æ•°æ®
 */
 bool CTextureManager::Update(CTexture* texture, const unsigned char* data) {
 	if (!texture || !texture->m_bIsValid || texture->IsCubeMap() || texture->IsRenderTarget()) return false;
@@ -466,10 +466,10 @@ bool CTextureManager::Update(CTexture* texture, const unsigned char* data) {
 }
 
 /**
-* ¸üĞÂÖ¸¶¨ÇøÓòÎÆÀíÊı¾İ
-* @param texture ĞèÒª¸üĞÂµÄÎÆÀí
-* @param data ¾Ö²¿ÎÆÀíÊı¾İ
-* @param rect ÎÆÀíÇøÓò
+* æ›´æ–°æŒ‡å®šåŒºåŸŸçº¹ç†æ•°æ®
+* @param texture éœ€è¦æ›´æ–°çš„çº¹ç†
+* @param data å±€éƒ¨çº¹ç†æ•°æ®
+* @param rect çº¹ç†åŒºåŸŸ
 */
 bool CTextureManager::Update(CTexture* texture, const unsigned char* data, const CRectangle& rect) {
 	if (!texture || !texture->m_bIsValid || texture->IsCubeMap() || texture->IsRenderTarget()) return false;
@@ -483,10 +483,10 @@ bool CTextureManager::Update(CTexture* texture, const unsigned char* data, const
 }
 
 /**
-* ¸üĞÂ¾Ö²¿ÎÆÀíÑÕÉ«
-* @param texture ĞèÒª¸üĞÂµÄÎÆÀí
-* @param color ¸üĞÂºóµÄÑÕÉ«
-* @param rect ÎÆÀíÇøÓò£¬Îª¿Õ±íÊ¾¸üĞÂÕû¸öÇøÓò
+* æ›´æ–°å±€éƒ¨çº¹ç†é¢œè‰²
+* @param texture éœ€è¦æ›´æ–°çš„çº¹ç†
+* @param color æ›´æ–°åçš„é¢œè‰²
+* @param rect çº¹ç†åŒºåŸŸï¼Œä¸ºç©ºè¡¨ç¤ºæ›´æ–°æ•´ä¸ªåŒºåŸŸ
 */
 bool CTextureManager::Update(CTexture* texture, const CColor& color, const CRectangle& rect) {
 	if (!texture || !texture->m_bIsValid || texture->IsCubeMap() || texture->IsRenderTarget()) return false;
@@ -504,11 +504,11 @@ bool CTextureManager::Update(CTexture* texture, const CColor& color, const CRect
 }
 
 /**
-* Í¨¹ı×ÅÉ«Æ÷¸üĞÂ
-* @param texture ĞèÒª¸üĞÂµÄÎÆÀí
-* @param input ÓÃµ½µÄÊäÈëÎÆÀíÃû³Æ
-* @param shader ×ÅÉ«Æ÷Ãû³Æ
-* @param level ÎÆÀí¶ÔÏóµÄ mipmap µÈ¼¶
+* é€šè¿‡ç€è‰²å™¨æ›´æ–°
+* @param texture éœ€è¦æ›´æ–°çš„çº¹ç†
+* @param input ç”¨åˆ°çš„è¾“å…¥çº¹ç†åç§°
+* @param shader ç€è‰²å™¨åç§°
+* @param level çº¹ç†å¯¹è±¡çš„ mipmap ç­‰çº§
 */
 bool CTextureManager::Update(CTexture* texture, const string& input, const string& shader, int level) {
 	if (!texture || !texture->m_bIsValid || !texture->IsRenderTarget()) return false;
@@ -549,10 +549,10 @@ bool CTextureManager::Update(CTexture* texture, const string& input, const strin
 }
 
 /**
-* ¸üĞÂÎÆÀí´óĞ¡
-* @param texture ĞèÒª¸üĞÂµÄÎÆÀí
-* @param width ÎÆÀí¿í¶È
-* @param height ÎÆÀí¸ß¶È
+* æ›´æ–°çº¹ç†å¤§å°
+* @param texture éœ€è¦æ›´æ–°çš„çº¹ç†
+* @param width çº¹ç†å®½åº¦
+* @param height çº¹ç†é«˜åº¦
 */
 void CTextureManager::Resize(CTexture* texture, int width, int height) {
 	if (!texture || !texture->m_bIsValid || texture->IsCubeMap()) return;
@@ -564,17 +564,17 @@ void CTextureManager::Resize(CTexture* texture, int width, int height) {
 	GLenum type = pixelFormat == GL_R32F ? GL_FLOAT : GL_UNSIGNED_BYTE;
 	glBindTexture(GL_TEXTURE_2D, texture->m_iTexture);
 	glTexImage2D(GL_TEXTURE_2D, 0, pixelFormat, width, height, 0, format, type, 0);
-	// äÖÈ¾»º´æÎÆÀí
+	// æ¸²æŸ“ç¼“å­˜çº¹ç†
 	if (texture->m_iRenderBuffer) {
 		glBindRenderbuffer(GL_RENDERBUFFER, texture->m_iRenderBuffer);
 		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, width, height);
 	}
-	// ¸üĞÂÏñËØ»º´æ
+	// æ›´æ–°åƒç´ ç¼“å­˜
 	if (texture->m_iPixelBuffer) {
 		glBindBuffer(GL_PIXEL_UNPACK_BUFFER, texture->m_iPixelBuffer);
         glBufferData(GL_PIXEL_UNPACK_BUFFER, texture->m_iChannel * width * height, 0, GL_STREAM_DRAW);
 	}
-	// ¸üĞÂ³ÌĞòÎÆÀíµÄ Uniform ±äÁ¿
+	// æ›´æ–°ç¨‹åºçº¹ç†çš„ Uniform å˜é‡
 	map<string, SProceduralTexture>::iterator iter = m_mapProceduralTexture.find(texture->m_strFilePath);
 	if (iter != m_mapProceduralTexture.end()) {
 		iter->second.shader->UseShader();
@@ -584,12 +584,12 @@ void CTextureManager::Resize(CTexture* texture, int width, int height) {
 }
 
 /**
-* ¶ÁÈ¡ÎÆÀíÊı¾İÖÁRGBAÊı×é
-* @param texture ĞèÒª¶ÁÈ¡µÄÎÆÀí
-* @param face Èç¹û texture Îª CubeMap ÔòÓ¦¸ÃÊÇÖ¸¶¨Á¢·½ÌåÎÆÀíÄ³¸öÃæµÄÏÂ±ê
-* @param level MIPMAP¼¶±ğ£¬Ä¬ÈÏÓ¦Ìî0
-* @param buffer Êı¾İ»º³åÇø
-* @attention Èç¹û texture ÊÇ¸¡µãÎÆÀí£¬Ôò buffer Ó¦Îª float Êı×é£¬·ñÔòÊÇ unsigned char Êı×é
+* è¯»å–çº¹ç†æ•°æ®è‡³RGBAæ•°ç»„
+* @param texture éœ€è¦è¯»å–çš„çº¹ç†
+* @param face å¦‚æœ texture ä¸º CubeMap åˆ™åº”è¯¥æ˜¯æŒ‡å®šç«‹æ–¹ä½“çº¹ç†æŸä¸ªé¢çš„ä¸‹æ ‡
+* @param level MIPMAPçº§åˆ«ï¼Œé»˜è®¤åº”å¡«0
+* @param buffer æ•°æ®ç¼“å†²åŒº
+* @attention å¦‚æœ texture æ˜¯æµ®ç‚¹çº¹ç†ï¼Œåˆ™ buffer åº”ä¸º float æ•°ç»„ï¼Œå¦åˆ™æ˜¯ unsigned char æ•°ç»„
 * @see CTexture::IsFloatType()
 */
 void CTextureManager::ReadData(CTexture* texture, int face, int level, void* buffer) {
@@ -612,9 +612,9 @@ void CTextureManager::ReadData(CTexture* texture, int face, int level, void* buf
 }
 
 /**
-* »ñÈ¡Ö¸¶¨Ãû³ÆµÄÎÆÀí
-* @param name ÎÆÀíÃû³Æ
-* @return Ãû³ÆÎª name µÄÎÆÀí
+* è·å–æŒ‡å®šåç§°çš„çº¹ç†
+* @param name çº¹ç†åç§°
+* @return åç§°ä¸º name çš„çº¹ç†
 */
 CTexture* CTextureManager::GetTexture(const string& name) {
 	map<string, CTexture*>::iterator iter = m_mapTexture.find(name);
@@ -625,16 +625,16 @@ CTexture* CTextureManager::GetTexture(const string& name) {
 }
 
 /**
-* »ñÈ¡µ±Ç°Ê¹ÓÃµÄÎÆÀí
-* @return µ±Ç°ÎÆÀí
+* è·å–å½“å‰ä½¿ç”¨çš„çº¹ç†
+* @return å½“å‰çº¹ç†
 */
 CTexture* CTextureManager::GetCurrentTexture() {
 	return m_pCurrentTexture;
 }
 
 /**
-* »ñÈ¡¹ÜÀíµÄËùÓĞÎÆÀíÁĞ±í
-* @param textureList Êä³öÎÆÀíÁĞ±í
+* è·å–ç®¡ç†çš„æ‰€æœ‰çº¹ç†åˆ—è¡¨
+* @param textureList è¾“å‡ºçº¹ç†åˆ—è¡¨
 */
 void CTextureManager::GetTextureList(vector<CTexture*>& textureList) {
 	textureList.resize(m_mapTexture.size());
@@ -647,13 +647,13 @@ void CTextureManager::GetTextureList(vector<CTexture*>& textureList) {
 }
 
 /**
-* ¶ÁÈ¡Í¼Æ¬ÎÄ¼ş
-* @param file ÎÄ¼şÂ·¾¶
-* @param resize ÊÇ·ñ½«Í¼Æ¬´óĞ¡Ëõ·ÅÎª2µÄÃİ´Î
-* @return Í¼Æ¬¶ÔÏóÖ¸Õë
+* è¯»å–å›¾ç‰‡æ–‡ä»¶
+* @param file æ–‡ä»¶è·¯å¾„
+* @param resize æ˜¯å¦å°†å›¾ç‰‡å¤§å°ç¼©æ”¾ä¸º2çš„å¹‚æ¬¡
+* @return å›¾ç‰‡å¯¹è±¡æŒ‡é’ˆ
 */
 CFileManager::CImageFile* CTextureManager::ReadImage(const string& file, bool resize) {
-	// Ä¿Ç°Ö§³Ö BMP£¬TGA£¬JPG£¬PNG ËÄÖÖÍ¼Æ¬¸ñÊ½
+	// ç›®å‰æ”¯æŒ BMPï¼ŒTGAï¼ŒJPGï¼ŒPNG å››ç§å›¾ç‰‡æ ¼å¼
 	CFileManager::CImageFile* pFile = 0;
 	string ext = CStringUtil::UpperCase(CFileManager::GetExtension(file));
 	if (ext == "BMP") pFile = new CFileManager::CImageFile(CFileManager::BMP);
@@ -664,13 +664,13 @@ CFileManager::CImageFile* CTextureManager::ReadImage(const string& file, bool re
 		CLog::Error("Image file type is not supported '%s'", file.c_str());
 		return 0;
 	}
-	// ¶ÁÈ¡ÎÄ¼ş
+	// è¯»å–æ–‡ä»¶
 	if (!CEngine::GetFileManager()->ReadFile(file, pFile)) {
 		CLog::Error("Read image file error '%s'", file.c_str());
 		delete pFile;
 		return 0;
 	}
-	// ÅĞ¶Ï¸ß¿íÊÇ·ñÊÇ 2 µÄÃİ
+	// åˆ¤æ–­é«˜å®½æ˜¯å¦æ˜¯ 2 çš„å¹‚
 	if (resize) {
 		int flag_width = pFile->width & (pFile->width - 1);
 		int flag_height = pFile->height & (pFile->height - 1);
@@ -687,10 +687,10 @@ CFileManager::CImageFile* CTextureManager::ReadImage(const string& file, bool re
 }
 
 /**
-* Ë³Ê±ÕëĞı×ªÍ¼Æ¬
-* @param image Í¼Æ¬¶ÔÏó
-* @param angle Ğı×ª½Ç¶È
-* @attention Ğı×ª½Ç¶ÈÖ»ÄÜÎª 0,90,180,270 ËÄ¸öÖµµÄÆäÖĞÖ®Ò»
+* é¡ºæ—¶é’ˆæ—‹è½¬å›¾ç‰‡
+* @param image å›¾ç‰‡å¯¹è±¡
+* @param angle æ—‹è½¬è§’åº¦
+* @attention æ—‹è½¬è§’åº¦åªèƒ½ä¸º 0,90,180,270 å››ä¸ªå€¼çš„å…¶ä¸­ä¹‹ä¸€
 */
 void CTextureManager::RotateImage(CFileManager::CImageFile* image, int angle) {
 	if (angle == 0 || (angle != 90 && angle != 180 && angle != 270)) return;
@@ -698,7 +698,7 @@ void CTextureManager::RotateImage(CFileManager::CImageFile* image, int angle) {
 	int tHeight = image->height;
 	int tStride = image->channels;
 	unsigned char* tData = new unsigned char[tStride * tWidth * tHeight];
-	// °´Ğı×ª½Ç¶È·Ö±ğ½øĞĞÏñËØ½»»»
+	// æŒ‰æ—‹è½¬è§’åº¦åˆ†åˆ«è¿›è¡Œåƒç´ äº¤æ¢
 	if (angle == 90) {
 		for (int y = 0; y < tHeight; y++) {
 			for (int x = 0; x < tWidth; x++) {
@@ -731,10 +731,10 @@ void CTextureManager::RotateImage(CFileManager::CImageFile* image, int angle) {
 }
 
 /**
-* ¾µÏñÍ¼Æ¬
-* @param image Í¼Æ¬¶ÔÏó
-* @param horizontal ÊÇ·ñË®Æ½¾µÏñ
-* @note horizontal=true ÑØË®Æ½·½Ïò¾µÏñ£¬·ñÔò´¹Ö±·½Ïò¾µÏñ
+* é•œåƒå›¾ç‰‡
+* @param image å›¾ç‰‡å¯¹è±¡
+* @param horizontal æ˜¯å¦æ°´å¹³é•œåƒ
+* @note horizontal=true æ²¿æ°´å¹³æ–¹å‘é•œåƒï¼Œå¦åˆ™å‚ç›´æ–¹å‘é•œåƒ
 */
 void CTextureManager::MirrorImage(CFileManager::CImageFile* image, bool horizontal) {
 	if (horizontal) {
@@ -767,17 +767,17 @@ void CTextureManager::MirrorImage(CFileManager::CImageFile* image, bool horizont
 }
 
 /**
-* Ëõ·ÅÍ¼Æ¬
-* @param image Í¼Æ¬¶ÔÏó
-* @param width Ä¿±ê¿í¶È
-* @param height Ä¿±ê¸ß¶È
+* ç¼©æ”¾å›¾ç‰‡
+* @param image å›¾ç‰‡å¯¹è±¡
+* @param width ç›®æ ‡å®½åº¦
+* @param height ç›®æ ‡é«˜åº¦
 */
 void CTextureManager::ScaleImage(CFileManager::CImageFile* image, int width, int height) {
 	image->size = width * height * image->channels;
 	unsigned char* tData = new unsigned char[image->size];
 	const float fw = static_cast<float>(image->width - 1) / static_cast<float>(width - 1);
 	const float fh = static_cast<float>(image->height - 1) / static_cast<float>(height - 1);
-	// Ê¹ÓÃË«ÏßĞÔ²åÖµËõ·ÅÍ¼Æ¬
+	// ä½¿ç”¨åŒçº¿æ€§æ’å€¼ç¼©æ”¾å›¾ç‰‡
 	for (int i = 0; i < height; i++) {
 		float sy = fh * i;
 		int y1 = static_cast<int>(sy);
@@ -788,7 +788,7 @@ void CTextureManager::ScaleImage(CFileManager::CImageFile* image, int width, int
 			int x1 = static_cast<int>(sx);
 			int x2 = x1 + 1 == image->width? x1: x1 + 1;
 			float u = sx - x1;
-			// ËÄ¸öµãÈ¨ÖØ
+			// å››ä¸ªç‚¹æƒé‡
 			float s1 = (1.0f - u) * (1.0f - v);
 			float s2 = (1.0f - u) * v;
 			float s3 = u * (1.0f - v);
@@ -809,10 +809,10 @@ void CTextureManager::ScaleImage(CFileManager::CImageFile* image, int width, int
 }
 
 /**
-* ¼ÓÔØÔ¤¶¨ÒåÎÆÀí
+* åŠ è½½é¢„å®šä¹‰çº¹ç†
 */
 void CTextureManager::LoadDefaultTexture() {
-	// Ô¤¶¨ÒåÑÕÉ«
+	// é¢„å®šä¹‰é¢œè‰²
 	const char* name[] = { "", "transparent", "white", "black", "red", "green", "blue", "yellow", "purple" };
 	const unsigned char color[] = {
 		0x80, 0x80, 0x80, 0xFF,
@@ -839,7 +839,7 @@ void CTextureManager::LoadDefaultTexture() {
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1, 1, 0, GL_RGBA, GL_UNSIGNED_BYTE, &color[i * 4]);
 		m_mapTexture.insert(std::pair<string, CTexture*>(pTexture->m_strFilePath, pTexture));
 	}
-	// ¼ÓÔØ logo Êı¾İ
+	// åŠ è½½ logo æ•°æ®
 	CTexture* pTexture = new CTexture(this);
 	pTexture->m_iTextureType = GL_TEXTURE_2D;
 	pTexture->m_strFilePath = "logo";

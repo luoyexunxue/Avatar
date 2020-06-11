@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CVERTEX_H_
@@ -10,73 +10,73 @@
 #include "CColor.h"
 
 /**
-* @brief ¶¥µãÀà
+* @brief é¡¶ç‚¹ç±»
 */
 class AVATAR_EXPORT CVertex {
 public:
-	//! Ä¬ÈÏ¹¹Ôìº¯Êı
+	//! é»˜è®¤æ„é€ å‡½æ•°
 	CVertex();
-	//! ¸´ÖÆ¹¹Ôìº¯Êı
+	//! å¤åˆ¶æ„é€ å‡½æ•°
 	CVertex(const CVertex& vertex);
-	//! Ê¹ÓÃ¶¥µã×ø±ê¹¹Ôì¶¥µã
+	//! ä½¿ç”¨é¡¶ç‚¹åæ ‡æ„é€ é¡¶ç‚¹
 	CVertex(float x, float y, float z);
-	//! Ê¹ÓÃ¶¥µã×ø±êºÍÎÆÀí×ø±ê¹¹Ôì¶¥µã
+	//! ä½¿ç”¨é¡¶ç‚¹åæ ‡å’Œçº¹ç†åæ ‡æ„é€ é¡¶ç‚¹
 	CVertex(float x, float y, float z, float s, float t);
-	//! Ê¹ÓÃ¶¥µã×ø±êºÍÎÆÀí×ø±êÒÔ¼°·¨ÏòÁ¿¹¹Ôì¶¥µã
+	//! ä½¿ç”¨é¡¶ç‚¹åæ ‡å’Œçº¹ç†åæ ‡ä»¥åŠæ³•å‘é‡æ„é€ é¡¶ç‚¹
 	CVertex(float x, float y, float z, float s, float t, float nx, float ny, float nz);
-	//! Ê¹ÓÃ¶¥µã×ø±êºÍÎÆÀí×ø±êÒÔ¼°·¨ÏòÁ¿ºÍÑÕÉ«¹¹Ôì¶¥µã
+	//! ä½¿ç”¨é¡¶ç‚¹åæ ‡å’Œçº¹ç†åæ ‡ä»¥åŠæ³•å‘é‡å’Œé¢œè‰²æ„é€ é¡¶ç‚¹
 	CVertex(float x, float y, float z, float s, float t, float nx, float ny, float nz, const float color[4]);
 
-	//! ÉèÖÃ¶¥µã×ø±ê
+	//! è®¾ç½®é¡¶ç‚¹åæ ‡
 	void SetPosition(const CVector3& pos);
-	//! ÉèÖÃ¶¥µã×ø±ê
+	//! è®¾ç½®é¡¶ç‚¹åæ ‡
 	void SetPosition(const float pos[3]);
-	//! ÉèÖÃ¶¥µã×ø±ê
+	//! è®¾ç½®é¡¶ç‚¹åæ ‡
 	void SetPosition(float x, float y, float z);
 
-	//! ÉèÖÃÎÆÀí×ø±ê
+	//! è®¾ç½®çº¹ç†åæ ‡
 	void SetTexCoord(const CVector2& texCoord);
-	//! ÉèÖÃÎÆÀí×ø±ê
+	//! è®¾ç½®çº¹ç†åæ ‡
 	void SetTexCoord(const float texCoord[2]);
-	//! ÉèÖÃÎÆÀí×ø±ê
+	//! è®¾ç½®çº¹ç†åæ ‡
 	void SetTexCoord(float s, float t);
 
-	//! ÉèÖÃ¶¥µã·¨Ïò
+	//! è®¾ç½®é¡¶ç‚¹æ³•å‘
 	void SetNormal(const CVector3& normal);
-	//! ÉèÖÃ¶¥µã·¨Ïò
+	//! è®¾ç½®é¡¶ç‚¹æ³•å‘
 	void SetNormal(const float normal[3]);
-	//! ÉèÖÃ¶¥µã·¨Ïò
+	//! è®¾ç½®é¡¶ç‚¹æ³•å‘
 	void SetNormal(float nx, float ny, float nz);
 
-	//! ÉèÖÃ¶¥µãÑÕÉ«
+	//! è®¾ç½®é¡¶ç‚¹é¢œè‰²
 	void SetColor(const CColor& color);
-	//! ÉèÖÃ¶¥µãÑÕÉ«
+	//! è®¾ç½®é¡¶ç‚¹é¢œè‰²
 	void SetColor(const float color[4]);
-	//! ÉèÖÃ¶¥µãÑÕÉ«
+	//! è®¾ç½®é¡¶ç‚¹é¢œè‰²
 	void SetColor(float r, float g, float b, float a);
 
 public:
-	//! ·­×ª·¨ÏòÁ¿
+	//! ç¿»è½¬æ³•å‘é‡
 	void FlipNormal();
-	//! ÏßĞÔ²åÖµ
+	//! çº¿æ€§æ’å€¼
 	CVertex Interpolate(const CVertex& vertex, float t);
 
 public:
-	//! ¸³ÖµÔËËã·û
+	//! èµ‹å€¼è¿ç®—ç¬¦
 	CVertex& operator = (const CVertex& vertex);
-	//! ÔËËã·ûÖØÔØ ==
+	//! è¿ç®—ç¬¦é‡è½½ ==
 	bool operator == (const CVertex& vertex) const;
-	//! ÔËËã·ûÖØÔØ !=
+	//! è¿ç®—ç¬¦é‡è½½ !=
 	bool operator != (const CVertex& vertex) const;
 
 public:
-	//! ¶¥µã×ø±ê
+	//! é¡¶ç‚¹åæ ‡
 	float m_fPosition[4];
-	//! ÎÆÀí×ø±ê
+	//! çº¹ç†åæ ‡
 	float m_fTexCoord[2];
-	//! ¶¥µã·¨ÏòÁ¿
+	//! é¡¶ç‚¹æ³•å‘é‡
 	float m_fNormal[4];
-	//! ¶¥µãÑÕÉ«
+	//! é¡¶ç‚¹é¢œè‰²
 	float m_fColor[4];
 };
 

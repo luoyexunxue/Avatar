@@ -1,22 +1,22 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CPostProcess.h"
 #include "CEngine.h"
 
 /**
-* ¹¹Ôìº¯Êı
+* æ„é€ å‡½æ•°
 */
 CPostProcess::CPostProcess() {
 	m_pPostProcessShader = 0;
 	m_pRenderTexture = 0;
-	m_iSavedScreenSize[0] = 0;
-	m_iSavedScreenSize[1] = 0;
+	m_iScreenSize[0] = 0;
+	m_iScreenSize[1] = 0;
 }
 
 /**
-* Ó¦ÓÃµ±Ç°ºó´¦Àí
+* åº”ç”¨å½“å‰åå¤„ç†
 */
 void CPostProcess::Apply(CTexture* target, CMesh* mesh) {
 	CEngine::GetGraphicsManager()->SetRenderTarget(target, 0, true, true, true);
@@ -26,7 +26,7 @@ void CPostProcess::Apply(CTexture* target, CMesh* mesh) {
 }
 
 /**
-* »ñÈ¡ºó´¦Àí¶¥µã×ÅÉ«Æ÷
+* è·å–åå¤„ç†é¡¶ç‚¹ç€è‰²å™¨
 */
 const char* CPostProcess::GetVertexShader() {
 	static const char* strVertShader = "\

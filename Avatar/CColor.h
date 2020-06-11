@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CCOLOR_H_
@@ -9,108 +9,108 @@
 using std::string;
 
 /**
-* @brief ÑÕÉ«Àà
+* @brief é¢œè‰²ç±»
 */
 class AVATAR_EXPORT CColor {
 public:
-	//! Ä¬ÈÏ¹¹Ôìº¯Êı
+	//! é»˜è®¤æ„é€ å‡½æ•°
 	CColor();
-	//! ¸´ÖÆ¹¹Ôìº¯Êı
+	//! å¤åˆ¶æ„é€ å‡½æ•°
 	CColor(const CColor& color);
-	//! ÓÉÊı×éĞÎÊ½µÄRGBA¹¹Ôì
+	//! ç”±æ•°ç»„å½¢å¼çš„RGBAæ„é€ 
 	CColor(const float color[4]);
-	//! ÓÉËÄ×Ö½ÚÕûÊı¹¹Ôì
+	//! ç”±å››å­—èŠ‚æ•´æ•°æ„é€ 
 	CColor(unsigned int color);
-	//! ÓÉRGB¹¹ÔìÑÕÉ«
+	//! ç”±RGBæ„é€ é¢œè‰²
 	CColor(float r, float g, float b);
-	//! ÓÉRGBA¹¹ÔìÑÕÉ«
+	//! ç”±RGBAæ„é€ é¢œè‰²
 	CColor(float r, float g, float b, float a);
-	//! ÓÉRGB×Ö½Ú¹¹ÔìÑÕÉ«
+	//! ç”±RGBå­—èŠ‚æ„é€ é¢œè‰²
 	CColor(int r, int g, int b);
-	//! ÓÉRGBA×Ö½Ú¹¹ÔìÑÕÉ«
+	//! ç”±RGBAå­—èŠ‚æ„é€ é¢œè‰²
 	CColor(int r, int g, int b, int a);
-	//! ÓÉ×Ö·û´®¹¹Ôì
+	//! ç”±å­—ç¬¦ä¸²æ„é€ 
 	CColor(const string& color);
 
-	//! ÉèÖÃÑÕÉ«Öµ
+	//! è®¾ç½®é¢œè‰²å€¼
 	void SetValue(const CColor& color);
-	//! ÉèÖÃÑÕÉ«Öµ
+	//! è®¾ç½®é¢œè‰²å€¼
 	void SetValue(const float color[4]);
-	//! ÉèÖÃÑÕÉ«Öµ
+	//! è®¾ç½®é¢œè‰²å€¼
 	void SetValue(float r, float g, float b);
-	//! ÉèÖÃÑÕÉ«Öµ
+	//! è®¾ç½®é¢œè‰²å€¼
 	void SetValue(float r, float g, float b, float a);
 
-	//! »ñÈ¡ÑÕÉ«Öµ
+	//! è·å–é¢œè‰²å€¼
 	void GetValue(float* color) const;
-	//! »ñÈ¡ÑÕÉ«Öµ
+	//! è·å–é¢œè‰²å€¼
 	void GetValue(unsigned char* color) const;
-	//! Ìî³ä»º³åÇø
+	//! å¡«å……ç¼“å†²åŒº
 	void FillBuffer(float* buffer, int size, int stride) const;
-	//! Ìî³ä»º³åÇø
+	//! å¡«å……ç¼“å†²åŒº
 	void FillBuffer(unsigned char* buffer, int size, int stride) const;
 
-	//! ÑÕÉ«Ïà¼Ó
+	//! é¢œè‰²ç›¸åŠ 
 	CColor& Add(const CColor& color, float scale);
-	//! ÑÕÉ«Ïà¼Ó
+	//! é¢œè‰²ç›¸åŠ 
 	CColor& Add(const float color[4], float scale);
 
-	//! ·¶Î§ÏŞÖÆÔÚ 0.0 ÖÁ 1.0 Ö®¼ä
+	//! èŒƒå›´é™åˆ¶åœ¨ 0.0 è‡³ 1.0 ä¹‹é—´
 	CColor& Clamp();
-	//! ·´×ªÑÕÉ«
+	//! åè½¬é¢œè‰²
 	CColor& Invert();
-	//! ´Ó HSLA ×ª»»
+	//! ä» HSLA è½¬æ¢
 	CColor& FromHsla(float h, float s, float l, float a);
-	//! ´ÓÃû×ÖÉèÖÃÑÕÉ«
+	//! ä»åå­—è®¾ç½®é¢œè‰²
 	CColor& FromName(const string& name);
 
-	//! ·µ»ØÑÕÉ«´úÂë
+	//! è¿”å›é¢œè‰²ä»£ç 
 	string ToString();
 
 public:
-	//! ÏÂ±êÔËËã·û []
+	//! ä¸‹æ ‡è¿ç®—ç¬¦ []
 	float& operator [] (int index);
-	//! ÖØÔØÔËËã·û ==
+	//! é‡è½½è¿ç®—ç¬¦ ==
 	bool operator == (const CColor& color) const;
-	//! ÖØÔØÔËËã·û !=
+	//! é‡è½½è¿ç®—ç¬¦ !=
 	bool operator != (const CColor& color) const;
-	//! ¼Ó·¨ÔËËã
+	//! åŠ æ³•è¿ç®—
 	CColor operator + (const CColor& color) const;
-	//! ¼õ·¨ÔËËã
+	//! å‡æ³•è¿ç®—
 	CColor operator - (const CColor& color) const;
-	//! ³Ë·¨ÔËËã
+	//! ä¹˜æ³•è¿ç®—
 	CColor operator * (const CColor& color) const;
 
-	//! ÖØÔØÔËËã·û +=
+	//! é‡è½½è¿ç®—ç¬¦ +=
 	CColor operator += (const CColor& color);
-	//! ÖØÔØÔËËã·û -=
+	//! é‡è½½è¿ç®—ç¬¦ -=
 	CColor operator -= (const CColor& color);
-	//! ÖØÔØÔËËã·û *=
+	//! é‡è½½è¿ç®—ç¬¦ *=
 	CColor operator *= (const CColor& color);
 
 public:
 	/**
-	* ÑÕÉ«´æ´¢·½Ê½
+	* é¢œè‰²å­˜å‚¨æ–¹å¼
 	* [R, G, B, A]
 	*/
 	float m_fValue[4];
-	//! Í¸Ã÷³£Á¿
+	//! é€æ˜å¸¸é‡
 	const static CColor Transparent;
-	//! °×É«³£Á¿
+	//! ç™½è‰²å¸¸é‡
 	const static CColor White;
-	//! »ÒÉ«³£Á¿
+	//! ç°è‰²å¸¸é‡
 	const static CColor Gray;
-	//! ºÚÉ«³£Á¿
+	//! é»‘è‰²å¸¸é‡
 	const static CColor Black;
-	//! ºìÉ«³£Á¿
+	//! çº¢è‰²å¸¸é‡
 	const static CColor Red;
-	//! ÂÌÉ«³£Á¿
+	//! ç»¿è‰²å¸¸é‡
 	const static CColor Green;
-	//! À¶É«³£Á¿
+	//! è“è‰²å¸¸é‡
 	const static CColor Blue;
-	//! »ÆÉ«³£Á¿
+	//! é»„è‰²å¸¸é‡
 	const static CColor Yellow;
-	//! ×ÏÉ«³£Á¿
+	//! ç´«è‰²å¸¸é‡
 	const static CColor Purple;
 };
 

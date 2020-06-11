@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CPLANE_H_
@@ -9,60 +9,60 @@
 #include "CMatrix4.h"
 
 /**
-* @brief ¿Õ¼äÆ½ÃæÀà
+* @brief ç©ºé—´å¹³é¢ç±»
 */
 class AVATAR_EXPORT CPlane {
 public:
-	//! Ä¬ÈÏ¹¹Ôìº¯Êı
+	//! é»˜è®¤æ„é€ å‡½æ•°
 	CPlane();
-	//! ¸´ÖÆ¹¹Ôìº¯Êı
+	//! å¤åˆ¶æ„é€ å‡½æ•°
 	CPlane(const CPlane& plane);
-	//! ÓÉÊı×éĞÎÊ½µÄxyzd¹¹ÔìÆ½Ãæ
+	//! ç”±æ•°ç»„å½¢å¼çš„xyzdæ„é€ å¹³é¢
 	CPlane(const float plane[4]);
-	//! ÓÉxyzd¹¹ÔìÆ½Ãæ
+	//! ç”±xyzdæ„é€ å¹³é¢
 	CPlane(float x, float y, float z, float d);
-	//! ÓÉ·¨ÏòÁ¿ºÍd¹¹ÔìÆ½Ãæ
+	//! ç”±æ³•å‘é‡å’Œdæ„é€ å¹³é¢
 	CPlane(const CVector3& normal, float d);
-	//! ÓÉÆ½ÃæÉÏµÄÒ»µãºÍ·¨ÏòÁ¿¹¹ÔìÆ½Ãæ
+	//! ç”±å¹³é¢ä¸Šçš„ä¸€ç‚¹å’Œæ³•å‘é‡æ„é€ å¹³é¢
 	CPlane(const CVector3& point, const CVector3& normal);
 
-	//! ÉèÖÃÆ½ÃæÒ»°ã·½³Ì
+	//! è®¾ç½®å¹³é¢ä¸€èˆ¬æ–¹ç¨‹
 	void SetValue(const float plane[4], bool normalized);
-	//! ÉèÖÃÆ½ÃæÒ»°ã·½³Ì
+	//! è®¾ç½®å¹³é¢ä¸€èˆ¬æ–¹ç¨‹
 	void SetValue(float x, float y, float z, float d, bool normalized);
 
-	//! µÃµ½Æ½ÃæÉÏµÄÒ»µã
+	//! å¾—åˆ°å¹³é¢ä¸Šçš„ä¸€ç‚¹
 	CVector3 GetPlanePoint() const;
-	//! »ñÈ¡¾µÏñµã
+	//! è·å–é•œåƒç‚¹
 	CVector3 GetMirrorPoint(const CVector3& point) const;
-	//! »ñÈ¡Æ½Ãæ¶ÔÓ¦µÄ·´Éä¾ØÕó
+	//! è·å–å¹³é¢å¯¹åº”çš„åå°„çŸ©é˜µ
 	CMatrix4 GetReflectMatrix() const;
-	//! Ê¹ÓÃ¾ØÕó±ä»»Æ½Ãæ
+	//! ä½¿ç”¨çŸ©é˜µå˜æ¢å¹³é¢
 	CPlane& Transform(const CMatrix4& matrix);
-	//! ·­×ª·¨ÏòÁ¿
+	//! ç¿»è½¬æ³•å‘é‡
 	CPlane& FlipNormal();
 
-	//! ÊÇ·ñÃæÏò¹Û²ìÕß
+	//! æ˜¯å¦é¢å‘è§‚å¯Ÿè€…
 	bool IsFrontFacing(const CVector3& lookDir) const;
-	//! »ñÈ¡Æ½ÃæÓëÆ½ÃæµÄ½»Ïß
+	//! è·å–å¹³é¢ä¸å¹³é¢çš„äº¤çº¿
 	bool IntersectPlane(const CPlane& plane, CVector3& linePoint, CVector3& lineDir) const;
-	//! »ñÈ¡Æ½ÃæÓëÖ±ÏßµÄ½»µã
+	//! è·å–å¹³é¢ä¸ç›´çº¿çš„äº¤ç‚¹
 	bool IntersectLine(const CVector3& linePoint, const CVector3& lineDir, CVector3& point) const;
-	//! »ñÈ¡Æ½ÃæÓëÏß¶ÎµÄ½»µã
+	//! è·å–å¹³é¢ä¸çº¿æ®µçš„äº¤ç‚¹
 	bool IntersectLineSegment(const CVector3& p1, const CVector3& p2, CVector3& point) const;
-	//! »ñÈ¡µãµ½Æ½ÃæµÄ¾àÀë
+	//! è·å–ç‚¹åˆ°å¹³é¢çš„è·ç¦»
 	float Distance(const CVector3& point) const;
 
 public:
-	//! ÖØÔØÔËËã·û ==
+	//! é‡è½½è¿ç®—ç¬¦ ==
 	bool operator == (const CPlane& plane) const;
-	//! ÖØÔØÔËËã·û !=
+	//! é‡è½½è¿ç®—ç¬¦ !=
 	bool operator != (const CPlane& plane) const;
 
 public:
 	/**
-	* Æ½Ãæ·½³Ì nx * X + ny * Y + nz * Z + d = 0;
-	* m_fNormal = [nx, ny, nz] µ¥Î»ÏòÁ¿
+	* å¹³é¢æ–¹ç¨‹ nx * X + ny * Y + nz * Z + d = 0;
+	* m_fNormal = [nx, ny, nz] å•ä½å‘é‡
 	* m_fDistance = d;
 	*/
 	float m_fNormal[3];

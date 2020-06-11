@@ -1,11 +1,11 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CSceneNode.h"
 
 /**
-* ¹¹Ôìº¯Êı
+* æ„é€ å‡½æ•°
 */
 CSceneNode::CSceneNode(const string& type, const string& name) {
 	m_cScale.SetValue(CVector3::One);
@@ -19,13 +19,13 @@ CSceneNode::CSceneNode(const string& type, const string& name) {
 }
 
 /**
-* Îö¹¹º¯Êı
+* ææ„å‡½æ•°
 */
 CSceneNode::~CSceneNode() {
 }
 
 /**
-* ÉèÖÃËõ·Å
+* è®¾ç½®ç¼©æ”¾
 */
 void CSceneNode::SetScale(const CVector3& scale) {
 	m_cScale.SetValue(scale);
@@ -33,7 +33,7 @@ void CSceneNode::SetScale(const CVector3& scale) {
 }
 
 /**
-* ÉèÖÃ³¯Ïò
+* è®¾ç½®æœå‘
 */
 void CSceneNode::SetOrientation(const CQuaternion& orientation) {
 	m_cOrientation.SetValue(orientation);
@@ -41,7 +41,7 @@ void CSceneNode::SetOrientation(const CQuaternion& orientation) {
 }
 
 /**
-* ÉèÖÃÎ»ÖÃ
+* è®¾ç½®ä½ç½®
 */
 void CSceneNode::SetPosition(const CVector3& position) {
 	m_cPosition.SetValue(position);
@@ -49,14 +49,14 @@ void CSceneNode::SetPosition(const CVector3& position) {
 }
 
 /**
-* ¸üĞÂ±ä»»¾ØÕó
+* æ›´æ–°å˜æ¢çŸ©é˜µ
 */
 void CSceneNode::Transform() {
-	// ±ä»»Ë³ĞòÎª£ºËõ·Å-Ğı×ª-Æ½ÒÆ
+	// å˜æ¢é¡ºåºä¸ºï¼šç¼©æ”¾-æ—‹è½¬-å¹³ç§»
 	m_cModelMatrix.MakeTransform(m_cScale, m_cOrientation, m_cPosition);
 	if (!m_pParent) m_cWorldMatrix = m_cModelMatrix;
 	else m_cWorldMatrix = m_pParent->m_cWorldMatrix * m_cModelMatrix;
-	// ±ä»»×Ó½Úµã
+	// å˜æ¢å­èŠ‚ç‚¹
 	list<CSceneNode*>::iterator iter = m_lstChildren.begin();
 	while (iter != m_lstChildren.end()) {
 		(*iter)->Transform();
@@ -65,35 +65,35 @@ void CSceneNode::Transform() {
 }
 
 /**
-* »ñÈ¡Íø¸ñÊı¾İ
+* è·å–ç½‘æ ¼æ•°æ®
 */
 CMeshData* CSceneNode::GetMeshData() {
 	return 0;
 }
 
 /**
-* »ñÈ¡½ÚµãID
+* è·å–èŠ‚ç‚¹ID
 */
 int& CSceneNode::GetId() {
 	return m_iNodeId;
 }
 
 /**
-* »ñÈ¡½ÚµãÀàĞÍ
+* è·å–èŠ‚ç‚¹ç±»å‹
 */
 const string& CSceneNode::GetType() const {
 	return m_strType;
 }
 
 /**
-* »ñÈ¡½ÚµãÃû³Æ
+* è·å–èŠ‚ç‚¹åç§°
 */
 const string& CSceneNode::GetName() const {
 	return m_strName;
 }
 
 /**
-* µÃµ½ÊÀ½ç×ø±êÏµÏÂµÄËõ·Å
+* å¾—åˆ°ä¸–ç•Œåæ ‡ç³»ä¸‹çš„ç¼©æ”¾
 */
 CVector3 CSceneNode::GetWorldScale() const {
 	if (!m_pParent) return m_cScale;
@@ -105,7 +105,7 @@ CVector3 CSceneNode::GetWorldScale() const {
 }
 
 /**
-* µÃµ½ÊÀ½ç×ø±êÏµÏÂµÄ³¯Ïò
+* å¾—åˆ°ä¸–ç•Œåæ ‡ç³»ä¸‹çš„æœå‘
 */
 CQuaternion CSceneNode::GetWorldOrientation() const {
 	if (!m_pParent) return m_cOrientation;
@@ -115,7 +115,7 @@ CQuaternion CSceneNode::GetWorldOrientation() const {
 }
 
 /**
-* µÃµ½ÊÀ½ç×ø±êÏµÏÂµÄÎ»ÖÃ
+* å¾—åˆ°ä¸–ç•Œåæ ‡ç³»ä¸‹çš„ä½ç½®
 */
 CVector3 CSceneNode::GetWorldPosition() const {
 	if (!m_pParent) return m_cPosition;
@@ -123,7 +123,7 @@ CVector3 CSceneNode::GetWorldPosition() const {
 }
 
 /**
-* »ñÈ¡ÊÀ½ç×ø±êÏµÏÂµÄ°üÎ§ºĞ
+* è·å–ä¸–ç•Œåæ ‡ç³»ä¸‹çš„åŒ…å›´ç›’
 */
 CBoundingBox CSceneNode::GetBoundingBox() const {
 	if (!m_cLocalBoundingBox.IsValid()) {

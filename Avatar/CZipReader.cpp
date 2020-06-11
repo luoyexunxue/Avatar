@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CZipReader.h"
@@ -16,7 +16,7 @@
 #endif
 
 /**
-* ¹¹Ôìº¯Êı£¬Ö¸¶¨Ñ¹Ëõ°üÂ·¾¶ºÍ½âÑ¹ÃÜÂë
+* æ„é€ å‡½æ•°ï¼ŒæŒ‡å®šå‹ç¼©åŒ…è·¯å¾„å’Œè§£å‹å¯†ç 
 */
 CZipReader::CZipReader(const string& path, const string& password) {
 	m_strPassword = password;
@@ -28,7 +28,7 @@ CZipReader::CZipReader(const string& path, const string& password) {
 }
 
 /**
-* Îö¹¹º¯Êı
+* ææ„å‡½æ•°
 */
 CZipReader::~CZipReader() {
 	delete m_pFileInfo;
@@ -38,7 +38,7 @@ CZipReader::~CZipReader() {
 }
 
 /**
-* ´ò¿ªÑ¹Ëõ°üÖĞµÄÖ¸¶¨ÎÄ¼ş
+* æ‰“å¼€å‹ç¼©åŒ…ä¸­çš„æŒ‡å®šæ–‡ä»¶
 */
 bool CZipReader::Open(const string& file) {
 	memset(m_pFileInfo, 0, sizeof(unz_file_info64));
@@ -57,7 +57,7 @@ bool CZipReader::Open(const string& file) {
 }
 
 /**
-* ¹Ø±ÕÉÏ´Î´ò¿ªµÄÎÄ¼ş
+* å…³é—­ä¸Šæ¬¡æ‰“å¼€çš„æ–‡ä»¶
 */
 void CZipReader::Close() {
 	memset(m_pFileInfo, 0, sizeof(unz_file_info64));
@@ -67,7 +67,7 @@ void CZipReader::Close() {
 }
 
 /**
-* »ñÈ¡µ±Ç°´ò¿ªµÄÎÄ¼ş´óĞ¡
+* è·å–å½“å‰æ‰“å¼€çš„æ–‡ä»¶å¤§å°
 */
 unsigned int CZipReader::Size() {
 	if (m_pZipFile) {
@@ -77,7 +77,7 @@ unsigned int CZipReader::Size() {
 }
 
 /**
-* ¶ÁÈ¡µ±Ç°´ò¿ªµÄÎÄ¼ş
+* è¯»å–å½“å‰æ‰“å¼€çš„æ–‡ä»¶
 */
 unsigned int CZipReader::Read(unsigned char* buff, unsigned int size) {
 	if (m_pZipFile) {

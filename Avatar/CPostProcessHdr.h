@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÷‹» ∑Ê. All rights reserved.
+// Copyright (c) 2020 Âë®‰ªÅÈîã. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CPOSTPROCESSHDR_H_
@@ -7,7 +7,7 @@
 #include "CPostProcess.h"
 
 /**
-* @brief HDR ∫Û¥¶¿Ì
+* @brief HDR ÂêéÂ§ÑÁêÜ
 */
 class CPostProcessHdr: public CPostProcess {
 public:

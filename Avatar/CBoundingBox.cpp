@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CBoundingBox.h"
@@ -11,7 +11,7 @@
 #endif
 
 /**
-* ¹¹Ôìº¯Êı
+* æ„é€ å‡½æ•°
 */
 CBoundingBox::CBoundingBox() {
 	m_cMin.SetValue(FLT_MAX, FLT_MAX, FLT_MAX);
@@ -19,7 +19,7 @@ CBoundingBox::CBoundingBox() {
 }
 
 /**
-* ¸´ÖÆ¹¹Ôìº¯Êı
+* å¤åˆ¶æ„é€ å‡½æ•°
 */
 CBoundingBox::CBoundingBox(const CBoundingBox& aabb) {
 	m_cMin = aabb.m_cMin;
@@ -27,7 +27,7 @@ CBoundingBox::CBoundingBox(const CBoundingBox& aabb) {
 }
 
 /**
-* Ê¹ÓÃ¼«Öµ×ø±ê¹¹Ôì°üÎ§ºĞ
+* ä½¿ç”¨æå€¼åæ ‡æ„é€ åŒ…å›´ç›’
 */
 CBoundingBox::CBoundingBox(const CVector3& min, const CVector3& max) {
 	m_cMin.SetValue(min.m_fValue);
@@ -35,7 +35,7 @@ CBoundingBox::CBoundingBox(const CVector3& min, const CVector3& max) {
 }
 
 /**
-* Ê¹ÓÃ¼«Öµ×ø±ê¹¹Ôì°üÎ§ºĞ
+* ä½¿ç”¨æå€¼åæ ‡æ„é€ åŒ…å›´ç›’
 */
 CBoundingBox::CBoundingBox(float minx, float miny, float minz, float maxx, float maxy, float maxz) {
 	m_cMin.SetValue(minx, miny, minz);
@@ -43,7 +43,7 @@ CBoundingBox::CBoundingBox(float minx, float miny, float minz, float maxx, float
 }
 
 /**
-* ÉèÖÃ°üÎ§ºĞÖµ
+* è®¾ç½®åŒ…å›´ç›’å€¼
 */
 void CBoundingBox::SetValue(const CBoundingBox& aabb) {
 	m_cMin.SetValue(aabb.m_cMin);
@@ -51,7 +51,7 @@ void CBoundingBox::SetValue(const CBoundingBox& aabb) {
 }
 
 /**
-* ÉèÖÃ°üÎ§ºĞÖµ
+* è®¾ç½®åŒ…å›´ç›’å€¼
 */
 void CBoundingBox::SetValue(const CVector3& min, const CVector3& max) {
 	m_cMin.SetValue(min.m_fValue);
@@ -59,7 +59,7 @@ void CBoundingBox::SetValue(const CVector3& min, const CVector3& max) {
 }
 
 /**
-* ÉèÖÃ°üÎ§ºĞÖµ
+* è®¾ç½®åŒ…å›´ç›’å€¼
 */
 void CBoundingBox::SetValue(float minx, float miny, float minz, float maxx, float maxy, float maxz) {
 	m_cMin.SetValue(minx, miny, minz);
@@ -67,7 +67,7 @@ void CBoundingBox::SetValue(float minx, float miny, float minz, float maxx, floa
 }
 
 /**
-* ÉèÖÃÎªÎŞĞ§°üÎ§ºĞ
+* è®¾ç½®ä¸ºæ— æ•ˆåŒ…å›´ç›’
 */
 void CBoundingBox::SetInvalid() {
 	m_cMin.SetValue(FLT_MAX, FLT_MAX, FLT_MAX);
@@ -75,9 +75,9 @@ void CBoundingBox::SetInvalid() {
 }
 
 /**
-* ¸üĞÂ°üÎ§ºĞ
-* @param point ĞèÒª°üº¬µÄµã
-* @note °üÎ§ºĞ½«À©´óÖÁ°üº¬ point
+* æ›´æ–°åŒ…å›´ç›’
+* @param point éœ€è¦åŒ…å«çš„ç‚¹
+* @note åŒ…å›´ç›’å°†æ‰©å¤§è‡³åŒ…å« point
 */
 void CBoundingBox::Update(const CVector3& point) {
 	if (point.m_fValue[0] > m_cMax[0]) m_cMax[0] = point.m_fValue[0];
@@ -89,9 +89,9 @@ void CBoundingBox::Update(const CVector3& point) {
 }
 
 /**
-* ¸üĞÂ°üÎ§ºĞ
-* @param aabb ĞèÒª°üº¬µÄAABB°üÎ§ºĞ
-* @note °üÎ§ºĞ½«À©´óÖÁ°üº¬ aabb
+* æ›´æ–°åŒ…å›´ç›’
+* @param aabb éœ€è¦åŒ…å«çš„AABBåŒ…å›´ç›’
+* @note åŒ…å›´ç›’å°†æ‰©å¤§è‡³åŒ…å« aabb
 */
 void CBoundingBox::Update(const CBoundingBox& aabb) {
 	for (int i = 0; i < 3; i++) {
@@ -101,7 +101,7 @@ void CBoundingBox::Update(const CBoundingBox& aabb) {
 }
 
 /**
-* ÅĞ¶ÏÊÇ·ñÎªÓĞĞ§°üÎ§ºĞ
+* åˆ¤æ–­æ˜¯å¦ä¸ºæœ‰æ•ˆåŒ…å›´ç›’
 */
 bool CBoundingBox::IsValid() const {
 	if (m_cMin.m_fValue[0] > m_cMax.m_fValue[0]) return false;
@@ -111,7 +111,7 @@ bool CBoundingBox::IsValid() const {
 }
 
 /**
-* ÊÇ·ñºÍÁíÒ»¸ö°üÎ§ºĞÖØµş
+* æ˜¯å¦å’Œå¦ä¸€ä¸ªåŒ…å›´ç›’é‡å 
 */
 bool CBoundingBox::IsOverlap(const CBoundingBox& aabb) const {
 	if (m_cMax.m_fValue[0] < aabb.m_cMin.m_fValue[0] || m_cMin.m_fValue[0] > aabb.m_cMax.m_fValue[0]) return false;
@@ -121,7 +121,7 @@ bool CBoundingBox::IsOverlap(const CBoundingBox& aabb) const {
 }
 
 /**
-* ÊÇ·ñ°üº¬Ö¸¶¨°üÎ§ºĞ
+* æ˜¯å¦åŒ…å«æŒ‡å®šåŒ…å›´ç›’
 */
 bool CBoundingBox::IsContain(const CBoundingBox& aabb) const {
 	if (m_cMin.m_fValue[0] <= aabb.m_cMin.m_fValue[0] && m_cMax.m_fValue[0] >= aabb.m_cMax.m_fValue[0] &&
@@ -133,7 +133,7 @@ bool CBoundingBox::IsContain(const CBoundingBox& aabb) const {
 }
 
 /**
-* ÊÇ·ñ°üº¬Ö¸¶¨µã
+* æ˜¯å¦åŒ…å«æŒ‡å®šç‚¹
 */
 bool CBoundingBox::IsContain(const CVector3& point) const {
 	if (point.m_fValue[0] >= m_cMin.m_fValue[0] && point.m_fValue[0] <= m_cMax.m_fValue[0] &&
@@ -145,7 +145,7 @@ bool CBoundingBox::IsContain(const CVector3& point) const {
 }
 
 /**
-* ¼ÆËã±íÃæ»ı
+* è®¡ç®—è¡¨é¢ç§¯
 */
 float CBoundingBox::SurfaceArea() const {
 	if (!IsValid()) return 0.0f;
@@ -156,7 +156,7 @@ float CBoundingBox::SurfaceArea() const {
 }
 
 /**
-* ¼ÆËã¸÷ÖáµÄ´óĞ¡
+* è®¡ç®—å„è½´çš„å¤§å°
 * @param axis 0-X 1-Y 2-Z
 */
 float CBoundingBox::Size(int axis) const {
@@ -168,14 +168,14 @@ float CBoundingBox::Size(int axis) const {
 }
 
 /**
-* ¼ÆËãÖĞĞÄµãÎ»ÖÃ
+* è®¡ç®—ä¸­å¿ƒç‚¹ä½ç½®
 */
 CVector3 CBoundingBox::Center() const {
 	return (m_cMax + m_cMin) * 0.5f;
 }
 
 /**
-* ¶Ô°üÎ§ºĞÏà¶ÔÓÚÖĞĞÄµã½øĞĞËõ·Å
+* å¯¹åŒ…å›´ç›’ç›¸å¯¹äºä¸­å¿ƒç‚¹è¿›è¡Œç¼©æ”¾
 */
 CBoundingBox& CBoundingBox::Scale(const CVector3& scale) {
 	float dx = m_cMax.m_fValue[0] - m_cMin.m_fValue[0];
@@ -190,7 +190,7 @@ CBoundingBox& CBoundingBox::Scale(const CVector3& scale) {
 }
 
 /**
-* ¶Ô°üÎ§ºĞ½øĞĞÆ«ÒÆ
+* å¯¹åŒ…å›´ç›’è¿›è¡Œåç§»
 */
 CBoundingBox& CBoundingBox::Offset(const CVector3& offset) {
 	m_cMax.Add(offset);
@@ -199,21 +199,21 @@ CBoundingBox& CBoundingBox::Offset(const CVector3& offset) {
 }
 
 /**
-* ÖØÔØ == ÔËËã·û
+* é‡è½½ == è¿ç®—ç¬¦
 */
 bool CBoundingBox::operator == (const CBoundingBox& aabb) const {
 	return (m_cMin == aabb.m_cMin && m_cMax == aabb.m_cMax);
 }
 
 /**
-* ÖØÔØ != ÔËËã·û
+* é‡è½½ != è¿ç®—ç¬¦
 */
 bool CBoundingBox::operator != (const CBoundingBox& aabb) const {
 	return !(*this == aabb);
 }
 
 /**
-* ÖØÔØ + ÔËËã·û£¬¼ÆËãºÏ¼¯
+* é‡è½½ + è¿ç®—ç¬¦ï¼Œè®¡ç®—åˆé›†
 */
 CBoundingBox CBoundingBox::operator + (const CBoundingBox& aabb) const {
 	CBoundingBox boundingBox;
@@ -227,7 +227,7 @@ CBoundingBox CBoundingBox::operator + (const CBoundingBox& aabb) const {
 }
 
 /**
-* ÖØÔØ += ÔËËã·û£¬¼ÆËãºÏ¼¯
+* é‡è½½ += è¿ç®—ç¬¦ï¼Œè®¡ç®—åˆé›†
 */
 CBoundingBox& CBoundingBox::operator += (const CBoundingBox& aabb) {
 	for (int i = 0; i < 3; i++) {

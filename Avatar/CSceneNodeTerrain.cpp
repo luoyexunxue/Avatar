@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CSceneNodeTerrain.h"
@@ -10,7 +10,7 @@
 #include <cstring>
 
 /**
-* ¹¹Ôìº¯Êı
+* æ„é€ å‡½æ•°
 */
 CSceneNodeTerrain::CSceneNodeTerrain(const string& name, const string& heightMap, float mapScale,
 		float heightScale, const string texture[4], const string& blendMap): CSceneNode("terrain", name) {
@@ -30,12 +30,12 @@ CSceneNodeTerrain::CSceneNodeTerrain(const string& name, const string& heightMap
 }
 
 /**
-* ³õÊ¼»¯³¡¾°½Úµã
+* åˆå§‹åŒ–åœºæ™¯èŠ‚ç‚¹
 */
 bool CSceneNodeTerrain::Init() {
-	// ¶ÁÈ¡¸ß¶ÈÍ¼£¬¿í¸ß±ØĞëÏàµÈÇÒÎª2µÄÃİ
+	// è¯»å–é«˜åº¦å›¾ï¼Œå®½é«˜å¿…é¡»ç›¸ç­‰ä¸”ä¸º2çš„å¹‚
 	if (!LoadHeightMap(m_strHeightMap, m_pHeightMap)) return false;
-	// µØĞÎ²ÄÖÊ
+	// åœ°å½¢æè´¨
 	CShader* pShader = CEngine::GetShaderManager()->GetShader("terrain");
 	pShader->UseShader();
 	pShader->SetUniform("uTexture[0]", 0);
@@ -45,19 +45,19 @@ bool CSceneNodeTerrain::Init() {
 	pShader->SetUniform("uTexture[4]", 4);
 	pShader->SetUniform("uTextureScale[0]", CVector2(m_pHeightMap->hScale, m_pHeightMap->hScale) * 0.1f);
 	pShader->SetUniform("uTextureScale[1]", CVector2(1.0f, 1.0f));
-	// µØĞÎ¸ß¶È·Ö²ã
+	// åœ°å½¢é«˜åº¦åˆ†å±‚
 	const float height1 = 0.0f * m_pHeightMap->vScale;
 	const float height2 = 0.3f * m_pHeightMap->vScale;
 	const float height3 = 0.7f * m_pHeightMap->vScale;
 	pShader->SetUniform("uHeightRange", CVector3(height1, height2, height3));
-	// ¸ß¶ÈÍ¼´óĞ¡µÄ2µÄÃİ´Î¾ÍÊÇËÄ²æÊ÷×î´ó¼¶±ğ
+	// é«˜åº¦å›¾å¤§å°çš„2çš„å¹‚æ¬¡å°±æ˜¯å››å‰æ ‘æœ€å¤§çº§åˆ«
 	int maxLevel = 0;
 	int mapSize = m_pHeightMap->size >> 1;
 	while (mapSize > 0) {
 		mapSize >>= 1;
 		maxLevel += 1;
 	}
-	// Íø¸ñËùÔÚ¼¶±ğ±ß³¤×î´óÎª 129
+	// ç½‘æ ¼æ‰€åœ¨çº§åˆ«è¾¹é•¿æœ€å¤§ä¸º 129
 	m_iMeshLevel = maxLevel - 7 < 0 ? 0 : maxLevel - 7;
 	m_iMaxLevel = maxLevel;
 	m_pTreeRoot = BuildQuadTree(0, 0, 0, m_pHeightMap->size);
@@ -77,7 +77,7 @@ bool CSceneNodeTerrain::Init() {
 }
 
 /**
-* Ïú»Ù³¡¾°½Úµã
+* é”€æ¯åœºæ™¯èŠ‚ç‚¹
 */
 void CSceneNodeTerrain::Destroy() {
 	if (m_pHeightMap->data) delete[] m_pHeightMap->data;
@@ -88,10 +88,10 @@ void CSceneNodeTerrain::Destroy() {
 }
 
 /**
-* äÖÈ¾³¡¾°½Úµã
+* æ¸²æŸ“åœºæ™¯èŠ‚ç‚¹
 */
 void CSceneNodeTerrain::Render() {
-	// Ê×ÏÈ¸üĞÂÍø¸ñ¶¥µãË÷Òı»º³å
+	// é¦–å…ˆæ›´æ–°ç½‘æ ¼é¡¶ç‚¹ç´¢å¼•ç¼“å†²
 	CCamera* pCamera = CEngine::GetGraphicsManager()->GetCamera();
 	CheckVisibility(m_pTreeRoot, pCamera->GetFrustum(), pCamera->m_cPosition);
 	UpdateIndexBuffer(m_pTreeRoot);
@@ -102,7 +102,7 @@ void CSceneNodeTerrain::Render() {
 }
 
 /**
-* ÖØÔØ×ø±ê±ä»»
+* é‡è½½åæ ‡å˜æ¢
 */
 void CSceneNodeTerrain::Transform() {
 	m_cScale.SetValue(CVector3::One);
@@ -112,14 +112,14 @@ void CSceneNodeTerrain::Transform() {
 }
 
 /**
-* »ñÈ¡Íø¸ñÊı¾İ
+* è·å–ç½‘æ ¼æ•°æ®
 */
 CMeshData* CSceneNodeTerrain::GetMeshData() {
 	return m_pMeshData;
 }
 
 /**
-* »ñÈ¡Ö¸¶¨µØµãµÄ¸ß¶È
+* è·å–æŒ‡å®šåœ°ç‚¹çš„é«˜åº¦
 */
 float CSceneNodeTerrain::GetHeight(float x, float y) const {
 	const float mapOffset = m_pHeightMap->size * 0.5f;
@@ -133,7 +133,7 @@ float CSceneNodeTerrain::GetHeight(float x, float y) const {
 }
 
 /**
-* »ñÈ¡Ö¸¶¨µØµãµÄ·¨Ïò
+* è·å–æŒ‡å®šåœ°ç‚¹çš„æ³•å‘
 */
 CVector3 CSceneNodeTerrain::GetNormal(float x, float y) const {
 	const float mapOffset = m_pHeightMap->size * 0.5f;
@@ -148,7 +148,7 @@ CVector3 CSceneNodeTerrain::GetNormal(float x, float y) const {
 }
 
 /**
-* ¶ÁÈ¡¸ß¶ÈÍ¼
+* è¯»å–é«˜åº¦å›¾
 */
 bool CSceneNodeTerrain::LoadHeightMap(const string& filename, SHeightMap* heightMap) {
 	CFileManager::FileType fileType;
@@ -160,7 +160,7 @@ bool CSceneNodeTerrain::LoadHeightMap(const string& filename, SHeightMap* height
 	else return false;
 	CFileManager::CImageFile file(fileType);
 	if (!CEngine::GetFileManager()->ReadFile(filename, &file)) return false;
-	// ¸ß¶ÈÍ¼³¤¿í±ØĞëÏàµÈ£¬ÇÒÎª2µÄÃİ´Î
+	// é«˜åº¦å›¾é•¿å®½å¿…é¡»ç›¸ç­‰ï¼Œä¸”ä¸º2çš„å¹‚æ¬¡
 	if (file.width != file.height || (file.width & (file.width - 1)) != 0) return false;
 	heightMap->size = file.width;
 	heightMap->data = new float[(file.width + 1) * (file.height + 1)];
@@ -172,7 +172,7 @@ bool CSceneNodeTerrain::LoadHeightMap(const string& filename, SHeightMap* height
 			heightMap->data[indexDes] = data * heightMap->vScale * 0.007874f;
 		}
 	}
-	// À©Õ¹¸ß¶ÈÍ¼´óĞ¡ÖÁ 2^n + 1
+	// æ‰©å±•é«˜åº¦å›¾å¤§å°è‡³ 2^n + 1
 	int newSize = heightMap->size + 1;
 	int index1 = newSize * (newSize - 1);
 	int index2 = newSize * (newSize - 2);
@@ -181,14 +181,14 @@ bool CSceneNodeTerrain::LoadHeightMap(const string& filename, SHeightMap* height
 		heightMap->data[index1 + i] = heightMap->data[index2 + i];
 		heightMap->data[newSize * (i + 1) - 1] = heightMap->data[newSize * (i + 1) - 2];
 	}
-	// ÓÃÓÚĞŞ²¹ÁÑ·ìµÄ¶¥µã±ê¼Ç
+	// ç”¨äºä¿®è¡¥è£‚ç¼çš„é¡¶ç‚¹æ ‡è®°
 	heightMap->flag = new bool[newSize * newSize];
 	memset(heightMap->flag, 0, sizeof(bool) * newSize * newSize);
 	return true;
 }
 
 /**
-* µİ¹éÉú³ÉµØĞÎËÄ²æÊ÷
+* é€’å½’ç”Ÿæˆåœ°å½¢å››å‰æ ‘
 */
 CSceneNodeTerrain::SQuadTree* CSceneNodeTerrain::BuildQuadTree(SQuadTree* parent, int index, int level, int size) {
 	if (level >= m_iMaxLevel) return 0;
@@ -218,7 +218,7 @@ CSceneNodeTerrain::SQuadTree* CSceneNodeTerrain::BuildQuadTree(SQuadTree* parent
 	node->children[1] = BuildQuadTree(node, 1, level + 1, halfSize);
 	node->children[2] = BuildQuadTree(node, 2, level + 1, halfSize);
 	node->children[3] = BuildQuadTree(node, 3, level + 1, halfSize);
-	// ¼ÆËã½Úµã°üÎ§ºĞ
+	// è®¡ç®—èŠ‚ç‚¹åŒ…å›´ç›’
 	const float mapOffset = m_pHeightMap->size * 0.5f;
 	const float mapScale = m_pHeightMap->hScale / static_cast<float>(m_pHeightMap->size);
 	if (node->IsInternal()) {
@@ -236,7 +236,7 @@ CSceneNodeTerrain::SQuadTree* CSceneNodeTerrain::BuildQuadTree(SQuadTree* parent
 			}
 		}
 	}
-	// ½ÚµãÖĞĞÄ×ø±êºÍ´Ö²Ú¶ÈÔ¤¼ÆËã
+	// èŠ‚ç‚¹ä¸­å¿ƒåæ ‡å’Œç²—ç³™åº¦é¢„è®¡ç®—
 	float px = (cx - mapOffset) * mapScale;
 	float py = (cy - mapOffset) * mapScale;
 	node->position.SetValue(px, py, m_pHeightMap->data[cx + cy * mapLength]);
@@ -245,7 +245,7 @@ CSceneNodeTerrain::SQuadTree* CSceneNodeTerrain::BuildQuadTree(SQuadTree* parent
 }
 
 /**
-* µİ¹éÉú³ÉµØĞÎÍø¸ñ
+* é€’å½’ç”Ÿæˆåœ°å½¢ç½‘æ ¼
 */
 void CSceneNodeTerrain::BuildTerrainMesh(SQuadTree* node, int index, int size) {
 	if (node->level == m_iMeshLevel) {
@@ -281,7 +281,7 @@ void CSceneNodeTerrain::BuildTerrainMesh(SQuadTree* node, int index, int size) {
 		mesh->Create(true);
 		m_pMeshData->AddMesh(mesh);
 		node->mesh = mesh;
-		// ËÄ¸ö½Ç·Ö±ğÎª ÓÒÉÏ ÓÒÏÂ ×óÏÂ ×óÉÏ
+		// å››ä¸ªè§’åˆ†åˆ«ä¸º å³ä¸Š å³ä¸‹ å·¦ä¸‹ å·¦ä¸Š
 		node->index[0] = node->size * (node->size + 2);
 		node->index[1] = node->size * (node->size + 1);
 		node->index[2] = 0;
@@ -309,7 +309,7 @@ void CSceneNodeTerrain::BuildTerrainMesh(SQuadTree* node, int index, int size) {
 }
 
 /**
-* µİ¹éÇå¿ÕËÄ²æÊ÷
+* é€’å½’æ¸…ç©ºå››å‰æ ‘
 */
 void CSceneNodeTerrain::DeleteQuadTree(SQuadTree* node) {
 	if (node->IsInternal()) {
@@ -322,10 +322,10 @@ void CSceneNodeTerrain::DeleteQuadTree(SQuadTree* node) {
 }
 
 /**
-* µİ¹é¼ì²éËÄ²æÊ÷½Úµã¿É¼ûĞÔ
+* é€’å½’æ£€æŸ¥å››å‰æ ‘èŠ‚ç‚¹å¯è§æ€§
 */
 void CSceneNodeTerrain::CheckVisibility(SQuadTree* node, const CFrustum& frustum, const CVector3& eye) {
-	// ·Ö±æÂÊµ÷½ÚÒò×Ó
+	// åˆ†è¾¨ç‡è°ƒèŠ‚å› å­
 	const float resolution = 0.05f;
 	node->visible = frustum.IsAABBInside(node->volume);
 	if (node->visible) {
@@ -345,7 +345,7 @@ void CSceneNodeTerrain::CheckVisibility(SQuadTree* node, const CFrustum& frustum
 				CheckVisibility(node->children[3], frustum, eye);
 			}
 		}
-		// ±ê¼ÇÃ¿Ò»¸ö¿ÉÄÜ´æÔÚÁÑ·ìµÄ½Ç
+		// æ ‡è®°æ¯ä¸€ä¸ªå¯èƒ½å­˜åœ¨è£‚ç¼çš„è§’
 		if (endRetrieval) {
 			m_pHeightMap->flag[node->corner[0]] = true;
 			m_pHeightMap->flag[node->corner[1]] = true;
@@ -356,7 +356,7 @@ void CSceneNodeTerrain::CheckVisibility(SQuadTree* node, const CFrustum& frustum
 }
 
 /**
-* µİ¹éäÖÈ¾µØĞÎ
+* é€’å½’æ¸²æŸ“åœ°å½¢
 */
 void CSceneNodeTerrain::RenderTerrain(SQuadTree* node, bool useMaterial) {
 	if (node->visible) {
@@ -371,7 +371,7 @@ void CSceneNodeTerrain::RenderTerrain(SQuadTree* node, bool useMaterial) {
 }
 
 /**
-* µİ¹éÆ½ÒÆµØĞÎÍø¸ñ
+* é€’å½’å¹³ç§»åœ°å½¢ç½‘æ ¼
 */
 void CSceneNodeTerrain::TranslateMesh(SQuadTree* node) {
 	const int mapLength = m_pHeightMap->size + 1;
@@ -383,7 +383,7 @@ void CSceneNodeTerrain::TranslateMesh(SQuadTree* node) {
 	float py = (cy - mapOffset) * mapScale;
 	node->position.SetValue(px, py, m_pHeightMap->data[cx + cy * mapLength]);
 	node->position.Add(m_cPosition);
-	// ÖØĞÂ¼ÆËã½Úµã°üÎ§ºĞ
+	// é‡æ–°è®¡ç®—èŠ‚ç‚¹åŒ…å›´ç›’
 	if (node->IsInternal()) {
 		TranslateMesh(node->children[0]);
 		TranslateMesh(node->children[1]);
@@ -407,7 +407,7 @@ void CSceneNodeTerrain::TranslateMesh(SQuadTree* node) {
 }
 
 /**
-* µİ¹é¸üĞÂµØĞÎÍø¸ñË÷Òı»º³å
+* é€’å½’æ›´æ–°åœ°å½¢ç½‘æ ¼ç´¢å¼•ç¼“å†²
 */
 bool CSceneNodeTerrain::UpdateIndexBuffer(SQuadTree* node) {
 	if (node->visible) {
@@ -422,7 +422,7 @@ bool CSceneNodeTerrain::UpdateIndexBuffer(SQuadTree* node) {
 			childInvisible &= UpdateIndexBuffer(node->children[2]);
 			childInvisible &= UpdateIndexBuffer(node->children[3]);
 		}
-		// ËÄ¸ö×Ó½Úµã¶¼²»¿É¼ûµÄÇé¿öÏÂ»æÖÆµ±Ç°½Úµã
+		// å››ä¸ªå­èŠ‚ç‚¹éƒ½ä¸å¯è§çš„æƒ…å†µä¸‹ç»˜åˆ¶å½“å‰èŠ‚ç‚¹
 		if (mesh && childInvisible) {
 			AddTriangle(node, node->index[4], node->index[1], node->index[0], node->corner[1], node->corner[0]);
 			AddTriangle(node, node->index[4], node->index[2], node->index[1], node->corner[2], node->corner[1]);
@@ -437,7 +437,7 @@ bool CSceneNodeTerrain::UpdateIndexBuffer(SQuadTree* node) {
 }
 
 /**
-* Ìí¼ÓÈı½ÇĞÎ²¢ĞŞ²¹ÁÑ·ì
+* æ·»åŠ ä¸‰è§’å½¢å¹¶ä¿®è¡¥è£‚ç¼
 */
 void CSceneNodeTerrain::AddTriangle(SQuadTree* node, int center, int index1, int index2, int flag1, int flag2) {
 	const int powerOfTwo = m_iMaxLevel - node->level - 1;
@@ -446,7 +446,7 @@ void CSceneNodeTerrain::AddTriangle(SQuadTree* node, int center, int index1, int
 	int indexA = stepLocal + index1;
 	int indexB = stepWorld + flag1;
 	CMesh* mesh = node->mesh;
-	// ¶Ô±ß index1-index2 ½øĞĞ±éÀú£¬Ìí¼Ó·Ö¸îµÄ¶¥µãË÷Òı
+	// å¯¹è¾¹ index1-index2 è¿›è¡Œéå†ï¼Œæ·»åŠ åˆ†å‰²çš„é¡¶ç‚¹ç´¢å¼•
 	while (indexB != flag2) {
 		if (m_pHeightMap->flag[indexB]) {
 			m_pHeightMap->flag[indexB] = false;
@@ -460,7 +460,7 @@ void CSceneNodeTerrain::AddTriangle(SQuadTree* node, int center, int index1, int
 }
 
 /**
-* ¼ÆËã¸ß¶ÈÍ¼Ä³´¦µÄ·¨ÏòÁ¿
+* è®¡ç®—é«˜åº¦å›¾æŸå¤„çš„æ³•å‘é‡
 */
 void CSceneNodeTerrain::GetMapNormal(int x, int y, CVector3& normal) const {
 	int x1 = x - 1;
@@ -471,7 +471,7 @@ void CSceneNodeTerrain::GetMapNormal(int x, int y, CVector3& normal) const {
 	if (y1 < 0) y1 = y;
 	if (x2 > m_pHeightMap->size) x2 = x;
 	if (y2 > m_pHeightMap->size) y2 = y;
-	// ¼ÆËãÖÜÎ§ËÄ¸öµãÏà¶ÔÄ¿±êµãµÄÏòÁ¿
+	// è®¡ç®—å‘¨å›´å››ä¸ªç‚¹ç›¸å¯¹ç›®æ ‡ç‚¹çš„å‘é‡
 	const int mapLength = m_pHeightMap->size + 1;
 	const float mapScale = m_pHeightMap->hScale / static_cast<float>(m_pHeightMap->size);
 	float offset = m_pHeightMap->data[x + y * mapLength];

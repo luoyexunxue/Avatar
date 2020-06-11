@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CSceneNodeWater.h"
@@ -9,7 +9,7 @@
 #include <cmath>
 
 /**
-* ¹¹Ôìº¯Êı
+* æ„é€ å‡½æ•°
 */
 CSceneNodeWater::CSceneNodeWater(const string& name, const string& normalMap, float depth): CSceneNode("water", name) {
 	m_strNormalMap = normalMap;
@@ -21,7 +21,7 @@ CSceneNodeWater::CSceneNodeWater(const string& name, const string& normalMap, fl
 }
 
 /**
-* ³õÊ¼»¯³¡¾°½Úµã
+* åˆå§‹åŒ–åœºæ™¯èŠ‚ç‚¹
 */
 bool CSceneNodeWater::Init() {
 	const float waterSize = 500.0f;
@@ -66,7 +66,7 @@ bool CSceneNodeWater::Init() {
 }
 
 /**
-* Ïú»Ù³¡¾°½Úµã
+* é”€æ¯åœºæ™¯èŠ‚ç‚¹
 */
 void CSceneNodeWater::Destroy() {
 	CEngine::GetSceneManager()->DeleteNode("__water_mask__");
@@ -75,21 +75,21 @@ void CSceneNodeWater::Destroy() {
 }
 
 /**
-* äÖÈ¾³¡¾°½Úµã
+* æ¸²æŸ“åœºæ™¯èŠ‚ç‚¹
 */
 void CSceneNodeWater::Render() {
-	// ·ÀÖ¹ÔÚäÖÈ¾µ¹Ó°ÌùÍ¼µÄÊ±ºò½øÈë
+	// é˜²æ­¢åœ¨æ¸²æŸ“å€’å½±è´´å›¾çš„æ—¶å€™è¿›å…¥
 	if (!CEngine::GetGraphicsManager()->IsReflectRender()) {
 		m_pMesh->GetMaterial()->PassUniform("uModelMatrix", m_cWorldMatrix);
 		m_pMesh->GetMaterial()->PassUniform("uElapsedTime", m_fTimeElapse);
 		m_pMesh->Render();
-		// ¸üĞÂË®ÏÂÆÁÄ»ÃÉ°æ
+		// æ›´æ–°æ°´ä¸‹å±å¹•è’™ç‰ˆ
 		UpdateUnderwaterMask();
 	}
 }
 
 /**
-* ¸üĞÂ³¡¾°½Úµã
+* æ›´æ–°åœºæ™¯èŠ‚ç‚¹
 */
 void CSceneNodeWater::Update(float dt) {
 	m_fTimeElapse += dt * 0.1f;
@@ -97,7 +97,7 @@ void CSceneNodeWater::Update(float dt) {
 }
 
 /**
-* ¸üĞÂË®ÏÂÆÁÄ»ÃÉ°æ
+* æ›´æ–°æ°´ä¸‹å±å¹•è’™ç‰ˆ
 */
 void CSceneNodeWater::UpdateUnderwaterMask() {
 	m_pUnderwaterNode->m_bVisible = false;
@@ -110,7 +110,7 @@ void CSceneNodeWater::UpdateUnderwaterMask() {
 	CVector3 intersectPoint;
 	CVector3 intersectNormal;
 	CPlane clipPlane(nearClipCenter, cameraLookVec);
-	// µÃµ½Ïà»ú½ü²Ã¼ôÃæºÍË®ÃæµÄ½»Ïß
+	// å¾—åˆ°ç›¸æœºè¿‘è£å‰ªé¢å’Œæ°´é¢çš„äº¤çº¿
 	if (clipPlane.IntersectPlane(CPlane(CVector3::Z, m_cPosition[2]), intersectPoint, intersectNormal)) {
 		int screen_w = pCamera->GetViewWidth();
 		int screen_h = pCamera->GetViewHeight();
@@ -126,7 +126,7 @@ void CSceneNodeWater::UpdateUnderwaterMask() {
 		if (nearClipCenter[2] < m_cPosition[2] || distance < viewDistance) {
 			m_pUnderwaterNode->m_bVisible = true;
 			m_pUnderwaterNode->m_cWorldMatrix.SetIdentity().Scale(viewDistance * 2.0f, viewDistance * 2.0f, 1.0f);
-			// ÍêÈ«ÔÚË®ÏÂµÄÇé¿ö
+			// å®Œå…¨åœ¨æ°´ä¸‹çš„æƒ…å†µ
 			if (nearClipCenter[2] < m_cPosition[2] && distance > viewDistance) {
 				m_pUnderwaterNode->m_cWorldMatrix.Translate(static_cast<float>(halfVW), static_cast<float>(halfVH), 0);
 			} else {

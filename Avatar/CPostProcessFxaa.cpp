@@ -1,12 +1,12 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CPostProcessFxaa.h"
 #include "CEngine.h"
 
 /**
-* ³õÊ¼»¯ºó´¦Àí¶ÔÏó
+* åˆå§‹åŒ–åå¤„ç†å¯¹è±¡
 */
 bool CPostProcessFxaa::Init(int width, int height) {
 	const char* fragShader = "\
@@ -43,7 +43,7 @@ bool CPostProcessFxaa::Init(int width, int height) {
 			if (lumaB < lumaMin || lumaB > lumaMax) fragColor = vec4(rgbA, 1.0);\
 			else fragColor = vec4(rgbB, 1.0);\
 		}";
-	// ´´½¨×ÅÉ«Æ÷ÓëÎÆÀí
+	// åˆ›å»ºç€è‰²å™¨ä¸çº¹ç†
 	CShaderManager* pShaderMgr = CEngine::GetShaderManager();
 	CTextureManager* pTextureMgr = CEngine::GetTextureManager();
 	m_pPostProcessShader = pShaderMgr->Create("postprocess_fxaa", GetVertexShader(), fragShader);
@@ -54,7 +54,7 @@ bool CPostProcessFxaa::Init(int width, int height) {
 }
 
 /**
-* äÖÈ¾ÇøÓò´óĞ¡¸Ä±ä
+* æ¸²æŸ“åŒºåŸŸå¤§å°æ”¹å˜
 */
 void CPostProcessFxaa::Resize(int width, int height) {
 	CEngine::GetTextureManager()->Resize(m_pRenderTexture, width, height);
@@ -63,7 +63,7 @@ void CPostProcessFxaa::Resize(int width, int height) {
 }
 
 /**
-* Ïú»Ùºó´¦Àí¶ÔÏó
+* é”€æ¯åå¤„ç†å¯¹è±¡
 */
 void CPostProcessFxaa::Destroy() {
 	CEngine::GetTextureManager()->Drop(m_pRenderTexture);

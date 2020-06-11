@@ -1,11 +1,11 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CRigidBody.h"
 
 /**
-* ¹¹Ôìº¯Êı£¬°ó¶¨³¡¾°½Úµã
+* æ„é€ å‡½æ•°ï¼Œç»‘å®šåœºæ™¯èŠ‚ç‚¹
 */
 CRigidBody::CRigidBody(CSceneNode* binding) {
 	m_pSceneNode = binding;
@@ -24,17 +24,17 @@ CRigidBody::CRigidBody(CSceneNode* binding) {
 }
 
 /**
-* »ñÈ¡°ó¶¨µÄ³¡¾°½Úµã
+* è·å–ç»‘å®šçš„åœºæ™¯èŠ‚ç‚¹
 */
 CSceneNode* CRigidBody::GetSceneNode() const {
 	return m_pSceneNode;
 }
 
 /**
-* ÉèÖÃÎïÌåÊôĞÔ
+* è®¾ç½®ç‰©ä½“å±æ€§
 */
 void CRigidBody::SetAttribute(float mass, const SGeometry& geometry, bool trigger, bool allowSleep) {
-	// ÖÊÁ¿¼°ĞÎ×´ÊôĞÔ
+	// è´¨é‡åŠå½¢çŠ¶å±æ€§
 	m_fMass = mass;
 	m_fInvMass = mass <= 0.0f ? 0.0f : 1.0f / mass;
 	m_bStatic = mass <= 0.0f ? true : false;
@@ -43,21 +43,21 @@ void CRigidBody::SetAttribute(float mass, const SGeometry& geometry, bool trigge
 	m_bAllowSleep = allowSleep;
 	m_bSleeping = m_bStatic && m_bAllowSleep;
 	m_fSleepingTime = 0.0f;
-	// ¼ÆËã¹ßĞÔÕÅÁ¿
+	// è®¡ç®—æƒ¯æ€§å¼ é‡
 	SetupInertiaTensor();
-	// ¼ÆËãÊÀ½ç×ø±êÏµÏÂµÄ¹ßĞÔÕÅÁ¿
+	// è®¡ç®—ä¸–ç•Œåæ ‡ç³»ä¸‹çš„æƒ¯æ€§å¼ é‡
 	CMatrix4 orientMatrix = m_pSceneNode->m_cOrientation.ToMatrix();
 	m_cInvInertiaTensorWorld = orientMatrix;
 	m_cInvInertiaTensorWorld.SetScaled(m_cInvInertiaLocal);
 	m_cInvInertiaTensorWorld *= orientMatrix.Transpose();
-	// Æ½ÃæĞèÒªÌØÊâ´¦Àí
+	// å¹³é¢éœ€è¦ç‰¹æ®Šå¤„ç†
 	if (m_sGeometry.shape == SGeometry::PLANE) {
 		m_pSceneNode->m_cLocalBoundingBox.m_cMin[2] = -1000.0f;
 	}
 }
 
 /**
-* ÉèÖÃ×èÄáÏµÊı
+* è®¾ç½®é˜»å°¼ç³»æ•°
 */
 void CRigidBody::SetDamping(float linearDamping, float angularDamping) {
 	m_fLinearDamping = linearDamping;
@@ -65,21 +65,21 @@ void CRigidBody::SetDamping(float linearDamping, float angularDamping) {
 }
 
 /**
-* ÉèÖÃÄ¦²ÁÏµÊı
+* è®¾ç½®æ‘©æ“¦ç³»æ•°
 */
 void CRigidBody::SetFriction(float friction) {
 	m_fFriction = friction;
 }
 
 /**
-* ÉèÖÃ»Ö¸´ÏµÊı
+* è®¾ç½®æ¢å¤ç³»æ•°
 */
 void CRigidBody::SetRestitution(float restitution) {
 	m_fRestitution = restitution;
 }
 
 /**
-* ÉèÖÃ³õËÙ¶È
+* è®¾ç½®åˆé€Ÿåº¦
 */
 void CRigidBody::SetVelocity(const CVector3& linearVel, const CVector3& angularVel) {
 	m_cLinearVelocity.SetValue(linearVel.m_fValue);
@@ -89,7 +89,7 @@ void CRigidBody::SetVelocity(const CVector3& linearVel, const CVector3& angularV
 }
 
 /**
-* ¸´Î»¸ÕÌå×´Ì¬
+* å¤ä½åˆšä½“çŠ¶æ€
 */
 void CRigidBody::Reset() {
 	m_cTotalForce.SetValue(0, 0, 0);
@@ -106,7 +106,7 @@ void CRigidBody::Reset() {
 }
 
 /**
-* Çå³ıËùÓĞÍâÁ¦
+* æ¸…é™¤æ‰€æœ‰å¤–åŠ›
 */
 void CRigidBody::ClearForce() {
 	m_cExtraForce.SetValue(0, 0, 0);
@@ -116,7 +116,7 @@ void CRigidBody::ClearForce() {
 }
 
 /**
-* Ê©¼ÓÍâÁ¦
+* æ–½åŠ å¤–åŠ›
 */
 void CRigidBody::ApplyForce(const CVector3& force, bool local) {
 	if (local) m_cExtraForceLocal.SetValue(force);
@@ -124,7 +124,7 @@ void CRigidBody::ApplyForce(const CVector3& force, bool local) {
 }
 
 /**
-* Ê©¼ÓÍâÁ¦ºÍÍâÁ¦¾Ø
+* æ–½åŠ å¤–åŠ›å’Œå¤–åŠ›çŸ©
 */
 void CRigidBody::ApplyForce(const CVector3& force, const CVector3& torque, bool local) {
 	if (local) {
@@ -137,10 +137,10 @@ void CRigidBody::ApplyForce(const CVector3& force, const CVector3& torque, bool 
 }
 
 /**
-* ¼ì²éÊÇ·ñĞèÒªË¯Ãß£¬·µ»ØĞİÃß×´Ì¬
+* æ£€æŸ¥æ˜¯å¦éœ€è¦ç¡çœ ï¼Œè¿”å›ä¼‘çœ çŠ¶æ€
 */
 bool CRigidBody::CheckSleeping(float dt) {
-	// ³£Á¿¶¨Òå
+	// å¸¸é‡å®šä¹‰
 	const float sleepTimeElapse = 2.0f;
 	const float sleepLinearVelocity = 0.002f;
 	const float sleepAngularVelocity = 0.002f;
@@ -168,10 +168,10 @@ bool CRigidBody::CheckSleeping(float dt) {
 }
 
 /**
-* ¼ÆËã¸ÕÌåµÄ¹ßĞÔÕÅÁ¿
+* è®¡ç®—åˆšä½“çš„æƒ¯æ€§å¼ é‡
 */
 void CRigidBody::SetupInertiaTensor() {
-	// XYZ Èı¸ö×ø±êÖáÏÂµÄ×ª¶¯¹ßÁ¿
+	// XYZ ä¸‰ä¸ªåæ ‡è½´ä¸‹çš„è½¬åŠ¨æƒ¯é‡
 	float Ix = m_fMass;
 	float Iy = m_fMass;
 	float Iz = m_fMass;

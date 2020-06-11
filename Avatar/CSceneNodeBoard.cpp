@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CSceneNodeBoard.h"
@@ -25,8 +25,8 @@
 #endif
 
 /**
-* ¹¹Ôìº¯Êı
-* @note billboard 0²»¸úËæ¾µÍ· 1¶¨Öá 2¶¨ÊÓ½Ç 3ÎŞÏŞÖÆ
+* æ„é€ å‡½æ•°
+* @note billboard 0ä¸è·Ÿéšé•œå¤´ 1å®šè½´ 2å®šè§†è§’ 3æ— é™åˆ¶
 */
 CSceneNodeBoard::CSceneNodeBoard(const string& name, const string& texture, float width, float height, int billboard)
 	: CSceneNode("board", name) {
@@ -46,7 +46,7 @@ CSceneNodeBoard::CSceneNodeBoard(const string& name, const string& texture, floa
 }
 
 /**
-* ³õÊ¼»¯³¡¾°½Úµã
+* åˆå§‹åŒ–åœºæ™¯èŠ‚ç‚¹
 */
 bool CSceneNodeBoard::Init() {
 	m_pTexture = CreateTexture(m_strTexture);
@@ -61,7 +61,7 @@ bool CSceneNodeBoard::Init() {
 }
 
 /**
-* Ïú»Ù³¡¾°½Úµã
+* é”€æ¯åœºæ™¯èŠ‚ç‚¹
 */
 void CSceneNodeBoard::Destroy() {
 	CEngine::GetTextureManager()->Drop(m_pTexture);
@@ -79,7 +79,7 @@ void CSceneNodeBoard::Destroy() {
 }
 
 /**
-* äÖÈ¾³¡¾°½Úµã
+* æ¸²æŸ“åœºæ™¯èŠ‚ç‚¹
 */
 void CSceneNodeBoard::Render() {
 	if (m_iBillboardType > 0 && !m_lstChildren.empty()) return;
@@ -92,7 +92,7 @@ void CSceneNodeBoard::Render() {
 }
 
 /**
-* ¸üĞÂ³¡¾°½Úµã
+* æ›´æ–°åœºæ™¯èŠ‚ç‚¹
 */
 void CSceneNodeBoard::Update(float dt) {
 	if (m_iBillboardType > 0) {
@@ -141,7 +141,28 @@ void CSceneNodeBoard::Update(float dt) {
 }
 
 /**
-* »ñÈ¡Íø¸ñÊı¾İ
+* æ›´æ–°å˜æ¢çŸ©é˜µ
+*/
+void CSceneNodeBoard::Transform() {
+	if (m_pParent) {
+		// ä»…ä¿ç•™çˆ¶èŠ‚ç‚¹çš„å¹³ç§»é¡¹
+		CMatrix4 worldParent = m_pParent->m_cWorldMatrix;
+		worldParent[12] = 0.0f;
+		worldParent[13] = 0.0f;
+		worldParent[14] = 0.0f;
+		m_cModelMatrix.MakeTransform(m_cScale, m_cOrientation, m_cPosition);
+		m_cModelMatrix = worldParent.Invert() * m_cModelMatrix;
+		m_cWorldMatrix = m_pParent->m_cWorldMatrix * m_cModelMatrix;
+		list<CSceneNode*>::iterator iter = m_lstChildren.begin();
+		while (iter != m_lstChildren.end()) {
+			(*iter)->Transform();
+			++iter;
+		}
+	} else CSceneNode::Transform();
+}
+
+/**
+* è·å–ç½‘æ ¼æ•°æ®
 */
 CMeshData* CSceneNodeBoard::GetMeshData() {
 	if (m_iBillboardType > 0 && !m_lstChildren.empty()) return 0;
@@ -149,7 +170,7 @@ CMeshData* CSceneNodeBoard::GetMeshData() {
 }
 
 /**
-* »ñÈ¡Ã½ÌåĞÅÏ¢
+* è·å–åª’ä½“ä¿¡æ¯
 */
 void CSceneNodeBoard::MediaInfo(int* width, int* height, float* length) {
 	*width = m_pTexture->GetWidth();
@@ -162,14 +183,14 @@ void CSceneNodeBoard::MediaInfo(int* width, int* height, float* length) {
 }
 
 /**
-* ÉèÖÃĞı×ªÖá£¬½ö billboardType Îª1Ê±ÓĞĞ§
+* è®¾ç½®æ—‹è½¬è½´ï¼Œä»… billboardType ä¸º1æ—¶æœ‰æ•ˆ
 */
 void CSceneNodeBoard::SetAxis(const CVector3& axis) {
 	m_cAxis.SetValue(axis);
 }
 
 /**
-* ´´½¨ÎÆÀí¶ÔÏó
+* åˆ›å»ºçº¹ç†å¯¹è±¡
 */
 CTexture* CSceneNodeBoard::CreateTexture(const string& texture) {
 	string ext = CStringUtil::UpperCase((CFileManager::GetExtension(texture)));

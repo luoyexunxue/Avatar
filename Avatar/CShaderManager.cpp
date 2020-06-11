@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CShaderManager.h"
@@ -22,26 +22,26 @@
 #endif
 
 /**
-* ¹¹Ôìº¯Êı
+* æ„é€ å‡½æ•°
 */
 CShaderManager::CShaderManager() {
 	m_pCurrentShader = 0;
 }
 
 /**
-* Îö¹¹º¯Êı
+* ææ„å‡½æ•°
 */
 CShaderManager::~CShaderManager() {
 	m_pInstance = 0;
 }
 
 /**
-* µ¥ÀıÊµÀı
+* å•ä¾‹å®ä¾‹
 */
 CShaderManager* CShaderManager::m_pInstance = 0;
 
 /**
-* Ïú»Ù×ÅÉ«Æ÷¹ÜÀíÆ÷ÊµÀı
+* é”€æ¯ç€è‰²å™¨ç®¡ç†å™¨å®ä¾‹
 */
 void CShaderManager::Destroy() {
 	glUseProgram(0);
@@ -54,20 +54,20 @@ void CShaderManager::Destroy() {
 }
 
 /**
-* ´ÓÎÄ¼ş´´½¨×ÅÉ«Æ÷³ÌĞò
-* @param name ×ÅÉ«Æ÷Ãû³Æ
-* @param file (¶¥µã/ÏñËØ)×ÅÉ«Æ÷´úÂëÎÄ¼ş
-* @return ´´½¨µÄ×ÅÉ«Æ÷
+* ä»æ–‡ä»¶åˆ›å»ºç€è‰²å™¨ç¨‹åº
+* @param name ç€è‰²å™¨åç§°
+* @param file (é¡¶ç‚¹/åƒç´ )ç€è‰²å™¨ä»£ç æ–‡ä»¶
+* @return åˆ›å»ºçš„ç€è‰²å™¨
 */
 CShader* CShaderManager::Create(const string& name, const string file[2]) {
-	// ÊÇ·ñÒÑ¾­¼ÓÔØ×ÅÉ«Æ÷
+	// æ˜¯å¦å·²ç»åŠ è½½ç€è‰²å™¨
 	map<string, CShader*>::iterator iter = m_mapShader.find(name);
 	if (iter != m_mapShader.end()) {
 		iter->second->m_iRefCount++;
 		iter->second->UseShader();
 		return iter->second;
 	}
-	// ¶ÁÈ¡ Shader ÎÄ¼ş
+	// è¯»å– Shader æ–‡ä»¶
 	CFileManager::CTextFile text[2];
 	for (int i = 0; i < 2; i++) {
 		if (!CEngine::GetFileManager()->ReadFile(file[i], &text[i])) {
@@ -84,14 +84,14 @@ CShader* CShaderManager::Create(const string& name, const string file[2]) {
 }
 
 /**
-* ´ÓÄÚ´æ´´½¨×ÅÉ«Æ÷³ÌĞò
-* @param name ×ÅÉ«Æ÷Ãû³Æ
-* @param vert ¶¥µã×ÅÉ«Æ÷´úÂë×Ö·û´®
-* @param frag ÏñËØ×ÅÉ«Æ÷´úÂë×Ö·û´®
-* @return ´´½¨µÄ×ÅÉ«Æ÷
+* ä»å†…å­˜åˆ›å»ºç€è‰²å™¨ç¨‹åº
+* @param name ç€è‰²å™¨åç§°
+* @param vert é¡¶ç‚¹ç€è‰²å™¨ä»£ç å­—ç¬¦ä¸²
+* @param frag åƒç´ ç€è‰²å™¨ä»£ç å­—ç¬¦ä¸²
+* @return åˆ›å»ºçš„ç€è‰²å™¨
 */
 CShader* CShaderManager::Create(const string& name, const char* vert, const char* frag) {
-	// ÊÇ·ñÒÑ¾­¼ÓÔØ×ÅÉ«Æ÷
+	// æ˜¯å¦å·²ç»åŠ è½½ç€è‰²å™¨
 	map<string, CShader*>::iterator iter = m_mapShader.find(name);
 	if (iter != m_mapShader.end()) {
 		iter->second->m_iRefCount++;
@@ -103,18 +103,18 @@ CShader* CShaderManager::Create(const string& name, const char* vert, const char
 	pShader->m_strVertShader = vert;
 	pShader->m_strFragShader = frag;
 	m_mapShader.insert(std::pair<string, CShader*>(name, pShader));
-	// ´´½¨×ÅÉ«Æ÷
+	// åˆ›å»ºç€è‰²å™¨
 	CreateShader(pShader);
 	return pShader;
 }
 
 /**
-* Ïú»Ù×ÅÉ«Æ÷³ÌĞò
-* @param shader ĞèÒªÏú»ÙµÄ×ÅÉ«Æ÷
+* é”€æ¯ç€è‰²å™¨ç¨‹åº
+* @param shader éœ€è¦é”€æ¯çš„ç€è‰²å™¨
 */
 void CShaderManager::Drop(CShader* shader) {
 	if (!shader) return;
-	// ÒıÓÃ¼ÆÊı¼õÒ»
+	// å¼•ç”¨è®¡æ•°å‡ä¸€
 	shader->m_iRefCount--;
 	if (shader->m_iRefCount <= 0) {
 		m_mapShader.erase(shader->m_strName);
@@ -123,14 +123,14 @@ void CShaderManager::Drop(CShader* shader) {
 }
 
 /**
-* ¸üĞÂ×ÅÉ«Æ÷³ÌĞò
-* @param shader ĞèÒª¸üĞÂµÄ×ÅÉ«Æ÷
-* @param append ĞèÒªÌí¼ÓµÄºê£¬¶ººÅ¸ô¿ª
-* @param remove ĞèÒªÒÆ³ıµÄºê£¬¶ººÅ¸ô¿ª
+* æ›´æ–°ç€è‰²å™¨ç¨‹åº
+* @param shader éœ€è¦æ›´æ–°çš„ç€è‰²å™¨
+* @param append éœ€è¦æ·»åŠ çš„å®ï¼Œé€—å·éš”å¼€
+* @param remove éœ€è¦ç§»é™¤çš„å®ï¼Œé€—å·éš”å¼€
 */
 void CShaderManager::Update(CShader* shader, const string& append, const string& remove) {
 	if (!shader) return;
-	// ±£´æµ±Ç° Uniform Öµ
+	// ä¿å­˜å½“å‰ Uniform å€¼
 	struct SUniformValue {
 		string name;
 		CShader::UniformType type;
@@ -163,13 +163,13 @@ void CShaderManager::Update(CShader* shader, const string& append, const string&
 		uniformValues.push_back(uniform);
 		++iter;
 	}
-	// É¾³ıµ±Ç°µÄ×ÅÉ«Æ÷³ÌĞò
+	// åˆ é™¤å½“å‰çš„ç€è‰²å™¨ç¨‹åº
 	glDeleteProgram(shader->m_iProgram);
-	// Ìí¼ÓºÍÉ¾³ıºê¶¨Òå
+	// æ·»åŠ å’Œåˆ é™¤å®å®šä¹‰
 	ShaderSourceDefine(shader, append, remove);
-	// ÖØĞÂ´´½¨×ÅÉ«Æ÷
+	// é‡æ–°åˆ›å»ºç€è‰²å™¨
 	CreateShader(shader);
-	// ÉèÖÃÖ®Ç°±£´æµÄ uniform Öµ
+	// è®¾ç½®ä¹‹å‰ä¿å­˜çš„ uniform å€¼
 	for (size_t i = 0; i < uniformValues.size(); i++) {
 		SUniformValue* item = &uniformValues[i];
 		if (shader->IsUniform(item->name)) {
@@ -189,9 +189,9 @@ void CShaderManager::Update(CShader* shader, const string& append, const string&
 }
 
 /**
-* »ñÈ¡Ö¸¶¨Ãû³ÆµÄ×ÅÉ«Æ÷
-* @param name ×ÅÉ«Æ÷Ãû³Æ
-* @return Ãû³ÆÎª name µÄ×ÅÉ«Æ÷
+* è·å–æŒ‡å®šåç§°çš„ç€è‰²å™¨
+* @param name ç€è‰²å™¨åç§°
+* @return åç§°ä¸º name çš„ç€è‰²å™¨
 */
 CShader* CShaderManager::GetShader(const string& name) {
 	map<string, CShader*>::iterator iter = m_mapShader.find(name);
@@ -202,16 +202,16 @@ CShader* CShaderManager::GetShader(const string& name) {
 }
 
 /**
-* »ñÈ¡µ±Ç°ÔÚÓÃµÄ×ÅÉ«Æ÷
-* @return µ±Ç°×ÅÉ«Æ÷
+* è·å–å½“å‰åœ¨ç”¨çš„ç€è‰²å™¨
+* @return å½“å‰ç€è‰²å™¨
 */
 CShader* CShaderManager::GetCurrentShader() {
 	return m_pCurrentShader;
 }
 
 /**
-* »ñÈ¡¹ÜÀíµÄËùÓĞ×ÅÉ«Æ÷ÁĞ±í
-* @param shaderList Êä³ö×ÅÉ«Æ÷ÁĞ±í
+* è·å–ç®¡ç†çš„æ‰€æœ‰ç€è‰²å™¨åˆ—è¡¨
+* @param shaderList è¾“å‡ºç€è‰²å™¨åˆ—è¡¨
 */
 void CShaderManager::GetShaderList(vector<CShader*>& shaderList) {
 	shaderList.resize(m_mapShader.size());
@@ -224,14 +224,14 @@ void CShaderManager::GetShaderList(vector<CShader*>& shaderList) {
 }
 
 /**
-* ¼ÓÔØ×ÅÉ«Æ÷
-* @param shader ×ÅÉ«Æ÷Ö¸Õë
+* åŠ è½½ç€è‰²å™¨
+* @param shader ç€è‰²å™¨æŒ‡é’ˆ
 */
 void CShaderManager::CreateShader(CShader* shader) {
 	shader->m_bIsValid = false;
 	unsigned int v = glCreateShader(GL_VERTEX_SHADER);
 	unsigned int f = glCreateShader(GL_FRAGMENT_SHADER);
-	// ±àÒë×ÅÉ«Æ÷
+	// ç¼–è¯‘ç€è‰²å™¨
 	bool bVert = CompileShader(shader->m_strVertShader.c_str(), v, false);
 	bool bFrag = CompileShader(shader->m_strFragShader.c_str(), f, true);
 	if (!bVert || !bFrag) {
@@ -244,7 +244,7 @@ void CShaderManager::CreateShader(CShader* shader) {
 	glAttachShader(shader->m_iProgram, f);
 	glAttachShader(shader->m_iProgram, v);
 
-	// °ó¶¨ Attribute Èë¿Ú
+	// ç»‘å®š Attribute å…¥å£
 	glBindAttribLocation(shader->m_iProgram, 0, "aPosition");
 	glBindAttribLocation(shader->m_iProgram, 1, "aTexCoord");
 	glBindAttribLocation(shader->m_iProgram, 2, "aNormal");
@@ -258,7 +258,7 @@ void CShaderManager::CreateShader(CShader* shader) {
 	glDeleteShader(v);
 	glDeleteShader(f);
 
-	// »ñÈ¡´íÎóĞÅÏ¢
+	// è·å–é”™è¯¯ä¿¡æ¯
 	int linkStatus = 0;
 	glGetProgramiv(shader->m_iProgram, GL_LINK_STATUS, &linkStatus);
 	if (!linkStatus) {
@@ -272,20 +272,20 @@ void CShaderManager::CreateShader(CShader* shader) {
 		shader->m_bIsValid = true;
 		AttachUniforms(shader);
 	}
-	// Ä¬ÈÏÊ¹ÓÃµ±Ç°´´½¨µÄ×ÅÉ«Æ÷
+	// é»˜è®¤ä½¿ç”¨å½“å‰åˆ›å»ºçš„ç€è‰²å™¨
 	glUseProgram(shader->m_iProgram);
 	m_pCurrentShader = shader;
 }
 
 /**
-* ±àÒë×ÅÉ«Æ÷
-* @param source ×ÅÉ«Æ÷´úÂë×Ö·û´®
-* @param shader OpenGL ×ÅÉ«Æ÷¶ÔÏó
-* @param isFragment ÊÇ·ñÏñËØ×ÅÉ«´úÂë
-* @return ³É¹¦·µ»Ø true
+* ç¼–è¯‘ç€è‰²å™¨
+* @param source ç€è‰²å™¨ä»£ç å­—ç¬¦ä¸²
+* @param shader OpenGL ç€è‰²å™¨å¯¹è±¡
+* @param isFragment æ˜¯å¦åƒç´ ç€è‰²ä»£ç 
+* @return æˆåŠŸè¿”å› true
 */
 bool CShaderManager::CompileShader(const char* source, unsigned int shader, bool isFragment) {
-	// ÔØÈë Shader Ô´´úÂë
+	// è½½å…¥ Shader æºä»£ç 
 #if (defined AVATAR_WINDOWS) || (defined AVATAR_LINUX)
 	const char* GLSL_VERSION = "#version 330\n";
 #else
@@ -306,10 +306,10 @@ bool CShaderManager::CompileShader(const char* source, unsigned int shader, bool
 		const int length[2] = { (int)strlen(GLSL_VERSION), (int)strlen(source) };
 		glShaderSource(shader, 2, code, length);
 	}
-	// ±àÒë Shader
+	// ç¼–è¯‘ Shader
 	glCompileShader(shader);
 
-	// »ñÈ¡´íÎóĞÅÏ¢
+	// è·å–é”™è¯¯ä¿¡æ¯
 	int compileStatus = 0;
 	glGetShaderiv(shader, GL_COMPILE_STATUS, &compileStatus);
 	if (!compileStatus) {
@@ -325,23 +325,23 @@ bool CShaderManager::CompileShader(const char* source, unsigned int shader, bool
 }
 
 /**
-* ¸øÖ¸¶¨µÄ×ÅÉ«Æ÷°ó¶¨ Uniform ±äÁ¿
-* @param shader ×ÅÉ«Æ÷Ö¸Õë
+* ç»™æŒ‡å®šçš„ç€è‰²å™¨ç»‘å®š Uniform å˜é‡
+* @param shader ç€è‰²å™¨æŒ‡é’ˆ
 */
 void CShaderManager::AttachUniforms(CShader* shader) {
 	shader->m_mapUniforms.clear();
 	shader->m_mapUniformTypes.clear();
-	// »ñÈ¡ Uniform ¸öÊı
+	// è·å– Uniform ä¸ªæ•°
 	size_t numUniform = 0;
 	glGetProgramiv(shader->m_iProgram, GL_ACTIVE_UNIFORMS, (GLint*)&numUniform);
-	// »ñÈ¡Ã¿¸ö Uniform ĞÅÏ¢
+	// è·å–æ¯ä¸ª Uniform ä¿¡æ¯
 	GLint uniformSize;
 	GLenum uniformType;
 	GLchar uniformName[256];
 	for (size_t i = 0; i < numUniform; i++) {
 		memset(uniformName, 0, 256);
 		glGetActiveUniform(shader->m_iProgram, i, 256, 0, &uniformSize, &uniformType, uniformName);
-		// »ñÈ¡ Uniform ÀàĞÍ
+		// è·å– Uniform ç±»å‹
 		CShader::UniformType eUniformType;
 		switch (uniformType) {
 		case GL_BOOL: eUniformType = CShader::BOOL; break;
@@ -356,7 +356,7 @@ void CShaderManager::AttachUniforms(CShader* shader) {
 		case GL_SAMPLER_CUBE: eUniformType = CShader::INT; break;
 		default: eUniformType = CShader::UNKNOWN; break;
 		}
-		// µÃµ½ Uniform µÄÎ»ÖÃ
+		// å¾—åˆ° Uniform çš„ä½ç½®
 		int uniformLocation;
 		if (uniformSize == 1) {
 			uniformLocation = glGetUniformLocation(shader->m_iProgram, uniformName);
@@ -364,7 +364,7 @@ void CShaderManager::AttachUniforms(CShader* shader) {
 			shader->m_mapUniformTypes.insert(std::pair<string, CShader::UniformType>(uniformName, eUniformType));
 			continue;
 		}
-		// ²¿·ÖÇı¶¯»ñÈ¡ Uniform Êı×éÃû³ÆÎª uniformName[0]
+		// éƒ¨åˆ†é©±åŠ¨è·å– Uniform æ•°ç»„åç§°ä¸º uniformName[0]
 		for (size_t n = strlen(uniformName) - 1; n > 0; n--) {
 			if (uniformName[n] == '[') {
 				uniformName[n] = '\0';
@@ -374,7 +374,7 @@ void CShaderManager::AttachUniforms(CShader* shader) {
 		uniformLocation = glGetUniformLocation(shader->m_iProgram, uniformName);
 		shader->m_mapUniforms.insert(std::pair<string, int>(uniformName, uniformLocation));
 		shader->m_mapUniformTypes.insert(std::pair<string, CShader::UniformType>(uniformName, eUniformType));
-		// »ñÈ¡ Uniform Êı×éÃ¿¸öÔªËØÎ»ÖÃ
+		// è·å– Uniform æ•°ç»„æ¯ä¸ªå…ƒç´ ä½ç½®
 		for (int n = 0; n < uniformSize; n++) {
 			string strName = CStringUtil::Format("%s[%d]", uniformName, n);
 			uniformLocation = glGetUniformLocation(shader->m_iProgram, strName.c_str());
@@ -385,17 +385,17 @@ void CShaderManager::AttachUniforms(CShader* shader) {
 }
 
 /**
-* ¶Ô×ÅÉ«Æ÷´úÂëÌí¼Ó»òÈ¥µôºê¶¨Òå
-* @param shader ×ÅÉ«Æ÷Ö¸Õë
-* @param append ĞèÒªÌí¼ÓµÄºê
-* @param remove ĞèÒªÒÆ³ıµÄºê
+* å¯¹ç€è‰²å™¨ä»£ç æ·»åŠ æˆ–å»æ‰å®å®šä¹‰
+* @param shader ç€è‰²å™¨æŒ‡é’ˆ
+* @param append éœ€è¦æ·»åŠ çš„å®
+* @param remove éœ€è¦ç§»é™¤çš„å®
 */
 void CShaderManager::ShaderSourceDefine(CShader* shader, const string& append, const string& remove) {
 	vector<string> appendArray;
 	vector<string> removeArray;
 	CStringUtil::Split(appendArray, append, ",", true);
 	CStringUtil::Split(removeArray, remove, ",", true);
-	// É¾³ı¶¨ÒåµÄºê
+	// åˆ é™¤å®šä¹‰çš„å®
 	string defined = "";
 	string vertShader = shader->m_strVertShader;
 	string fragShader = shader->m_strFragShader;
@@ -410,7 +410,7 @@ void CShaderManager::ShaderSourceDefine(CShader* shader, const string& append, c
 		vertShader = CStringUtil::Remove(vertShader, item.c_str());
 		fragShader = CStringUtil::Remove(fragShader, item.c_str());
 	}
-	// Ìí¼Óºê¶¨Òå
+	// æ·»åŠ å®å®šä¹‰
 	shader->m_strVertShader = defined + vertShader;
 	shader->m_strFragShader = defined + fragShader;
 }

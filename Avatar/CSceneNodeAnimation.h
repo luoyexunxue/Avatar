@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CSCENENODEANIMATION_H_
@@ -8,86 +8,86 @@
 #include "CMeshData.h"
 
 /**
-* @brief ¶¯»­Ä£ĞÍ³¡¾°½Úµã
+* @brief åŠ¨ç”»æ¨¡å‹åœºæ™¯èŠ‚ç‚¹
 */
 class AVATAR_EXPORT CSceneNodeAnimation: public CSceneNode {
 public:
-	//! ¹¹Ôì·½·¨
+	//! æ„é€ æ–¹æ³•
 	CSceneNodeAnimation(const string& name, const string& meshFile, bool start, bool skeleton);
 
-	//! ³õÊ¼»¯³¡¾°½Úµã
+	//! åˆå§‹åŒ–åœºæ™¯èŠ‚ç‚¹
 	virtual bool Init();
-	//! Ïú»Ù³¡¾°½Úµã
+	//! é”€æ¯åœºæ™¯èŠ‚ç‚¹
 	virtual void Destroy();
-	//! äÖÈ¾³¡¾°½Úµã
+	//! æ¸²æŸ“åœºæ™¯èŠ‚ç‚¹
 	virtual void Render();
-	//! ¸üĞÂÂß¼­
+	//! æ›´æ–°é€»è¾‘
 	virtual void Update(float dt);
-	//! »ñÈ¡Íø¸ñÊı¾İ
+	//! è·å–ç½‘æ ¼æ•°æ®
 	virtual CMeshData* GetMeshData();
 
-	//! ¶¯»­²¥·Å¿ªÊ¼
+	//! åŠ¨ç”»æ’­æ”¾å¼€å§‹
 	void StartAnimation(const string& name, bool loop, float transition);
-	//! »ìºÏÁ½¸ö¶¯»­
+	//! æ··åˆä¸¤ä¸ªåŠ¨ç”»
 	void BlendAnimation(const string& anim1, const string& anim2, float k);
-	//! ¶¯»­²¥·ÅÍ£Ö¹
+	//! åŠ¨ç”»æ’­æ”¾åœæ­¢
 	void StopAnimation();
-	//! ÉèÖÃ¶¯»­ËÙÂÊ
+	//! è®¾ç½®åŠ¨ç”»é€Ÿç‡
 	void SetAnimationFrameRate(float rate);
-	//! ÉèÖÃ¹Ç÷ÀÏÔÊ¾
+	//! è®¾ç½®éª¨éª¼æ˜¾ç¤º
 	void ShowSkeleton(bool visible, bool skeletonOnly);
-	//! »ñÈ¡¶¯»­Ãû³Æ
+	//! è·å–åŠ¨ç”»åç§°
 	string GetAnimationName(int index);
-	//! ¹Ç÷À×¢ÊÓ¹¦ÄÜ
+	//! éª¨éª¼æ³¨è§†åŠŸèƒ½
 	void PointFacing(const string& joint, const CVector3& front, const CVector3& point, float angle);
 
 private:
-	//! ÉèÖÃ¶¯»­Ö¡
+	//! è®¾ç½®åŠ¨ç”»å¸§
 	void SetupFrame(float dt);
-	//! ÉèÖÃ¹Ø½Ú¹Ø¼üÖ¡
+	//! è®¾ç½®å…³èŠ‚å…³é”®å¸§
 	void SetupJointKey();
-	//! ¼ÆËã¹Ø½Ú¶¯»­±ä»»
+	//! è®¡ç®—å…³èŠ‚åŠ¨ç”»å˜æ¢
 	void JointTransform(SJoint* joint, int channel, CQuaternion& rot, CVector3& pos);
-	//! ¸üĞÂÍø¸ñ¶¥µã
+	//! æ›´æ–°ç½‘æ ¼é¡¶ç‚¹
 	void UpdateVertex();
-	//! »æÖÆ¹Ç÷À
+	//! ç»˜åˆ¶éª¨éª¼
 	void DrawSkeleton(bool topMost);
-	//! ¹Ø½ÚÎïÀíÄ£Äâ
+	//! å…³èŠ‚ç‰©ç†æ¨¡æ‹Ÿ
 	void PhysicalSimulation(SJoint* joint, const CVector3& gravity, float dt, CMatrix4& anim);
 
 private:
-	//! Ä£ĞÍÎÄ¼ş
+	//! æ¨¡å‹æ–‡ä»¶
 	string m_strFile;
-	//! Ä£ĞÍÊı¾İ
+	//! æ¨¡å‹æ•°æ®
 	CMeshData* m_pMeshData;
-	//! ±¸·İÍø¸ñ¶¥µãÎ»ÖÃÊı×é
+	//! å¤‡ä»½ç½‘æ ¼é¡¶ç‚¹ä½ç½®æ•°ç»„
 	vector<vector<CVector3>> m_vecMeshVertexPos;
-	//! ±¸·İÍø¸ñ¶¥µã·¨ÏòÊı×é
+	//! å¤‡ä»½ç½‘æ ¼é¡¶ç‚¹æ³•å‘æ•°ç»„
 	vector<vector<CVector3>> m_vecMeshVertexNor;
-	//! ¹Ø½ÚµãÊı×é
+	//! å…³èŠ‚ç‚¹æ•°ç»„
 	vector<CVertex> m_vecJointVertex;
 
-	//! ¹Ç¼ÜÏÔÊ¾Ä£Ê½
+	//! éª¨æ¶æ˜¾ç¤ºæ¨¡å¼
 	unsigned char m_iSkeletonMode;
-	//! Ö¸Ê¾ÊÇ·ñÔÚ½øĞĞ¶¯»­
+	//! æŒ‡ç¤ºæ˜¯å¦åœ¨è¿›è¡ŒåŠ¨ç”»
 	bool m_bAnimation;
-	//! Ö¸Ê¾ÊÇ·ñÑ­»·¶¯»­
+	//! æŒ‡ç¤ºæ˜¯å¦å¾ªç¯åŠ¨ç”»
 	bool m_bLoopAnimation;
-	//! ¶¯»­²¥·ÅËÙ¶È
+	//! åŠ¨ç”»æ’­æ”¾é€Ÿåº¦
 	float m_fAnimationRate;
-	//! ¶¯»­»ìºÏ²ÎÊı
+	//! åŠ¨ç”»æ··åˆå‚æ•°
 	float m_fBlendFactor;
-	//! ¶¯»­¹ı¶ÉÊ±¼ä
+	//! åŠ¨ç”»è¿‡æ¸¡æ—¶é—´
 	float m_fTransition;
-	//! ¶¯»­¹ı¶É×ÜÊ±¼äµ¹Êı
+	//! åŠ¨ç”»è¿‡æ¸¡æ€»æ—¶é—´å€’æ•°
 	float m_fTransitionTimeInv;
-	//! ¶¯»­Ö¡Í¬²½ĞÅÏ¢
+	//! åŠ¨ç”»å¸§åŒæ­¥ä¿¡æ¯
 	float m_fSyncFactor[2];
-	//! ¶¯»­Ê±¼ä³¤¶È
+	//! åŠ¨ç”»æ—¶é—´é•¿åº¦
 	float m_fAnimationTime[2];
-	//! ¶¯»­¿ªÊ¼Ê±¼ä
+	//! åŠ¨ç”»å¼€å§‹æ—¶é—´
 	float m_fAnimationBegin[2];
-	//! µ±Ç°¶¯»­Ê±¼ä
+	//! å½“å‰åŠ¨ç”»æ—¶é—´
 	float m_fCurrentTime[2];
 };
 

@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CGraphicsManager.h"
@@ -29,10 +29,10 @@
 #endif
 
 /**
-* ¹¹Ôìº¯Êı
+* æ„é€ å‡½æ•°
 */
 CGraphicsManager::CGraphicsManager() {
-	// OPENGL ³õÊ¼×´Ì¬
+	// OPENGL åˆå§‹çŠ¶æ€
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LEQUAL);
 	glEnable(GL_BLEND);
@@ -42,10 +42,10 @@ CGraphicsManager::CGraphicsManager() {
 #if (defined AVATAR_WINDOWS) || (defined AVATAR_LINUX)
 	glEnable(GL_VERTEX_PROGRAM_POINT_SIZE);
 #endif
-	// Çå¿ÕÑÕÉ«ºÍÉî¶È
+	// æ¸…ç©ºé¢œè‰²å’Œæ·±åº¦
 	glClearColor(0.05f, 0.05f, 0.1f, 1.0f);
 	glClearDepth(1.0f);
-	// ³õÊ¼»¯ÄÚ²¿²ÎÊı
+	// åˆå§‹åŒ–å†…éƒ¨å‚æ•°
 	m_iWindowSize[0] = 0;
 	m_iWindowSize[1] = 0;
 	m_bStereoMode = false;
@@ -63,19 +63,19 @@ CGraphicsManager::CGraphicsManager() {
 }
 
 /**
-* Îö¹¹º¯Êı
+* ææ„å‡½æ•°
 */
 CGraphicsManager::~CGraphicsManager() {
 	m_pInstance = 0;
 }
 
 /**
-* µ¥ÀıÊµÀı
+* å•ä¾‹å®ä¾‹
 */
 CGraphicsManager* CGraphicsManager::m_pInstance = 0;
 
 /**
-* ÊµÀıÏú»Ù
+* å®ä¾‹é”€æ¯
 */
 void CGraphicsManager::Destroy() {
 	CTextureManager* pTextureMgr = CEngine::GetTextureManager();
@@ -89,14 +89,14 @@ void CGraphicsManager::Destroy() {
 }
 
 /**
-* äÖÈ¾Ò»Ö¡
+* æ¸²æŸ“ä¸€å¸§
 */
 void CGraphicsManager::Render() {
-	// Çå³ı³¡¾°ÑÕÉ«ºÍÉî¶È
+	// æ¸…é™¤åœºæ™¯é¢œè‰²å’Œæ·±åº¦
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	// »æÖÆÕû¸ö³¡¾°
+	// ç»˜åˆ¶æ•´ä¸ªåœºæ™¯
 	Draw();
-	// ¸üĞÂÖ¡ÂÊĞÅÏ¢
+	// æ›´æ–°å¸§ç‡ä¿¡æ¯
 	float interval = CTimer::Reset("__graphicsmanager__");
 	if (interval > 0.0f) {
 		m_fFrameRate = 0.3f * (1.0f / interval) + 0.7f * m_fFrameRate;
@@ -104,8 +104,8 @@ void CGraphicsManager::Render() {
 }
 
 /**
-* ÉèÖÃÏà»ú
-* @param camera ÓëÍ¼ĞÎäÖÈ¾¹ØÁªµÄÏà»ú
+* è®¾ç½®ç›¸æœº
+* @param camera ä¸å›¾å½¢æ¸²æŸ“å…³è”çš„ç›¸æœº
 */
 void CGraphicsManager::SetCamera(CCamera* camera) {
 	m_pCamera = camera;
@@ -113,31 +113,27 @@ void CGraphicsManager::SetCamera(CCamera* camera) {
 }
 
 /**
-* »ñÈ¡Ïà»ú
-* @return ÓëÍ¼ĞÎäÖÈ¾¹ØÁªµÄÏà»ú
+* è·å–ç›¸æœº
+* @return ä¸å›¾å½¢æ¸²æŸ“å…³è”çš„ç›¸æœº
 */
 CCamera* CGraphicsManager::GetCamera() {
 	return m_pCamera;
 }
 
 /**
-* ÉèÖÃ´°¿Ú´óĞ¡
-* @param width »æÖÆ´°¿Ú¿í¶È
-* @param height »æÖÆ´°¿Ú¸ß¶È
+* è®¾ç½®çª—å£å¤§å°
+* @param width ç»˜åˆ¶çª—å£å®½åº¦
+* @param height ç»˜åˆ¶çª—å£é«˜åº¦
 */
 void CGraphicsManager::SetWindowSize(int width, int height) {
-	if (m_iWindowSize[0] != width || m_iWindowSize[1] != height) {
-		m_iWindowSize[0] = width;
-		m_iWindowSize[1] = height;
-		CGuiEnvironment::GetInstance()->UpdateSize(width, height);
-		CEngine::GetPostProcessManager()->UpdateSize(width, height);
-	}
+	m_iWindowSize[0] = width;
+	m_iWindowSize[1] = height;
 }
 
 /**
-* »ñÈ¡´°¿Ú´óĞ¡
-* @param width Êä³ö»æÖÆ´°¿Ú¿í¶È
-* @param height Êä³ö»æÖÆ´°¿Ú¸ß¶È
+* è·å–çª—å£å¤§å°
+* @param width è¾“å‡ºç»˜åˆ¶çª—å£å®½åº¦
+* @param height è¾“å‡ºç»˜åˆ¶çª—å£é«˜åº¦
 */
 void CGraphicsManager::GetWindowSize(int* width, int* height) {
 	*width = m_iWindowSize[0];
@@ -145,19 +141,19 @@ void CGraphicsManager::GetWindowSize(int* width, int* height) {
 }
 
 /**
-* ÉèÖÃ¹âÔ´
-* @param pos ¹âÔ´Î»ÖÃ£¬µ± pos.w Îª 0 Ê±£¬Îª·½Ïò¹â£¬·ñÔòÎªµã¹âÔ´»ò¾Û¹âµÆ
-* @param dir ¹âÕÕ·½Ïò£¬µ± dir.w ´óÓÚ 0 Ê±£¬Îª¾Û¹âµÆÇÒ dir.w Îª¾Û¹â½Ç¶È·¶Î§
-* @param color ¹âÕÕÑÕÉ«£¬µ±Îªµã¹âÔ´»ò¾Û¹âµÆ¹âÔ´Ê±£¬color.a Îª¹âÕÕ·¶Î§
-* @note ÏµÍ³Í¨¹ı²ÎÊı pos ºÍ dir ×Ô¶¯ÅĞ¶Ï¹âÔ´ÀàĞÍ£¬Ö§³ÖÆ½ĞĞ¹â¹âÔ´¡¢µã¹âÔ´¡¢¾Û¹âµÆ¹âÔ´ÈıÖÖ
+* è®¾ç½®å…‰æº
+* @param pos å…‰æºä½ç½®ï¼Œå½“ pos.w ä¸º 0 æ—¶ï¼Œä¸ºæ–¹å‘å…‰ï¼Œå¦åˆ™ä¸ºç‚¹å…‰æºæˆ–èšå…‰ç¯
+* @param dir å…‰ç…§æ–¹å‘ï¼Œå½“ dir.w å¤§äº 0 æ—¶ï¼Œä¸ºèšå…‰ç¯ä¸” dir.w ä¸ºèšå…‰è§’åº¦èŒƒå›´
+* @param color å…‰ç…§é¢œè‰²ï¼Œå½“ä¸ºç‚¹å…‰æºæˆ–èšå…‰ç¯å…‰æºæ—¶ï¼Œcolor.a ä¸ºå…‰ç…§èŒƒå›´
+* @note ç³»ç»Ÿé€šè¿‡å‚æ•° pos å’Œ dir è‡ªåŠ¨åˆ¤æ–­å…‰æºç±»å‹ï¼Œæ”¯æŒå¹³è¡Œå…‰å…‰æºã€ç‚¹å…‰æºã€èšå…‰ç¯å…‰æºä¸‰ç§
 */
 void CGraphicsManager::SetLight(const CVector3& pos, const CVector3& dir, const CVector3& color) {
-	// µ¥Î»»¯Ïà¹Ø²ÎÊı
+	// å•ä½åŒ–ç›¸å…³å‚æ•°
 	CVector3 normPos(pos.m_fValue, 0.0f);
 	CVector3 normDir(dir.m_fValue, 0.0f);
 	normPos.Normalize();
 	normDir.Normalize();
-	// ¸ù¾İ¹âÔ´ÀàĞÍ¶Ô²ÎÊı½øĞĞĞŞÕı
+	// æ ¹æ®å…‰æºç±»å‹å¯¹å‚æ•°è¿›è¡Œä¿®æ­£
 	if (pos.m_fValue[3] == 0.0f) {
 		m_cLightPos.SetValue(normPos);
 		m_cLightDir.SetValue(normPos);
@@ -170,14 +166,14 @@ void CGraphicsManager::SetLight(const CVector3& pos, const CVector3& dir, const 
 			if (normDir[3] < 0.0872f) normDir[3] = 0.0872f;
 		}
 	}
-	// ¶ÔÃ¿¸öº¬ÓĞ uLightPos µÄ×ÅÉ«Æ÷½øĞĞÍ³Ò»±äÁ¿¸³Öµ
+	// å¯¹æ¯ä¸ªå«æœ‰ uLightPos çš„ç€è‰²å™¨è¿›è¡Œç»Ÿä¸€å˜é‡èµ‹å€¼
 	vector<CShader*> shaderList;
 	CEngine::GetShaderManager()->GetShaderList(shaderList);
 	for (size_t i = 0; i < shaderList.size(); i++) {
 		CShader* pShader = shaderList[i];
 		if (pShader->IsUniform("uLightPos")) {
 			pShader->UseShader();
-			// ĞÇÇòäÖÈ¾±ØĞëÊ¹ÓÃ·½Ïò¹â
+			// æ˜Ÿçƒæ¸²æŸ“å¿…é¡»ä½¿ç”¨æ–¹å‘å…‰
 			const string& shaderName = pShader->GetName();
 			if (shaderName == "planetsky" || shaderName == "planetground") {
 				pShader->SetUniform("uLightPos", normPos.m_fValue, 4, 1);
@@ -191,17 +187,17 @@ void CGraphicsManager::SetLight(const CVector3& pos, const CVector3& dir, const 
 }
 
 /**
-* »ñÈ¡¹âÔ´Î»ÖÃ
-* @return ¹âÔ´Î»ÖÃ
+* è·å–å…‰æºä½ç½®
+* @return å…‰æºä½ç½®
 */
 CVector3 CGraphicsManager::GetLight() {
 	return m_cLightPos;
 }
 
 /**
-* ÉèÖÃÊÇ·ñÁ¢ÌåÏÔÊ¾
-* @param stereo Á¢ÌåäÖÈ¾Ä£Ê½
-* @note ÉèÖÃÁ¢ÌåäÖÈ¾Ä£Ê½ºó½«ÒÔ×óÓÒ·ÖÆÁ·½Ê½äÖÈ¾Á¢ÌåÍ¼Ïñ
+* è®¾ç½®æ˜¯å¦ç«‹ä½“æ˜¾ç¤º
+* @param stereo ç«‹ä½“æ¸²æŸ“æ¨¡å¼
+* @note è®¾ç½®ç«‹ä½“æ¸²æŸ“æ¨¡å¼åå°†ä»¥å·¦å³åˆ†å±æ–¹å¼æ¸²æŸ“ç«‹ä½“å›¾åƒ
 */
 void CGraphicsManager::SetStereoMode(bool stereo) {
 	m_bStereoMode = stereo;
@@ -209,16 +205,16 @@ void CGraphicsManager::SetStereoMode(bool stereo) {
 }
 
 /**
-* »ñÈ¡ÊÇ·ñÁ¢ÌåÏÔÊ¾
-* @return µ±Ç°ÊÇ·ñÎªÁ¢ÌåäÖÈ¾Ä£Ê½
+* è·å–æ˜¯å¦ç«‹ä½“æ˜¾ç¤º
+* @return å½“å‰æ˜¯å¦ä¸ºç«‹ä½“æ¸²æŸ“æ¨¡å¼
 */
 bool CGraphicsManager::GetStereoMode() {
 	return m_bStereoMode;
 }
 
 /**
-* ÉèÖÃÊÇ·ñÏÔÊ¾ÒõÓ°
-* @param enable ÏÔÊ¾ÒõÓ°
+* è®¾ç½®æ˜¯å¦æ˜¾ç¤ºé˜´å½±
+* @param enable æ˜¾ç¤ºé˜´å½±
 */
 void CGraphicsManager::SetShadowEnable(bool enable) {
 	if (enable || m_bShadowEnable) {
@@ -240,20 +236,20 @@ void CGraphicsManager::SetShadowEnable(bool enable) {
 }
 
 /**
-* »ñÈ¡ÒõÓ°ÊÇ·ñÏÔÊ¾
-* @return µ±Ç°ÊÇ·ñÏÔÊ¾ÒõÓ°
+* è·å–é˜´å½±æ˜¯å¦æ˜¾ç¤º
+* @return å½“å‰æ˜¯å¦æ˜¾ç¤ºé˜´å½±
 */
 bool CGraphicsManager::GetShadowEnable() {
 	return m_bShadowEnable;
 }
 
 /**
-* ÉèÖÃÎíÏÔÊ¾¼°²ÎÊı
-* @param enable ÊÇ·ñÏÔÊ¾Îí
-* @param start ¿ªÊ¼¾àÀë
-* @param end ½áÊø¾àÀë
-* @param color ÑÕÉ«
-* @note enable Îª false Ê±£¬start£¬end£¬color ½«±»ºöÂÔ
+* è®¾ç½®é›¾æ˜¾ç¤ºåŠå‚æ•°
+* @param enable æ˜¯å¦æ˜¾ç¤ºé›¾
+* @param start å¼€å§‹è·ç¦»
+* @param end ç»“æŸè·ç¦»
+* @param color é¢œè‰²
+* @note enable ä¸º false æ—¶ï¼Œstartï¼Œendï¼Œcolor å°†è¢«å¿½ç•¥
 */
 void CGraphicsManager::SetFogEnable(bool enable, float start, float end, const CColor& color) {
 	if (enable || m_bFogEnable) {
@@ -279,17 +275,17 @@ void CGraphicsManager::SetFogEnable(bool enable, float start, float end, const C
 }
 
 /**
-* »ñÈ¡ÎíÊÇ·ñÏÔÊ¾
-* @return µ±Ç°ÊÇ·ñ¿ªÆôÎíÏÔÊ¾
+* è·å–é›¾æ˜¯å¦æ˜¾ç¤º
+* @return å½“å‰æ˜¯å¦å¼€å¯é›¾æ˜¾ç¤º
 */
 bool CGraphicsManager::GetFogEnable() {
 	return m_bFogEnable;
 }
 
 /**
-* ÉèÖÃÆôÓÃ»·¾³¹âÕÕ
-* @param enable ÊÇ·ñ¿ªÆô»·¾³¹âÕÕ
-* @param cubemap »·¾³Á¢·½ÌåÎÆÀíÃû³Æ
+* è®¾ç½®å¯ç”¨ç¯å¢ƒå…‰ç…§
+* @param enable æ˜¯å¦å¼€å¯ç¯å¢ƒå…‰ç…§
+* @param cubemap ç¯å¢ƒç«‹æ–¹ä½“çº¹ç†åç§°
 */
 void CGraphicsManager::SetEnvironmentMapEnable(bool enable, const string& cubemap) {
 	if (enable || m_bEnvironmentMapEnable) {
@@ -341,16 +337,16 @@ void CGraphicsManager::SetEnvironmentMapEnable(bool enable, const string& cubema
 }
 
 /**
-* »ñÈ¡ÊÇ·ñ¿ªÆô»·¾³¹âÕÕ
-* @return µ±Ç°ÊÇ·ñ¿ªÆô»·¾³¹âÕÕ
+* è·å–æ˜¯å¦å¼€å¯ç¯å¢ƒå…‰ç…§
+* @return å½“å‰æ˜¯å¦å¼€å¯ç¯å¢ƒå…‰ç…§
 */
 bool CGraphicsManager::GetEnvironmentMapEnable() {
 	return m_bEnvironmentMapEnable;
 }
 
 /**
-* ÉèÖÃÊÇ·ñÆôÓÃÉî¶È²âÊÔ
-* @param enable Ê¹ÄÜÉî¶È²âÊÔ
+* è®¾ç½®æ˜¯å¦å¯ç”¨æ·±åº¦æµ‹è¯•
+* @param enable ä½¿èƒ½æ·±åº¦æµ‹è¯•
 */
 void CGraphicsManager::SetDepthTestEnable(bool enable) {
 	if (enable) glEnable(GL_DEPTH_TEST);
@@ -358,10 +354,10 @@ void CGraphicsManager::SetDepthTestEnable(bool enable) {
 }
 
 /**
-* ÉèÖÃÊÇ·ñÆôÓÃÉî¶ÈÆ«ÒÆ
-* @param enable Ê¹ÄÜÉî¶ÈÆ«ÒÆ
-* @param offset Æ«ÒÆÁ¿
-* @note enable Îª false Ê±£¬offset ½«±»ºöÂÔ
+* è®¾ç½®æ˜¯å¦å¯ç”¨æ·±åº¦åç§»
+* @param enable ä½¿èƒ½æ·±åº¦åç§»
+* @param offset åç§»é‡
+* @note enable ä¸º false æ—¶ï¼Œoffset å°†è¢«å¿½ç•¥
 */
 void CGraphicsManager::SetDepthOffsetEnable(bool enable, float offset) {
 	if (enable) {
@@ -373,8 +369,8 @@ void CGraphicsManager::SetDepthOffsetEnable(bool enable, float offset) {
 }
 
 /**
-* ÉèÖÃÊÇ·ñÆôÓÃÑÕÉ«»ìºÏ
-* @param enable Ê¹ÄÜÑÕÉ«»ìºÏ
+* è®¾ç½®æ˜¯å¦å¯ç”¨é¢œè‰²æ··åˆ
+* @param enable ä½¿èƒ½é¢œè‰²æ··åˆ
 */
 void CGraphicsManager::SetColorBlendEnable(bool enable) {
 	if (enable) glEnable(GL_BLEND);
@@ -382,8 +378,8 @@ void CGraphicsManager::SetColorBlendEnable(bool enable) {
 }
 
 /**
-* ÉèÖÃäÖÈ¾Ä¿±êµÄ±³¾°ÑÕÉ«
-* @param color ±³¾°ÑÕÉ«
+* è®¾ç½®æ¸²æŸ“ç›®æ ‡çš„èƒŒæ™¯é¢œè‰²
+* @param color èƒŒæ™¯é¢œè‰²
 */
 void CGraphicsManager::SetBackgroundColor(const CColor& color) {
 	m_cBackground.SetValue(color);
@@ -391,8 +387,8 @@ void CGraphicsManager::SetBackgroundColor(const CColor& color) {
 }
 
 /**
-* ÉèÖÃÁ¢ÌåÊÓ¾õ½¹¾à
-* @param distance ¹Ø×¢µã¾àÀëÏà»ú¾àÀë
+* è®¾ç½®ç«‹ä½“è§†è§‰ç„¦è·
+* @param distance å…³æ³¨ç‚¹è·ç¦»ç›¸æœºè·ç¦»
 */
 void CGraphicsManager::SetFocusDistance(float distance) {
 	if (distance < 0.25f) distance = 0.25f;
@@ -400,33 +396,33 @@ void CGraphicsManager::SetFocusDistance(float distance) {
 }
 
 /**
-* ÅĞ¶ÏÊÇ·ñ´¦ÓÚÉî¶ÈäÖÈ¾Ä£Ê½
-* @return µ±Ç°ÊÇ·ñ´¦ÓÚÉî¶ÈäÖÈ¾×´Ì¬
+* åˆ¤æ–­æ˜¯å¦å¤„äºæ·±åº¦æ¸²æŸ“æ¨¡å¼
+* @return å½“å‰æ˜¯å¦å¤„äºæ·±åº¦æ¸²æŸ“çŠ¶æ€
 */
 bool CGraphicsManager::IsDepthRender() {
 	return m_bRenderDepth;
 }
 
 /**
-* ÅĞ¶ÏÊÇ·ñ´¦ÓÚ·´ÉäÍ¼äÖÈ¾
-* @return µ±Ç°ÊÇ·ñ´¦ÓÚ·´ÉäÍ¼äÖÈ¾×´Ì¬
+* åˆ¤æ–­æ˜¯å¦å¤„äºåå°„å›¾æ¸²æŸ“
+* @return å½“å‰æ˜¯å¦å¤„äºåå°„å›¾æ¸²æŸ“çŠ¶æ€
 */
 bool CGraphicsManager::IsReflectRender() {
 	return m_bRenderReflect;
 }
 
 /**
-* ÅĞ¶ÏÊÇ·ñ´¦ÓÚ×óÑÛäÖÈ¾
-* @return µ±Ç°ÊÇ·ñ´¦ÓÚ×óÑÛäÖÈ¾×´Ì¬
+* åˆ¤æ–­æ˜¯å¦å¤„äºå·¦çœ¼æ¸²æŸ“
+* @return å½“å‰æ˜¯å¦å¤„äºå·¦çœ¼æ¸²æŸ“çŠ¶æ€
 */
 bool CGraphicsManager::IsLeftEyeRender() {
 	return m_bRenderLeftEye;
 }
 
 /**
-* ÆÁÄ»½ØÍ¼
-* @param file Í¼Æ¬ÎÄ¼ş¶ÔÏó
-* @param redraw ÊÇ·ñĞèÒªÖØĞÂäÖÈ¾Õû¸ö³¡¾°
+* å±å¹•æˆªå›¾
+* @param file å›¾ç‰‡æ–‡ä»¶å¯¹è±¡
+* @param redraw æ˜¯å¦éœ€è¦é‡æ–°æ¸²æŸ“æ•´ä¸ªåœºæ™¯
 */
 void CGraphicsManager::Screenshot(CFileManager::CImageFile& file, bool redraw) {
 	const int pictureWidth = m_pRenderTarget? m_pRenderTarget->GetWidth(): m_iWindowSize[0];
@@ -440,13 +436,13 @@ void CGraphicsManager::Screenshot(CFileManager::CImageFile& file, bool redraw) {
 	file.contents = new unsigned char[file.size];
 	GLenum format = file.channels == 3 ? GL_RGB : GL_RGBA;
 
-	// äÖÈ¾Õû¸ö³¡¾°
+	// æ¸²æŸ“æ•´ä¸ªåœºæ™¯
 	if (redraw) Render();
 	glFlush();
 	glPixelStorei(GL_PACK_ALIGNMENT, 1);
 	glReadPixels(0, 0, pictureWidth, pictureHeight, format, GL_UNSIGNED_BYTE, file.contents);
 
-	// ÉÏÏÂ½»»»ÏñËØĞĞ
+	// ä¸Šä¸‹äº¤æ¢åƒç´ è¡Œ
 	size_t rowBytes = pictureWidth * file.channels;
 	unsigned char* row = new unsigned char[rowBytes];
 	for (int i = 0; i < (pictureHeight >> 1); i++) {
@@ -460,12 +456,12 @@ void CGraphicsManager::Screenshot(CFileManager::CImageFile& file, bool redraw) {
 }
 
 /**
-* ÆÁÄ»½ØÍ¼²¢±£´æÖÁÎÄ¼ş
-* @param fileName ±£´æ½ØÍ¼µÄÎÄ¼şÃû³Æ
-* @param redraw ÊÇ·ñĞèÒªÖØĞÂäÖÈ¾Õû¸ö³¡¾°
+* å±å¹•æˆªå›¾å¹¶ä¿å­˜è‡³æ–‡ä»¶
+* @param fileName ä¿å­˜æˆªå›¾çš„æ–‡ä»¶åç§°
+* @param redraw æ˜¯å¦éœ€è¦é‡æ–°æ¸²æŸ“æ•´ä¸ªåœºæ™¯
 */
 void CGraphicsManager::Screenshot(const string& fileName, bool redraw) {
-	// ½ØÆÁÍ¼Æ¬±£´æÄ¿Â¼ÊÇ·ñ´æÔÚ
+	// æˆªå±å›¾ç‰‡ä¿å­˜ç›®å½•æ˜¯å¦å­˜åœ¨
 	CFileManager* pFileMgr = CEngine::GetFileManager();
 	string directory = CFileManager::GetDirectory(fileName);
 	if (!pFileMgr->DirectoryExists(directory)) {
@@ -474,7 +470,7 @@ void CGraphicsManager::Screenshot(const string& fileName, bool redraw) {
 			return;
 		}
 	}
-	// ´æ´¢Í¼Æ¬ÎÄ¼ş
+	// å­˜å‚¨å›¾ç‰‡æ–‡ä»¶
 	CFileManager::FileType fileType = CFileManager::BIN;
 	string ext = CStringUtil::UpperCase(CFileManager::GetExtension(fileName));
 	if (ext == "BMP") fileType = CFileManager::BMP;
@@ -489,12 +485,12 @@ void CGraphicsManager::Screenshot(const string& fileName, bool redraw) {
 }
 
 /**
-* »ñÈ¡µãµÄÆÁÄ»×ø±ê
-* @param point ĞèÒªÓ³ÉäµÄ¿Õ¼äµã
-* @param screen ×ª»»ºóµÄÆÁÄ»×ø±ê£¬screen.Z ÎªÉî¶ÈÖµ
+* è·å–ç‚¹çš„å±å¹•åæ ‡
+* @param point éœ€è¦æ˜ å°„çš„ç©ºé—´ç‚¹
+* @param screen è½¬æ¢åçš„å±å¹•åæ ‡ï¼Œscreen.Z ä¸ºæ·±åº¦å€¼
 */
 void CGraphicsManager::PointToScreen(const CVector3& point, CVector3& screen) {
-	// »ñÈ¡ÊÓ¿Ú²ÎÊı
+	// è·å–è§†å£å‚æ•°
 	int viewport[4];
 	viewport[1] = 0;
 	viewport[2] = m_pCamera->GetViewWidth();
@@ -504,30 +500,30 @@ void CGraphicsManager::PointToScreen(const CVector3& point, CVector3& screen) {
 }
 
 /**
-* Í¨¹ı¸ø¶¨µÄÆÁÄ»×ø±ê¼ÆËãÊ°È¡ÉäÏß
-* @param x ÆÁÄ»ºá×ø±ê
-* @param y ÆÁÄ»×İ×ø±ê
-* @param ray ¼ÆËãµÃµ½µÄÊ°È¡ÉäÏß
-* @note ÆÁÄ»Ô­µãÎª×óÉÏ½Ç
+* é€šè¿‡ç»™å®šçš„å±å¹•åæ ‡è®¡ç®—æ‹¾å–å°„çº¿
+* @param x å±å¹•æ¨ªåæ ‡
+* @param y å±å¹•çºµåæ ‡
+* @param ray è®¡ç®—å¾—åˆ°çš„æ‹¾å–å°„çº¿
+* @note å±å¹•åŸç‚¹ä¸ºå·¦ä¸Šè§’
 */
 void CGraphicsManager::PickingRay(int x, int y, CRay& ray) {
 	int viewport[4];
 	float screen[3];
 	float posStart[3];
 	float posEnd[3];
-	// »ñÈ¡ÊÓ¿Ú²ÎÊı
+	// è·å–è§†å£å‚æ•°
 	viewport[1] = 0;
 	viewport[2] = m_pCamera->GetViewWidth();
 	viewport[3] = m_pCamera->GetViewHeight();
 	viewport[0] = m_bStereoMode && x > viewport[2] ? viewport[2] : 0;
-	// ·´Í¶Ó°¼ÆËã
+	// åæŠ•å½±è®¡ç®—
 	screen[0] = static_cast<float>(x);
 	screen[1] = static_cast<float>(viewport[3] - y);
 	screen[2] = 0;
 	UnProject(viewport, screen, posStart);
 	screen[2] = 1;
 	UnProject(viewport, screen, posEnd);
-	// µÃµ½ Picking ÏòÁ¿
+	// å¾—åˆ° Picking å‘é‡
 	float direction[3] = {
 		posEnd[0] - posStart[0],
 		posEnd[1] - posStart[1],
@@ -537,23 +533,23 @@ void CGraphicsManager::PickingRay(int x, int y, CRay& ray) {
 }
 
 /**
-* Í¨¹ı¸ø¶¨µÄÆÁÄ»×ø±ê¼ÆËãÊ°È¡µã×ø±ê
-* @param x ÆÁÄ»ºá×ø±ê
-* @param y ÆÁÄ»×İ×ø±ê
-* @param position ¼ÆËãµÃµ½µÄ¿Õ¼äµã×ø±ê
-* @attention ÆÁÄ»Ô­µãÎª×óÉÏ½Ç£¬¸Ã·½·¨²»Ö§³Ö OpenGL ES
+* é€šè¿‡ç»™å®šçš„å±å¹•åæ ‡è®¡ç®—æ‹¾å–ç‚¹åæ ‡
+* @param x å±å¹•æ¨ªåæ ‡
+* @param y å±å¹•çºµåæ ‡
+* @param position è®¡ç®—å¾—åˆ°çš„ç©ºé—´ç‚¹åæ ‡
+* @attention å±å¹•åŸç‚¹ä¸ºå·¦ä¸Šè§’ï¼Œè¯¥æ–¹æ³•ä¸æ”¯æŒ OpenGL ES
 */
 void CGraphicsManager::PickingPosition(int x, int y, CVector3& position) {
 	int viewport[4];
 	float screen[3];
-	// »ñÈ¡ÊÓ¿Ú²ÎÊı
+	// è·å–è§†å£å‚æ•°
 	viewport[1] = 0;
 	viewport[2] = m_pCamera->GetViewWidth();
 	viewport[3] = m_pCamera->GetViewHeight();
 	viewport[0] = m_bStereoMode && x > viewport[2] ? viewport[2] : 0;
 	screen[0] = static_cast<float>(x);
 	screen[1] = static_cast<float>(viewport[3] - y);
-	// ¶ÁÈ¡Éî¶ÈÖµ
+	// è¯»å–æ·±åº¦å€¼
 #if (defined AVATAR_WINDOWS) || (defined AVATAR_LINUX)
 	glReadPixels(static_cast<int>(screen[0]), static_cast<int>(screen[1]), 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &screen[2]);
 #else
@@ -564,10 +560,10 @@ void CGraphicsManager::PickingPosition(int x, int y, CVector3& position) {
 }
 
 /**
-* »æÖÆµã
-* @param vertices ¶¥µãÊı×é
-* @param size ¶¥µã¸öÊı
-* @note µãµÄ´óĞ¡ÓÉ×ÅÉ«Æ÷ÉèÖÃ(uPointSize)
+* ç»˜åˆ¶ç‚¹
+* @param vertices é¡¶ç‚¹æ•°ç»„
+* @param size é¡¶ç‚¹ä¸ªæ•°
+* @note ç‚¹çš„å¤§å°ç”±ç€è‰²å™¨è®¾ç½®(uPointSize)
 */
 void CGraphicsManager::DrawPoints(const CVertex* vertices, int size) {
 	size_t pointer = reinterpret_cast<size_t>(vertices);
@@ -585,14 +581,14 @@ void CGraphicsManager::DrawPoints(const CVertex* vertices, int size) {
 }
 
 /**
-* »æÖÆÏß
-* @param vertices ¶¥µãÊı×é
-* @param size ¶¥µã¸öÊı
-* @param width Ïß¿í
-* @param strip ÏßÌõ£¨true£©»¹ÊÇÏß¶Î£¨false£©
+* ç»˜åˆ¶çº¿
+* @param vertices é¡¶ç‚¹æ•°ç»„
+* @param size é¡¶ç‚¹ä¸ªæ•°
+* @param width çº¿å®½
+* @param strip çº¿æ¡ï¼ˆtrueï¼‰è¿˜æ˜¯çº¿æ®µï¼ˆfalseï¼‰
 */
 void CGraphicsManager::DrawLines(const CVertex* vertices, int size, float width, bool strip) {
-	// È·±£ size ÎªÅ¼ÊıÇÒ´óÓÚµÈÓÚ2
+	// ç¡®ä¿ size ä¸ºå¶æ•°ä¸”å¤§äºç­‰äº2
 	if (!strip) size -= size % 2;
 	if (size < 2) return;
 	size_t pointer = reinterpret_cast<size_t>(vertices);
@@ -610,13 +606,13 @@ void CGraphicsManager::DrawLines(const CVertex* vertices, int size, float width,
 }
 
 /**
-* »æÖÆÈı½ÇĞÎ
-* @param vertices ¶¥µãÊı×é
-* @param size ¶¥µã¸öÊı
-* @param strip Èı½ÇĞÎ´ø£¨true£©»¹ÊÇÈı½ÇĞÎ¼¯ºÏ£¨false£©
+* ç»˜åˆ¶ä¸‰è§’å½¢
+* @param vertices é¡¶ç‚¹æ•°ç»„
+* @param size é¡¶ç‚¹ä¸ªæ•°
+* @param strip ä¸‰è§’å½¢å¸¦ï¼ˆtrueï¼‰è¿˜æ˜¯ä¸‰è§’å½¢é›†åˆï¼ˆfalseï¼‰
 */
 void CGraphicsManager::DrawTriangles(const CVertex* vertices, int size, bool strip) {
-	// ¶¥µã¸öÊıĞèÎªÈıµÄ±¶Êı
+	// é¡¶ç‚¹ä¸ªæ•°éœ€ä¸ºä¸‰çš„å€æ•°
 	if (!strip) size -= size % 3;
 	if (size < 3) return;
 	size_t pointer = reinterpret_cast<size_t>(vertices);
@@ -630,9 +626,9 @@ void CGraphicsManager::DrawTriangles(const CVertex* vertices, int size, bool str
 }
 
 /**
-* »æÖÆËÄ±ßĞÎ
-* @param color ËÄ±ßĞÎÑÕÉ«
-* @param flipTexCoord ´¹Ö±·­×ªÎÆÀí×ø±ê
+* ç»˜åˆ¶å››è¾¹å½¢
+* @param color å››è¾¹å½¢é¢œè‰²
+* @param flipTexCoord å‚ç›´ç¿»è½¬çº¹ç†åæ ‡
 */
 void CGraphicsManager::DrawQuadrilateral(const CColor& color, bool flipTexCoord) {
 	float vertices[] = {
@@ -658,8 +654,8 @@ void CGraphicsManager::DrawQuadrilateral(const CColor& color, bool flipTexCoord)
 }
 
 /**
-* »æÖÆÁ¢·½Ìå
-* @param color Á¢·½ÌåÑÕÉ«
+* ç»˜åˆ¶ç«‹æ–¹ä½“
+* @param color ç«‹æ–¹ä½“é¢œè‰²
 */
 void CGraphicsManager::DrawCube(const CColor& color) {
 	float vertices[] = {
@@ -690,12 +686,12 @@ void CGraphicsManager::DrawCube(const CColor& color) {
 }
 
 /**
-* ÉèÖÃµ±Ç°äÖÈ¾Ä¿±ê
-* @param texture äÖÈ¾Ä¿±êÎÆÀí£¬Îª 0 ±íÊ¾ÆÁÄ»
-* @param level ÎÆÀí mipmap level
-* @param fullView Ö¸Ê¾ÔÚÁ¢ÌåÏÔÊ¾Ä£Ê½ÏÂ²»·Ö×óÓÒÊÓ¿Ú
-* @param clearColor Çå¿Õ texture µÄÑÕÉ«
-* @param clearDepth Çå¿Õ texture µÄÉî¶ÈĞÅÏ¢
+* è®¾ç½®å½“å‰æ¸²æŸ“ç›®æ ‡
+* @param texture æ¸²æŸ“ç›®æ ‡çº¹ç†ï¼Œä¸º 0 è¡¨ç¤ºå±å¹•
+* @param level çº¹ç† mipmap level
+* @param fullView æŒ‡ç¤ºåœ¨ç«‹ä½“æ˜¾ç¤ºæ¨¡å¼ä¸‹ä¸åˆ†å·¦å³è§†å£
+* @param clearColor æ¸…ç©º texture çš„é¢œè‰²
+* @param clearDepth æ¸…ç©º texture çš„æ·±åº¦ä¿¡æ¯
 */
 void CGraphicsManager::SetRenderTarget(CTexture* texture, int level, bool fullView, bool clearColor, bool clearDepth) {
 	int viewWidth = m_iWindowSize[0];
@@ -716,50 +712,50 @@ void CGraphicsManager::SetRenderTarget(CTexture* texture, int level, bool fullVi
 		m_pRenderTarget = 0;
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	}
-	// ÉèÖÃÊÓ¿Ú
+	// è®¾ç½®è§†å£
 	if (m_bStereoMode && !fullView) {
 		viewWidth >>= 1;
 		glViewport(m_bRenderLeftEye ? 0 : viewWidth, 0, viewWidth, viewHeight);
 	} else {
 		glViewport(0, 0, viewWidth, viewHeight);
 	}
-	// Èç¹ûÊÇäÖÈ¾Éî¶ÈÍ¼£¬ĞèÒª½«Éî¶ÈÖµÉèÖÃÎª1.0
+	// å¦‚æœæ˜¯æ¸²æŸ“æ·±åº¦å›¾ï¼Œéœ€è¦å°†æ·±åº¦å€¼è®¾ç½®ä¸º1.0
 	if (clearColor) {
 		const float* color = m_bRenderDepth ? CColor::Red.m_fValue : m_cBackground.m_fValue;
 		glClearColor(color[0], color[1], color[2], color[3]);
 	}
-	// ÊÇ·ñÇå¿ÕÑÕÉ«ºÍÉî¶È»º³åÇø
+	// æ˜¯å¦æ¸…ç©ºé¢œè‰²å’Œæ·±åº¦ç¼“å†²åŒº
 	if (clearColor && clearDepth) glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	else if (clearColor) glClear(GL_COLOR_BUFFER_BIT);
 	else if (clearDepth) glClear(GL_DEPTH_BUFFER_BIT);
 }
 
 /**
-* »ñÈ¡µ±Ç°äÖÈ¾Ä¿±ê
-* @return äÖÈ¾Ä¿±êÎÆÀí
+* è·å–å½“å‰æ¸²æŸ“ç›®æ ‡
+* @return æ¸²æŸ“ç›®æ ‡çº¹ç†
 */
 CTexture* CGraphicsManager::GetRenderTarget() {
 	return m_pRenderTarget;
 }
 
 /**
-* »ñÈ¡Ö¡ÂÊ
-* @return µ±Ç°Ö¡ÂÊ
+* è·å–å¸§ç‡
+* @return å½“å‰å¸§ç‡
 */
 float CGraphicsManager::GetFrameRate() {
 	return m_fFrameRate;
 }
 
 /**
-* ÊÀ½ç×ø±êÏµµ½ÆÁÄ»×ø±êÏµµÄ±ä»»
-* @param viewport ÊÓ¿Ú²ÎÊı£¨×óÉÏ½Ç×ø±ê£¬ÊÓ¿Ú¸ß¿í£©
-* @param objCoord ¿Õ¼ä×ø±ê
-* @param winPos ÆÁÄ»×ø±ê
+* ä¸–ç•Œåæ ‡ç³»åˆ°å±å¹•åæ ‡ç³»çš„å˜æ¢
+* @param viewport è§†å£å‚æ•°ï¼ˆå·¦ä¸Šè§’åæ ‡ï¼Œè§†å£é«˜å®½ï¼‰
+* @param objCoord ç©ºé—´åæ ‡
+* @param winPos å±å¹•åæ ‡
 */
 void CGraphicsManager::Project(const int viewport[4], const float objCoord[3], float winPos[3]) {
-	// ¼ÆËãÊÓÍ¼Í¶Ó°¾ØÕó
+	// è®¡ç®—è§†å›¾æŠ•å½±çŸ©é˜µ
 	CMatrix4 matrix = m_pCamera->GetProjMatrix() * m_pCamera->GetViewMatrix();
-	// ±ä»»µÃµ½ÆÁÄ»×ø±êÏµ×ø±ê
+	// å˜æ¢å¾—åˆ°å±å¹•åæ ‡ç³»åæ ‡
 	CVector3 vec3d = matrix * CVector3(objCoord);
 	vec3d *= 1.0f / vec3d[3];
 	winPos[0] = viewport[0] + (1.0f + vec3d[0]) * viewport[2] * 0.5f;
@@ -768,21 +764,21 @@ void CGraphicsManager::Project(const int viewport[4], const float objCoord[3], f
 }
 
 /**
-* ÆÁÄ»×ø±êÏµµ½ÊÀ½ç×ø±êÏµµÄ±ä»»
-* @param viewport ÊÓ¿Ú²ÎÊı£¨×óÉÏ½Ç×ø±ê£¬ÊÓ¿Ú¸ß¿í£©
-* @param winPos ÆÁÄ»×ø±ê
-* @param objCoord ¿Õ¼ä×ø±ê
+* å±å¹•åæ ‡ç³»åˆ°ä¸–ç•Œåæ ‡ç³»çš„å˜æ¢
+* @param viewport è§†å£å‚æ•°ï¼ˆå·¦ä¸Šè§’åæ ‡ï¼Œè§†å£é«˜å®½ï¼‰
+* @param winPos å±å¹•åæ ‡
+* @param objCoord ç©ºé—´åæ ‡
 */
 void CGraphicsManager::UnProject(const int viewport[4], const float winPos[3], float objCoord[3]) {
-	// ½«ÆÁÄ»×ø±ê×ª»»Îª OpenGL ±íÊ¾
+	// å°†å±å¹•åæ ‡è½¬æ¢ä¸º OpenGL è¡¨ç¤º
 	CVector3 vec3d;
 	vec3d[0] = (winPos[0] - viewport[0]) / static_cast<float>(viewport[2]) * 2.0f - 1.0f;
 	vec3d[1] = (winPos[1] - viewport[1]) / static_cast<float>(viewport[3]) * 2.0f - 1.0f;
 	vec3d[2] = 2.0f * winPos[2] - 1.0f;
-	// ¼ÆËãÊÓÍ¼Í¶Ó°¾ØÕóÄæ¾ØÕó
+	// è®¡ç®—è§†å›¾æŠ•å½±çŸ©é˜µé€†çŸ©é˜µ
 	CMatrix4 matrix = m_pCamera->GetProjMatrix() * m_pCamera->GetViewMatrix();
 	matrix.Invert();
-	// ±ä»»µÃµ½ÊÀ½ç×ø±êÏµ×ø±ê
+	// å˜æ¢å¾—åˆ°ä¸–ç•Œåæ ‡ç³»åæ ‡
 	vec3d = matrix * vec3d;
 	vec3d *= 1.0f / vec3d[3];
 	objCoord[0] = vec3d[0];
@@ -791,43 +787,48 @@ void CGraphicsManager::UnProject(const int viewport[4], const float winPos[3], f
 }
 
 /**
-* »æÖÆ³¡¾°
+* ç»˜åˆ¶åœºæ™¯
 */
 void CGraphicsManager::Draw() {
-	// äÖÈ¾¹ı³ÌÎÆÀíºÍÒõÓ°ÌùÍ¼ºÍ·´ÉäÌùÍ¼
+	// è·å–ç»˜åˆ¶å±å¹•å¤§å°
+	int screenWidth = m_pRenderTarget ? m_pRenderTarget->GetWidth() : m_iWindowSize[0];
+	int screenHeight = m_pRenderTarget ? m_pRenderTarget->GetHeight() : m_iWindowSize[1];
 	CTexture* pRenderTarget = m_pRenderTarget;
+	// æ¸²æŸ“è¿‡ç¨‹çº¹ç†å’Œé˜´å½±è´´å›¾å’Œåå°„è´´å›¾
 	CEngine::GetTextureManager()->Update();
 	if (m_bShadowEnable) DrawShadowMap();
 	DrawReflectMap();
-	// ×¼±¸ºó´¦Àí¹ı³Ì
+	// å‡†å¤‡åå¤„ç†è¿‡ç¨‹
 	CPostProcessManager* pPostProcessMgr = CEngine::GetPostProcessManager();
-	if (!pPostProcessMgr->PrepareFrame(pRenderTarget)) SetRenderTarget(pRenderTarget, 0, false, false, false);
-	// »ñÈ¡äÖÈ¾Ä¿±ê¿í¸ß
-	int viewWidth = m_iWindowSize[0];
-	int viewHeight = m_iWindowSize[1];
+	if (!pPostProcessMgr->PrepareFrame(pRenderTarget, screenWidth, screenHeight)) {
+		SetRenderTarget(pRenderTarget, 0, false, false, false);
+	}
+	// è·å–æ¸²æŸ“ç›®æ ‡å®½é«˜
+	int viewWidth = screenWidth;
+	int viewHeight = screenHeight;
 	if (m_pRenderTarget) {
 		if (m_pRenderTarget->IsCubeMap()) {
 			DrawCubeMap();
 			pPostProcessMgr->ApplyFrame();
-			CGuiEnvironment::GetInstance()->Render();
+			CGuiEnvironment::GetInstance()->Render(screenWidth, screenHeight);
 			return;
 		}
 		viewWidth = m_pRenderTarget->GetWidth();
 		viewHeight = m_pRenderTarget->GetHeight();
 	}
-	// ×óÓÒÁ¢ÌåÏÔÊ¾Ä£Ê½
+	// å·¦å³ç«‹ä½“æ˜¾ç¤ºæ¨¡å¼
 	if (m_bStereoMode) {
 		viewWidth >>= 1;
 		m_pCamera->SetViewSize(viewWidth, viewHeight);
 		m_pCamera->UpdateProjMatrix(false);
 
-		// ÉèÖÃÑÛ¼ä¾à 63.6 mm
+		// è®¾ç½®çœ¼é—´è· 63.6 mm
 		CMatrix4& viewMat = m_pCamera->GetViewMatrix();
 		CVector3 eyePos = m_pCamera->m_cPosition;
 		CVector3 eyeDir = m_pCamera->m_cLookVector;
 		CVector3 rightDir = CVector3(viewMat(0, 0), viewMat(0, 1), viewMat(0, 2)) * 0.0318f;
 
-		// äÖÈ¾×óÑÛ³¡¾°
+		// æ¸²æŸ“å·¦çœ¼åœºæ™¯
 		m_bRenderLeftEye = true;
 		m_pCamera->m_cPosition = eyePos - rightDir;
 		m_pCamera->m_cLookVector = (eyeDir * m_fFocusDistance + rightDir).Normalize();
@@ -837,7 +838,7 @@ void CGraphicsManager::Draw() {
 		CEngine::GetSceneManager()->RenderScene(m_pCamera->GetViewMatrix(), m_pCamera->GetProjMatrix());
 		DrawScreen();
 
-		// äÖÈ¾ÓÒÑÛ³¡¾°
+		// æ¸²æŸ“å³çœ¼åœºæ™¯
 		m_bRenderLeftEye = false;
 		m_pCamera->m_cPosition = eyePos + rightDir;
 		m_pCamera->m_cLookVector = (eyeDir * m_fFocusDistance - rightDir).Normalize();
@@ -847,7 +848,7 @@ void CGraphicsManager::Draw() {
 		CEngine::GetSceneManager()->RenderScene(m_pCamera->GetViewMatrix(), m_pCamera->GetProjMatrix());
 		DrawScreen();
 
-		// »Ö¸´Ïà»úÎ»ÖÃ
+		// æ¢å¤ç›¸æœºä½ç½®
 		m_pCamera->m_cPosition = eyePos;
 		m_pCamera->m_cLookVector = eyeDir;
 		glViewport(0, 0, viewWidth << 1, viewHeight);
@@ -858,25 +859,32 @@ void CGraphicsManager::Draw() {
 		CEngine::GetSceneManager()->RenderScene(m_pCamera->GetViewMatrix(), m_pCamera->GetProjMatrix());
 		DrawScreen();
 	}
-	// ½øĞĞºó´¦Àí
+	// è¿›è¡Œåå¤„ç†
 	pPostProcessMgr->ApplyFrame();
-	// »æÖÆ GUI ÔªËØ
-	CGuiEnvironment::GetInstance()->Render();
+	// ç»˜åˆ¶ GUI å…ƒç´ 
+	CGuiEnvironment::GetInstance()->Render(screenWidth, screenHeight);
+
+	if (pRenderTarget) {
+		glFlush();
+		glBindFramebuffer(GL_READ_FRAMEBUFFER, pRenderTarget->GetFramebuffer());
+		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+		glBlitFramebuffer(0, 0, pRenderTarget->GetWidth(), pRenderTarget->GetHeight(), 0, 0, m_iWindowSize[0], m_iWindowSize[1], GL_COLOR_BUFFER_BIT, GL_NEAREST);
+	}
 }
 
 /**
-* »æÖÆÆÁÄ»ÔªËØ
+* ç»˜åˆ¶å±å¹•å…ƒç´ 
 */
 void CGraphicsManager::DrawScreen() {
-	// ÉèÖÃÆÁÄ»Ô­µãÆ«ÒÆ
+	// è®¾ç½®å±å¹•åŸç‚¹åç§»
 	float offsetx = -0.5f * m_pCamera->GetViewWidth();
 	float offsety = -0.5f * m_pCamera->GetViewHeight();
 	CVector2 offset(offsetx, offsety);
-	// ÉèÖÃÕı½»Í¶Ó°
+	// è®¾ç½®æ­£äº¤æŠ•å½±
 	m_pCamera->UpdateProjMatrix(true);
 	glDisable(GL_DEPTH_TEST);
 	CEngine::GetSceneManager()->RenderScreen(m_pCamera->GetProjMatrix(), offset);
-	// »æÖÆ LOGO
+	// ç»˜åˆ¶ LOGO
 #ifdef AVATAR_ENABLE_LOGO
 	CEngine::GetTextureManager()->GetTexture("logo")->UseTexture(0);
 	CShader* pShader = CEngine::GetShaderManager()->GetCurrentShader();
@@ -884,13 +892,13 @@ void CGraphicsManager::DrawScreen() {
 	pShader->SetUniform("uModelMatrix", CMatrix4().Scale(32.0f, 32.0f, 1.0f));
 	DrawQuadrilateral(CColor::White, true);
 #endif
-	// ÉèÖÃÍ¸ÊÓÍ¶Ó°
+	// è®¾ç½®é€è§†æŠ•å½±
 	m_pCamera->UpdateProjMatrix(false);
 	glEnable(GL_DEPTH_TEST);
 }
 
 /**
-* »æÖÆÒõÓ°ÌùÍ¼
+* ç»˜åˆ¶é˜´å½±è´´å›¾
 */
 void CGraphicsManager::DrawShadowMap() {
 	CTextureManager* pTextureMgr = CEngine::GetTextureManager();
@@ -898,7 +906,7 @@ void CGraphicsManager::DrawShadowMap() {
 	CTexture* pShadowMap = pTextureMgr->GetTexture("__shadowmap__");
 	CTexture* pShadowMapBlur = pTextureMgr->GetTexture("__shadowmap_blur__");
 	CShader* pShaderBlur = pShaderMgr->GetShader("shadowmapfilter");
-	// ³õÊ¼»¯ÒõÓ°ÌùÍ¼×ÊÔ´
+	// åˆå§‹åŒ–é˜´å½±è´´å›¾èµ„æº
 	if (!pShadowMap) {
 		const int mapSize = 1024;
 		pShadowMap = pTextureMgr->Create("__shadowmap__", mapSize, mapSize, true, true, false);
@@ -908,7 +916,7 @@ void CGraphicsManager::DrawShadowMap() {
 		pShaderBlur->UseShader();
 		pShaderBlur->SetUniform("uTextureSize", CVector2(mapSize, mapSize));
 	}
-	// ¼ÆËã¹âÔ´ÊÓÍ¼Í¶Ó°¾ØÕó
+	// è®¡ç®—å…‰æºè§†å›¾æŠ•å½±çŸ©é˜µ
 	CMatrix4 viewMat;
 	CMatrix4 projMat;
 	if (m_cLightPos.m_fValue[3] == 0.0f) {
@@ -927,23 +935,23 @@ void CGraphicsManager::DrawShadowMap() {
 		viewMat.LookAt(pos, dir, dir.Tangent().Normalize());
 		projMat.Perspective(120.0f, 1.0f, 0.5f, 1000.0f);
 	}
-	// äÖÈ¾ÒõÓ°ÌùÍ¼
+	// æ¸²æŸ“é˜´å½±è´´å›¾
 	glDisable(GL_BLEND);
 	m_bRenderDepth = true;
 	CMatrix4 viewProj = projMat * viewMat;
 	SetRenderTarget(pShadowMap, 0, true, true, true);
 	CEngine::GetSceneManager()->RenderDepth(viewProj, "shadowmap");
 	m_bRenderDepth = false;
-	// ¶ÔÒõÓ°ÌùÍ¼½øĞĞÄ£ºı
+	// å¯¹é˜´å½±è´´å›¾è¿›è¡Œæ¨¡ç³Š
 	SetRenderTarget(pShadowMapBlur, 0, true, false, false);
 	pShadowMap->UseTexture();
 	pShaderBlur->UseShader();
 	DrawQuadrilateral(CColor::White, false);
 	glEnable(GL_BLEND);
-	// ÉèÖÃÒõÓ°ÌùÍ¼ÎÆÀíµ¥Ôª
+	// è®¾ç½®é˜´å½±è´´å›¾çº¹ç†å•å…ƒ
 	pShadowMapBlur->UseTexture(8);
 	glActiveTexture(GL_TEXTURE0);
-	// ÒõÓ°¾ØÕóÌí¼ÓÉÏÆ«ÒÆ£¬ÌáÇ°¶ÔÎÆÀí×ø±êĞŞÕı
+	// é˜´å½±çŸ©é˜µæ·»åŠ ä¸Šåç§»ï¼Œæå‰å¯¹çº¹ç†åæ ‡ä¿®æ­£
 	const float biasMat[16] = {
 		0.5f, 0.0f, 0.0f, 0.0f,
 		0.0f, 0.5f, 0.0f, 0.0f,
@@ -951,7 +959,7 @@ void CGraphicsManager::DrawShadowMap() {
 		0.5f, 0.5f, 0.5f, 1.0f
 	};
 	CMatrix4 shadowMat = CMatrix4(biasMat) * viewProj;
-	// ÉèÖÃÏà¹Ø×ÅÉ«Æ÷µÄÒõÓ°¾ØÕó
+	// è®¾ç½®ç›¸å…³ç€è‰²å™¨çš„é˜´å½±çŸ©é˜µ
 	vector<CShader*> shaderList;
 	pShaderMgr->GetShaderList(shaderList);
 	for (size_t i = 0; i < shaderList.size(); i++) {
@@ -964,7 +972,7 @@ void CGraphicsManager::DrawShadowMap() {
 }
 
 /**
-* »æÖÆÈ«¾°Í¼
+* ç»˜åˆ¶å…¨æ™¯å›¾
 */
 void CGraphicsManager::DrawCubeMap() {
 	float saved_fov = m_pCamera->GetFieldOfView();
@@ -975,7 +983,7 @@ void CGraphicsManager::DrawCubeMap() {
 	m_pCamera->UpdateProjMatrix(false);
 	glViewport(0, 0, viewWidth, viewHeight);
 	CMatrix4& mat = m_pCamera->GetViewMatrix();
-	// È¡Ïà¶ÔÓÚµ±Ç°Ïà»ú·½Î»µÄ6¸ö·½Ïò
+	// å–ç›¸å¯¹äºå½“å‰ç›¸æœºæ–¹ä½çš„6ä¸ªæ–¹å‘
 	const float look[6][3] = {
 		{ mat[0], mat[4], mat[8] }, { -mat[0], -mat[4], -mat[8] },
 		{ -mat[2], -mat[6], -mat[10] }, { mat[2], mat[6], mat[10] },
@@ -987,7 +995,7 @@ void CGraphicsManager::DrawCubeMap() {
 		{ mat[2], mat[6], mat[10] }, { mat[2], mat[6], mat[10] }
 	};
 	CSceneManager* pSceneMgr = CEngine::GetSceneManager();
-	// +X ·½ÏòÒÑ¾­Ä¬ÈÏ°ó¶¨²¢Çå¿ÕÁËÑÕÉ«ºÍÉî¶È
+	// +X æ–¹å‘å·²ç»é»˜è®¤ç»‘å®šå¹¶æ¸…ç©ºäº†é¢œè‰²å’Œæ·±åº¦
 	m_pCamera->GetViewMatrix().LookAt(m_pCamera->m_cPosition, look[0], up[0]);
 	m_pCamera->UpdateFrustum();
 	pSceneMgr->RenderScene(m_pCamera->GetViewMatrix(), m_pCamera->GetProjMatrix());
@@ -1004,42 +1012,42 @@ void CGraphicsManager::DrawCubeMap() {
 }
 
 /**
-* äÖÈ¾·´ÉäÌùÍ¼
+* æ¸²æŸ“åå°„è´´å›¾
 */
 void CGraphicsManager::DrawReflectMap() {
 	vector<CSceneNode*> nodeList;
 	CEngine::GetSceneManager()->GetNodeList("water", nodeList);
 	if (nodeList.empty()) return;
-	// ±£´æÉãÏñ»ú²ÎÊı
+	// ä¿å­˜æ‘„åƒæœºå‚æ•°
 	m_bRenderReflect = true;
 	CMatrix4 projMat = m_pCamera->GetProjMatrix();
 	CMatrix4 viewMat = m_pCamera->GetViewMatrix();
 	CVector3 cameraPos = m_pCamera->m_cPosition;
 	CVector3 cameraLook = m_pCamera->m_cLookVector;
 	CVector3 cameraUp = m_pCamera->m_cUpVector;
-	// äÖÈ¾ËùÓĞË®Ãæµ¹Ó°
+	// æ¸²æŸ“æ‰€æœ‰æ°´é¢å€’å½±
 	for (size_t i = 0; i < nodeList.size(); i++) {
 		CSceneNode* node = nodeList[i];
-		// »ñÈ¡Ë®ÃæÆ½Ãæ
+		// è·å–æ°´é¢å¹³é¢
 		CPlane reflectPlane(CVector3(0.0f, 0.0f, 1.0f), 0.0f);
 		reflectPlane.Transform(node->m_cWorldMatrix);
 		if (reflectPlane.Distance(cameraPos) < 0.0f) reflectPlane.FlipNormal();
-		// ÉèÖÃË®Ãæ·´ÉäÍ¼Ïà»ú²ÎÊı
+		// è®¾ç½®æ°´é¢åå°„å›¾ç›¸æœºå‚æ•°
 		CMatrix4 reflectMat = reflectPlane.GetReflectMatrix();
 		m_pCamera->m_cPosition = reflectPlane.GetMirrorPoint(cameraPos);
 		m_pCamera->m_cLookVector = reflectMat * CVector3(-viewMat(2, 0), -viewMat(2, 1), -viewMat(2, 2), 0.0f);
 		m_pCamera->m_cUpVector = reflectMat * CVector3(viewMat(1, 0), viewMat(1, 1), viewMat(1, 2), 0.0f);
 		m_pCamera->GetViewMatrix().LookAt(m_pCamera->m_cPosition, m_pCamera->m_cLookVector, m_pCamera->m_cUpVector);
-		// ÉèÖÃĞ±²Ã¼ôÍ¶Ó°¾ØÕó
+		// è®¾ç½®æ–œè£å‰ªæŠ•å½±çŸ©é˜µ
 		reflectPlane.Transform(m_pCamera->GetViewMatrix());
 		m_pCamera->GetProjMatrix().ObliqueNearPlaneClipping(m_pCamera->GetProjMatrix(), reflectPlane);
 		m_pCamera->UpdateFrustum();
-		// äÖÈ¾³¡¾°µ½ÎÆÀí
+		// æ¸²æŸ“åœºæ™¯åˆ°çº¹ç†
 		CTexture* reflectTexture = CEngine::GetTextureManager()->GetTexture(node->GetName() + "_reflect");
 		SetRenderTarget(reflectTexture, 0, true, true, true);
 		CEngine::GetSceneManager()->RenderScene(m_pCamera->GetViewMatrix(), m_pCamera->GetProjMatrix());
 	}
-	// »Ö¸´ÉãÏñ»ú²ÎÊı
+	// æ¢å¤æ‘„åƒæœºå‚æ•°
 	m_bRenderReflect = false;
 	m_pCamera->m_cPosition.SetValue(cameraPos);
 	m_pCamera->m_cLookVector.SetValue(cameraLook);

@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CSceneNodePlanet.h"
@@ -8,7 +8,7 @@
 #include <cmath>
 
 /**
-* ¹¹Ôìº¯Êı
+* æ„é€ å‡½æ•°
 */
 CSceneNodePlanet::CSceneNodePlanet(const string& name, const string& texture, const string& textureNight,
 	float radius, int slices): CSceneNode("planet", name) {
@@ -21,7 +21,7 @@ CSceneNodePlanet::CSceneNodePlanet(const string& name, const string& texture, co
 }
 
 /**
-* ³õÊ¼»¯³¡¾°½Úµã
+* åˆå§‹åŒ–åœºæ™¯èŠ‚ç‚¹
 */
 bool CSceneNodePlanet::Init() {
 	const float Kr = 0.0025f;
@@ -90,7 +90,7 @@ bool CSceneNodePlanet::Init() {
 }
 
 /**
-* Ïú»Ù³¡¾°½Úµã
+* é”€æ¯åœºæ™¯èŠ‚ç‚¹
 */
 void CSceneNodePlanet::Destroy() {
 	delete m_pMeshData;
@@ -98,12 +98,12 @@ void CSceneNodePlanet::Destroy() {
 }
 
 /**
-* äÖÈ¾³¡¾°½Úµã
+* æ¸²æŸ“åœºæ™¯èŠ‚ç‚¹
 */
 void CSceneNodePlanet::Render() {
 	CCamera* pCamera = CEngine::GetGraphicsManager()->GetCamera();
 	float cameraHeight = (pCamera->m_cPosition - m_cPosition).Length();
-	// ÉèÖÃ×ÅÉ«Æ÷²ÎÊı
+	// è®¾ç½®ç€è‰²å™¨å‚æ•°
 	CMaterial* pMaterialGround = m_pMeshData->GetMesh(0)->GetMaterial();
 	pMaterialGround->PassUniform("uProjMatrix", pCamera->GetProjMatrix());
 	pMaterialGround->PassUniform("uViewMatrix", pCamera->GetViewMatrix());
@@ -118,13 +118,13 @@ void CSceneNodePlanet::Render() {
 	pMaterialSky->PassUniform("uCameraPos", pCamera->m_cPosition);
 	pMaterialSky->PassUniform("uCameraHeight", cameraHeight);
 	pMaterialSky->PassUniform("uCameraHeight2", cameraHeight * cameraHeight);
-	// äÖÈ¾µØÃæºÍÌì¿Õ
+	// æ¸²æŸ“åœ°é¢å’Œå¤©ç©º
 	m_pMeshData->GetMesh(0)->Render();
 	m_pMeshSky->Render();
 }
 
 /**
-* »ñÈ¡Íø¸ñÊı¾İ
+* è·å–ç½‘æ ¼æ•°æ®
 */
 CMeshData* CSceneNodePlanet::GetMeshData() {
 	return m_pMeshData;

@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CPostProcessSnow.h"
@@ -7,7 +7,7 @@
 #include "CTimer.h"
 
 /**
-* ³õÊ¼»¯ºó´¦Àí¶ÔÏó
+* åˆå§‹åŒ–åå¤„ç†å¯¹è±¡
 */
 bool CPostProcessSnow::Init(int width, int height) {
 	const char* fragShader = "\
@@ -42,7 +42,7 @@ bool CPostProcessSnow::Init(int width, int height) {
 			c += snow(uv, 4.0, uElapsedTime);\
 			fragColor = vec4(vec3(c) + texture(uTexture, vTexCoord).rgb, 1.0);\
 		}";
-	// ´´½¨×ÅÉ«Æ÷ºÍÎÆÀí
+	// åˆ›å»ºç€è‰²å™¨å’Œçº¹ç†
 	CShaderManager* pShaderMgr = CEngine::GetShaderManager();
 	CTextureManager* pTextureMgr = CEngine::GetTextureManager();
 	m_pPostProcessShader = pShaderMgr->Create("postprocess_snow", GetVertexShader(), fragShader);
@@ -55,7 +55,7 @@ bool CPostProcessSnow::Init(int width, int height) {
 }
 
 /**
-* äÖÈ¾ÇøÓò´óĞ¡¸Ä±ä
+* æ¸²æŸ“åŒºåŸŸå¤§å°æ”¹å˜
 */
 void CPostProcessSnow::Resize(int width, int height) {
 	CEngine::GetTextureManager()->Resize(m_pRenderTexture, width, height);
@@ -64,7 +64,7 @@ void CPostProcessSnow::Resize(int width, int height) {
 }
 
 /**
-* Ïú»Ùºó´¦Àí¶ÔÏó
+* é”€æ¯åå¤„ç†å¯¹è±¡
 */
 void CPostProcessSnow::Destroy() {
 	CEngine::GetTextureManager()->Drop(m_pRenderTexture);
@@ -72,7 +72,7 @@ void CPostProcessSnow::Destroy() {
 }
 
 /**
-* Ó¦ÓÃµ±Ç°ºó´¦Àí
+* åº”ç”¨å½“å‰åå¤„ç†
 */
 void CPostProcessSnow::Apply(CTexture* target, CMesh* mesh) {
 	CEngine::GetGraphicsManager()->SetRenderTarget(target, 0, true, true, true);

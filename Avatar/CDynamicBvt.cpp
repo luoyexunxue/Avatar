@@ -1,12 +1,12 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CDynamicBvt.h"
 #include <cmath>
 
 /**
-* ¹¹Ôìº¯Êı
+* æ„é€ å‡½æ•°
 */
 CDynamicBvt::CDynamicBvt() {
 	m_pRoot = 0;
@@ -14,45 +14,45 @@ CDynamicBvt::CDynamicBvt() {
 }
 
 /**
-* Îö¹¹º¯Êı
+* ææ„å‡½æ•°
 */
 CDynamicBvt::~CDynamicBvt() {
 	Clear();
 }
 
 /**
-* ²åÈë½Úµã
+* æ’å…¥èŠ‚ç‚¹
 */
 void CDynamicBvt::Insert(void* data, const CBoundingBox& volume) {
-	// ´´½¨½Úµã
+	// åˆ›å»ºèŠ‚ç‚¹
 	SDbvtNode* node = new SDbvtNode(data, volume);
 	node->children[0]	= 0;
 	node->children[1]	= 0;
 	m_iLeavesCount++;
 
-	// ¸ù½ÚµãÎª¿Õ£¬Ö±½Ó²åÈë¸ù½Úµã
+	// æ ¹èŠ‚ç‚¹ä¸ºç©ºï¼Œç›´æ¥æ’å…¥æ ¹èŠ‚ç‚¹
 	if (!m_pRoot) {
 		m_pRoot	= node;
 		m_pRoot->parent = 0;
 		return;
 	}
-	// Ñ¡ÔñÖĞĞÄ¾àÀë×î½üµÄÒ¶½Úµã
+	// é€‰æ‹©ä¸­å¿ƒè·ç¦»æœ€è¿‘çš„å¶èŠ‚ç‚¹
 	SDbvtNode* sibling = m_pRoot;
 	while (sibling->IsInternal()) {
 		float distance1 = Proximity(volume, sibling->children[0]->volume);
 		float distance2 = Proximity(volume, sibling->children[1]->volume);
 		sibling = sibling->children[distance1 < distance2? 0: 1];
 	}
-	// Éú³ÉĞÂµÄ¸¸½Úµã£¬½Úµã°üÎ§ºĞ´óĞ¡ÎªĞÂ½ÚµãºÍÁÚ½ÚµãÖ®ºÍ
+	// ç”Ÿæˆæ–°çš„çˆ¶èŠ‚ç‚¹ï¼ŒèŠ‚ç‚¹åŒ…å›´ç›’å¤§å°ä¸ºæ–°èŠ‚ç‚¹å’Œé‚»èŠ‚ç‚¹ä¹‹å’Œ
 	SDbvtNode* parent = new SDbvtNode(0, node->volume + sibling->volume);
 	parent->parent = sibling->parent;
 
-	// ÉèÖÃ¸¸½Úµã×Ó½ÚµãÖ¸Õë
+	// è®¾ç½®çˆ¶èŠ‚ç‚¹å­èŠ‚ç‚¹æŒ‡é’ˆ
 	if (parent->parent) {
 		parent->parent->children[sibling->ChildIndex()] =	parent;
 		parent->children[0] = sibling; sibling->parent = parent;
 		parent->children[1] = node; node->parent = parent;
-		// ÏòÉÏ´«µ¼¸üĞÂ°üÎ§Ìå
+		// å‘ä¸Šä¼ å¯¼æ›´æ–°åŒ…å›´ä½“
 		while (parent->parent && !parent->parent->volume.IsContain(parent->volume)) {
 			parent = parent->parent;
 			parent->volume = parent->children[0]->volume + parent->children[1]->volume;
@@ -65,15 +65,15 @@ void CDynamicBvt::Insert(void* data, const CBoundingBox& volume) {
 }
 
 /**
-* É¾³ıÖ¸¶¨½Úµã
+* åˆ é™¤æŒ‡å®šèŠ‚ç‚¹
 */
 void CDynamicBvt::Delete(void* data) {
-	// ²éÕÒÒ¶½Úµã
+	// æŸ¥æ‰¾å¶èŠ‚ç‚¹
 	SDbvtNode* leaf = GetLeaf(m_pRoot, data);
 	if (!leaf) return;
 	m_iLeavesCount--;
 
-	// Ò¶½ÚµãÎª¸ù½ÚµãÇé¿ö
+	// å¶èŠ‚ç‚¹ä¸ºæ ¹èŠ‚ç‚¹æƒ…å†µ
 	if (leaf == m_pRoot) {
 		m_pRoot = 0;
 		delete leaf;
@@ -86,7 +86,7 @@ void CDynamicBvt::Delete(void* data) {
 		prev->children[parent->ChildIndex()] = sibling;
 		sibling->parent = prev;
 		delete parent;
-		// ÏòÉÏ´«µ¼¸üĞÂ°üÎ§Ìå
+		// å‘ä¸Šä¼ å¯¼æ›´æ–°åŒ…å›´ä½“
 		while (prev) {
 			const CBoundingBox aabb = prev->children[0]->volume + prev->children[1]->volume;
 			if (aabb == prev->volume) break;
@@ -102,8 +102,8 @@ void CDynamicBvt::Delete(void* data) {
 }
 
 /**
-* ¸üĞÂ°üÎ§ºĞÊ÷
-* ÊµÖÊÊÇÏÈÉ¾³ıÒ¶½Úµã£¬È»ºóÔÚ²åÈëÒ¶½Úµã
+* æ›´æ–°åŒ…å›´ç›’æ ‘
+* å®è´¨æ˜¯å…ˆåˆ é™¤å¶èŠ‚ç‚¹ï¼Œç„¶ååœ¨æ’å…¥å¶èŠ‚ç‚¹
 */
 void CDynamicBvt::Update(void* data, const CBoundingBox& volume) {
 	SDbvtNode* leaf = GetLeaf(m_pRoot, data);
@@ -117,7 +117,7 @@ void CDynamicBvt::Update(void* data, const CBoundingBox& volume) {
 	if (prev) {
 		prev->children[parent->ChildIndex()] = sibling;
 		sibling->parent = prev;
-		// ÏòÉÏ´«µ¼°üÎ§ºĞ±ä»¯
+		// å‘ä¸Šä¼ å¯¼åŒ…å›´ç›’å˜åŒ–
 		while (prev) {
 			const CBoundingBox aabb = prev->children[0]->volume + prev->children[1]->volume;
 			if (aabb == prev->volume) break;
@@ -129,23 +129,23 @@ void CDynamicBvt::Update(void* data, const CBoundingBox& volume) {
 		m_pRoot = sibling;
 		sibling->parent = 0;
 	}
-	// Ñ¡Ôñ¾àÀë×î½üµÄÒ¶½Úµã
+	// é€‰æ‹©è·ç¦»æœ€è¿‘çš„å¶èŠ‚ç‚¹
 	while (sibling->IsInternal()) {
 		float distance1 = Proximity(volume, sibling->children[0]->volume);
 		float distance2 = Proximity(volume, sibling->children[1]->volume);
 		sibling = sibling->children[distance1 < distance2? 0: 1];
 	}
-	// Éú³ÉĞÂµÄ¸¸½Úµã
+	// ç”Ÿæˆæ–°çš„çˆ¶èŠ‚ç‚¹
 	parent->parent = sibling->parent;
 	parent->volume = leaf->volume + sibling->volume;
 	parent->data = 0;
 
-	// ÉèÖÃ¸¸½Úµã×Ó½ÚµãÖ¸Õë
+	// è®¾ç½®çˆ¶èŠ‚ç‚¹å­èŠ‚ç‚¹æŒ‡é’ˆ
 	if (parent->parent) {
 		parent->parent->children[sibling->ChildIndex()] =	parent;
 		parent->children[0] = sibling; sibling->parent = parent;
 		parent->children[1] = leaf; leaf->parent = parent;
-		// ¸üĞÂ¸ù½Úµã°üÎ§Ìå´óĞ¡
+		// æ›´æ–°æ ¹èŠ‚ç‚¹åŒ…å›´ä½“å¤§å°
 		while (parent->parent && !parent->parent->volume.IsContain(parent->volume)) {
 			parent = parent->parent;
 			parent->volume = parent->children[0]->volume + parent->children[1]->volume;
@@ -158,7 +158,7 @@ void CDynamicBvt::Update(void* data, const CBoundingBox& volume) {
 }
 
 /**
-* É¾³ıËùÓĞ½Úµã
+* åˆ é™¤æ‰€æœ‰èŠ‚ç‚¹
 */
 void CDynamicBvt::Clear() {
 	if (m_pRoot) {
@@ -168,7 +168,7 @@ void CDynamicBvt::Clear() {
 }
 
 /**
-* »ñÈ¡Ê÷µÄ×î´óÉî¶È
+* è·å–æ ‘çš„æœ€å¤§æ·±åº¦
 */
 int CDynamicBvt::GetMaxDepth() {
 	if (m_pRoot) return GetMaxDepth(m_pRoot, 1);
@@ -176,17 +176,17 @@ int CDynamicBvt::GetMaxDepth() {
 }
 
 /**
-* »ñÈ¡°üÎ§ºĞÖØµşµÄÊı¾İ¶Ô
+* è·å–åŒ…å›´ç›’é‡å çš„æ•°æ®å¯¹
 */
 int CDynamicBvt::CollisionPair(vector<SCollidePair>& collidePair) {
 	collidePair.clear();
-	// ½ÚµãÊıµÍÓÚÁ½¸ö
+	// èŠ‚ç‚¹æ•°ä½äºä¸¤ä¸ª
 	if (m_iLeavesCount < 2) return 0;
 	m_vecStack.reserve(m_iLeavesCount * 2 - 1);
 	m_vecStack.resize(0);
 	m_vecStack.push_back(SNodePair(m_pRoot, m_pRoot));
 
-	// ±éÀú°üÎ§²ã´ÎÊ÷
+	// éå†åŒ…å›´å±‚æ¬¡æ ‘
 	while (m_vecStack.size()) {
 		SNodePair element = m_vecStack.back();
 		m_vecStack.pop_back();
@@ -226,7 +226,7 @@ int CDynamicBvt::CollisionPair(vector<SCollidePair>& collidePair) {
 }
 
 /**
-* ¼ÆËãÁ½¸ö°üÎ§ºĞÖĞĞÄµÄ½Ó½ü¶È£¬Âü¹ş¶Ù¾àÀë * 2
+* è®¡ç®—ä¸¤ä¸ªåŒ…å›´ç›’ä¸­å¿ƒçš„æ¥è¿‘åº¦ï¼Œæ›¼å“ˆé¡¿è·ç¦» * 2
 */
 float CDynamicBvt::Proximity(const CBoundingBox& a, const CBoundingBox& b) {
 	float dx = a.m_cMin.m_fValue[0] + a.m_cMax.m_fValue[0] - b.m_cMin.m_fValue[0] - b.m_cMax.m_fValue[0];
@@ -236,7 +236,7 @@ float CDynamicBvt::Proximity(const CBoundingBox& a, const CBoundingBox& b) {
 }
 
 /**
-* »ñÈ¡½ÚµãµÄ×î´óÉî¶È
+* è·å–èŠ‚ç‚¹çš„æœ€å¤§æ·±åº¦
 */
 int CDynamicBvt::GetMaxDepth(SDbvtNode* node, int depth) {
 	if (node->IsInternal()) {
@@ -248,7 +248,7 @@ int CDynamicBvt::GetMaxDepth(SDbvtNode* node, int depth) {
 }
 
 /**
-* »ñÈ¡°üº¬Ö¸¶¨Êı¾İµÄÒ¶½Úµã
+* è·å–åŒ…å«æŒ‡å®šæ•°æ®çš„å¶èŠ‚ç‚¹
 */
 CDynamicBvt::SDbvtNode* CDynamicBvt::GetLeaf(SDbvtNode* root, void* data) {
 	if (!root) return 0;
@@ -264,7 +264,7 @@ CDynamicBvt::SDbvtNode* CDynamicBvt::GetLeaf(SDbvtNode* root, void* data) {
 }
 
 /**
-* µİ¹éÉ¾³ıÖ¸¶¨½Úµã
+* é€’å½’åˆ é™¤æŒ‡å®šèŠ‚ç‚¹
 */
 void CDynamicBvt::DeleteNode(SDbvtNode* node) {
 	if (node->IsInternal()) {

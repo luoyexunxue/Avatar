@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CStringUtil.h"
@@ -13,7 +13,7 @@
 #endif
 
 /**
-* ¸ñÊ½»¯×Ö·û´®
+* æ ¼å¼åŒ–å­—ç¬¦ä¸²
 */
 string CStringUtil::Format(const char* format, ...) {
 	char msg[1024];
@@ -21,11 +21,12 @@ string CStringUtil::Format(const char* format, ...) {
 	va_start(args, format);
 	vsnprintf(msg, 1024, format, args);
 	va_end(args);
+	msg[1023] = '\0';
 	return msg;
 }
 
 /**
-* ×ª»»ÎªĞ¡Ğ´
+* è½¬æ¢ä¸ºå°å†™
 */
 string CStringUtil::LowerCase(const string& str) {
 	std::ostringstream strbuff;
@@ -40,7 +41,7 @@ string CStringUtil::LowerCase(const string& str) {
 }
 
 /**
-* ×ª»»Îª´óĞ´
+* è½¬æ¢ä¸ºå¤§å†™
 */
 string CStringUtil::UpperCase(const string& str) {
 	std::ostringstream strbuff;
@@ -55,7 +56,7 @@ string CStringUtil::UpperCase(const string& str) {
 }
 
 /**
-* È¥³ı×óÓÒ¿Õ°×
+* å»é™¤å·¦å³ç©ºç™½
 */
 string CStringUtil::Trim(const string& str) {
 	const char* p = str.c_str();
@@ -72,7 +73,7 @@ string CStringUtil::Trim(const string& str) {
 }
 
 /**
-* È¥³ı×ó±ß¿Õ°×
+* å»é™¤å·¦è¾¹ç©ºç™½
 */
 string CStringUtil::TrimLeft(const string& str) {
 	const char* p = str.c_str();
@@ -83,7 +84,7 @@ string CStringUtil::TrimLeft(const string& str) {
 }
 
 /**
-* È¥³ıÓÒ±ß¿Õ°×
+* å»é™¤å³è¾¹ç©ºç™½
 */
 string CStringUtil::TrimRight(const string& str) {
 	const char* p = str.c_str();
@@ -93,7 +94,7 @@ string CStringUtil::TrimRight(const string& str) {
 }
 
 /**
-* Ìæ»»Ö¸¶¨×Ö·û´®
+* æ›¿æ¢æŒ‡å®šå­—ç¬¦ä¸²
 */
 string CStringUtil::Replace(const string& str, const char* from, const char* to) {
 	string temp = str;
@@ -108,7 +109,7 @@ string CStringUtil::Replace(const string& str, const char* from, const char* to)
 }
 
 /**
-* ÒÆ³ıÖ¸¶¨×Ö·û´®
+* ç§»é™¤æŒ‡å®šå­—ç¬¦ä¸²
 */
 string CStringUtil::Remove(const string& str, const char* key) {
 	string temp = str;
@@ -124,12 +125,12 @@ string CStringUtil::Remove(const string& str, const char* key) {
 }
 
 /**
-* °´Ö¸¶¨µÄ×Ö·û´®·Ö¸î
-* @param output Êä³öÊı×é
-* @param str ´ı·Ö¸î×Ö·û´®
-* @param key ·Ö¸î¹Ø¼ü×Ö
-* @param trim ÊÇ·ñ¶Ô·Ö¸îºóµÄ×Ö·û´®È¥¿Õ¸ñ
-* @return ·µ»Ø·Ö¸îºóµÄ¸öÊı
+* æŒ‰æŒ‡å®šçš„å­—ç¬¦ä¸²åˆ†å‰²
+* @param output è¾“å‡ºæ•°ç»„
+* @param str å¾…åˆ†å‰²å­—ç¬¦ä¸²
+* @param key åˆ†å‰²å…³é”®å­—
+* @param trim æ˜¯å¦å¯¹åˆ†å‰²åçš„å­—ç¬¦ä¸²å»ç©ºæ ¼
+* @return è¿”å›åˆ†å‰²åçš„ä¸ªæ•°
 */
 int CStringUtil::Split(vector<string>& output, const string& str, const char* key, bool trim) {
 	output.clear();
@@ -147,13 +148,13 @@ int CStringUtil::Split(vector<string>& output, const string& str, const char* ke
 }
 
 /**
-* °´Ö¸¶¨µÄ×Ö·û´®·Ö¸î
-* @param output Êä³öÊı×é
-* @param size Êä³öÊı×é´óĞ¡
-* @param str ´ı·Ö¸î×Ö·û´®
-* @param key ·Ö¸î¹Ø¼ü×Ö
-* @param trim ÊÇ·ñ¶Ô·Ö¸îºóµÄ×Ö·û´®È¥¿Õ¸ñ
-* @return ·µ»Ø·Ö¸îºóµÄ¸öÊı
+* æŒ‰æŒ‡å®šçš„å­—ç¬¦ä¸²åˆ†å‰²
+* @param output è¾“å‡ºæ•°ç»„
+* @param size è¾“å‡ºæ•°ç»„å¤§å°
+* @param str å¾…åˆ†å‰²å­—ç¬¦ä¸²
+* @param key åˆ†å‰²å…³é”®å­—
+* @param trim æ˜¯å¦å¯¹åˆ†å‰²åçš„å­—ç¬¦ä¸²å»ç©ºæ ¼
+* @return è¿”å›åˆ†å‰²åçš„ä¸ªæ•°
 */
 int CStringUtil::Split(string output[], int size, const string& str, const char* key, bool trim) {
 	if (str.empty() || size < 1) return 0;
@@ -172,10 +173,10 @@ int CStringUtil::Split(string output[], int size, const string& str, const char*
 }
 
 /**
-* Ê¹ÓÃÖ¸¶¨µÄ·Ö¸ô·ûÁ¬½Ó×Ö·û´®Êı×é
-* @param input ÊäÈëÊı×é
-* @param key ·Ö¸î¹Ø¼ü×Ö
-* @return ·µ»ØÁ¬½ÓºóµÄ×Ö·û´®
+* ä½¿ç”¨æŒ‡å®šçš„åˆ†éš”ç¬¦è¿æ¥å­—ç¬¦ä¸²æ•°ç»„
+* @param input è¾“å…¥æ•°ç»„
+* @param key åˆ†å‰²å…³é”®å­—
+* @return è¿”å›è¿æ¥åçš„å­—ç¬¦ä¸²
 */
 string CStringUtil::Join(const vector<string>& input, const char* key) {
 	if (input.empty()) return "";
@@ -188,11 +189,11 @@ string CStringUtil::Join(const vector<string>& input, const char* key) {
 }
 
 /**
-* Ê¹ÓÃÖ¸¶¨µÄ·Ö¸ô·ûÁ¬½Ó×Ö·û´®Êı×é
-* @param input ÊäÈëÊı×é
-* @param size ÊäÈëÊı×é´óĞ¡
-* @param key ·Ö¸î¹Ø¼ü×Ö
-* @return ·µ»ØÁ¬½ÓºóµÄ×Ö·û´®
+* ä½¿ç”¨æŒ‡å®šçš„åˆ†éš”ç¬¦è¿æ¥å­—ç¬¦ä¸²æ•°ç»„
+* @param input è¾“å…¥æ•°ç»„
+* @param size è¾“å…¥æ•°ç»„å¤§å°
+* @param key åˆ†å‰²å…³é”®å­—
+* @return è¿”å›è¿æ¥åçš„å­—ç¬¦ä¸²
 */
 string CStringUtil::Join(const string input[], int size, const char* key) {
 	if (size <= 0) return "";
@@ -205,7 +206,31 @@ string CStringUtil::Join(const string input[], int size, const char* key) {
 }
 
 /**
-* UTF8 ×Ö·û´®×ª»»Îª wchar_t Êı×é
+* æ˜¯å¦ä»¥æŒ‡å®šå­—ç¬¦ä¸²å¼€å¤´
+*/
+bool CStringUtil::StartWith(const string& str, const char* key, bool ignoreCase) {
+	if (ignoreCase) {
+		string src_uppercase = UpperCase(str);
+		string key_uppercase = UpperCase(key);
+		return src_uppercase.find(key) == 0;
+	}
+	return str.find(key) == 0;
+}
+
+/**
+* æ˜¯å¦ä»¥æŒ‡å®šå­—ç¬¦ä¸²ç»“å°¾
+*/
+bool CStringUtil::EndWith(const string& str, const char* key, bool ignoreCase) {
+	if (ignoreCase) {
+		string src_uppercase = UpperCase(str);
+		string key_uppercase = UpperCase(key);
+		return src_uppercase.rfind(key) == str.length() - strlen(key);
+	}
+	return str.rfind(key) == str.length() - strlen(key);
+}
+
+/**
+* UTF8 å­—ç¬¦ä¸²è½¬æ¢ä¸º wchar_t æ•°ç»„
 */
 void CStringUtil::Utf8ToWideCharArray(const char* src, wchar_t* buffer, int size) {
 	int count = 0;
@@ -232,7 +257,7 @@ void CStringUtil::Utf8ToWideCharArray(const char* src, wchar_t* buffer, int size
 }
 
 /**
-* wchar_t Êı×é×ª»»Îª UTF8 ×Ö·û´®
+* wchar_t æ•°ç»„è½¬æ¢ä¸º UTF8 å­—ç¬¦ä¸²
 */
 void CStringUtil::WideCharArrayToUtf8(const wchar_t* src, char* buffer, int size) {
 	int count = 0;
@@ -260,10 +285,10 @@ void CStringUtil::WideCharArrayToUtf8(const wchar_t* src, char* buffer, int size
 }
 
 /**
-* ×Ö½ÚÊı×é×ªÎªÊ®Áù½øÖÆ×Ö·û´®
-* @param split ·Ö¸î·û
-* @param data ×Ö½ÚÊı×é
-* @param size Êı×é³¤¶È
+* å­—èŠ‚æ•°ç»„è½¬ä¸ºåå…­è¿›åˆ¶å­—ç¬¦ä¸²
+* @param split åˆ†å‰²ç¬¦
+* @param data å­—èŠ‚æ•°ç»„
+* @param size æ•°ç»„é•¿åº¦
 */
 string CStringUtil::ByteArrayToHexString(const string& split, const unsigned char* data, int size) {
 	if (size <= 0) return "";
@@ -288,8 +313,8 @@ string CStringUtil::ByteArrayToHexString(const string& split, const unsigned cha
 }
 
 /**
-* Éú³ÉÈ«ÇòÎ¨Ò»ID
-* @return 32×Ö½Ú³¤¶È
+* ç”Ÿæˆå…¨çƒå”¯ä¸€ID
+* @return 32å­—èŠ‚é•¿åº¦
 */
 string CStringUtil::Guid() {
 	char buffer[33] = { 0 };

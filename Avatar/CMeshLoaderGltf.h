@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CMESHLOADERGLTF_H_
@@ -12,44 +12,44 @@ using std::vector;
 using std::map;
 
 /**
-* @brief gltf Ä£ĞÍ¼ÓÔØÀà
+* @brief gltf æ¨¡å‹åŠ è½½ç±»
 */
 class CMeshLoaderGltf: public CMeshLoader {
 protected:
-	//! ¼ÓÔØÄ£ĞÍ
+	//! åŠ è½½æ¨¡å‹
 	virtual CMeshData* LoadFile(const string& filename, const string& type);
 
 private:
-	//! ¶ÁÈ¡¶ş½øÖÆ»º³åÇø
+	//! è¯»å–äºŒè¿›åˆ¶ç¼“å†²åŒº
 	void ReadBuffers();
-	//! ¶ÁÈ¡¹Ç÷À
+	//! è¯»å–éª¨éª¼
 	void ReadSkin();
-	//! ¶ÁÈ¡¹Ç÷À½Úµã
+	//! è¯»å–éª¨éª¼èŠ‚ç‚¹
 	void ReadJointNode(int index, const CMatrix4& matrix, SJoint* parent);
-	//! ¶ÁÈ¡½Úµã
+	//! è¯»å–èŠ‚ç‚¹
 	void ReadMeshNode(int index, const CMatrix4& matrix);
-	//! ¶ÁÈ¡Íø¸ñ
+	//! è¯»å–ç½‘æ ¼
 	void ReadMesh(CJsonParser& mesh, const CMatrix4& matrix, map<int, int>& skinMapper);
-	//! ¶ÁÈ¡²ÄÖÊĞÅÏ¢
+	//! è¯»å–æè´¨ä¿¡æ¯
 	void ReadMaterial(int index, CMaterial* material, int* texcoord);
-	//! ¶ÁÈ¡ÎÆÀíÊı¾İ
+	//! è¯»å–çº¹ç†æ•°æ®
 	void ReadTexture(CJsonParser& texture, CMaterial* material);
-	//! ¶ÁÈ¡¶¯»­Êı¾İ
+	//! è¯»å–åŠ¨ç”»æ•°æ®
 	void ReadAnimation();
 
-	//! Ìí¼ÓÈı½ÇĞÎ
+	//! æ·»åŠ ä¸‰è§’å½¢
 	void AddTriangles(CMesh* mesh, int accessorIndex);
-	//! Ìí¼Ó¶¥µã
+	//! æ·»åŠ é¡¶ç‚¹
 	void AddVertices(CMesh* mesh, int position, int joints, int weights, map<int, int>& skinMapper);
-	//! ÉèÖÃ¶¥µã·¨Ïà
+	//! è®¾ç½®é¡¶ç‚¹æ³•ç›¸
 	void SetupVerticesNormal(CMesh* mesh, int accessorIndex);
-	//! ÉèÖÃ¶¥µãÎÆÀí×ø±ê
+	//! è®¾ç½®é¡¶ç‚¹çº¹ç†åæ ‡
 	void SetupVerticesTexCoord(CMesh* mesh, int accessorIndex);
-	//! ÉèÖÃ¶¥µãÑÕÉ«
+	//! è®¾ç½®é¡¶ç‚¹é¢œè‰²
 	void SetupVerticesColor(CMesh* mesh, int accessorIndex);
 
 private:
-	//! »º´æÔªËØÀàĞÍ
+	//! ç¼“å­˜å…ƒç´ ç±»å‹
 	enum {
 		TYPE_BYTE = 5120,
 		TYPE_UNSIGNED_BYTE = 5121,
@@ -59,28 +59,28 @@ private:
 		TYPE_UNSIGNED_INT = 5125,
 		TYPE_FLOAT = 5126
 	};
-	//! »º´æµ¥Ôª
+	//! ç¼“å­˜å•å…ƒ
 	typedef struct _SBufferBin {
 		bool allocated;
 		unsigned char* data;
 		unsigned int size;
 	} SBufferBin;
 
-	//! ÎÄ¼şÄ¿Â¼
+	//! æ–‡ä»¶ç›®å½•
 	string m_strBaseDir;
-	//! Íø¸ñ¶ÔÏóÖ¸Õë
+	//! ç½‘æ ¼å¯¹è±¡æŒ‡é’ˆ
 	CMeshData* m_pMeshData;
-	//! JSON ¶ÔÏó
+	//! JSON å¯¹è±¡
 	CJsonParser m_cJsonParser;
-	//! ¹Ç÷À½Úµã¼¯ºÏ
+	//! éª¨éª¼èŠ‚ç‚¹é›†åˆ
 	map<int, bool> m_setJoints;
-	//! ¹Ç÷ÀÏÂ±êÓ³Éä
+	//! éª¨éª¼ä¸‹æ ‡æ˜ å°„
 	map<int, SJoint*> m_mapJoints;
-	//! ¹Ç÷ÀÄæ¾Ö²¿±ä»»¾ØÕó
+	//! éª¨éª¼é€†å±€éƒ¨å˜æ¢çŸ©é˜µ
 	map<int, CMatrix4> m_mapLocalInv;
-	//! ¹Ç÷À°ó¶¨Äæ¾ØÕó
+	//! éª¨éª¼ç»‘å®šé€†çŸ©é˜µ
 	map<int, CMatrix4> m_mapBindInv;
-	//! »º´æµØÖ·
+	//! ç¼“å­˜åœ°å€
 	vector<SBufferBin> m_vecBuffer;
 };
 

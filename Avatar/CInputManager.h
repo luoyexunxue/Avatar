@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CINPUTMANAGER_H_
@@ -7,21 +7,21 @@
 #include "AvatarConfig.h"
 
 /**
-* @brief ÊäÈë¹ÜÀíÆ÷
+* @brief è¾“å…¥ç®¡ç†å™¨
 */
 class AVATAR_EXPORT CInputManager {
 public:
-	//! »ñÈ¡¹ÜÀíÆ÷ÊµÀı
+	//! è·å–ç®¡ç†å™¨å®ä¾‹
 	static CInputManager* GetInstance() {
 		if (m_pInstance) return m_pInstance;
 		m_pInstance = new CInputManager();
 		return m_pInstance;
 	}
-	//! Ïú»Ù
+	//! é”€æ¯
 	void Destroy();
 
 public:
-	//! ÊäÈë¶¨Òå
+	//! è¾“å…¥å®šä¹‰
 	struct SInput {
 		bool bPause;
 		bool bQuit;
@@ -88,66 +88,66 @@ public:
 	};
 
 public:
-	//! »ñÈ¡ÊäÈë
+	//! è·å–è¾“å…¥
 	struct SInput* GetInput();
-	//! ÊäÈë¸üĞÂ
+	//! è¾“å…¥æ›´æ–°
 	void Update();
 
-	//! ÓÒ×óÒÆ¶¯
+	//! å³å·¦ç§»åŠ¨
 	void RightLeft(float step);
-	//! Ç°ºóÒÆ¶¯
+	//! å‰åç§»åŠ¨
 	void ForthBack(float step);
-	//! ÉÏÏÂÒÆ¶¯
+	//! ä¸Šä¸‹ç§»åŠ¨
 	void UpDown(float step);
 
-	//! Ë®Æ½½Ç¶È
+	//! æ°´å¹³è§’åº¦
 	void Yaw(float angle);
-	//! ¸©Ñö½Ç¶È
+	//! ä¿¯ä»°è§’åº¦
 	void Pitch(float angle);
-	//! ·­¹ö½Ç¶È
+	//! ç¿»æ»šè§’åº¦
 	void Roll(float angle);
 
-	//! Î»ÖÃ
+	//! ä½ç½®
 	void Position(float x, float y, float z);
-	//! ·½Î»
+	//! æ–¹ä½
 	void Orientation(float x, float y, float z, float w);
 
-	//! ¿ª»ğ
+	//! å¼€ç«
 	void Fire();
-	//! ÌøÔ¾
+	//! è·³è·ƒ
 	void Jump();
-	//! ¿ªÊ¼
+	//! å¼€å§‹
 	void Start();
-	//! ÔİÍ£
+	//! æš‚åœ
 	void Pause();
-	//! ÍË³ö
+	//! é€€å‡º
 	void Quit();
 
-	//! ÏÂÒ»¸ö×´Ì¬
+	//! ä¸‹ä¸€ä¸ªçŠ¶æ€
 	void NextState();
-	//! ÉÏÒ»¸ö×´Ì¬
+	//! ä¸Šä¸€ä¸ªçŠ¶æ€
 	void PrevState();
-	//! ¸´Î»×´Ì¬
+	//! å¤ä½çŠ¶æ€
 	void ResetState();
-	//! ¹¦ÄÜÑ¡Ôñ
+	//! åŠŸèƒ½é€‰æ‹©
 	void Function(int func);
-	//! ´°¿Ú´óĞ¡¸Ä±ä
+	//! çª—å£å¤§å°æ”¹å˜
 	void Resize(int width, int height);
 
-	//! Êó±êÊäÈë
+	//! é¼ æ ‡è¾“å…¥
 	void MouseInput(int x, int y, int button, int delta);
-	//! ¼üÅÌÊäÈë
+	//! é”®ç›˜è¾“å…¥
 	void KeyboardInput(int key);
-	//! ÖØÁ¦ÊäÈë
+	//! é‡åŠ›è¾“å…¥
 	void GravityInput(float x, float y, float z);
 
-	//! ½ûÓÃ¿ØÖÆÊäÈë
+	//! ç¦ç”¨æ§åˆ¶è¾“å…¥
 	void DisableInput(bool mouse, bool keyboard, bool gravity);
-	//! Êó±ê°´¼üÓ³Éä
+	//! é¼ æ ‡æŒ‰é”®æ˜ å°„
 	void MapMouseButton(int left, int right, int middle);
-	//! Êó±ê¿ØÖÆËÙ¶È
+	//! é¼ æ ‡æ§åˆ¶é€Ÿåº¦
 	void MouseSensitivity(bool set, float& move, float& turn);
-	//! ÖØÁ¦ÊäÈëÏµÊı
+	//! é‡åŠ›è¾“å…¥ç³»æ•°
 	void GravityScale(float sx, float sy, float sz);
 
 private:
@@ -155,31 +155,31 @@ private:
 	~CInputManager();
 
 private:
-	//! µ±Ç°ÊäÈë
+	//! å½“å‰è¾“å…¥
 	SInput* m_pInput;
-	//! ÊäÈë»º³å
+	//! è¾“å…¥ç¼“å†²
 	SInput* m_pBufferedInput;
 
-	//! ½ûÓÃÊó±êÊäÈë
+	//! ç¦ç”¨é¼ æ ‡è¾“å…¥
 	bool m_bDisableMouse;
-	//! ½ûÓÃ¼üÅÌÊäÈë
+	//! ç¦ç”¨é”®ç›˜è¾“å…¥
 	bool m_bDisableKeyboard;
-	//! ½ûÓÃÖØÁ¦ÊäÈë
+	//! ç¦ç”¨é‡åŠ›è¾“å…¥
 	bool m_bDisableGravity;
 
-	//! Êó±êÉÏ´ÎµÄ°´¼ü
+	//! é¼ æ ‡ä¸Šæ¬¡çš„æŒ‰é”®
 	int m_iMouseLastButton;
-	//! Êó±êÉÏ´ÎµÄÎ»ÖÃ
+	//! é¼ æ ‡ä¸Šæ¬¡çš„ä½ç½®
 	int m_iMouseLastPos[2];
-	//! Êó±ê°´ÏÂµÄÎ»ÖÃ
+	//! é¼ æ ‡æŒ‰ä¸‹çš„ä½ç½®
 	int m_iMouseClickPos[2];
-	//! Êó±ê°´¼üÓ³Éä
+	//! é¼ æ ‡æŒ‰é”®æ˜ å°„
 	int m_iMouseButtonMap[4];
-	//! Êó±ê¿ØÖÆËÙ¶È
+	//! é¼ æ ‡æ§åˆ¶é€Ÿåº¦
 	float m_fMouseInputScale[2];
-	//! ÖØÁ¦ÊäÈëÏµÊı
+	//! é‡åŠ›è¾“å…¥ç³»æ•°
 	float m_fGravityScale[3];
-	//! ÊäÈë¹ÜÀíÆ÷ÊµÀı
+	//! è¾“å…¥ç®¡ç†å™¨å®ä¾‹
 	static CInputManager* m_pInstance;
  };
 

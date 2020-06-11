@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CMATRIX4_H_
@@ -10,105 +10,105 @@ class CQuaternion;
 class CPlane;
 
 /**
-* @brief 4x4¾ØÕóÀà
+* @brief 4x4çŸ©é˜µç±»
 */
 class AVATAR_EXPORT CMatrix4 {
 public:
-	//! Ä¬ÈÏ¹¹Ôìº¯Êı
+	//! é»˜è®¤æ„é€ å‡½æ•°
 	CMatrix4();
-	//! ¸´ÖÆ¹¹Ôìº¯Êı
+	//! å¤åˆ¶æ„é€ å‡½æ•°
 	CMatrix4(const CMatrix4& matrix);
-	//! Ê¹ÓÃ4x4µÄÊı×é¹¹Ôì¾ØÕó
+	//! ä½¿ç”¨4x4çš„æ•°ç»„æ„é€ çŸ©é˜µ
 	CMatrix4(const float matrix[16]);
 
-	//! ÉèÖÃ¾ØÕóÖµ
+	//! è®¾ç½®çŸ©é˜µå€¼
 	void SetValue(const CMatrix4& matrix);
-	//! ÉèÖÃ¾ØÕóÖµ
+	//! è®¾ç½®çŸ©é˜µå€¼
 	void SetValue(const float matrix[16]);
 
-	//! ÉèÖÃÎªµ¥Î»¾ØÕó
+	//! è®¾ç½®ä¸ºå•ä½çŸ©é˜µ
 	CMatrix4& SetIdentity();
-	//! ¼ÆËãÄæ¾ØÕó
+	//! è®¡ç®—é€†çŸ©é˜µ
 	CMatrix4& Invert();
-	//! ¼ÆËã×ªÖÃ¾ØÕó
+	//! è®¡ç®—è½¬ç½®çŸ©é˜µ
 	CMatrix4& Transpose();
-	//! ¼ÆËãĞ±¶Ô³Æ¾ØÕó
+	//! è®¡ç®—æ–œå¯¹ç§°çŸ©é˜µ
 	CMatrix4& SkewSymmetric(const CVector3& vector);
-	//! ¼ÆËã±»Ëõ·ÅµÄ¾ØÕó
+	//! è®¡ç®—è¢«ç¼©æ”¾çš„çŸ©é˜µ
 	CMatrix4& SetScaled(const CVector3& scale);
 
-	//! Ëõ·Å²Ù×÷
+	//! ç¼©æ”¾æ“ä½œ
 	CMatrix4& Scale(const CVector3& scale);
-	//! Ëõ·Å²Ù×÷
+	//! ç¼©æ”¾æ“ä½œ
 	CMatrix4& Scale(float dx, float dy, float dz);
 
-	//! ÈÆ X ÖáĞı×ª¾ØÕó
+	//! ç»• X è½´æ—‹è½¬çŸ©é˜µ
 	CMatrix4& RotateX(float angle);
-	//! ÈÆ Y ÖáĞı×ª¾ØÕó
+	//! ç»• Y è½´æ—‹è½¬çŸ©é˜µ
 	CMatrix4& RotateY(float angle);
-	//! ÈÆ Z ÖáĞı×ª¾ØÕó
+	//! ç»• Z è½´æ—‹è½¬çŸ©é˜µ
 	CMatrix4& RotateZ(float angle);
 
-	//! Æ½ÒÆ²Ù×÷
+	//! å¹³ç§»æ“ä½œ
 	CMatrix4& Translate(const CVector3& pos);
-	//! Æ½ÒÆ²Ù×÷
+	//! å¹³ç§»æ“ä½œ
 	CMatrix4& Translate(float dx, float dy, float dz);
 
-	//! Éú³É±ä»»¾ØÕó(Ë³Ğò scale, rot, pos)
+	//! ç”Ÿæˆå˜æ¢çŸ©é˜µ(é¡ºåº scale, rot, pos)
 	void MakeTransform(const CVector3& scale, const CMatrix4& rot, const CVector3& pos);
-	//! Éú³É±ä»»¾ØÕó(Ë³Ğò scale, rot, pos)
+	//! ç”Ÿæˆå˜æ¢çŸ©é˜µ(é¡ºåº scale, rot, pos)
 	void MakeTransform(const CVector3& scale, const CQuaternion& rot, const CVector3& pos);
 
-	//! ¼ÆËã½üĞ±Æ½Ãæ²Ã¼ôÍ¶Ó°¾ØÕó
+	//! è®¡ç®—è¿‘æ–œå¹³é¢è£å‰ªæŠ•å½±çŸ©é˜µ
 	CMatrix4& ObliqueNearPlaneClipping(const CMatrix4& proj, const CPlane& clip);
-	//! ¼ÆËãÊÓÍ¼¾ØÕó
+	//! è®¡ç®—è§†å›¾çŸ©é˜µ
 	CMatrix4& LookAt(const CVector3& pos, const CVector3& look, const CVector3& up);
-	//! ¼ÆËãÕı½»Í¶Ó°¾ØÕó
+	//! è®¡ç®—æ­£äº¤æŠ•å½±çŸ©é˜µ
 	CMatrix4& Ortho(float width, float height, float zNear, float zFar);
-	//! ¼ÆËãÍ¸ÊÓÍ¶Ó°¾ØÕó
+	//! è®¡ç®—é€è§†æŠ•å½±çŸ©é˜µ
 	CMatrix4& Perspective(float fov, float aspect, float zNear, float zFar);
 
 public:
-	//! ÏÂ±êÔËËã·û []
+	//! ä¸‹æ ‡è¿ç®—ç¬¦ []
 	float& operator [] (int index);
-	//! ĞĞÁĞÔËËã·û ()
+	//! è¡Œåˆ—è¿ç®—ç¬¦ ()
 	float& operator () (int row, int col);
-	//! ÖØÔØÔËËã·û ==
+	//! é‡è½½è¿ç®—ç¬¦ ==
 	bool operator == (const CMatrix4& matrix) const;
-	//! ÖØÔØÔËËã·û !=
+	//! é‡è½½è¿ç®—ç¬¦ !=
 	bool operator != (const CMatrix4& matrix) const;
-	//! ¼Ó·¨ÔËËã
+	//! åŠ æ³•è¿ç®—
 	CMatrix4 operator + (const CMatrix4& matrix) const;
-	//! ¼õ·¨ÔËËã
+	//! å‡æ³•è¿ç®—
 	CMatrix4 operator - (const CMatrix4& matrix) const;
-	//! ³Ë·¨ÔËËã
+	//! ä¹˜æ³•è¿ç®—
 	CMatrix4 operator * (const CMatrix4& matrix) const;
-	//! ³ËÏòÁ¿ÔËËã
+	//! ä¹˜å‘é‡è¿ç®—
 	CVector3 operator * (const CVector3& vector) const;
-	//! ³ËËÄÔªÊıÔËËã
+	//! ä¹˜å››å…ƒæ•°è¿ç®—
 	CQuaternion operator * (const CQuaternion& rotation) const;
-	//! ³ËÒò×ÓÔËËã
+	//! ä¹˜å› å­è¿ç®—
 	CMatrix4 operator * (float factor) const;
 
-	//! ÖØÔØÔËËã·û +=
+	//! é‡è½½è¿ç®—ç¬¦ +=
 	CMatrix4& operator += (const CMatrix4& matrix);
-	//! ÖØÔØÔËËã·û -=
+	//! é‡è½½è¿ç®—ç¬¦ -=
 	CMatrix4& operator -= (const CMatrix4& matrix);
-	//! ÖØÔØÔËËã·û *=
+	//! é‡è½½è¿ç®—ç¬¦ *=
 	CMatrix4& operator *= (const CMatrix4& matrix);
-	//! ÖØÔØÔËËã·û *=
+	//! é‡è½½è¿ç®—ç¬¦ *=
 	CMatrix4& operator *= (float factor);
 
 public:
 	/**
-	* ¾ØÕó´æ´¢·½Ê½£¬¸Ã´æ´¢·½Ê½Óë OpenGL ¼æÈİ
+	* çŸ©é˜µå­˜å‚¨æ–¹å¼ï¼Œè¯¥å­˜å‚¨æ–¹å¼ä¸ OpenGL å…¼å®¹
 	* 0 4 8 12
 	* 1 5 9 13
 	* 2 6 10 14
 	* 3 7 11 15
 	*/
 	float m_fValue[16];
-	//! µ¥Î»¾ØÕó³£Á¿
+	//! å•ä½çŸ©é˜µå¸¸é‡
 	const static CMatrix4 Identity;
 };
 

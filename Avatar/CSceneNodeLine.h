@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CSCENENODELINE_H_
@@ -9,65 +9,65 @@
 using std::vector;
 
 /**
-* @brief µãÏß»æÖÆ³¡¾°½Úµã
+* @brief ç‚¹çº¿ç»˜åˆ¶åœºæ™¯èŠ‚ç‚¹
 */
 class AVATAR_EXPORT CSceneNodeLine: public CSceneNode {
 public:
-	//! ¹¹Ôì·½·¨
+	//! æ„é€ æ–¹æ³•
 	CSceneNodeLine(const string& name, const CColor& color, float width);
 
-	//! ³õÊ¼»¯³¡¾°½Úµã
+	//! åˆå§‹åŒ–åœºæ™¯èŠ‚ç‚¹
 	virtual bool Init();
-	//! Ïú»Ù³¡¾°½Úµã
+	//! é”€æ¯åœºæ™¯èŠ‚ç‚¹
 	virtual void Destroy();
-	//! äÖÈ¾³¡¾°½Úµã
+	//! æ¸²æŸ“åœºæ™¯èŠ‚ç‚¹
 	virtual void Render();
-	//! ¸üĞÂ³¡¾°½Úµã
+	//! æ›´æ–°åœºæ™¯èŠ‚ç‚¹
 	virtual void Update(float dt);
 
-	//! Ìí¼Ó¶¥µã
+	//! æ·»åŠ é¡¶ç‚¹
 	void AddPoint(const CVector3& position);
-	//! Çå¿Õ¶¥µã
+	//! æ¸…ç©ºé¡¶ç‚¹
 	void ClearPoint();
-	//! Ê¹ÓÃ B ÑùÌõÇúÏßÆ½»¬
+	//! ä½¿ç”¨ B æ ·æ¡æ›²çº¿å¹³æ»‘
 	void SmoothLine(float ds);
-	//! ½öÏÔÊ¾¶¥µã
+	//! ä»…æ˜¾ç¤ºé¡¶ç‚¹
 	void ShowPoints(bool show, float pointSize);
-	//! ½ûÓÃÉî¶È²âÊÔ
+	//! ç¦ç”¨æ·±åº¦æµ‹è¯•
 	void DisableDepth(bool disable);
-	//! ÒÔÆÁÄ»×ø±ê»æÖÆ
+	//! ä»¥å±å¹•åæ ‡ç»˜åˆ¶
 	void ScreenSpace(bool enable);
-	//! Ïß¶ÎÄ£Ê½
+	//! çº¿æ®µæ¨¡å¼
 	void Segment(bool enable);
-	//! ÉèÖÃ×Ô¶¨Òå×ÅÉ«Æ÷
+	//! è®¾ç½®è‡ªå®šä¹‰ç€è‰²å™¨
 	void SetShader(const string& shader);
-	//! »ñÈ¡¶¥µã¸öÊı
+	//! è·å–é¡¶ç‚¹ä¸ªæ•°
 	int GetPointCount();
-	//! »ñÈ¡Ö¸¶¨¶¥µã
+	//! è·å–æŒ‡å®šé¡¶ç‚¹
 	CVertex* GetPoint(unsigned int index);
 
 private:
-	//! Èı´Î B ÑùÌõÇúÏß²åÖµ
+	//! ä¸‰æ¬¡ B æ ·æ¡æ›²çº¿æ’å€¼
 	void BSpline(const CVector3 pt[4], int divisions, vector<CVector3>& spline);
 
 private:
-	//! Ä¬ÈÏÑÕÉ«
+	//! é»˜è®¤é¢œè‰²
 	CColor m_cColor;
-	//! ÏßÏÔÊ¾¿í¶È
+	//! çº¿æ˜¾ç¤ºå®½åº¦
 	float m_fLineWidth;
-	//! µãÏÔÊ¾´óĞ¡
+	//! ç‚¹æ˜¾ç¤ºå¤§å°
 	float m_fPointSize;
-	//! ÊÇ·ñ½öÏÔÊ¾¶¥µã
+	//! æ˜¯å¦ä»…æ˜¾ç¤ºé¡¶ç‚¹
 	bool m_bShowPoints;
-	//! ÊÇ·ñ½ûÓÃÉî¶È²âÊÔ
+	//! æ˜¯å¦ç¦ç”¨æ·±åº¦æµ‹è¯•
 	bool m_bDisableDepth;
-	//! ÆÁÄ»×ø±êÏµ
+	//! å±å¹•åæ ‡ç³»
 	bool m_bScreenSpace;
-	//! Ïß¶ÎÄ£Ê½
+	//! çº¿æ®µæ¨¡å¼
 	bool m_bSegmentMode;
-	//! ×Ô¶¨Òå×ÅÉ«Æ÷
+	//! è‡ªå®šä¹‰ç€è‰²å™¨
 	CShader* m_pShader;
-	//! ¶¥µãÊı×é
+	//! é¡¶ç‚¹æ•°ç»„
 	vector<CVertex> m_vecVertices;
 };
 

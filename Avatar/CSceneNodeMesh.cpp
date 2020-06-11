@@ -1,12 +1,12 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CSceneNodeMesh.h"
 #include "CEngine.h"
 
 /**
-* ¹¹Ôìº¯Êı
+* æ„é€ å‡½æ•°
 */
 CSceneNodeMesh::CSceneNodeMesh(const string& name, CMesh* mesh) : CSceneNode("mesh", name) {
 	m_pMesh = mesh;
@@ -14,7 +14,7 @@ CSceneNodeMesh::CSceneNodeMesh(const string& name, CMesh* mesh) : CSceneNode("me
 }
 
 /**
-* ³õÊ¼»¯³¡¾°½Úµã
+* åˆå§‹åŒ–åœºæ™¯èŠ‚ç‚¹
 */
 bool CSceneNodeMesh::Init() {
 	if (m_pMesh) {
@@ -27,14 +27,14 @@ bool CSceneNodeMesh::Init() {
 }
 
 /**
-* Ïú»Ù³¡¾°½Úµã
+* é”€æ¯åœºæ™¯èŠ‚ç‚¹
 */
 void CSceneNodeMesh::Destroy() {
 	if (m_pMeshData) delete m_pMeshData;
 }
 
 /**
-* äÖÈ¾³¡¾°½Úµã
+* æ¸²æŸ“åœºæ™¯èŠ‚ç‚¹
 */
 void CSceneNodeMesh::Render() {
 	if (CEngine::GetGraphicsManager()->IsDepthRender()) {
@@ -53,7 +53,7 @@ void CSceneNodeMesh::Render() {
 }
 
 /**
-* »ñÈ¡Íø¸ñÊı¾İ
+* è·å–ç½‘æ ¼æ•°æ®
 */
 CMeshData* CSceneNodeMesh::GetMeshData() {
 	return m_pMeshData;

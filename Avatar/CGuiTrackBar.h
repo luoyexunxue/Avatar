@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CGUITRACKBAR_H_
@@ -7,37 +7,37 @@
 #include "CGuiEnvironment.h"
 
 /**
-* @brief GUI ¸ú×ÙÌõ
+* @brief GUI è·Ÿè¸ªæ¡
 */
 class CGuiTrackBar: public CGuiEnvironment::CGuiElement {
 public:
-	//! ¹¹Ôìº¯Êı
+	//! æ„é€ å‡½æ•°
 	CGuiTrackBar(const string& name);
-	//! ÊôĞÔÉèÖÃ
+	//! å±æ€§è®¾ç½®
 	virtual bool SetAttribute(const string& name, const string& value);
-	//! »ñÈ¡ÊôĞÔ
+	//! è·å–å±æ€§
 	virtual string GetAttribute(const string& name);
-	//! ¿Ø¼ş»æÖÆ
+	//! æ§ä»¶ç»˜åˆ¶
 	virtual void Draw(const CRectangle& rect, unsigned char* buffer);
 
 private:
-	//! ÏÔÊ¾°Ù·Ö±È
+	//! æ˜¾ç¤ºç™¾åˆ†æ¯”
 	bool m_bShowPercent;
-	//! ×ÖÌåÃû³Æ
+	//! å­—ä½“åç§°
 	string m_strFont;
-	//! ×ÖÌå´óĞ¡
+	//! å­—ä½“å¤§å°
 	int m_iFontSize;
-	//! ¸ú×ÙÌõµ±Ç°Öµ
+	//! è·Ÿè¸ªæ¡å½“å‰å€¼
 	float m_fValue;
-	//! ¸ú×ÙÌõ×îĞ¡Öµ
+	//! è·Ÿè¸ªæ¡æœ€å°å€¼
 	float m_fMinValue;
-	//! ¸ú×ÙÌõ×î´óÖµ
+	//! è·Ÿè¸ªæ¡æœ€å¤§å€¼
 	float m_fMaxValue;
-	//! ±³¾°ÑÕÉ«
+	//! èƒŒæ™¯é¢œè‰²
 	unsigned char m_cBackColor[4];
-	//! Ç°¾°ÑÕÉ«
+	//! å‰æ™¯é¢œè‰²
 	unsigned char m_cForeColor[4];
-	//! °Ù·ÖÖµÎÄ±¾
+	//! ç™¾åˆ†å€¼æ–‡æœ¬
 	wchar_t m_strText[8];
 };
 

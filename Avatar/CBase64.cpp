@@ -1,12 +1,12 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CBase64.h"
 #include <cstring>
 
 /**
-* Base64 ±àÂë²éÕÒ±í
+* Base64 ç¼–ç æŸ¥æ‰¾è¡¨
 */
 static const char BASE64_ENCODE_LUT[64] = {
 	'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
@@ -16,7 +16,7 @@ static const char BASE64_ENCODE_LUT[64] = {
 };
 
 /**
-* Base64 ½âÂë²éÕÒ±í
+* Base64 è§£ç æŸ¥æ‰¾è¡¨
 */
 static const unsigned char BASE64_DECODE_LUT[128] = {
 	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
@@ -30,13 +30,13 @@ static const unsigned char BASE64_DECODE_LUT[128] = {
 };
 
 /**
-* ±àÂë Base64 ×Ö·û´®
-* @param data ´ı±àÂëµÄ¶ş½øÖÆÊı¾İ
-* @param length ´ı±àÂëµÄÊı¾İ³¤¶È
-* @param buffer ´æ·Å±àÂëÍê³ÉµÄ×Ö·û´®»º³åÇø
-* @param size »º³åÇø buffer µÄ´óĞ¡
-* @return ±àÂëºóµÄ×Ö·û´®³¤¶È
-* @note buffer µÄ´óĞ¡Ò»°ãÎª (length * 4 / 3 + 4) + 1£¬×îºó+1Îª×Ö·û´®ÖÕÖ¹·û
+* ç¼–ç  Base64 å­—ç¬¦ä¸²
+* @param data å¾…ç¼–ç çš„äºŒè¿›åˆ¶æ•°æ®
+* @param length å¾…ç¼–ç çš„æ•°æ®é•¿åº¦
+* @param buffer å­˜æ”¾ç¼–ç å®Œæˆçš„å­—ç¬¦ä¸²ç¼“å†²åŒº
+* @param size ç¼“å†²åŒº buffer çš„å¤§å°
+* @return ç¼–ç åçš„å­—ç¬¦ä¸²é•¿åº¦
+* @note buffer çš„å¤§å°ä¸€èˆ¬ä¸º (length * 4 / 3 + 4) + 1ï¼Œæœ€å+1ä¸ºå­—ç¬¦ä¸²ç»ˆæ­¢ç¬¦
 */
 int CBase64::Encode(const unsigned char* data, int length, char* buffer, int size) {
 	int blocks = length / 3;
@@ -75,11 +75,11 @@ int CBase64::Encode(const unsigned char* data, int length, char* buffer, int siz
 }
 
 /**
-* ±àÂë Base64 ÎÄ±¾
-* @param data ´ı±àÂëµÄ¶ş½øÖÆÊı¾İ
-* @param length ´ı±àÂëµÄÊı¾İ³¤¶È
-* @param buffer ´æ·Å±àÂëÍê³ÉµÄ×Ö·û´®¶ÔÏó
-* @return ±àÂëºóµÄ×Ö·û´®³¤¶È
+* ç¼–ç  Base64 æ–‡æœ¬
+* @param data å¾…ç¼–ç çš„äºŒè¿›åˆ¶æ•°æ®
+* @param length å¾…ç¼–ç çš„æ•°æ®é•¿åº¦
+* @param buffer å­˜æ”¾ç¼–ç å®Œæˆçš„å­—ç¬¦ä¸²å¯¹è±¡
+* @return ç¼–ç åçš„å­—ç¬¦ä¸²é•¿åº¦
 */
 int CBase64::Encode(const unsigned char* data, int length, string& buffer) {
 	int blocks = length / 3;
@@ -117,34 +117,34 @@ int CBase64::Encode(const unsigned char* data, int length, string& buffer) {
 }
 
 /**
-* ±àÂë Base64 ×Ö·û´®
-* @param data ´ı±àÂëµÄ¶ş½øÖÆÊı¾İ
-* @param buffer ´æ·Å±àÂëÍê³ÉµÄ×Ö·û´®»º³åÇø
-* @param size »º³åÇø buffer µÄ´óĞ¡
-* @return ±àÂëºóµÄ×Ö·û´®³¤¶È
-* @note buffer µÄ´óĞ¡Ò»°ãÎª (length * 4 / 3 + 4) + 1£¬×îºó+1Îª×Ö·û´®ÖÕÖ¹·û
+* ç¼–ç  Base64 å­—ç¬¦ä¸²
+* @param data å¾…ç¼–ç çš„äºŒè¿›åˆ¶æ•°æ®
+* @param buffer å­˜æ”¾ç¼–ç å®Œæˆçš„å­—ç¬¦ä¸²ç¼“å†²åŒº
+* @param size ç¼“å†²åŒº buffer çš„å¤§å°
+* @return ç¼–ç åçš„å­—ç¬¦ä¸²é•¿åº¦
+* @note buffer çš„å¤§å°ä¸€èˆ¬ä¸º (length * 4 / 3 + 4) + 1ï¼Œæœ€å+1ä¸ºå­—ç¬¦ä¸²ç»ˆæ­¢ç¬¦
 */
 int CBase64::Encode(const vector<unsigned char>& data, char* buffer, int size) {
 	return Encode(&data[0], data.size(), buffer, size);
 }
 
 /**
-* ±àÂë Base64 ÎÄ±¾
-* @param data ´ı±àÂëµÄ¶ş½øÖÆÊı¾İ
-* @param buffer ´æ·Å±àÂëÍê³ÉµÄ×Ö·û´®¶ÔÏó
-* @return ±àÂëºóµÄ×Ö·û´®³¤¶È
+* ç¼–ç  Base64 æ–‡æœ¬
+* @param data å¾…ç¼–ç çš„äºŒè¿›åˆ¶æ•°æ®
+* @param buffer å­˜æ”¾ç¼–ç å®Œæˆçš„å­—ç¬¦ä¸²å¯¹è±¡
+* @return ç¼–ç åçš„å­—ç¬¦ä¸²é•¿åº¦
 */
 int CBase64::Encode(const vector<unsigned char>& data, string& buffer) {
 	return Encode(&data[0], data.size(), buffer);
 }
 
 /**
-* ½âÂë Base64 ×Ö·û´®
-* @param data Base64 ±àÂëµÄ×Ö·û´®
-* @param buffer ´æ·Å½âÂë½á¹ûµÄ»º³åÇø
-* @param size »º³åÇø buffer µÄ´óĞ¡
-* @return ½âÂëºóµÄ¶ş½øÖÆÊı¾İ³¤¶È
-* @note buffer µÄ´óĞ¡Ò»°ãÎª strlen(data) * 3 / 4
+* è§£ç  Base64 å­—ç¬¦ä¸²
+* @param data Base64 ç¼–ç çš„å­—ç¬¦ä¸²
+* @param buffer å­˜æ”¾è§£ç ç»“æœçš„ç¼“å†²åŒº
+* @param size ç¼“å†²åŒº buffer çš„å¤§å°
+* @return è§£ç åçš„äºŒè¿›åˆ¶æ•°æ®é•¿åº¦
+* @note buffer çš„å¤§å°ä¸€èˆ¬ä¸º strlen(data) * 3 / 4
 */
 int CBase64::Decode(const char* data, unsigned char* buffer, int size) {
 	int length = strlen(data);
@@ -185,22 +185,22 @@ int CBase64::Decode(const char* data, unsigned char* buffer, int size) {
 }
 
 /**
-* ½âÂë Base64 ÎÄ±¾
-* @param data Base64 ±àÂëµÄ×Ö·û´®
-* @param buffer ´æ·Å½âÂë½á¹ûµÄ»º³åÇø
-* @param size »º³åÇø buffer µÄ´óĞ¡
-* @return ½âÂëºóµÄ¶ş½øÖÆÊı¾İ³¤¶È
-* @note buffer µÄ´óĞ¡Ò»°ãÎª data.length() * 3 / 4
+* è§£ç  Base64 æ–‡æœ¬
+* @param data Base64 ç¼–ç çš„å­—ç¬¦ä¸²
+* @param buffer å­˜æ”¾è§£ç ç»“æœçš„ç¼“å†²åŒº
+* @param size ç¼“å†²åŒº buffer çš„å¤§å°
+* @return è§£ç åçš„äºŒè¿›åˆ¶æ•°æ®é•¿åº¦
+* @note buffer çš„å¤§å°ä¸€èˆ¬ä¸º data.length() * 3 / 4
 */
 int CBase64::Decode(const string& data, unsigned char* buffer, int size) {
 	return Decode(data.c_str(), buffer, size);
 }
 
 /**
-* ½âÂë Base64 ×Ö·û´®
-* @param data Base64 ±àÂëµÄ×Ö·û´®
-* @param buffer ´æ·Å½âÂë½á¹ûµÄ»º³åÇø
-* @return ½âÂëºóµÄ¶ş½øÖÆÊı¾İ³¤¶È
+* è§£ç  Base64 å­—ç¬¦ä¸²
+* @param data Base64 ç¼–ç çš„å­—ç¬¦ä¸²
+* @param buffer å­˜æ”¾è§£ç ç»“æœçš„ç¼“å†²åŒº
+* @return è§£ç åçš„äºŒè¿›åˆ¶æ•°æ®é•¿åº¦
 */
 int CBase64::Decode(const char* data, vector<unsigned char>& buffer) {
 	int length = strlen(data);
@@ -237,10 +237,10 @@ int CBase64::Decode(const char* data, vector<unsigned char>& buffer) {
 }
 
 /**
-* ½âÂë Base64 ÎÄ±¾
-* @param data Base64 ±àÂëµÄ×Ö·û´®
-* @param buffer ´æ·Å½âÂë½á¹ûµÄ»º³åÇø
-* @return ½âÂëºóµÄ¶ş½øÖÆÊı¾İ³¤¶È
+* è§£ç  Base64 æ–‡æœ¬
+* @param data Base64 ç¼–ç çš„å­—ç¬¦ä¸²
+* @param buffer å­˜æ”¾è§£ç ç»“æœçš„ç¼“å†²åŒº
+* @return è§£ç åçš„äºŒè¿›åˆ¶æ•°æ®é•¿åº¦
 */
 int CBase64::Decode(const string& data, vector<unsigned char>& buffer) {
 	return Decode(data.c_str(), buffer);

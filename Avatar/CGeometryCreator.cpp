@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CGeometryCreator.h"
@@ -8,36 +8,36 @@
 #include <cmath>
 
 /**
-* ´´½¨Á¢·½Ìå
-* @param dx X Öá·½ÏòµÄ³¤¶È
-* @param dy Y Öá·½ÏòµÄ³¤¶È
-* @param dz Z Öá·½ÏòµÄ³¤¶È
-* @return Íø¸ñ¶ÔÏó
+* åˆ›å»ºç«‹æ–¹ä½“
+* @param dx X è½´æ–¹å‘çš„é•¿åº¦
+* @param dy Y è½´æ–¹å‘çš„é•¿åº¦
+* @param dz Z è½´æ–¹å‘çš„é•¿åº¦
+* @return ç½‘æ ¼å¯¹è±¡
 */
 CMesh* CGeometryCreator::CreateBox(float dx, float dy, float dz) {
 	return CreateBox(dx, dy, dz, false);
 }
 
 /**
-* ´´½¨Á¢·½Ìå²¢Ö¸¶¨·¨Ïò
-* @param dx X Öá·½ÏòµÄ³¤¶È
-* @param dy Y Öá·½ÏòµÄ³¤¶È
-* @param dz Z Öá·½ÏòµÄ³¤¶È
-* @param reversed Ãæ·¨Ïò·´Ïò
-* @return Íø¸ñ¶ÔÏó
+* åˆ›å»ºç«‹æ–¹ä½“å¹¶æŒ‡å®šæ³•å‘
+* @param dx X è½´æ–¹å‘çš„é•¿åº¦
+* @param dy Y è½´æ–¹å‘çš„é•¿åº¦
+* @param dz Z è½´æ–¹å‘çš„é•¿åº¦
+* @param reversed é¢æ³•å‘åå‘
+* @return ç½‘æ ¼å¯¹è±¡
 */
 CMesh* CGeometryCreator::CreateBox(float dx, float dy, float dz, bool reversed) {
 	return CreateBox(dx, dy, dz, reversed, CColor::White);
 }
 
 /**
-* ´´½¨Á¢·½Ìå²¢Ö¸¶¨·¨ÏòºÍÑÕÉ«
-* @param dx X Öá·½ÏòµÄ³¤¶È
-* @param dy Y Öá·½ÏòµÄ³¤¶È
-* @param dz Z Öá·½ÏòµÄ³¤¶È
-* @param reversed Ãæ·¨Ïò·´Ïò
-* @param color ÑÕÉ«
-* @return Íø¸ñ¶ÔÏó
+* åˆ›å»ºç«‹æ–¹ä½“å¹¶æŒ‡å®šæ³•å‘å’Œé¢œè‰²
+* @param dx X è½´æ–¹å‘çš„é•¿åº¦
+* @param dy Y è½´æ–¹å‘çš„é•¿åº¦
+* @param dz Z è½´æ–¹å‘çš„é•¿åº¦
+* @param reversed é¢æ³•å‘åå‘
+* @param color é¢œè‰²
+* @return ç½‘æ ¼å¯¹è±¡
 */
 CMesh* CGeometryCreator::CreateBox(float dx, float dy, float dz, bool reversed, const CColor& color) {
 	CMesh* pMesh = new CMesh();
@@ -45,37 +45,37 @@ CMesh* CGeometryCreator::CreateBox(float dx, float dy, float dz, bool reversed, 
 	dx *= 0.5f;
 	dy *= 0.5f;
 	dz *= 0.5f;
-	// Ç°
+	// å‰
 	pMesh->AddVertex(CVertex(-dx, -dy, -dz, 0.0f, 1.0f, 0.0f, -1.0f, 0.0f, color.m_fValue));
 	pMesh->AddVertex(CVertex( dx, -dy, -dz, 1.0f, 1.0f, 0.0f, -1.0f, 0.0f, color.m_fValue));
 	pMesh->AddVertex(CVertex(-dx, -dy,  dz, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, color.m_fValue));
 	pMesh->AddVertex(CVertex( dx, -dy,  dz, 1.0f, 0.0f, 0.0f, -1.0f, 0.0f, color.m_fValue));
-	// ÓÒ
+	// å³
 	pMesh->AddVertex(CVertex( dx, -dy, -dz, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, color.m_fValue));
 	pMesh->AddVertex(CVertex( dx,  dy, -dz, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, color.m_fValue));
 	pMesh->AddVertex(CVertex( dx, -dy,  dz, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, color.m_fValue));
 	pMesh->AddVertex(CVertex( dx,  dy,  dz, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f, color.m_fValue));
-	// ºó
+	// å
 	pMesh->AddVertex(CVertex( dx,  dy, -dz, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, color.m_fValue));
 	pMesh->AddVertex(CVertex(-dx,  dy, -dz, 1.0f, 1.0f, 0.0f, 1.0f, 0.0f, color.m_fValue));
 	pMesh->AddVertex(CVertex( dx,  dy,  dz, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, color.m_fValue));
 	pMesh->AddVertex(CVertex(-dx,  dy,  dz, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, color.m_fValue));
-	// ×ó
+	// å·¦
 	pMesh->AddVertex(CVertex(-dx,  dy, -dz, 0.0f, 1.0f, -1.0f, 0.0f, 0.0f, color.m_fValue));
 	pMesh->AddVertex(CVertex(-dx, -dy, -dz, 1.0f, 1.0f, -1.0f, 0.0f, 0.0f, color.m_fValue));
 	pMesh->AddVertex(CVertex(-dx,  dy,  dz, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, color.m_fValue));
 	pMesh->AddVertex(CVertex(-dx, -dy,  dz, 1.0f, 0.0f, -1.0f, 0.0f, 0.0f, color.m_fValue));
-	// ÉÏ
+	// ä¸Š
 	pMesh->AddVertex(CVertex(-dx, -dy,  dz, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, color.m_fValue));
 	pMesh->AddVertex(CVertex( dx, -dy,  dz, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, color.m_fValue));
 	pMesh->AddVertex(CVertex(-dx,  dy,  dz, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, color.m_fValue));
 	pMesh->AddVertex(CVertex( dx,  dy,  dz, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, color.m_fValue));
-	// ÏÂ
+	// ä¸‹
 	pMesh->AddVertex(CVertex(-dx,  dy, -dz, 0.0f, 1.0f, 0.0f, 0.0f, -1.0f, color.m_fValue));
 	pMesh->AddVertex(CVertex( dx,  dy, -dz, 1.0f, 1.0f, 0.0f, 0.0f, -1.0f, color.m_fValue));
 	pMesh->AddVertex(CVertex(-dx, -dy, -dz, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f, color.m_fValue));
 	pMesh->AddVertex(CVertex( dx, -dy, -dz, 1.0f, 0.0f, 0.0f, 0.0f, -1.0f, color.m_fValue));
-	// ÃæÈı½ÇĞÎ
+	// é¢ä¸‰è§’å½¢
 	for (int i = 0; i < 24; i += 4) {
 		pMesh->AddTriangle(i + 0, i + 1, i + 2);
 		pMesh->AddTriangle(i + 1, i + 3, i + 2);
@@ -86,36 +86,36 @@ CMesh* CGeometryCreator::CreateBox(float dx, float dy, float dz, bool reversed, 
 }
 
 /**
-* ´´½¨ÇòÌå
-* @param radius ÇòÌå°ë¾¶
-* @param slices ºáÇĞÏ¸·ÖÊı
-* @param stacks ×İÇĞÏ¸·ÖÊı
-* @return Íø¸ñ¶ÔÏó
+* åˆ›å»ºçƒä½“
+* @param radius çƒä½“åŠå¾„
+* @param slices æ¨ªåˆ‡ç»†åˆ†æ•°
+* @param stacks çºµåˆ‡ç»†åˆ†æ•°
+* @return ç½‘æ ¼å¯¹è±¡
 */
 CMesh* CGeometryCreator::CreateSphere(float radius, int slices, int stacks) {
 	return CreateSphere(radius, slices, stacks, false);
 }
 
 /**
-* ´´½¨ÇòÌå²¢Ö¸¶¨·¨Ïò
-* @param radius ÇòÌå°ë¾¶
-* @param slices ºáÇĞÏ¸·ÖÊı
-* @param stacks ×İÇĞÏ¸·ÖÊı
-* @param reversed Ãæ·¨Ïò·´Ïò
-* @return Íø¸ñ¶ÔÏó
+* åˆ›å»ºçƒä½“å¹¶æŒ‡å®šæ³•å‘
+* @param radius çƒä½“åŠå¾„
+* @param slices æ¨ªåˆ‡ç»†åˆ†æ•°
+* @param stacks çºµåˆ‡ç»†åˆ†æ•°
+* @param reversed é¢æ³•å‘åå‘
+* @return ç½‘æ ¼å¯¹è±¡
 */
 CMesh* CGeometryCreator::CreateSphere(float radius, int slices, int stacks, bool reversed) {
 	return CreateSphere(radius, slices, stacks, reversed, CColor::White);
 }
 
 /**
-* ´´½¨ÇòÌå²¢Ö¸¶¨·¨ÏòºÍÑÕÉ«
-* @param radius ÇòÌå°ë¾¶
-* @param slices ºáÇĞÏ¸·ÖÊı
-* @param stacks ×İÇĞÏ¸·ÖÊı
-* @param reversed Ãæ·¨Ïò·´Ïò
-* @param color ÑÕÉ«
-* @return Íø¸ñ¶ÔÏó
+* åˆ›å»ºçƒä½“å¹¶æŒ‡å®šæ³•å‘å’Œé¢œè‰²
+* @param radius çƒä½“åŠå¾„
+* @param slices æ¨ªåˆ‡ç»†åˆ†æ•°
+* @param stacks çºµåˆ‡ç»†åˆ†æ•°
+* @param reversed é¢æ³•å‘åå‘
+* @param color é¢œè‰²
+* @return ç½‘æ ¼å¯¹è±¡
 */
 CMesh* CGeometryCreator::CreateSphere(float radius, int slices, int stacks, bool reversed, const CColor& color) {
 	CMesh* pMesh = new CMesh();
@@ -136,7 +136,7 @@ CMesh* CGeometryCreator::CreateSphere(float radius, int slices, int stacks, bool
 			pMesh->AddVertex(CVertex(nx * radius, ny * radius, z, s, t, nx, ny, nz, color.m_fValue));
 		}
 	}
-	// ¼ÆËãÈı½ÇĞÎË÷Òı
+	// è®¡ç®—ä¸‰è§’å½¢ç´¢å¼•
 	for (int i = 0; i <= stacks; i++) {
 		for (int j = 0; j < slices; j++) {
 			int index1 = (slices + 1) * i + j;
@@ -153,36 +153,36 @@ CMesh* CGeometryCreator::CreateSphere(float radius, int slices, int stacks, bool
 }
 
 /**
-* ´´½¨½ºÄÒÌå
-* @param radius ½ºÄÒÌåµ×Ãæ°ë¾¶
-* @param height ½ºÄÒÌå¸ß¶È
-* @param slices Ï¸·Ö²ÎÊı
-* @return Íø¸ñ¶ÔÏó
+* åˆ›å»ºèƒ¶å›Šä½“
+* @param radius èƒ¶å›Šä½“åº•é¢åŠå¾„
+* @param height èƒ¶å›Šä½“é«˜åº¦
+* @param slices ç»†åˆ†å‚æ•°
+* @return ç½‘æ ¼å¯¹è±¡
 */
 CMesh* CGeometryCreator::CreateCapsule(float radius, float height, int slices) {
 	return CreateCapsule(radius, height, slices, false);
 }
 
 /**
-* ´´½¨½ºÄÒÌå²¢Ö¸¶¨·¨Ïò
-* @param radius ½ºÄÒÌåµ×Ãæ°ë¾¶
-* @param height ½ºÄÒÌå¸ß¶È
-* @param slices Ï¸·Ö²ÎÊı
-* @param reversed Ãæ·¨Ïò·´Ïò
-* @return Íø¸ñ¶ÔÏó
+* åˆ›å»ºèƒ¶å›Šä½“å¹¶æŒ‡å®šæ³•å‘
+* @param radius èƒ¶å›Šä½“åº•é¢åŠå¾„
+* @param height èƒ¶å›Šä½“é«˜åº¦
+* @param slices ç»†åˆ†å‚æ•°
+* @param reversed é¢æ³•å‘åå‘
+* @return ç½‘æ ¼å¯¹è±¡
 */
 CMesh* CGeometryCreator::CreateCapsule(float radius, float height, int slices, bool reversed) {
 	return CreateCapsule(radius, height, slices, reversed, CColor::White);
 }
 
 /**
-* ´´½¨½ºÄÒÌå²¢Ö¸¶¨·¨ÏòºÍÑÕÉ«
-* @param radius ½ºÄÒÌåµ×Ãæ°ë¾¶
-* @param height ½ºÄÒÌå¸ß¶È
-* @param slices Ï¸·Ö²ÎÊı
-* @param reversed Ãæ·¨Ïò·´Ïò
-* @param color ÑÕÉ«
-* @return Íø¸ñ¶ÔÏó
+* åˆ›å»ºèƒ¶å›Šä½“å¹¶æŒ‡å®šæ³•å‘å’Œé¢œè‰²
+* @param radius èƒ¶å›Šä½“åº•é¢åŠå¾„
+* @param height èƒ¶å›Šä½“é«˜åº¦
+* @param slices ç»†åˆ†å‚æ•°
+* @param reversed é¢æ³•å‘åå‘
+* @param color é¢œè‰²
+* @return ç½‘æ ¼å¯¹è±¡
 */
 CMesh* CGeometryCreator::CreateCapsule(float radius, float height, int slices, bool reversed, const CColor& color) {
 	CMesh* pMesh = new CMesh();
@@ -204,7 +204,7 @@ CMesh* CGeometryCreator::CreateCapsule(float radius, float height, int slices, b
 			pMesh->AddVertex(CVertex(nx * radius, ny * radius, -z, s, 1.0f - t, nx, ny, -nz, color.m_fValue));
 		}
 	}
-	// ¼ÆËãÈı½ÇĞÎË÷Òı
+	// è®¡ç®—ä¸‰è§’å½¢ç´¢å¼•
 	for (int i = 0; i < slices; i++) {
 		for (int j = 0; j < slices; j++) {
 			int index1 = i * (slices + 1) * 2 + j * 2;
@@ -214,7 +214,7 @@ CMesh* CGeometryCreator::CreateCapsule(float radius, float height, int slices, b
 			pMesh->AddTriangle(index2 + 1, index1 + 1, index1 + 3);
 			pMesh->AddTriangle(index2 + 1, index1 + 3, index2 + 3);
 		}
-		// ²àÃæÈı½ÇĞÎ
+		// ä¾§é¢ä¸‰è§’å½¢
 		int idx = 2 * slices * (slices + 1) + i * 2;
 		pMesh->AddTriangle(idx, idx + 1, idx + 3);
 		pMesh->AddTriangle(idx, idx + 3, idx + 2);
@@ -225,36 +225,36 @@ CMesh* CGeometryCreator::CreateCapsule(float radius, float height, int slices, b
 }
 
 /**
-* ´´½¨Ô²ÖùÌå
-* @param radius Ô²ÖùÌåµ×Ãæ°ë¾¶
-* @param height Ô²ÖùÌå¸ß¶È
-* @param slices Ï¸·Ö²ÎÊı
-* @return Íø¸ñ¶ÔÏó
+* åˆ›å»ºåœ†æŸ±ä½“
+* @param radius åœ†æŸ±ä½“åº•é¢åŠå¾„
+* @param height åœ†æŸ±ä½“é«˜åº¦
+* @param slices ç»†åˆ†å‚æ•°
+* @return ç½‘æ ¼å¯¹è±¡
 */
 CMesh* CGeometryCreator::CreateCylinder(float radius, float height, int slices) {
 	return CreateCylinder(radius, height, slices, false);
 }
 
 /**
-* ´´½¨Ô²ÖùÌå²¢Ö¸¶¨·¨Ïò
-* @param radius Ô²ÖùÌåµ×Ãæ°ë¾¶
-* @param height Ô²ÖùÌå¸ß¶È
-* @param slices Ï¸·Ö²ÎÊı
-* @param reversed Ãæ·¨Ïò·´Ïò
-* @return Íø¸ñ¶ÔÏó
+* åˆ›å»ºåœ†æŸ±ä½“å¹¶æŒ‡å®šæ³•å‘
+* @param radius åœ†æŸ±ä½“åº•é¢åŠå¾„
+* @param height åœ†æŸ±ä½“é«˜åº¦
+* @param slices ç»†åˆ†å‚æ•°
+* @param reversed é¢æ³•å‘åå‘
+* @return ç½‘æ ¼å¯¹è±¡
 */
 CMesh* CGeometryCreator::CreateCylinder(float radius, float height, int slices, bool reversed) {
 	return CreateCylinder(radius, height, slices, reversed, CColor::White);
 }
 
 /**
-* ´´½¨Ô²ÖùÌå²¢Ö¸¶¨·¨ÏòºÍÑÕÉ«
-* @param radius Ô²ÖùÌåµ×Ãæ°ë¾¶
-* @param height Ô²ÖùÌå¸ß¶È
-* @param slices Ï¸·Ö²ÎÊı
-* @param reversed Ãæ·¨Ïò·´Ïò
-* @param color ÑÕÉ«
-* @return Íø¸ñ¶ÔÏó
+* åˆ›å»ºåœ†æŸ±ä½“å¹¶æŒ‡å®šæ³•å‘å’Œé¢œè‰²
+* @param radius åœ†æŸ±ä½“åº•é¢åŠå¾„
+* @param height åœ†æŸ±ä½“é«˜åº¦
+* @param slices ç»†åˆ†å‚æ•°
+* @param reversed é¢æ³•å‘åå‘
+* @param color é¢œè‰²
+* @return ç½‘æ ¼å¯¹è±¡
 */
 CMesh* CGeometryCreator::CreateCylinder(float radius, float height, int slices, bool reversed, const CColor& color) {
 	CMesh* pMesh = new CMesh();
@@ -269,27 +269,27 @@ CMesh* CGeometryCreator::CreateCylinder(float radius, float height, int slices, 
 		float x = nx * radius;
 		float y = ny * radius;
 		float s = 1.0f * i / slices;
-		// ²àÃæÉÏ¶¥µãºÍÏÂ¶¥µã
+		// ä¾§é¢ä¸Šé¡¶ç‚¹å’Œä¸‹é¡¶ç‚¹
 		pMesh->AddVertex(CVertex(x, y, z, s, 0, nx, ny, 0, color.m_fValue));
 		pMesh->AddVertex(CVertex(x, y, -z, s, 1, nx, ny, 0, color.m_fValue));
-		// ¶¥²¿ºÍµ×²¿Ãæ¶¥µã
+		// é¡¶éƒ¨å’Œåº•éƒ¨é¢é¡¶ç‚¹
 		if (i != slices) {
 			pMesh->AddVertex(CVertex(x, y, z, 0, 0, 0, 0, 1, color.m_fValue));
 			pMesh->AddVertex(CVertex(x, y, -z, 0, 0, 0, 0, -1, color.m_fValue));
 		}
 	}
-	// ¶¥²¿ºÍµ×²¿ÖĞĞÄ¶¥µã
+	// é¡¶éƒ¨å’Œåº•éƒ¨ä¸­å¿ƒé¡¶ç‚¹
 	int baseIndex = pMesh->GetVertexCount();
 	pMesh->AddVertex(CVertex(0, 0, z, 0, 0, 0, 0, 1, color.m_fValue));
 	pMesh->AddVertex(CVertex(0, 0, -z, 0, 0, 0, 0, -1, color.m_fValue));
 
-	// ²àÃæÈı½ÇĞÎ
+	// ä¾§é¢ä¸‰è§’å½¢
 	for (int i = 0; i < slices; i++) {
 		int index = i << 2;
 		pMesh->AddTriangle(index + 1, index + 5, index);
 		pMesh->AddTriangle(index + 5, index + 4, index);
 	}
-	// µ×²¿ºÍ¶¥²¿Èı½ÇĞÎ
+	// åº•éƒ¨å’Œé¡¶éƒ¨ä¸‰è§’å½¢
 	for (int i = 0; i < slices; i++) {
 		int index = (i << 2) + 2;
 		if (i + 1 == slices) {
@@ -306,36 +306,36 @@ CMesh* CGeometryCreator::CreateCylinder(float radius, float height, int slices, 
 }
 
 /**
-* ´´½¨Ô²»·
-* @param radius Ô²»·°ë¾¶
-* @param thickness ½ØÃæ°ë¾¶
-* @param slices Ï¸·Ö²ÎÊı
-* @return Íø¸ñ¶ÔÏó
+* åˆ›å»ºåœ†ç¯
+* @param radius åœ†ç¯åŠå¾„
+* @param thickness æˆªé¢åŠå¾„
+* @param slices ç»†åˆ†å‚æ•°
+* @return ç½‘æ ¼å¯¹è±¡
 */
 CMesh* CGeometryCreator::CreateTorus(float radius, float thickness, int slices) {
 	return CreateTorus(radius, thickness, slices, false);
 }
 
 /**
-* ´´½¨Ô²»·²¢Ö¸¶¨·¨Ïò
-* @param radius Ô²»·°ë¾¶
-* @param thickness ½ØÃæ°ë¾¶
-* @param slices Ï¸·Ö²ÎÊı
-* @param reversed Ãæ·¨Ïò·´Ïò
-* @return Íø¸ñ¶ÔÏó
+* åˆ›å»ºåœ†ç¯å¹¶æŒ‡å®šæ³•å‘
+* @param radius åœ†ç¯åŠå¾„
+* @param thickness æˆªé¢åŠå¾„
+* @param slices ç»†åˆ†å‚æ•°
+* @param reversed é¢æ³•å‘åå‘
+* @return ç½‘æ ¼å¯¹è±¡
 */
 CMesh* CGeometryCreator::CreateTorus(float radius, float thickness, int slices, bool reversed) {
 	return CreateTorus(radius, thickness, slices, reversed, CColor::White);
 }
 
 /**
-* ´´½¨Ô²»·²¢Ö¸¶¨·¨ÏòºÍÑÕÉ«
-* @param radius Ô²»·°ë¾¶
-* @param thickness ½ØÃæ°ë¾¶
-* @param slices Ï¸·Ö²ÎÊı
-* @param reversed Ãæ·¨Ïò·´Ïò
-* @param color ÑÕÉ«
-* @return Íø¸ñ¶ÔÏó
+* åˆ›å»ºåœ†ç¯å¹¶æŒ‡å®šæ³•å‘å’Œé¢œè‰²
+* @param radius åœ†ç¯åŠå¾„
+* @param thickness æˆªé¢åŠå¾„
+* @param slices ç»†åˆ†å‚æ•°
+* @param reversed é¢æ³•å‘åå‘
+* @param color é¢œè‰²
+* @return ç½‘æ ¼å¯¹è±¡
 */
 CMesh* CGeometryCreator::CreateTorus(float radius, float thickness, int slices, bool reversed, const CColor& color) {
 	CMesh* pMesh = new CMesh();
@@ -347,19 +347,19 @@ CMesh* CGeometryCreator::CreateTorus(float radius, float thickness, int slices, 
 		CMatrix4 transform;
 		transform.Translate(radius, 0, 0);
 		transform.RotateZ(PI * 2.0f * i / slices);
-		// ½ØÃæ¶¥µãÍ¨¹ı±ä»»Ô²ÖÜ¶¥µã×ø±êµÃµ½
+		// æˆªé¢é¡¶ç‚¹é€šè¿‡å˜æ¢åœ†å‘¨é¡¶ç‚¹åæ ‡å¾—åˆ°
 		for (int j = 0; j <= slices; j++) {
 			float t = 1.0f - 1.0f * j / slices;
 			float theta = PI * 2.0f * j / slices + PI;
 			CVector3 n(cosf(theta), 0, sinf(theta), 0);
 			CVector3 p(n[0] * thickness, 0, n[2] * thickness, 1);
-			// ¶Ô½ØÃæ·¨ÏàºÍ×ø±ê½øĞĞ±ä»»
+			// å¯¹æˆªé¢æ³•ç›¸å’Œåæ ‡è¿›è¡Œå˜æ¢
 			n = transform * n;
 			p = transform * p;
 			pMesh->AddVertex(CVertex(p[0], p[1], p[2], s, t, n[0], n[1], n[2], color.m_fValue));
 		}
 	}
-	// ¼ÆËãÈı½ÇĞÎË÷Òı
+	// è®¡ç®—ä¸‰è§’å½¢ç´¢å¼•
 	for (int i = 0; i < slices; i++) {
 		for (int j = 0; j < slices; j++) {
 			unsigned int index = (slices + 1) * i + j;
@@ -373,36 +373,36 @@ CMesh* CGeometryCreator::CreateTorus(float radius, float thickness, int slices, 
 }
 
 /**
-* ´´½¨×µÌå
-* @param radius ×µÌåµ×Ãæ°ë¾¶
-* @param height ×µÌå¸ß¶È
-* @param slices Ï¸·Ö²ÎÊı
-* @return Íø¸ñ¶ÔÏó
+* åˆ›å»ºæ¤ä½“
+* @param radius æ¤ä½“åº•é¢åŠå¾„
+* @param height æ¤ä½“é«˜åº¦
+* @param slices ç»†åˆ†å‚æ•°
+* @return ç½‘æ ¼å¯¹è±¡
 */
 CMesh* CGeometryCreator::CreateCone(float radius, float height, int slices) {
 	return CreateCone(radius, height, slices, false);
 }
 
 /**
-* ´´½¨×µÌå²¢Ö¸¶¨·¨Ïò
-* @param radius ×µÌåµ×Ãæ°ë¾¶
-* @param height ×µÌå¸ß¶È
-* @param slices Ï¸·Ö²ÎÊı
-* @param reversed Ãæ·¨Ïò·´Ïò
-* @return Íø¸ñ¶ÔÏó
+* åˆ›å»ºæ¤ä½“å¹¶æŒ‡å®šæ³•å‘
+* @param radius æ¤ä½“åº•é¢åŠå¾„
+* @param height æ¤ä½“é«˜åº¦
+* @param slices ç»†åˆ†å‚æ•°
+* @param reversed é¢æ³•å‘åå‘
+* @return ç½‘æ ¼å¯¹è±¡
 */
 CMesh* CGeometryCreator::CreateCone(float radius, float height, int slices, bool reversed) {
 	return CreateCone(radius, height, slices, reversed, CColor::White);
 }
 
 /**
-* ´´½¨×µÌå²¢Ö¸¶¨·¨ÏòºÍÑÕÉ«
-* @param radius ×µÌåµ×Ãæ°ë¾¶
-* @param height ×µÌå¸ß¶È
-* @param slices Ï¸·Ö²ÎÊı
-* @param reversed Ãæ·¨Ïò·´Ïò
-* @param color ÑÕÉ«
-* @return Íø¸ñ¶ÔÏó
+* åˆ›å»ºæ¤ä½“å¹¶æŒ‡å®šæ³•å‘å’Œé¢œè‰²
+* @param radius æ¤ä½“åº•é¢åŠå¾„
+* @param height æ¤ä½“é«˜åº¦
+* @param slices ç»†åˆ†å‚æ•°
+* @param reversed é¢æ³•å‘åå‘
+* @param color é¢œè‰²
+* @return ç½‘æ ¼å¯¹è±¡
 */
 CMesh* CGeometryCreator::CreateCone(float radius, float height, int slices, bool reversed, const CColor& color) {
 	CMesh* pMesh = new CMesh();
@@ -411,7 +411,7 @@ CMesh* CGeometryCreator::CreateCone(float radius, float height, int slices, bool
 	const float step = 2 * PI / slices;
 	const float nz = atan2f(radius, height);
 	const float offset = -height / 4.0f;
-	// ·ÖÎª²àÃæºÍµ×Ãæ
+	// åˆ†ä¸ºä¾§é¢å’Œåº•é¢
 	for (int i = 0; i <= slices; i++) {
 		float nx = cosf(i * step);
 		float ny = sinf(i * step);
@@ -425,9 +425,9 @@ CMesh* CGeometryCreator::CreateCone(float radius, float height, int slices, bool
 		}
 		pMesh->AddVertex(CVertex(x, y, offset, 0, 0, 0, 0, -1, color.m_fValue));
 	}
-	// µ×ÃæÖĞĞÄµã
+	// åº•é¢ä¸­å¿ƒç‚¹
 	pMesh->AddVertex(CVertex(0, 0, offset, 0, 0, 0, 0, -1, color.m_fValue));
-	// Ìí¼ÓÈı½ÇĞÎ
+	// æ·»åŠ ä¸‰è§’å½¢
 	unsigned int bottomCenter = (slices + 1) * (slices + 2);
 	for (int i = 0; i < slices; i++) {
 		int baseIndex1 = i * (slices + 2);
@@ -446,36 +446,36 @@ CMesh* CGeometryCreator::CreateCone(float radius, float height, int slices, bool
 }
 
 /**
-* ´´½¨Æ½Ãæ
-* @param width Æ½Ãæ¿í¶È
-* @param height Æ½Ãæ¸ß¶È
-* @param axis Æ½Ãæ·¨ÏòÑØ×ø±êÖáµÄ·½Ïò£¨1,2,3,-1,-2,-3 ·Ö±ğ±íÊ¾ XYZ ÖáÕı·½ÏòºÍ¸º·½Ïò£©
-* @return Íø¸ñ¶ÔÏó
+* åˆ›å»ºå¹³é¢
+* @param width å¹³é¢å®½åº¦
+* @param height å¹³é¢é«˜åº¦
+* @param axis å¹³é¢æ³•å‘æ²¿åæ ‡è½´çš„æ–¹å‘ï¼ˆ1,2,3,-1,-2,-3 åˆ†åˆ«è¡¨ç¤º XYZ è½´æ­£æ–¹å‘å’Œè´Ÿæ–¹å‘ï¼‰
+* @return ç½‘æ ¼å¯¹è±¡
 */
 CMesh* CGeometryCreator::CreatePlane(float width, float height, int axis) {
 	return CreatePlane(width, height, axis, false);
 }
 
 /**
-* ´´½¨Æ½Ãæ²¢Ö¸¶¨·¨Ïò
-* @param width Æ½Ãæ¿í¶È
-* @param height Æ½Ãæ¸ß¶È
-* @param axis Æ½Ãæ·¨ÏòÑØ×ø±êÖáµÄ·½Ïò£¨1,2,3,-1,-2,-3 ·Ö±ğ±íÊ¾ XYZ ÖáÕı·½ÏòºÍ¸º·½Ïò£©
-* @param reversed Ãæ·¨Ïò·´Ïò
-* @return Íø¸ñ¶ÔÏó
+* åˆ›å»ºå¹³é¢å¹¶æŒ‡å®šæ³•å‘
+* @param width å¹³é¢å®½åº¦
+* @param height å¹³é¢é«˜åº¦
+* @param axis å¹³é¢æ³•å‘æ²¿åæ ‡è½´çš„æ–¹å‘ï¼ˆ1,2,3,-1,-2,-3 åˆ†åˆ«è¡¨ç¤º XYZ è½´æ­£æ–¹å‘å’Œè´Ÿæ–¹å‘ï¼‰
+* @param reversed é¢æ³•å‘åå‘
+* @return ç½‘æ ¼å¯¹è±¡
 */
 CMesh* CGeometryCreator::CreatePlane(float width, float height, int axis, bool reversed) {
 	return CreatePlane(width, height, axis, reversed, CColor::White);
 }
 
 /**
-* ´´½¨Æ½Ãæ²¢Ö¸¶¨·¨ÏòºÍÑÕÉ«
-* @param width Æ½Ãæ¿í¶È
-* @param height Æ½Ãæ¸ß¶È
-* @param axis Æ½Ãæ·¨ÏòÑØ×ø±êÖáµÄ·½Ïò£¨1,2,3,-1,-2,-3 ·Ö±ğ±íÊ¾ XYZ ÖáÕı·½ÏòºÍ¸º·½Ïò£©
-* @param reversed Ãæ·¨Ïò·´Ïò
-* @param color ÑÕÉ«
-* @return Íø¸ñ¶ÔÏó
+* åˆ›å»ºå¹³é¢å¹¶æŒ‡å®šæ³•å‘å’Œé¢œè‰²
+* @param width å¹³é¢å®½åº¦
+* @param height å¹³é¢é«˜åº¦
+* @param axis å¹³é¢æ³•å‘æ²¿åæ ‡è½´çš„æ–¹å‘ï¼ˆ1,2,3,-1,-2,-3 åˆ†åˆ«è¡¨ç¤º XYZ è½´æ­£æ–¹å‘å’Œè´Ÿæ–¹å‘ï¼‰
+* @param reversed é¢æ³•å‘åå‘
+* @param color é¢œè‰²
+* @return ç½‘æ ¼å¯¹è±¡
 */
 CMesh* CGeometryCreator::CreatePlane(float width, float height, int axis, bool reversed, const CColor& color) {
 	CMesh* pMesh = new CMesh();
@@ -511,49 +511,49 @@ CMesh* CGeometryCreator::CreatePlane(float width, float height, int axis, bool r
 }
 
 /**
-* ´´½¨Ô²
-* @param radius Ô²°ë¾¶
-* @param axis Æ½Ãæ·¨ÏòÑØ×ø±êÖáµÄ·½Ïò£¨1,2,3,-1,-2,-3 ·Ö±ğ±íÊ¾ XYZ ÖáÕı·½ÏòºÍ¸º·½Ïò£©
-* @param slices Ô²»¡Ï¸·ÖÊı
-* @return Íø¸ñ¶ÔÏó
+* åˆ›å»ºåœ†
+* @param radius åœ†åŠå¾„
+* @param axis å¹³é¢æ³•å‘æ²¿åæ ‡è½´çš„æ–¹å‘ï¼ˆ1,2,3,-1,-2,-3 åˆ†åˆ«è¡¨ç¤º XYZ è½´æ­£æ–¹å‘å’Œè´Ÿæ–¹å‘ï¼‰
+* @param slices åœ†å¼§ç»†åˆ†æ•°
+* @return ç½‘æ ¼å¯¹è±¡
 */
 CMesh* CGeometryCreator::CreateCircle(float radius, int axis, int slices) {
 	return CreateCircle(radius, axis, slices, false);
 }
 
 /**
-* ´´½¨Ô²²¢Ö¸¶¨·¨Ïò
-* @param radius Ô²°ë¾¶
-* @param axis Æ½Ãæ·¨ÏòÑØ×ø±êÖáµÄ·½Ïò£¨1,2,3,-1,-2,-3 ·Ö±ğ±íÊ¾ XYZ ÖáÕı·½ÏòºÍ¸º·½Ïò£©
-* @param slices Ô²»¡Ï¸·ÖÊı
-* @param reversed Ãæ·¨Ïò·´Ïò
-* @return Íø¸ñ¶ÔÏó
+* åˆ›å»ºåœ†å¹¶æŒ‡å®šæ³•å‘
+* @param radius åœ†åŠå¾„
+* @param axis å¹³é¢æ³•å‘æ²¿åæ ‡è½´çš„æ–¹å‘ï¼ˆ1,2,3,-1,-2,-3 åˆ†åˆ«è¡¨ç¤º XYZ è½´æ­£æ–¹å‘å’Œè´Ÿæ–¹å‘ï¼‰
+* @param slices åœ†å¼§ç»†åˆ†æ•°
+* @param reversed é¢æ³•å‘åå‘
+* @return ç½‘æ ¼å¯¹è±¡
 */
 CMesh* CGeometryCreator::CreateCircle(float radius, int axis, int slices, bool reversed) {
 	return CreateCircle(radius, axis, slices, reversed, CColor::White);
 }
 
 /**
-* ´´½¨Ô²²¢Ö¸¶¨·¨ÏòºÍÑÕÉ«
-* @param radius Ô²°ë¾¶
-* @param axis Æ½Ãæ·¨ÏòÑØ×ø±êÖáµÄ·½Ïò£¨1,2,3,-1,-2,-3 ·Ö±ğ±íÊ¾ XYZ ÖáÕı·½ÏòºÍ¸º·½Ïò£©
-* @param slices Ô²»¡Ï¸·ÖÊı
-* @param reversed Ãæ·¨Ïò·´Ïò
-* @param color ÑÕÉ«
-* @return Íø¸ñ¶ÔÏó
+* åˆ›å»ºåœ†å¹¶æŒ‡å®šæ³•å‘å’Œé¢œè‰²
+* @param radius åœ†åŠå¾„
+* @param axis å¹³é¢æ³•å‘æ²¿åæ ‡è½´çš„æ–¹å‘ï¼ˆ1,2,3,-1,-2,-3 åˆ†åˆ«è¡¨ç¤º XYZ è½´æ­£æ–¹å‘å’Œè´Ÿæ–¹å‘ï¼‰
+* @param slices åœ†å¼§ç»†åˆ†æ•°
+* @param reversed é¢æ³•å‘åå‘
+* @param color é¢œè‰²
+* @return ç½‘æ ¼å¯¹è±¡
 */
 CMesh* CGeometryCreator::CreateCircle(float radius, int axis, int slices, bool reversed, const CColor& color) {
 	CMesh* pMesh = new CMesh();
 	pMesh->SetVertexUsage(slices + 2);
 	const float PI = 3.14159265f;
 	const float step = 2 * PI / slices;
-	// Ìí¼ÓÔ²ĞÄ
+	// æ·»åŠ åœ†å¿ƒ
 	switch (axis) {
 	case -1: case 1: pMesh->AddVertex(CVertex(0, 0, 0, 0.5f, 0.5f, 1, 0, 0, color.m_fValue)); break;
 	case -2: case 2: pMesh->AddVertex(CVertex(0, 0, 0, 0.5f, 0.5f, 0, 1, 0, color.m_fValue)); break;
 	case -3: case 3: pMesh->AddVertex(CVertex(0, 0, 0, 0.5f, 0.5f, 0, 0, 1, color.m_fValue)); break;
 	}
-	// Ô²»¡ÇĞ·Ö
+	// åœ†å¼§åˆ‡åˆ†
 	for (int i = 0; i <= slices; i++) {
 		float x = cosf(i * step);
 		float y = sinf(i * step);
@@ -565,7 +565,7 @@ CMesh* CGeometryCreator::CreateCircle(float radius, int axis, int slices, bool r
 		case -3: case 3: pMesh->AddVertex(CVertex(x * radius, y * radius, 0, s, t, 0, 0, 1, color.m_fValue)); break;
 		}
 	}
-	// Ìí¼ÓÈı½ÇĞÎ
+	// æ·»åŠ ä¸‰è§’å½¢
 	for (int i = 1; i <= slices; i++) {
 		pMesh->AddTriangle(i, i + 1, 0);
 	}
@@ -576,42 +576,42 @@ CMesh* CGeometryCreator::CreateCircle(float radius, int axis, int slices, bool r
 }
 
 /**
-* ´´½¨¼ıÍ·£¬¼ıÍ·ÓÉÖùÌåºÍ×µÌå×éºÏ¶ø³É
-* @param r1 ÖùÌå°ë¾¶
-* @param r2 ×µÌå°ë¾¶
-* @param h1 ÖùÌå¸ß
-* @param h2 ×µÌå¸ß
-* @param slices Ï¸·Ö²ÎÊı
-* @return Íø¸ñ¶ÔÏó
+* åˆ›å»ºç®­å¤´ï¼Œç®­å¤´ç”±æŸ±ä½“å’Œæ¤ä½“ç»„åˆè€Œæˆ
+* @param r1 æŸ±ä½“åŠå¾„
+* @param r2 æ¤ä½“åŠå¾„
+* @param h1 æŸ±ä½“é«˜
+* @param h2 æ¤ä½“é«˜
+* @param slices ç»†åˆ†å‚æ•°
+* @return ç½‘æ ¼å¯¹è±¡
 */
 CMesh* CGeometryCreator::CreateArrow(float r1, float r2, float h1, float h2, int slices) {
 	return CreateArrow(r1, r2, h1, h2, slices, false);
 }
 
 /**
-* ´´½¨¼ıÍ·²¢Ö¸¶¨·¨Ïò
-* @param r1 ÖùÌå°ë¾¶
-* @param r2 ×µÌå°ë¾¶
-* @param h1 ÖùÌå¸ß
-* @param h2 ×µÌå¸ß
-* @param slices Ï¸·Ö²ÎÊı
-* @param reversed Ãæ·¨Ïò·´Ïò
-* @return Íø¸ñ¶ÔÏó
+* åˆ›å»ºç®­å¤´å¹¶æŒ‡å®šæ³•å‘
+* @param r1 æŸ±ä½“åŠå¾„
+* @param r2 æ¤ä½“åŠå¾„
+* @param h1 æŸ±ä½“é«˜
+* @param h2 æ¤ä½“é«˜
+* @param slices ç»†åˆ†å‚æ•°
+* @param reversed é¢æ³•å‘åå‘
+* @return ç½‘æ ¼å¯¹è±¡
 */
 CMesh* CGeometryCreator::CreateArrow(float r1, float r2, float h1, float h2, int slices, bool reversed) {
 	return CreateArrow(r1, r2, h1, h2, slices, reversed, CColor::White);
 }
 
 /**
-* ´´½¨¼ıÍ·²¢Ö¸¶¨·¨ÏòºÍÑÕÉ«
-* @param r1 ÖùÌå°ë¾¶
-* @param r2 ×µÌå°ë¾¶
-* @param h1 ÖùÌå¸ß
-* @param h2 ×µÌå¸ß
-* @param slices Ï¸·Ö²ÎÊı
-* @param reversed Ãæ·¨Ïò·´Ïò
-* @param color ÑÕÉ«
-* @return Íø¸ñ¶ÔÏó
+* åˆ›å»ºç®­å¤´å¹¶æŒ‡å®šæ³•å‘å’Œé¢œè‰²
+* @param r1 æŸ±ä½“åŠå¾„
+* @param r2 æ¤ä½“åŠå¾„
+* @param h1 æŸ±ä½“é«˜
+* @param h2 æ¤ä½“é«˜
+* @param slices ç»†åˆ†å‚æ•°
+* @param reversed é¢æ³•å‘åå‘
+* @param color é¢œè‰²
+* @return ç½‘æ ¼å¯¹è±¡
 */
 CMesh* CGeometryCreator::CreateArrow(float r1, float r2, float h1, float h2, int slices, bool reversed, const CColor& color) {
 	CMesh* pMesh = new CMesh();
@@ -629,21 +629,21 @@ CMesh* CGeometryCreator::CreateArrow(float r1, float r2, float h1, float h2, int
 		float x2 = nx * r2;
 		float y2 = ny * r2;
 		float s = 1.0f * i / slices;
-		// ÖùÌå¶¥µã
+		// æŸ±ä½“é¡¶ç‚¹
 		pMesh->AddVertex(CVertex(x1, y1, 0, s, 1, nx, ny, 0, color.m_fValue));
 		pMesh->AddVertex(CVertex(x1, y1, h1, s, t, nx, ny, 0, color.m_fValue));
 		pMesh->AddVertex(CVertex(x1, y1, 0, 0, 0, 0, 0, -1, color.m_fValue));
-		// ×µÌå¶¥µã
+		// æ¤ä½“é¡¶ç‚¹
 		pMesh->AddVertex(CVertex(x2, y2, h1, s, t, nx, ny, nz, color.m_fValue));
 		pMesh->AddVertex(CVertex(0, 0, h1 + h2, s, 0, nx, ny, nz, color.m_fValue));
 		pMesh->AddVertex(CVertex(x2, y2, h1, 0, 0, 0, 0, -1, color.m_fValue));
 	}
-	// ÖùÌåµ×²¿ÖĞĞÄ¶¥µã
+	// æŸ±ä½“åº•éƒ¨ä¸­å¿ƒé¡¶ç‚¹
 	pMesh->AddVertex(CVertex(0, 0, 0, 0, 0, 0, 0, -1, color.m_fValue));
-	// ×µÌåµ×ÃæÖĞĞÄ¶¥µã
+	// æ¤ä½“åº•é¢ä¸­å¿ƒé¡¶ç‚¹
 	pMesh->AddVertex(CVertex(0, 0, h1, 0, 0, 0, 0, -1, color.m_fValue));
 
-	// Ìí¼ÓÈı½ÇĞÎ
+	// æ·»åŠ ä¸‰è§’å½¢
 	unsigned int base1 = (slices + 1) * 6;
 	unsigned int base2 = base1 + 1;
 	for (int i = 0; i < slices; i++) {
@@ -652,7 +652,7 @@ CMesh* CGeometryCreator::CreateArrow(float r1, float r2, float h1, float h2, int
 		pMesh->AddTriangle(index + 6, index + 7, index + 1);
 		pMesh->AddTriangle(index + 3, index + 9, index + 4);
 		pMesh->AddTriangle(index + 9, index + 10, index + 4);
-		// µ×Ãæ
+		// åº•é¢
 		pMesh->AddTriangle(index + 2, base1, index + 8);
 		pMesh->AddTriangle(index + 5, base2, index + 11);
 	}
@@ -662,48 +662,48 @@ CMesh* CGeometryCreator::CreateArrow(float r1, float r2, float h1, float h2, int
 }
 
 /**
-* ´´½¨À­ÉìÌå
-* @param polygon ºá½ØÃæ¶¥µã£¬±ØĞë±ÕºÏ
-* @param count ºá½ØÃæ¶¥µã¸öÊı
-* @param line À­ÉìÏß¶Î
-* @param length À­ÉìÏß¶Î¶¨µãÊı
-* @return Íø¸ñ¶ÔÏó
+* åˆ›å»ºæ‹‰ä¼¸ä½“
+* @param polygon æ¨ªæˆªé¢é¡¶ç‚¹ï¼Œå¿…é¡»é—­åˆ
+* @param count æ¨ªæˆªé¢é¡¶ç‚¹ä¸ªæ•°
+* @param line æ‹‰ä¼¸çº¿æ®µ
+* @param length æ‹‰ä¼¸çº¿æ®µå®šç‚¹æ•°
+* @return ç½‘æ ¼å¯¹è±¡
 */
 CMesh* CGeometryCreator::CreateExtrude(const CVector2* polygon, int count, const CVector3* line, int length) {
 	return CreateExtrude(polygon, count, line, length, false);
 }
 
 /**
-* ´´½¨À­ÉìÌå£¬²¢¾ö¶¨ÊÇ·ñÆ½»¬±íÃæ
-* @param polygon ºá½ØÃæ¶¥µã£¬±ØĞë±ÕºÏ
-* @param count ºá½ØÃæ¶¥µã¸öÊı
-* @param line À­ÉìÏß¶Î
-* @param length À­ÉìÏß¶Î¶¨µãÊı
-* @param smooth ÊÇ·ñÆ½»¬±íÃæ
-* @return Íø¸ñ¶ÔÏó
+* åˆ›å»ºæ‹‰ä¼¸ä½“ï¼Œå¹¶å†³å®šæ˜¯å¦å¹³æ»‘è¡¨é¢
+* @param polygon æ¨ªæˆªé¢é¡¶ç‚¹ï¼Œå¿…é¡»é—­åˆ
+* @param count æ¨ªæˆªé¢é¡¶ç‚¹ä¸ªæ•°
+* @param line æ‹‰ä¼¸çº¿æ®µ
+* @param length æ‹‰ä¼¸çº¿æ®µå®šç‚¹æ•°
+* @param smooth æ˜¯å¦å¹³æ»‘è¡¨é¢
+* @return ç½‘æ ¼å¯¹è±¡
 */
 CMesh* CGeometryCreator::CreateExtrude(const CVector2* polygon, int count, const CVector3* line, int length, bool smooth) {
 	return CreateExtrude(polygon, count, line, length, smooth, CColor::White);
 }
 
 /**
-* ´´½¨À­ÉìÌå²¢Ö¸¶¨ÑÕÉ«
-* @param polygon ºá½ØÃæ¶¥µã£¬±ØĞë±ÕºÏ
-* @param count ºá½ØÃæ¶¥µã¸öÊı
-* @param line À­ÉìÏß¶Î
-* @param length À­ÉìÏß¶Î¶¥µãÊı
-* @param smooth ÊÇ·ñÆ½»¬±íÃæ
-* @param color ÑÕÉ«
-* @return Íø¸ñ¶ÔÏó
+* åˆ›å»ºæ‹‰ä¼¸ä½“å¹¶æŒ‡å®šé¢œè‰²
+* @param polygon æ¨ªæˆªé¢é¡¶ç‚¹ï¼Œå¿…é¡»é—­åˆ
+* @param count æ¨ªæˆªé¢é¡¶ç‚¹ä¸ªæ•°
+* @param line æ‹‰ä¼¸çº¿æ®µ
+* @param length æ‹‰ä¼¸çº¿æ®µé¡¶ç‚¹æ•°
+* @param smooth æ˜¯å¦å¹³æ»‘è¡¨é¢
+* @param color é¢œè‰²
+* @return ç½‘æ ¼å¯¹è±¡
 */
 CMesh* CGeometryCreator::CreateExtrude(const CVector2* polygon, int count, const CVector3* line, int length, bool smooth, const CColor& color) {
-	// È¥³ıÏß¶ÎÊ×²¿ÏàÍ¬µÄµã
+	// å»é™¤çº¿æ®µé¦–éƒ¨ç›¸åŒçš„ç‚¹
 	while (length > 1 && line[1] == line[0]) { ++line; --length; }
 	if (count < 2 || length < 2) return 0;
 
 	CMesh* pMesh = new CMesh();
 	pMesh->SetVertexUsage(smooth ? count * length * 2 : (count - 2) * length * 4);
-	// ¼ÆËã½ØÃæĞı×ª
+	// è®¡ç®—æˆªé¢æ—‹è½¬
 	CVector3 dir = line[1] - line[0];
 	CVector3 axis = CVector3::Z.CrossProduct(dir);
 	if (axis.Length() == 0.0f) axis.SetValue(dir.Tangent());
@@ -712,17 +712,17 @@ CMesh* CGeometryCreator::CreateExtrude(const CVector2* polygon, int count, const
 	else if (cosa > 1.0f) cosa = 1.0f;
 	CQuaternion rotate;
 	rotate.FromAxisAngle(axis, acosf(cosa));
-	// ¼ÆËã½ØÃæÖÜ³¤ºÍÎÆÀí×ø±êU
+	// è®¡ç®—æˆªé¢å‘¨é•¿å’Œçº¹ç†åæ ‡U
 	float* perimeter = new float[count];
 	float* texCoordU = new float[count];
 	perimeter[0] = 0.0f;
 	texCoordU[0] = 0.0f;
 	for (int i = 1; i < count; i++) perimeter[i] = perimeter[i - 1] + (polygon[i] - polygon[i - 1]).Length();
 	for (int i = 1; i < count; i++) texCoordU[i] = perimeter[i] / perimeter[count - 1];
-	// ¿ªÊ¼Ñ­»·¼ÆËã¹Õµã½ØÃæ¶¥µã
+	// å¼€å§‹å¾ªç¯è®¡ç®—æ‹ç‚¹æˆªé¢é¡¶ç‚¹
 	float lineLengthSum = 0.0f;
 	for (int i = 0; i < length; i++) {
-		// ¼ÆËãÇĞÃæ£¬ÇĞÃæ·¨ÏòÎªÇ°Ò»¶ÎÏß¶ÎÏòÁ¿ºÍÏÂÒ»¶ÎÏß¶ÎÏòÁ¿Ö®ºÍ
+		// è®¡ç®—åˆ‡é¢ï¼Œåˆ‡é¢æ³•å‘ä¸ºå‰ä¸€æ®µçº¿æ®µå‘é‡å’Œä¸‹ä¸€æ®µçº¿æ®µå‘é‡ä¹‹å’Œ
 		CVector3 next = line[i + 1 == length? i: i + 1] - line[i];
 		float distance = next.Length();
 		if (distance == 0.0f) next.SetValue(dir);
@@ -734,11 +734,11 @@ CMesh* CGeometryCreator::CreateExtrude(const CVector2* polygon, int count, const
 		else if (cosin > 1.0f) cosin = 1.0f;
 		const float rotateAngle = acosf(cosin);
 		for (int j = 0; j < count; j++) {
-			// ÇĞÃæ½»µãÍ¨¹ı¼ÆËã±ä»»ºóµÄ½ØÃæ¶¥µãÑØÏß¶Î·½ÏòºÍÇĞÃæÇó½»µÃµ½
+			// åˆ‡é¢äº¤ç‚¹é€šè¿‡è®¡ç®—å˜æ¢åçš„æˆªé¢é¡¶ç‚¹æ²¿çº¿æ®µæ–¹å‘å’Œåˆ‡é¢æ±‚äº¤å¾—åˆ°
 			CVector3 prj;
 			CVector3 org = line[i] + rotate * CVector3(polygon[j].m_fValue[0], polygon[j].m_fValue[1], 0.0f);
 			clipPlane.IntersectLine(org, dir, prj);
-			// ÒÔÏß¶Î³¤¶ÈÎª»ù×¼£¬ÒÔºá½ØÃæÖÜ³¤Îª±ÈÀı£¬ÕıÈ·¼ÆËãÀ­Éì·½ÏòµÄÌùÍ¼×ø±ê
+			// ä»¥çº¿æ®µé•¿åº¦ä¸ºåŸºå‡†ï¼Œä»¥æ¨ªæˆªé¢å‘¨é•¿ä¸ºæ¯”ä¾‹ï¼Œæ­£ç¡®è®¡ç®—æ‹‰ä¼¸æ–¹å‘çš„è´´å›¾åæ ‡
 			float texCoordV1 = (lineLengthSum + projPlane1.Distance(prj)) / perimeter[count - 1];
 			float texCoordV2 = (lineLengthSum + projPlane2.Distance(prj)) / perimeter[count - 1];
 			pMesh->AddVertex(CVertex(prj[0], prj[1], prj[2], texCoordU[j], texCoordV1, 0, 0, 0, color.m_fValue));
@@ -749,7 +749,7 @@ CMesh* CGeometryCreator::CreateExtrude(const CVector2* polygon, int count, const
 			}
 		}
 		lineLengthSum += distance;
-		// ¼ÆËãµ½ÏÂÒ»¸ö¹ÕµãµÄĞı×ª
+		// è®¡ç®—åˆ°ä¸‹ä¸€ä¸ªæ‹ç‚¹çš„æ—‹è½¬
 		if (fabs(rotateAngle) > 1E-9) {
 			CQuaternion rot;
 			rotate = rot.FromAxisAngle(dir.CrossProduct(next), rotateAngle) * rotate;
@@ -757,7 +757,7 @@ CMesh* CGeometryCreator::CreateExtrude(const CVector2* polygon, int count, const
 		}
 		dir.SetValue(next);
 	}
-	// Ìí¼ÓÈı½ÇĞÎ
+	// æ·»åŠ ä¸‰è§’å½¢
 	for (int i = 0; i < length - 1; i++) {
 		for (int j = 0; j < count - 1; j++) {
 			int index1 = 2 * (count * i + j) + 1;
@@ -773,7 +773,7 @@ CMesh* CGeometryCreator::CreateExtrude(const CVector2* polygon, int count, const
 	delete[] perimeter;
 	delete[] texCoordU;
 	pMesh->SetupNormal();
-	// Æ½»¬º¸·ì
+	// å¹³æ»‘ç„Šç¼
 	if (smooth) {
 		for (int i = 0; i < length; i++) {
 			int m = 2 * count * i;

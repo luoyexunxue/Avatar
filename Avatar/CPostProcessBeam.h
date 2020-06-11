@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CPOSTPROCESSBEAM_H_
@@ -7,7 +7,7 @@
 #include "CPostProcess.h"
 
 /**
-* @brief Ìå»ı¹âºó´¦Àí
+* @brief ä½“ç§¯å…‰åå¤„ç†
 */
 class CPostProcessBeam: public CPostProcess {
 public:

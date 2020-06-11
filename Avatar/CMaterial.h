@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CMATERIAL_H_
@@ -13,74 +13,74 @@ using std::string;
 using std::vector;
 
 /**
-* @brief ²ÄÖÊÀà
+* @brief æè´¨ç±»
 *
-* °üº¬ÎÆÀíºÍ×ÅÉ«Æ÷£¬×î¶à¿ÉÖ§³Ö 8 ¸öÍ¨µÀÎÆÀí
+* åŒ…å«çº¹ç†å’Œç€è‰²å™¨ï¼Œæœ€å¤šå¯æ”¯æŒ 8 ä¸ªé€šé“çº¹ç†
 */
 class AVATAR_EXPORT CMaterial {
 public:
-	//! Ä¬ÈÏ¹¹Ôìº¯Êı
+	//! é»˜è®¤æ„é€ å‡½æ•°
 	CMaterial();
-	//! Ä¬ÈÏÎö¹¹º¯Êı
+	//! é»˜è®¤ææ„å‡½æ•°
 	~CMaterial();
 
-	//! ¸´ÖÆ²ÄÖÊ
+	//! å¤åˆ¶æè´¨
 	void CopyFrom(const CMaterial* material);
 
-	//! Ê¹ÓÃ²ÄÖÊ
+	//! ä½¿ç”¨æè´¨
 	void UseMaterial();
 
-	//! ÉèÖÃ²ÄÖÊÌùÍ¼
+	//! è®¾ç½®æè´¨è´´å›¾
 	void SetTexture(CTexture* texture, int index = 0);
-	//! ÉèÖÃ²ÄÖÊÌùÍ¼
+	//! è®¾ç½®æè´¨è´´å›¾
 	void SetTexture(const string& file, int index = 0);
-	//! ÉèÖÃ²ÄÖÊÌùÍ¼
+	//! è®¾ç½®æè´¨è´´å›¾
 	void SetTexture(const string& name, const string files[6], int index = 0);
-	//! ÉèÖÃ²ÄÖÊÌùÍ¼
+	//! è®¾ç½®æè´¨è´´å›¾
 	void SetTexture(const string& name, int width, int height, int channel, const void* data, int index = 0);
 
-	//! ÉèÖÃ²ÄÖÊ×ÅÉ«Æ÷
+	//! è®¾ç½®æè´¨ç€è‰²å™¨
 	void SetShader(CShader* shader);
-	//! ÉèÖÃ²ÄÖÊ×ÅÉ«Æ÷
+	//! è®¾ç½®æè´¨ç€è‰²å™¨
 	void SetShader(const string& name);
 
-	//! ´«µİ Uniform Öµ
+	//! ä¼ é€’ Uniform å€¼
 	void PassUniform(const string& name, bool value);
-	//! ´«µİ Uniform Öµ
+	//! ä¼ é€’ Uniform å€¼
 	void PassUniform(const string& name, int value);
-	//! ´«µİ Uniform Öµ
+	//! ä¼ é€’ Uniform å€¼
 	void PassUniform(const string& name, float value);
-	//! ´«µİ Uniform Öµ
+	//! ä¼ é€’ Uniform å€¼
 	void PassUniform(const string& name, const CVector2& value);
-	//! ´«µİ Uniform Öµ
+	//! ä¼ é€’ Uniform å€¼
 	void PassUniform(const string& name, const CVector3& value);
-	//! ´«µİ Uniform Öµ
+	//! ä¼ é€’ Uniform å€¼
 	void PassUniform(const string& name, const CMatrix4& value);
-	//! ´«µİ Uniform Öµ
+	//! ä¼ é€’ Uniform å€¼
 	void PassUniform(const string& name, const float value[], int size);
 
-	//! ÉèÖÃäÖÈ¾Ä£Ê½
+	//! è®¾ç½®æ¸²æŸ“æ¨¡å¼
 	void SetRenderMode(bool cullFace, bool useDepth, bool addColor);
 
-	//! »ñÈ¡²ÄÖÊÃû³Æ
+	//! è·å–æè´¨åç§°
 	inline string& GetName() { return m_strName; }
-	//! »ñÈ¡ÎÆÀí¸öÊı
+	//! è·å–çº¹ç†ä¸ªæ•°
 	inline int GetTextureCount() const { return m_iTextureCount; }
-	//! »ñÈ¡ÎÆÀí
+	//! è·å–çº¹ç†
 	inline CTexture* GetTexture(int index = 0) const { return m_pTexture[index]; }
-	//! »ñÈ¡×ÅÉ«Æ÷
+	//! è·å–ç€è‰²å™¨
 	inline CShader* GetShader() const { return m_pShader; }
 
 public:
-	//! ¹â»¬ĞÔ²ÎÊı
+	//! å…‰æ»‘æ€§å‚æ•°
 	float m_fRoughness;
-	//! ½ğÊôĞÔ²ÎÊı
+	//! é‡‘å±æ€§å‚æ•°
 	float m_fMetalness;
-	//! ²ÄÖÊÑÕÉ«
+	//! æè´¨é¢œè‰²
 	float m_fColor[4];
 
 private:
-	//! Uniform ±äÁ¿Í³Ò»¶¨Òå
+	//! Uniform å˜é‡ç»Ÿä¸€å®šä¹‰
 	typedef struct _SUniformValue {
 		int location;
 		CShader::UniformType type;
@@ -91,25 +91,25 @@ private:
 		} value;
 	} SUniformValue;
 
-	//! ±³ÃæÌŞ³ı
+	//! èƒŒé¢å‰”é™¤
 	bool m_bCullFace;
-	//! Éî¶È²âÊÔ
+	//! æ·±åº¦æµ‹è¯•
 	bool m_bUseDepth;
-	//! ÑÕÉ«Ïà¼Ó
+	//! é¢œè‰²ç›¸åŠ 
 	bool m_bAddColor;
 
-	//! ²ÄÖÊÃû³Æ
+	//! æè´¨åç§°
 	string m_strName;
-	//! ÎÆÀí¸öÊı
+	//! çº¹ç†ä¸ªæ•°
 	int m_iTextureCount;
-	//! ÎÆÀíÊı×é
+	//! çº¹ç†æ•°ç»„
 	CTexture* m_pTexture[8];
-	//! ×ÅÉ«Æ÷
+	//! ç€è‰²å™¨
 	CShader* m_pShader;
-	//! ´ı´«µİµÄ Uniform ÁĞ±í
+	//! å¾…ä¼ é€’çš„ Uniform åˆ—è¡¨
 	vector<SUniformValue> m_vecUniforms;
 
-	//! ÉèÖÃÎª CMesh µÄÓÑÔªÀà
+	//! è®¾ç½®ä¸º CMesh çš„å‹å…ƒç±»
 	friend class CMesh;
 };
 

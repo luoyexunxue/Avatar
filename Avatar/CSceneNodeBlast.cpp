@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CSceneNodeBlast.h"
@@ -7,7 +7,7 @@
 #include "CEngine.h"
 
 /**
-* ¹¹Ôìº¯Êı
+* æ„é€ å‡½æ•°
 */
 CSceneNodeBlast::CSceneNodeBlast(const string& name, const string& texture, int row, int column)
 	: CSceneNode("blast", name) {
@@ -23,7 +23,7 @@ CSceneNodeBlast::CSceneNodeBlast(const string& name, const string& texture, int 
 }
 
 /**
-* ³õÊ¼»¯³¡¾°½Úµã
+* åˆå§‹åŒ–åœºæ™¯èŠ‚ç‚¹
 */
 bool CSceneNodeBlast::Init() {
 	CShader* pShader = CEngine::GetShaderManager()->GetShader("blast");
@@ -38,14 +38,14 @@ bool CSceneNodeBlast::Init() {
 }
 
 /**
-* Ïú»Ù³¡¾°½Úµã
+* é”€æ¯åœºæ™¯èŠ‚ç‚¹
 */
 void CSceneNodeBlast::Destroy() {
 	delete m_pMesh;
 }
 
 /**
-* äÖÈ¾³¡¾°½Úµã
+* æ¸²æŸ“åœºæ™¯èŠ‚ç‚¹
 */
 void CSceneNodeBlast::Render() {
 	if (m_bBlast) {
@@ -56,7 +56,7 @@ void CSceneNodeBlast::Render() {
 }
 
 /***
-* ¸üĞÂ³¡¾°½Úµã
+* æ›´æ–°åœºæ™¯èŠ‚ç‚¹
 */
 void CSceneNodeBlast::Update(float dt) {
 	if (m_bBlast) {
@@ -65,7 +65,7 @@ void CSceneNodeBlast::Update(float dt) {
 		int index = static_cast<int>(m_iTotalRow * m_iTotalCol * (m_fTimeElapse / m_fDuration));
 		m_iFrameRow = index / m_iTotalCol;
 		m_iFrameCol = index % m_iTotalCol;
-		// Ê¹ÆäÊ¼ÖÕ³¯Ïò¹Û²ìÕß
+		// ä½¿å…¶å§‹ç»ˆæœå‘è§‚å¯Ÿè€…
 		CMatrix4 viewMat = CEngine::GetGraphicsManager()->GetCamera()->GetViewMatrix();
 		m_cOrientation.FromMatrix(viewMat.Transpose());
 		Transform();
@@ -73,7 +73,7 @@ void CSceneNodeBlast::Update(float dt) {
 }
 
 /**
-* ±¬Õ¨³õÊ¼»¯
+* çˆ†ç‚¸åˆå§‹åŒ–
 */
 void CSceneNodeBlast::InitBlast(float duration, float size) {
 	m_fDuration = duration;

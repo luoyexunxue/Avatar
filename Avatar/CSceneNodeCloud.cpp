@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CSceneNodeCloud.h"
@@ -8,7 +8,7 @@
 #include "CVector3.h"
 
 /**
-* ¹¹Ôìº¯Êı
+* æ„é€ å‡½æ•°
 */
 CSceneNodeCloud::CSceneNodeCloud(const string& name, const CColor& skyColor, const CColor& cloudColor, float cloudSize)
 	: CSceneNode("cloud", name) {
@@ -21,7 +21,7 @@ CSceneNodeCloud::CSceneNodeCloud(const string& name, const CColor& skyColor, con
 }
 
 /**
-* ³õÊ¼»¯³¡¾°½Úµã
+* åˆå§‹åŒ–åœºæ™¯èŠ‚ç‚¹
 */
 bool CSceneNodeCloud::Init() {
 	m_pMesh = CGeometryCreator::CreatePlane(2000.0f, 2000.0f, 3, true);
@@ -35,14 +35,14 @@ bool CSceneNodeCloud::Init() {
 }
 
 /**
-* Ïú»Ù³¡¾°½Úµã
+* é”€æ¯åœºæ™¯èŠ‚ç‚¹
 */
 void CSceneNodeCloud::Destroy() {
 	delete m_pMesh;
 }
 
 /**
-* äÖÈ¾³¡¾°½Úµã
+* æ¸²æŸ“åœºæ™¯èŠ‚ç‚¹
 */
 void CSceneNodeCloud::Render() {
 	m_pMesh->GetMaterial()->PassUniform("uTime", m_fTimeElapse);
@@ -50,7 +50,7 @@ void CSceneNodeCloud::Render() {
 }
 
 /**
-* ¸üĞÂÔÆ²ãÎ»ÖÃ£¬×ÜÊÇÔÚÉãÏñ»úÏÂÃæ
+* æ›´æ–°äº‘å±‚ä½ç½®ï¼Œæ€»æ˜¯åœ¨æ‘„åƒæœºä¸‹é¢
 */
 void CSceneNodeCloud::Update(float dt) {
 	m_fTimeElapse += dt * 0.1f;

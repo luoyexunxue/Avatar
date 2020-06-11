@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CGUILABEL_H_
@@ -7,33 +7,33 @@
 #include "CGuiEnvironment.h"
 
 /**
-* @brief GUI ÎÄ±¾±êÇ©
+* @brief GUI æ–‡æœ¬æ ‡ç­¾
 */
 class CGuiLabel: public CGuiEnvironment::CGuiElement {
 public:
-	//! ¹¹Ôìº¯Êı
+	//! æ„é€ å‡½æ•°
 	CGuiLabel(const string& name);
-	//! ÊôĞÔÉèÖÃ
+	//! å±æ€§è®¾ç½®
 	virtual bool SetAttribute(const string& name, const string& value);
-	//! »ñÈ¡ÊôĞÔ
+	//! è·å–å±æ€§
 	virtual string GetAttribute(const string& name);
-	//! ¿Ø¼ş»æÖÆ
+	//! æ§ä»¶ç»˜åˆ¶
 	virtual void Draw(const CRectangle& rect, unsigned char* buffer);
 
 private:
-	//! ×ÖÌåÃû³Æ
+	//! å­—ä½“åç§°
 	string m_strFont;
-	//! ×ÖÌå´óĞ¡
+	//! å­—ä½“å¤§å°
 	int m_iFontSize;
-	//! ±êÇ©ÎÄ±¾
+	//! æ ‡ç­¾æ–‡æœ¬
 	wchar_t m_strText[256];
-	//! ¶ÔÆë·½Ê½
+	//! å¯¹é½æ–¹å¼
 	int m_iAlignment;
-	//! ÎÄ×ÖÀ­Éìµ½±êÇ©´óĞ¡
+	//! æ–‡å­—æ‹‰ä¼¸åˆ°æ ‡ç­¾å¤§å°
 	bool m_bStretchText;
-	//! ±³¾°ÑÕÉ«
+	//! èƒŒæ™¯é¢œè‰²
 	unsigned char m_cBackColor[4];
-	//! Ç°¾°ÑÕÉ«
+	//! å‰æ™¯é¢œè‰²
 	unsigned char m_cForeColor[4];
 };
 

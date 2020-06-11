@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÷‹» ∑Ê. All rights reserved.
+// Copyright (c) 2020 Âë®‰ªÅÈîã. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CDeviceLinux.h"
@@ -11,11 +11,11 @@
 #include <X11/X.h>
 #include <X11/Xlib.h>
 
-// ∑ΩœÚº¸∞¥º¸º«¬º
+// ÊñπÂêëÈîÆÊåâÈîÆËÆ∞ÂΩï
 static bool KeyPressed[5];
 
 /**
-* ππ‘Ï∫Ø ˝
+* ÊûÑÈÄ†ÂáΩÊï∞
 */
 CDeviceLinux::CDeviceLinux() {
 	m_pContext = new SContext;
@@ -27,28 +27,28 @@ CDeviceLinux::CDeviceLinux() {
 }
 
 /**
-* Œˆππ∫Ø ˝
+* ÊûêÊûÑÂáΩÊï∞
 */
 CDeviceLinux::~CDeviceLinux() {
 	m_pInstance = 0;
 }
 
 /**
-* µ•¿˝ µ¿˝
+* Âçï‰æãÂÆû‰æã
 */
 CDeviceLinux* CDeviceLinux::m_pInstance = 0;
 
 /**
-* ¥¥Ω®¥∞ø⁄
+* ÂàõÂª∫Á™óÂè£
 */
 bool CDeviceLinux::Create(const string& title, int width, int height, bool resizable, bool fullscreen, bool antialias) {
-	// ¥Úø™±æµÿœ‘ æ…Ë±∏
+	// ÊâìÂºÄÊú¨Âú∞ÊòæÁ§∫ËÆæÂ§á
 	m_pContext->display = XOpenDisplay(NULL);
 	if (m_pContext->display == NULL) {
 		CLog::Error("Create display failed");
 		return false;
 	}
-	// —°‘ÒœÒÀÿƒ£ Ω
+	// ÈÄâÊã©ÂÉèÁ¥†Ê®°Âºè
 	int numFormats = 0;
 	int attrib[] = {
 		GLX_X_RENDERABLE, True,
@@ -77,7 +77,7 @@ bool CDeviceLinux::Create(const string& title, int width, int height, bool resiz
 	GLXFBConfig bestFit = configList[0];
 	XFree(configList);
 
-	// ªÒ»°◊¿√Ê¥∞ø⁄
+	// Ëé∑ÂèñÊ°åÈù¢Á™óÂè£
 	XVisualInfo *xvi = glXGetVisualFromFBConfig(m_pContext->display, bestFit);
 	Window root = RootWindow(m_pContext->display, xvi->screen);
 	XSetWindowAttributes swa;
@@ -88,28 +88,28 @@ bool CDeviceLinux::Create(const string& title, int width, int height, bool resiz
 	swa.event_mask |= ButtonPressMask | ButtonReleaseMask;
 	swa.event_mask |= KeyPressMask | KeyReleaseMask;
 
-	// ¥”“—”–µƒ¥∞ø⁄¥¥Ω®
+	// ‰ªéÂ∑≤ÊúâÁöÑÁ™óÂè£ÂàõÂª∫
 	if (title.length() > 1 && title.at(0) == '$') root = strtoul(title.substr(1).c_str(), 0, 0);
 	m_pContext->window = XCreateWindow(m_pContext->display, root, 0, 0, width, height, 0,
 		xvi->depth, InputOutput, xvi->visual, CWColormap | CWEventMask, &swa);
 	XFree(xvi);
-	// œ‘ æ¥∞ø⁄
+	// ÊòæÁ§∫Á™óÂè£
 	XStoreName(m_pContext->display, m_pContext->window, title.c_str());
 	XMapWindow(m_pContext->display, m_pContext->window);
 
 	// OpenGL context
 	m_pContext->context = glXCreateNewContext(m_pContext->display, bestFit, GLX_RGBA_TYPE, 0, True);
 	glXMakeCurrent(m_pContext->display, m_pContext->window, m_pContext->context);
-	// πÿ±’¥π÷±Õ¨≤Ω
+	// ÂÖ≥Èó≠ÂûÇÁõ¥ÂêåÊ≠•
 	typedef void (*PFNGLXSWAPINTERVALMESAPROC)(int interval);
 	PFNGLXSWAPINTERVALMESAPROC glXSwapIntervalMESA = (PFNGLXSWAPINTERVALMESAPROC)glXGetProcAddress((GLubyte*)"glXSwapIntervalMESA");
 	if (glXSwapIntervalMESA) glXSwapIntervalMESA(0);
 
-	// »´∆¡–Ë“™ VidMode ªÚ’ﬂ RandR ¿©’π
+	// ÂÖ®Â±èÈúÄË¶Å VidMode ÊàñËÄÖ RandR Êâ©Â±ï
 	if (fullscreen) {
 		CLog::Warn("AVATAR is going to run in windows mode");
 	}
-	// ≥ı ºªØ GLEW ø‚
+	// ÂàùÂßãÂåñ GLEW Â∫ì
 	glewInit();
 	CLog::Info("OpenGL version %s", glGetString(GL_VERSION));
 	if (!glewIsSupported("GL_VERSION_3_3")) {
@@ -117,13 +117,13 @@ bool CDeviceLinux::Create(const string& title, int width, int height, bool resiz
 	}
 	if (antialias) glEnable(GL_MULTISAMPLE);
 
-	// À¢–¬¥∞ÃÂ¥Û–°
+	// Âà∑Êñ∞Á™ó‰ΩìÂ§ßÂ∞è
 	CEngine::GetGraphicsManager()->SetWindowSize(width, height);
 	return true;
 }
 
 /**
-*  µ¿˝œ˙ªŸ
+* ÂÆû‰æãÈîÄÊØÅ
 */
 void CDeviceLinux::Destroy() {
 	if (m_pContext->context) {
@@ -144,21 +144,21 @@ void CDeviceLinux::Destroy() {
 }
 
 /**
-* ªÊ÷∆¥∞ø⁄
+* ÁªòÂà∂Á™óÂè£
 */
 void CDeviceLinux::Render() {
 	glXSwapBuffers(m_pContext->display, m_pContext->window);
 }
 
 /**
-* ¥¶¿Ìœ˚œ¢
+* Â§ÑÁêÜÊ∂àÊÅØ
 */
 void CDeviceLinux::Handle(float dt) {
 	int button, delta;
 	KeySym ksym;
 	CInputManager* pInputMgr = CEngine::GetInputManager();
 
-	// ¥¶¿Ì¥∞ø⁄œ˚œ¢
+	// Â§ÑÁêÜÁ™óÂè£Ê∂àÊÅØ
 	while (XPending(m_pContext->display) > 0) {
 		XEvent event;
 		XNextEvent(m_pContext->display, &event);
@@ -242,7 +242,7 @@ void CDeviceLinux::Handle(float dt) {
 			break;
 		}
 	}
-	// ¥¶¿Ì∑ΩœÚ∞¥º¸
+	// Â§ÑÁêÜÊñπÂêëÊåâÈîÆ
 	float fMoveSpeed = 5.0f * dt;
 	if (KeyPressed[0]) fMoveSpeed *= 4.0f;
 	if (KeyPressed[1]) pInputMgr->ForthBack(fMoveSpeed);

@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CPOSTPROCESS_H_
@@ -9,38 +9,38 @@
 #include "CMesh.h"
 
 /**
-* @brief ºó´¦Àí³éÏóÀà
+* @brief åå¤„ç†æŠ½è±¡ç±»
 */
 class CPostProcess {
 public:
-	//! Ä¬ÈÏ¹¹Ôìº¯Êı
+	//! é»˜è®¤æ„é€ å‡½æ•°
 	CPostProcess();
-	//! Ä¬ÈÏĞéÎö¹¹º¯Êı
+	//! é»˜è®¤è™šææ„å‡½æ•°
 	virtual ~CPostProcess() {}
 
-	//! ³õÊ¼»¯ºó´¦Àí¶ÔÏó
+	//! åˆå§‹åŒ–åå¤„ç†å¯¹è±¡
 	virtual bool Init(int width, int height) = 0;
-	//! äÖÈ¾ÇøÓò´óĞ¡¸Ä±ä
+	//! æ¸²æŸ“åŒºåŸŸå¤§å°æ”¹å˜
 	virtual void Resize(int width, int height) = 0;
-	//! Ïú»Ùºó´¦Àí¶ÔÏó
+	//! é”€æ¯åå¤„ç†å¯¹è±¡
 	virtual void Destroy() = 0;
-	//! Ó¦ÓÃµ±Ç°ºó´¦Àí
+	//! åº”ç”¨å½“å‰åå¤„ç†
 	virtual void Apply(CTexture* target, CMesh* mesh);
 
 protected:
-	//! »ñÈ¡¶¥µã×ÅÉ«Æ÷´úÂë
+	//! è·å–é¡¶ç‚¹ç€è‰²å™¨ä»£ç 
 	const char* GetVertexShader();
 
 protected:
-	//! ºó´¦Àí×ÅÉ«Æ÷
+	//! åå¤„ç†ç€è‰²å™¨
 	CShader* m_pPostProcessShader;
-	//! ºó´¦ÀíäÖÈ¾ÎÆÀí
+	//! åå¤„ç†æ¸²æŸ“çº¹ç†
 	CTexture* m_pRenderTexture;
 
 private:
-	//! ±£´æµÄºó´¦ÀíÆÁÄ»´óĞ¡
-	int m_iSavedScreenSize[2];
-	//! ºó´¦Àí¹ÜÀíÆ÷¿ÉÒÔ·ÃÎÊ
+	//! ä¿å­˜çš„åå¤„ç†å±å¹•å¤§å°
+	int m_iScreenSize[2];
+	//! åå¤„ç†ç®¡ç†å™¨å¯ä»¥è®¿é—®
 	friend class CPostProcessManager;
 };
 

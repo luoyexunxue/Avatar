@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CMESHDATA_H_
@@ -15,159 +15,159 @@ using std::string;
 using std::vector;
 
 /**
-* @brief Ğı×ª¹Ø¼üÖ¡
+* @brief æ—‹è½¬å…³é”®å¸§
 */
 struct SAnimationRotKey {
-	//! ¹Ø¼üÖ¡µÄÊ±¼ä
+	//! å…³é”®å¸§çš„æ—¶é—´
 	float time;
-	//! Ğı×ªÊı¾İ
+	//! æ—‹è½¬æ•°æ®
 	CQuaternion param;
 };
 
 /**
-* @brief Î»ÒÆ¹Ø¼üÖ¡
+* @brief ä½ç§»å…³é”®å¸§
 */
 struct SAnimationPosKey {
-	//! ¹Ø¼üÖ¡µÄÊ±¼ä
+	//! å…³é”®å¸§çš„æ—¶é—´
 	float time;
-	//! Î»ÒÆÊı¾İ
+	//! ä½ç§»æ•°æ®
 	CVector3 param;
 };
 
 /**
-* @brief ¶¯Ì¬¹Ç÷À
-* @note Îª¹Ç÷ÀÉèÖÃÎïÀíÒıÇæÄ£Äâ
+* @brief åŠ¨æ€éª¨éª¼
+* @note ä¸ºéª¨éª¼è®¾ç½®ç‰©ç†å¼•æ“æ¨¡æ‹Ÿ
 */
 struct SJointDynamic {
-	//! ÊÇ·ñÊ¹ÄÜ
+	//! æ˜¯å¦ä½¿èƒ½
 	bool enabled;
-	//! ÖÊÁ¿°ó¶¨
+	//! è´¨é‡ç»‘å®š
 	float mass;
-	//! ´¹Ö±·½Ïòµ¯ĞÔÏµÊı
+	//! å‚ç›´æ–¹å‘å¼¹æ€§ç³»æ•°
 	float vElasticity;
-	//! Ë®Æ½·½Ïòµ¯ĞÔÏµÊı
+	//! æ°´å¹³æ–¹å‘å¼¹æ€§ç³»æ•°
 	float hElasticity;
-	//! ×èÄáÏµÊı
+	//! é˜»å°¼ç³»æ•°
 	float damping;
-	//! µ±Ç°ËÙ¶È(¼ÆËã)
+	//! å½“å‰é€Ÿåº¦(è®¡ç®—)
 	CVector3 velocity;
-	//! ×îÖÕÎ»ÖÃ(¼ÆËã)
+	//! æœ€ç»ˆä½ç½®(è®¡ç®—)
 	CVector3 position;
-	//! ¸¸½ÚµãÎ»ÖÃ(¼ÆËã)
+	//! çˆ¶èŠ‚ç‚¹ä½ç½®(è®¡ç®—)
 	CVector3 parentPos;
-	//! ÊÇ·ñÃæÏò¹Ø×¢µã(ÉèÖÃ)
+	//! æ˜¯å¦é¢å‘å…³æ³¨ç‚¹(è®¾ç½®)
 	bool isFacing;
-	//! ½Ç¶ÈÏŞÖÆ(ÉèÖÃ)
+	//! è§’åº¦é™åˆ¶(è®¾ç½®)
 	float restrictAngle;
-	//! ¹Ø×¢µãÎ»ÖÃ(ÉèÖÃ)
+	//! å…³æ³¨ç‚¹ä½ç½®(è®¾ç½®)
 	CVector3 facingPoint;
-	//! ¹Ø½ÚµÄÕıÃæÏòÁ¿(ÉèÖÃ)
+	//! å…³èŠ‚çš„æ­£é¢å‘é‡(è®¾ç½®)
 	CVector3 frontDir;
-	//! ¹Ø½ÚµÄÕıÃæ·½Ïò(¼ÆËã)
+	//! å…³èŠ‚çš„æ­£é¢æ–¹å‘(è®¡ç®—)
 	CVector3 direction;
 };
 
 /**
-* @brief ¹Ø½Ú¶¨Òå
-* @attention ¹Ø¼üÖ¡Êı¾İÊÇ»ùÓÚ¾Ö²¿±ä»»¾ØÕóÖ®ÉÏµÄ
+* @brief å…³èŠ‚å®šä¹‰
+* @attention å…³é”®å¸§æ•°æ®æ˜¯åŸºäºå±€éƒ¨å˜æ¢çŸ©é˜µä¹‹ä¸Šçš„
 */
 struct SJoint {
-	//! ËùÔÚÊı×éÏÂ±ê
+	//! æ‰€åœ¨æ•°ç»„ä¸‹æ ‡
 	int index;
-	//! ¹Ø½ÚÃû³Æ
+	//! å…³èŠ‚åç§°
 	string name;
-	//! ÉÏ¼¶¹Ø½Ú
+	//! ä¸Šçº§å…³èŠ‚
 	SJoint* parent;
-	//! ¹Ç÷À½ÚµãÎ»ÖÃ(¼ÆËã)
+	//! éª¨éª¼èŠ‚ç‚¹ä½ç½®(è®¡ç®—)
 	CVector3 position;
-	//! ¾Ö²¿±ä»»¾ØÕó
+	//! å±€éƒ¨å˜æ¢çŸ©é˜µ
 	CMatrix4 localMatrix;
-	//! ÊÀ½ç±ä»»¾ØÕó(¼ÆËã)
+	//! ä¸–ç•Œå˜æ¢çŸ©é˜µ(è®¡ç®—)
 	CMatrix4 worldMatrix;
-	//! °ó¶¨¾ØÕóÄæ¾ØÕó
+	//! ç»‘å®šçŸ©é˜µé€†çŸ©é˜µ
 	CMatrix4 bindMatrixInv;
-	//! ×îÖÕ±ä»»¾ØÕó(¼ÆËã)
+	//! æœ€ç»ˆå˜æ¢çŸ©é˜µ(è®¡ç®—)
 	CMatrix4 finalMatrix;
-	//! ¶¯Ì¬¹Ç÷À
+	//! åŠ¨æ€éª¨éª¼
 	SJointDynamic* physics;
-	//! µ±Ç°Ğı×ª¹Ø¼üÖ¡
+	//! å½“å‰æ—‹è½¬å…³é”®å¸§
 	int currentRotKey[4];
-	//! µ±Ç°Î»ÒÆ¹Ø¼üÖ¡
+	//! å½“å‰ä½ç§»å…³é”®å¸§
 	int currentPosKey[4];
-	//! Ğı×ª±ä»»¹Ø¼üÖ¡
+	//! æ—‹è½¬å˜æ¢å…³é”®å¸§
 	vector<SAnimationRotKey> keyRot;
-	//! Î»ÖÃ±ä»»¹Ø¼üÖ¡
+	//! ä½ç½®å˜æ¢å…³é”®å¸§
 	vector<SAnimationPosKey> keyPos;
-	//! Ä¬ÈÏ¹¹Ôìº¯Êı
+	//! é»˜è®¤æ„é€ å‡½æ•°
 	SJoint() : index(0), parent(0), physics(0) {}
-	//! Ä¬ÈÏÎö¹¹º¯Êı
+	//! é»˜è®¤ææ„å‡½æ•°
 	~SJoint() { if (physics) delete physics; }
 };
 
 /**
-* @brief Íø¸ñÊı¾İÀà
+* @brief ç½‘æ ¼æ•°æ®ç±»
 */
 class AVATAR_EXPORT CMeshData {
 public:
-	//! ¹¹Ôìº¯Êı
+	//! æ„é€ å‡½æ•°
 	CMeshData();
-	//! Îö¹¹º¯Êı
+	//! ææ„å‡½æ•°
 	~CMeshData();
 
-	//! »ñÈ¡Íø¸ñÊıÁ¿
+	//! è·å–ç½‘æ ¼æ•°é‡
 	int GetMeshCount() const;
-	//! »ñÈ¡¹Ø½ÚÊıÁ¿
+	//! è·å–å…³èŠ‚æ•°é‡
 	int GetJointCount() const;
-	//! »ñÈ¡¶¯»­ÊıÁ¿
+	//! è·å–åŠ¨ç”»æ•°é‡
 	int GetAnimationCount() const;
-	//! »ñÈ¡Íø¸ñ¶¥µã¼ÆÊı
+	//! è·å–ç½‘æ ¼é¡¶ç‚¹è®¡æ•°
 	int GetVertexCount() const;
-	//! »ñÈ¡Íø¸ñÈı½ÇĞÎ¼ÆÊı
+	//! è·å–ç½‘æ ¼ä¸‰è§’å½¢è®¡æ•°
 	int GetTriangleCount() const;
-	//! »ñÈ¡°üÎ§ºĞ
+	//! è·å–åŒ…å›´ç›’
 	CBoundingBox GetBoundingBox() const;
 
-	//! »ñÈ¡Ö¸¶¨Íø¸ñ
+	//! è·å–æŒ‡å®šç½‘æ ¼
 	CMesh* GetMesh(int index);
-	//! »ñÈ¡Ö¸¶¨¹Ø½Ú
+	//! è·å–æŒ‡å®šå…³èŠ‚
 	SJoint* GetJoint(int index);
-	//! »ñÈ¡Ö¸¶¨¹Ø½Ú
+	//! è·å–æŒ‡å®šå…³èŠ‚
 	SJoint* GetJoint(const string& name);
-	//! »ñÈ¡Ö¸¶¨Ãû³ÆµÄ¶¯»­
+	//! è·å–æŒ‡å®šåç§°çš„åŠ¨ç”»
 	int GetAnimationIndex(const string& name);
-	//! »ñÈ¡¶¯»­Ãû³Æ
+	//! è·å–åŠ¨ç”»åç§°
 	string& GetAnimationName(int index);
-	//! »ñÈ¡¶¯»­Ê±³¤
+	//! è·å–åŠ¨ç”»æ—¶é•¿
 	float GetAnimationTime(int index);
-	//! »ñÈ¡¶¯»­¿ªÊ¼Ê±¼ä
+	//! è·å–åŠ¨ç”»å¼€å§‹æ—¶é—´
 	float GetAnimationBeginTime(int index);
-	//! »ñÈ¡¶¯»­½áÊøÊ±¼ä
+	//! è·å–åŠ¨ç”»ç»“æŸæ—¶é—´
 	float GetAnimationEndTime(int index);
 
-	//! Ìí¼ÓÍø¸ñ
+	//! æ·»åŠ ç½‘æ ¼
 	CMeshData* AddMesh(CMesh* mesh);
-	//! Ìí¼Ó¹Ø½Ú(¸¸¹Ø½ÚÓÅÏÈ)
+	//! æ·»åŠ å…³èŠ‚(çˆ¶å…³èŠ‚ä¼˜å…ˆ)
 	CMeshData* AddJoint(SJoint* joint);
-	//! Ìí¼Ó¶¯»­ĞÅÏ¢
+	//! æ·»åŠ åŠ¨ç”»ä¿¡æ¯
 	CMeshData* AddAnimation(const string& name, float beginTime, float endTime);
 
-	//! ÉèÖÃ¹Ç÷ÀÎïÀíÖ§³Ö
+	//! è®¾ç½®éª¨éª¼ç‰©ç†æ”¯æŒ
 	bool SetPhysics(const string& name, float mass, float hk, float vk, float damping);
-	//! ÉèÖÃ¹Ç÷À³¯Ïòµã
+	//! è®¾ç½®éª¨éª¼æœå‘ç‚¹
 	bool SetFacing(const string& name, const CVector3& front, const CVector3& point, float angle, float damping);
 
-	//! Çå¿ÕËùÓĞÍø¸ñ
+	//! æ¸…ç©ºæ‰€æœ‰ç½‘æ ¼
 	void ClearMesh();
-	//! Çå¿ÕËùÓĞ¹Ø½Ú
+	//! æ¸…ç©ºæ‰€æœ‰å…³èŠ‚
 	void ClearJoint();
-	//! Çå¿ÕËùÓĞ¶¯»­
+	//! æ¸…ç©ºæ‰€æœ‰åŠ¨ç”»
 	void ClearAnimation();
 
-	//! ¿ËÂ¡Íø¸ñ¶ÔÏó
+	//! å…‹éš†ç½‘æ ¼å¯¹è±¡
 	CMeshData* Clone() const;
 
 private:
-	//! Íø¸ñÊı¾İ¶¨Òå
+	//! ç½‘æ ¼æ•°æ®å®šä¹‰
 	typedef struct _SMeshData {
 		vector<CMesh*> meshes;
 		vector<SJoint*> joints;
@@ -175,7 +175,7 @@ private:
 		vector<float> animationBeginTimes;
 		vector<float> animationEndTimes;
 	} SMeshData;
-	//! Íø¸ñÊı¾İÖ¸Õë
+	//! ç½‘æ ¼æ•°æ®æŒ‡é’ˆ
 	SMeshData* m_pMeshData;
 };
 

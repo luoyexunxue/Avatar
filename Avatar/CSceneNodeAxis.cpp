@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÷‹» ∑Ê. All rights reserved.
+// Copyright (c) 2020 Âë®‰ªÅÈîã. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CSceneNodeAxis.h"
@@ -8,21 +8,21 @@
 #include <cmath>
 
 /**
-* ππ‘Ï∫Ø ˝
+* ÊûÑÈÄ†ÂáΩÊï∞
 */
 CSceneNodeAxis::CSceneNodeAxis(const string& name): CSceneNode("axis", name) {
 	m_pMesh = 0;
 }
 
 /**
-* ≥ı ºªØ≥°æ∞Ω⁄µ„
+* ÂàùÂßãÂåñÂú∫ÊôØËäÇÁÇπ
 */
 bool CSceneNodeAxis::Init() {
 	const float r1 = 0.01f;
 	const float h1 = 0.08f;
 	const float r2 = 0.02f;
 	const float h2 = 0.08f;
-	// ◊¯±Í÷·º˝Õ∑
+	// ÂùêÊ†áËΩ¥ÁÆ≠Â§¥
 	CMesh* xAxis = CGeometryCreator::CreateArrow(r1, r2, h1, h2, 16, false, CColor::Red);
 	CMesh* yAxis = CGeometryCreator::CreateArrow(r1, r2, h1, h2, 16, false, CColor::Green);
 	CMesh* zAxis = CGeometryCreator::CreateArrow(r1, r2, h1, h2, 16, false, CColor::Blue);
@@ -41,24 +41,24 @@ bool CSceneNodeAxis::Init() {
 }
 
 /**
-* œ˙ªŸ≥°æ∞Ω⁄µ„
+* ÈîÄÊØÅÂú∫ÊôØËäÇÁÇπ
 */
 void CSceneNodeAxis::Destroy() {
 	delete m_pMesh;
 }
 
 /**
-* ‰÷»æ≥°æ∞Ω⁄µ„
+* Ê∏≤ÊüìÂú∫ÊôØËäÇÁÇπ
 */
 void CSceneNodeAxis::Render() {
 	m_pMesh->Render();
 }
 
 /**
-* ∏¸–¬≥°æ∞Ω⁄µ„
+* Êõ¥Êñ∞Âú∫ÊôØËäÇÁÇπ
 */
 void CSceneNodeAxis::Update(float dt) {
-	// …Ë÷√œ‘ æ‘⁄”“œ¬Ω«
+	// ËÆæÁΩÆÊòæÁ§∫Âú®Âè≥‰∏ãËßí
 	CCamera* pCamera = CEngine::GetGraphicsManager()->GetCamera();
 	float fov = pCamera->GetFieldOfView() * 0.017453f;
 	float r = tanf(fov) * 0.2f;

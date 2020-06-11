@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CGEOMETRYCREATOR_H_
@@ -13,10 +13,10 @@
 using std::string;
 
 /**
-* @brief ¼¸ºÎÌå¶¨Òå
+* @brief å‡ ä½•ä½“å®šä¹‰
 */
 struct SGeometry {
-	//! ¼¸ºÎÀàĞÍ
+	//! å‡ ä½•ç±»å‹
 	enum {
 		UNKNOWN = 0,
 		BOX = 1,
@@ -28,7 +28,7 @@ struct SGeometry {
 		PLANE = 7,
 		CIRCLE = 8
 	} shape;
-	//! ´óĞ¡²ÎÊı
+	//! å¤§å°å‚æ•°
 	union {
 		struct { float x; float y; float z; } box;
 		struct { float r; } sphere;
@@ -39,13 +39,13 @@ struct SGeometry {
 		struct { float w; float h; } plane;
 		struct { float r; } circle;
 	};
-	//! Ï¸·Ö¿ØÖÆ
+	//! ç»†åˆ†æ§åˆ¶
 	int slices;
-	//! ·¨Ïò¿ØÖÆ
+	//! æ³•å‘æ§åˆ¶
 	bool reversed;
-	//! Ä¬ÈÏ¹¹Ôìº¯Êı
+	//! é»˜è®¤æ„é€ å‡½æ•°
 	SGeometry(): shape(UNKNOWN), slices(32), reversed(false) {}
-	//! »ñÈ¡×Ö·û´®±íÊ¾
+	//! è·å–å­—ç¬¦ä¸²è¡¨ç¤º
 	string ToString() const {
 		if (shape == BOX) return "box";
 		if (shape == SPHERE) return "sphere";
@@ -60,47 +60,47 @@ struct SGeometry {
 };
 
 /**
-* @brief ¼¸ºÎÌåÍø¸ñ´´½¨Æ÷
+* @brief å‡ ä½•ä½“ç½‘æ ¼åˆ›å»ºå™¨
 */
 class AVATAR_EXPORT CGeometryCreator {
 public:
-	//! ´´½¨Á¢·½Ìå
+	//! åˆ›å»ºç«‹æ–¹ä½“
 	static CMesh* CreateBox(float dx, float dy, float dz);
 	static CMesh* CreateBox(float dx, float dy, float dz, bool reversed);
 	static CMesh* CreateBox(float dx, float dy, float dz, bool reversed, const CColor& color);
-	//! ´´½¨ÇòÌå
+	//! åˆ›å»ºçƒä½“
 	static CMesh* CreateSphere(float radius, int slices, int stacks);
 	static CMesh* CreateSphere(float radius, int slices, int stacks, bool reversed);
 	static CMesh* CreateSphere(float radius, int slices, int stacks, bool reversed, const CColor& color);
-	//! ´´½¨½ºÄÒÌå
+	//! åˆ›å»ºèƒ¶å›Šä½“
 	static CMesh* CreateCapsule(float radius, float height, int slices);
 	static CMesh* CreateCapsule(float radius, float height, int slices, bool reversed);
 	static CMesh* CreateCapsule(float radius, float height, int slices, bool reversed, const CColor& color);
-	//! ´´½¨Ô²ÖùÌå
+	//! åˆ›å»ºåœ†æŸ±ä½“
 	static CMesh* CreateCylinder(float radius, float height, int slices);
 	static CMesh* CreateCylinder(float radius, float height, int slices, bool reversed);
 	static CMesh* CreateCylinder(float radius, float height, int slices, bool reversed, const CColor& color);
-	//! ´´½¨Ô²»·
+	//! åˆ›å»ºåœ†ç¯
 	static CMesh* CreateTorus(float radius, float thickness, int slices);
 	static CMesh* CreateTorus(float radius, float thickness, int slices, bool reversed);
 	static CMesh* CreateTorus(float radius, float thickness, int slices, bool reversed, const CColor& color);
-	//! ´´½¨×µÌå
+	//! åˆ›å»ºæ¤ä½“
 	static CMesh* CreateCone(float radius, float height, int slices);
 	static CMesh* CreateCone(float radius, float height, int slices, bool reversed);
 	static CMesh* CreateCone(float radius, float height, int slices, bool reversed, const CColor& color);
-	//! ´´½¨Æ½Ãæ
+	//! åˆ›å»ºå¹³é¢
 	static CMesh* CreatePlane(float width, float height, int axis);
 	static CMesh* CreatePlane(float width, float height, int axis, bool reversed);
 	static CMesh* CreatePlane(float width, float height, int axis, bool reversed, const CColor& color);
-	//! ´´½¨Ô²ĞÎ
+	//! åˆ›å»ºåœ†å½¢
 	static CMesh* CreateCircle(float radius, int axis, int slices);
 	static CMesh* CreateCircle(float radius, int axis, int slices, bool reversed);
 	static CMesh* CreateCircle(float radius, int axis, int slices, bool reversed, const CColor& color);
-	//! ´´½¨¼ıÍ·
+	//! åˆ›å»ºç®­å¤´
 	static CMesh* CreateArrow(float r1, float r2, float h1, float h2, int slices);
 	static CMesh* CreateArrow(float r1, float r2, float h1, float h2, int slices, bool reversed);
 	static CMesh* CreateArrow(float r1, float r2, float h1, float h2, int slices, bool reversed, const CColor& color);
-	//! ´´½¨À­ÉìÌå
+	//! åˆ›å»ºæ‹‰ä¼¸ä½“
 	static CMesh* CreateExtrude(const CVector2* polygon, int count, const CVector3* line, int length);
 	static CMesh* CreateExtrude(const CVector2* polygon, int count, const CVector3* line, int length, bool smooth);
 	static CMesh* CreateExtrude(const CVector2* polygon, int count, const CVector3* line, int length, bool smooth, const CColor& color);

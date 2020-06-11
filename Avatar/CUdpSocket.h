@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CUDPSOCKET_H_
@@ -17,37 +17,37 @@ using std::vector;
 using std::string;
 
 /**
-* @brief UDP Í¨ĞÅÀà
+* @brief UDP é€šä¿¡ç±»
 */
 class AVATAR_EXPORT CUdpSocket {
 public:
-	//! Ä¬ÈÏ¹¹Ôìº¯Êı
+	//! é»˜è®¤æ„é€ å‡½æ•°
 	CUdpSocket();
-	//! Ä¬ÈÏÎö¹¹º¯Êı
+	//! é»˜è®¤ææ„å‡½æ•°
 	~CUdpSocket();
 
-	//! ´ò¿ªÁ¬½Ó£¬ip Îª¿ÕÎª·şÎñÆ÷Ä£Ê½
+	//! æ‰“å¼€è¿æ¥ï¼Œip ä¸ºç©ºä¸ºæœåŠ¡å™¨æ¨¡å¼
 	bool Open(int port, const char* ip = 0);
-	//! ¹Ø±ÕÁ¬½Ó
+	//! å…³é—­è¿æ¥
 	void Close();
 
 public:
-	//! ·µ»ØÊµ¼Ê·¢ËÍµÄ×Ö½ÚÊı
+	//! è¿”å›å®é™…å‘é€çš„å­—èŠ‚æ•°
 	int SendData(const void* data, int size);
-	//! ÏòÖ¸¶¨µØÖ·¶Ë¿Ú·¢Êı¾İ£¬·µ»ØÊµ¼Ê·¢ËÍµÄ×Ö½ÚÊı
+	//! å‘æŒ‡å®šåœ°å€ç«¯å£å‘æ•°æ®ï¼Œè¿”å›å®é™…å‘é€çš„å­—èŠ‚æ•°
 	int SendData(const void* data, int size, const string& ip, int port);
-	//! ·µ»ØÊµ¼Ê½ÓÊÕµÄ×Ö½ÚÊı
+	//! è¿”å›å®é™…æ¥æ”¶çš„å­—èŠ‚æ•°
 	int RecvData(void* data, int size);
 
-	//! »ñÈ¡Á¬½ÓµÄ¶Ë¿Ú
+	//! è·å–è¿æ¥çš„ç«¯å£
 	int GetPort();
-	//! »ñÈ¡¿Í»§¶ËµÄIPµØÖ·
+	//! è·å–å®¢æˆ·ç«¯çš„IPåœ°å€
 	string GetClientIP();
-	//! Ê¹ÄÜ×èÈûÄ£Ê½
+	//! ä½¿èƒ½é˜»å¡æ¨¡å¼
 	void EnableBlockmode(bool enable);
-	//! Ê¹ÄÜ¹ã²¥·¢ËÍ
+	//! ä½¿èƒ½å¹¿æ’­å‘é€
 	void EnableBroadcast(bool enable);
-	//! »ñÈ¡¹ã²¥µØÖ·ÁĞ±í
+	//! è·å–å¹¿æ’­åœ°å€åˆ—è¡¨
 	void GetBroadcastAddrList(vector<string>& list);
 
 private:
@@ -56,7 +56,7 @@ private:
 	int m_iSocket;
 	sockaddr_in m_sLocalAddr;
 	sockaddr_in m_sRemoteAddr;
-	//! ¼ÇÂ¼ÒıÓÃ´ÎÊı
+	//! è®°å½•å¼•ç”¨æ¬¡æ•°
 	static int m_iRefCount;
 };
 

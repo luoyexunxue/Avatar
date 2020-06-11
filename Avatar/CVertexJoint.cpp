@@ -1,18 +1,18 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CVertexJoint.h"
 
 /**
-* Ä¬ÈÏ¹¹Ôìº¯Êı
+* é»˜è®¤æ„é€ å‡½æ•°
 */
 CVertexJoint::CVertexJoint() {
 	m_iCount = 0;
 }
 
 /**
-* ¸´ÖÆ¹¹Ôìº¯Êı
+* å¤åˆ¶æ„é€ å‡½æ•°
 */
 CVertexJoint::CVertexJoint(const CVertexJoint& joint) {
 	m_iCount = joint.m_iCount;
@@ -27,7 +27,7 @@ CVertexJoint::CVertexJoint(const CVertexJoint& joint) {
 }
 
 /**
-* ½öÓĞÒ»¸ö¹Ç÷ÀÓ°Ïì
+* ä»…æœ‰ä¸€ä¸ªéª¨éª¼å½±å“
 */
 CVertexJoint::CVertexJoint(int jointId) {
 	m_iCount = 1;
@@ -36,7 +36,7 @@ CVertexJoint::CVertexJoint(int jointId) {
 }
 
 /**
-* ¹¹ÔìËÄ¸ö°ó¶¨ĞÅÏ¢ÊµÀı
+* æ„é€ å››ä¸ªç»‘å®šä¿¡æ¯å®ä¾‹
 */
 CVertexJoint::CVertexJoint(const int jointId[4], const float weight[4]) {
 	m_iCount = 4;
@@ -51,7 +51,7 @@ CVertexJoint::CVertexJoint(const int jointId[4], const float weight[4]) {
 }
 
 /**
-* Ìí¼Ó°ó¶¨
+* æ·»åŠ ç»‘å®š
 */
 CVertexJoint& CVertexJoint::AddBind(int jointId, float weight) {
 	if (m_iCount < 4) {
@@ -76,7 +76,7 @@ CVertexJoint& CVertexJoint::AddBind(int jointId, float weight) {
 }
 
 /**
-* Ìí¼Ó°ó¶¨
+* æ·»åŠ ç»‘å®š
 */
 CVertexJoint& CVertexJoint::AddBind(const CVertexJoint& bind, float scale) {
 	for (int i = 0; i < bind.m_iCount; i++) {
@@ -94,7 +94,7 @@ CVertexJoint& CVertexJoint::AddBind(const CVertexJoint& bind, float scale) {
 }
 
 /**
-* µ¥Î»»¯È¨ÖØ
+* å•ä½åŒ–æƒé‡
 */
 CVertexJoint& CVertexJoint::Normalize() {
 	float total = 0.0;
@@ -104,7 +104,7 @@ CVertexJoint& CVertexJoint::Normalize() {
 }
 
 /**
-* ÔËËã·ûÖØÔØ =
+* è¿ç®—ç¬¦é‡è½½ =
 */
 CVertexJoint& CVertexJoint::operator = (const CVertexJoint& joint) {
 	m_iCount = joint.m_iCount;

@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CPOSTPROCESSFXAA_H_
@@ -7,7 +7,7 @@
 #include "CPostProcess.h"
 
 /**
-* @brief FXAA ¿ìËÙ¿¹¾â³İºó´¦Àí
+* @brief FXAA å¿«é€ŸæŠ—é”¯é½¿åå¤„ç†
 */
 class CPostProcessFxaa: public CPostProcess {
 public:

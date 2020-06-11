@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CTHREAD_H_
@@ -13,62 +13,62 @@
 #endif
 
 /**
-* Ïß³Ì·½·¨
+* çº¿ç¨‹æ–¹æ³•
 */
 typedef void(*Runnable)(class CThread*, void*);
 
 /**
-* @brief Ïß³ÌÀà
+* @brief çº¿ç¨‹ç±»
 */
 class AVATAR_EXPORT CThread {
 public:
-	//! Ä¬ÈÏ¹¹Ôìº¯Êı
+	//! é»˜è®¤æ„é€ å‡½æ•°
 	CThread();
-	//! Ê¹ÓÃÏß³Ì·½·¨³õÊ¼»¯
+	//! ä½¿ç”¨çº¿ç¨‹æ–¹æ³•åˆå§‹åŒ–
 	CThread(Runnable func);
-	//! Ä¬ÈÏÎö¹¹º¯Êı
+	//! é»˜è®¤ææ„å‡½æ•°
 	~CThread();
 
-	//! Æô¶¯Ïß³Ì
+	//! å¯åŠ¨çº¿ç¨‹
 	void Start();
-	//! Æô¶¯Ïß³Ì²¢ÖÆ¶¨²ÎÊı
+	//! å¯åŠ¨çº¿ç¨‹å¹¶åˆ¶å®šå‚æ•°
 	void Start(void* param);
-	//! Æô¶¯ÖÆ¶¨Ïß³Ì²¢´«µİ²ÎÊı
+	//! å¯åŠ¨åˆ¶å®šçº¿ç¨‹å¹¶ä¼ é€’å‚æ•°
 	void Start(Runnable func, void* param);
-	//! ·¢ËÍÍ£Ö¹ĞÅºÅ
+	//! å‘é€åœæ­¢ä¿¡å·
 	void Stop();
-	//! µÈ´ıÏß³ÌÍË³ö
+	//! ç­‰å¾…çº¿ç¨‹é€€å‡º
 	void Join();
-	//! Ïß³ÌÊÇ·ñÔËĞĞ
+	//! çº¿ç¨‹æ˜¯å¦è¿è¡Œ
 	bool IsRunning() { return m_bRunning; }
 
-	//! ¼Ó»¥³âËø
+	//! åŠ äº’æ–¥é”
 	void Lock();
-	//! ³¢ÊÔËø¶¨
+	//! å°è¯•é”å®š
 	bool TryLock();
-	//! »¥³â½âËø
+	//! äº’æ–¥è§£é”
 	void Unlock();
 
 private:
-	//! Ïß³ÌÔËĞĞ×´Ì¬
+	//! çº¿ç¨‹è¿è¡ŒçŠ¶æ€
 	bool m_bRunning;
-	//! Ïß³Ì·½·¨
+	//! çº¿ç¨‹æ–¹æ³•
 	Runnable m_pRunnable;
-	//! Ïß³Ì²ÎÊı
+	//! çº¿ç¨‹å‚æ•°
 	void* m_pParameter;
 #ifdef AVATAR_WINDOWS
-	//! Ïß³Ì¾ä±ú
+	//! çº¿ç¨‹å¥æŸ„
 	HANDLE m_pThread;
-	//! »¥³âËø
+	//! äº’æ–¥é”
 	CRITICAL_SECTION m_sMutex;
-	//! ¹¤×÷Ïß³Ì
+	//! å·¥ä½œçº¿ç¨‹
 	static DWORD WINAPI Run(LPVOID param);
 #else
-	//! Ïß³Ì¾ä±ú
+	//! çº¿ç¨‹å¥æŸ„
 	pthread_t m_pThread;
-	//! »¥³âËø
+	//! äº’æ–¥é”
 	pthread_mutex_t m_sMutex;
-	//! ¹¤×÷Ïß³Ì
+	//! å·¥ä½œçº¿ç¨‹
 	static void* Run(void* param);
 #endif
 };

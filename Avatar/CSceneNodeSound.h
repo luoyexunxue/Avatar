@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CSCENENODESOUND_H_
@@ -7,35 +7,35 @@
 #include "CSceneNode.h"
 
 /**
-* @brief ÉùÔ´³¡¾°½Úµã
+* @brief å£°æºåœºæ™¯èŠ‚ç‚¹
 *
-* ²»¿É¼ûÄ£ĞÍ£¬Ä£ÄâÉùÔ´£¬Ö»ÄÜ×÷ÎªÆäËû³¡¾°½ÚµãµÄ×Ó½ÚµãÊ¹ÓÃ
+* ä¸å¯è§æ¨¡å‹ï¼Œæ¨¡æ‹Ÿå£°æºï¼Œåªèƒ½ä½œä¸ºå…¶ä»–åœºæ™¯èŠ‚ç‚¹çš„å­èŠ‚ç‚¹ä½¿ç”¨
 */
 class AVATAR_EXPORT CSceneNodeSound: public CSceneNode {
 public:
-	//! ¹¹Ôì·½·¨
+	//! æ„é€ æ–¹æ³•
 	CSceneNodeSound(const string& name, const string& soundFile, bool loop, bool start);
 
-	//! ³õÊ¼»¯³¡¾°½Úµã
+	//! åˆå§‹åŒ–åœºæ™¯èŠ‚ç‚¹
 	virtual bool Init();
-	//! Ïú»Ù³¡¾°½Úµã
+	//! é”€æ¯åœºæ™¯èŠ‚ç‚¹
 	virtual void Destroy();
-	//! äÖÈ¾³¡¾°½Úµã
+	//! æ¸²æŸ“åœºæ™¯èŠ‚ç‚¹
 	virtual void Render();
-	//! ¸üĞÂÂß¼­
+	//! æ›´æ–°é€»è¾‘
 	virtual void Update(float dt);
 
-	//! Æô¶¯»òÍ£Ö¹²¥·Å
+	//! å¯åŠ¨æˆ–åœæ­¢æ’­æ”¾
 	void Play(bool enable);
 
 private:
-	//! ÒôÔ´ID
+	//! éŸ³æºID
 	int m_iSoundId;
-	//! ÉùÒôÎÄ¼ş
+	//! å£°éŸ³æ–‡ä»¶
 	string m_strSoundFile;
-	//! Ñ­»·²¥·Å
+	//! å¾ªç¯æ’­æ”¾
 	bool m_bLoopPlay;
-	//! ×Ô¶¯²¥·Å
+	//! è‡ªåŠ¨æ’­æ”¾
 	bool m_bAutoPlay;
 };
 

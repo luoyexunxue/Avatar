@@ -299,7 +299,7 @@ int main(int argc, char **argv)
 | graphics.background | 设置绘图背景颜色 | r, g, b, a | - |
 | graphics.pickingRay | 从屏幕上的点获取空间射线 | x, y | x, y, z, dx, dy, dz |
 | graphics.project | 获取空间点投影到屏幕上的位置 | x, y, z | x, y, z |
-| graphics.renderTarget | 设置离线渲染目标 | texture, &lt;clear, resize&gt; | last |
+| graphics.renderTarget | 设置离线渲染目标 | texture, &lt;clear&gt; | last |
 | texture.create | 创建或载入纹理 | name, &lt;width, height, shader \| depth&gt; | &lt;texture&gt; |
 | texture.delete | 删除纹理资源 | name | - |
 | texture.update | 更新纹理数据 | name, file | success |

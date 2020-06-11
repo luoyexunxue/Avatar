@@ -1,19 +1,19 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CMeshData.h"
 #include <cstring>
 
 /**
-* ¹¹Ôìº¯Êı
+* æ„é€ å‡½æ•°
 */
 CMeshData::CMeshData() {
 	m_pMeshData = new SMeshData();
 }
 
 /**
-* Îö¹¹º¯Êı
+* ææ„å‡½æ•°
 */
 CMeshData::~CMeshData() {
 	size_t numMeshes = m_pMeshData->meshes.size();
@@ -24,32 +24,32 @@ CMeshData::~CMeshData() {
 }
 
 /**
-* »ñÈ¡Íø¸ñÊıÁ¿
-* @return Íø¸ñÊıÁ¿
+* è·å–ç½‘æ ¼æ•°é‡
+* @return ç½‘æ ¼æ•°é‡
 */
 int CMeshData::GetMeshCount() const {
 	return m_pMeshData->meshes.size();
 }
 
 /**
-* »ñÈ¡¹Ø½ÚÊıÁ¿
-* @return ¹Ø½ÚÊıÁ¿
+* è·å–å…³èŠ‚æ•°é‡
+* @return å…³èŠ‚æ•°é‡
 */
 int CMeshData::GetJointCount() const {
 	return m_pMeshData->joints.size();
 }
 
 /**
-* »ñÈ¡¶¯»­ÊıÁ¿
-* @return ¶¯»­ÊıÁ¿
+* è·å–åŠ¨ç”»æ•°é‡
+* @return åŠ¨ç”»æ•°é‡
 */
 int CMeshData::GetAnimationCount() const {
 	return m_pMeshData->animationNames.size();
 }
 
 /**
-* »ñÈ¡Íø¸ñ¶¥µã¼ÆÊı
-* @return ¶¥µã×ÜÊı
+* è·å–ç½‘æ ¼é¡¶ç‚¹è®¡æ•°
+* @return é¡¶ç‚¹æ€»æ•°
 */
 int CMeshData::GetVertexCount() const {
 	int count = 0;
@@ -60,8 +60,8 @@ int CMeshData::GetVertexCount() const {
 }
 
 /**
-* »ñÈ¡Íø¸ñÈı½ÇĞÎ¼ÆÊı
-* @return Èı½ÇĞÎ×ÜÊı
+* è·å–ç½‘æ ¼ä¸‰è§’å½¢è®¡æ•°
+* @return ä¸‰è§’å½¢æ€»æ•°
 */
 int CMeshData::GetTriangleCount() const {
 	int count = 0;
@@ -72,8 +72,8 @@ int CMeshData::GetTriangleCount() const {
 }
 
 /**
-* »ñÈ¡°üÎ§ºĞ
-* @return Íø¸ñµÄAABB°üÎ§ºĞ
+* è·å–åŒ…å›´ç›’
+* @return ç½‘æ ¼çš„AABBåŒ…å›´ç›’
 */
 CBoundingBox CMeshData::GetBoundingBox() const {
 	CBoundingBox boundingBox;
@@ -84,27 +84,27 @@ CBoundingBox CMeshData::GetBoundingBox() const {
 }
 
 /**
-* »ñÈ¡Ö¸¶¨Íø¸ñ
-* @param index Ë÷Òı
-* @return Íø¸ñ¶ÔÏóÖ¸Õë
+* è·å–æŒ‡å®šç½‘æ ¼
+* @param index ç´¢å¼•
+* @return ç½‘æ ¼å¯¹è±¡æŒ‡é’ˆ
 */
 CMesh* CMeshData::GetMesh(int index) {
 	return m_pMeshData->meshes[index];
 }
 
 /**
-* »ñÈ¡Ö¸¶¨¹Ø½Ú
-* @param index Ë÷Òı
-* @return ¹Ø½Ú¶ÔÏóÖ¸Õë
+* è·å–æŒ‡å®šå…³èŠ‚
+* @param index ç´¢å¼•
+* @return å…³èŠ‚å¯¹è±¡æŒ‡é’ˆ
 */
 SJoint* CMeshData::GetJoint(int index) {
 	return m_pMeshData->joints[index];
 }
 
 /**
-* »ñÈ¡Ö¸¶¨¹Ø½Ú
-* @param name ¹Ø½ÚÃû³Æ
-* @return ¹Ø½Ú¶ÔÏóÖ¸Õë£¬·µ»Ø 0 ±íÊ¾²»´æÔÚ
+* è·å–æŒ‡å®šå…³èŠ‚
+* @param name å…³èŠ‚åç§°
+* @return å…³èŠ‚å¯¹è±¡æŒ‡é’ˆï¼Œè¿”å› 0 è¡¨ç¤ºä¸å­˜åœ¨
 */
 SJoint* CMeshData::GetJoint(const string& name) {
 	size_t count = m_pMeshData->joints.size();
@@ -117,9 +117,9 @@ SJoint* CMeshData::GetJoint(const string& name) {
 }
 
 /**
-* »ñÈ¡Ö¸¶¨Ãû³ÆµÄ¶¯»­
-* @param name ¶¯»­Ãû³Æ
-* @return ¶¯»­Ë÷Òı£¬·µ»Ø -1 ±íÊ¾²»´æÔÚ
+* è·å–æŒ‡å®šåç§°çš„åŠ¨ç”»
+* @param name åŠ¨ç”»åç§°
+* @return åŠ¨ç”»ç´¢å¼•ï¼Œè¿”å› -1 è¡¨ç¤ºä¸å­˜åœ¨
 */
 int CMeshData::GetAnimationIndex(const string& name) {
 	size_t count = m_pMeshData->animationNames.size();
@@ -133,18 +133,18 @@ int CMeshData::GetAnimationIndex(const string& name) {
 }
 
 /**
-* »ñÈ¡¶¯»­Ãû³Æ
-* @param index Ë÷Òı
-* @return ¶¯»­Ãû³Æ
+* è·å–åŠ¨ç”»åç§°
+* @param index ç´¢å¼•
+* @return åŠ¨ç”»åç§°
 */
 string& CMeshData::GetAnimationName(int index) {
 	return m_pMeshData->animationNames[index];
 }
 
 /**
-* »ñÈ¡¶¯»­Ê±³¤
-* @param index Ë÷Òı
-* @return ¶¯»­Ê±³¤
+* è·å–åŠ¨ç”»æ—¶é•¿
+* @param index ç´¢å¼•
+* @return åŠ¨ç”»æ—¶é•¿
 */
 float CMeshData::GetAnimationTime(int index) {
 	float beginTime = m_pMeshData->animationBeginTimes[index];
@@ -153,27 +153,27 @@ float CMeshData::GetAnimationTime(int index) {
 }
 
 /**
-* »ñÈ¡¶¯»­¿ªÊ¼Ê±¼ä
-* @param index Ë÷Òı
-* @return ¶¯»­¿ªÊ¼Ê±¼ä
+* è·å–åŠ¨ç”»å¼€å§‹æ—¶é—´
+* @param index ç´¢å¼•
+* @return åŠ¨ç”»å¼€å§‹æ—¶é—´
 */
 float CMeshData::GetAnimationBeginTime(int index) {
 	return m_pMeshData->animationBeginTimes[index];
 }
 
 /**
-* »ñÈ¡¶¯»­½áÊøÊ±¼ä
-* @param index Ë÷Òı
-* @return ¶¯»­½áÊøÊ±¼ä
+* è·å–åŠ¨ç”»ç»“æŸæ—¶é—´
+* @param index ç´¢å¼•
+* @return åŠ¨ç”»ç»“æŸæ—¶é—´
 */
 float CMeshData::GetAnimationEndTime(int index) {
 	return m_pMeshData->animationEndTimes[index];
 }
 
 /**
-* Ìí¼ÓÍø¸ñ
-* @param mesh Íø¸ñ¶ÔÏó
-* @return µ±Ç° CMeshData Ö¸Õë
+* æ·»åŠ ç½‘æ ¼
+* @param mesh ç½‘æ ¼å¯¹è±¡
+* @return å½“å‰ CMeshData æŒ‡é’ˆ
 */
 CMeshData* CMeshData::AddMesh(CMesh* mesh) {
 	m_pMeshData->meshes.push_back(mesh);
@@ -181,9 +181,9 @@ CMeshData* CMeshData::AddMesh(CMesh* mesh) {
 }
 
 /**
-* Ìí¼Ó¹Ø½Ú£¬ĞèÒª×¢ÒâÏÈÌí¼Ó¸¸¹Ø½Ú
-* @param joint ¹Ç÷À¶ÔÏó
-* @return µ±Ç° CMeshData Ö¸Õë
+* æ·»åŠ å…³èŠ‚ï¼Œéœ€è¦æ³¨æ„å…ˆæ·»åŠ çˆ¶å…³èŠ‚
+* @param joint éª¨éª¼å¯¹è±¡
+* @return å½“å‰ CMeshData æŒ‡é’ˆ
 */
 CMeshData* CMeshData::AddJoint(SJoint* joint) {
 	joint->index = m_pMeshData->joints.size();
@@ -196,18 +196,18 @@ CMeshData* CMeshData::AddJoint(SJoint* joint) {
 }
 
 /**
-* Ìí¼Ó¶¯»­ĞÅÏ¢
-* @param name ¶¯»­Ãû³Æ
-* @param beginTime ¿ªÊ¼Ê±¼ä
-* @param endTime ½áÊøÊ±¼ä
-* @return µ±Ç° CMeshData Ö¸Õë
-* @attention ¶¯»­Êı¾İ°üº¬ÔÚ @ref SJoint ÖĞ
+* æ·»åŠ åŠ¨ç”»ä¿¡æ¯
+* @param name åŠ¨ç”»åç§°
+* @param beginTime å¼€å§‹æ—¶é—´
+* @param endTime ç»“æŸæ—¶é—´
+* @return å½“å‰ CMeshData æŒ‡é’ˆ
+* @attention åŠ¨ç”»æ•°æ®åŒ…å«åœ¨ @ref SJoint ä¸­
 */
 CMeshData* CMeshData::AddAnimation(const string& name, float beginTime, float endTime) {
 	m_pMeshData->animationNames.push_back(name);
 	m_pMeshData->animationBeginTimes.push_back(beginTime);
 	m_pMeshData->animationEndTimes.push_back(endTime);
-	// É¾³ıÖØ¸´¶¯»­±ä»»Êı¾İ
+	// åˆ é™¤é‡å¤åŠ¨ç”»å˜æ¢æ•°æ®
 	for (size_t i = 0; i < m_pMeshData->joints.size(); i++) {
 		SJoint* pJoint = m_pMeshData->joints[i];
 		int rot = static_cast<int>(pJoint->keyRot.size()) - 2;
@@ -235,13 +235,13 @@ CMeshData* CMeshData::AddAnimation(const string& name, float beginTime, float en
 }
 
 /**
-* Îª¹Ç÷ÀÌí¼ÓÎïÀíÄ£ÄâÖ§³Ö
-* @param name ¹Ø½ÚÃû³Æ
-* @param mass ¹Ø½ÚÄ©¶ËÖÊÁ¿
-* @param hk ÑØ¹Ø½Ú·½ÏòµÄµ¯ĞÔÏµÊı£¬¼´À­ÉìÏµÊı
-* @param vk ´¹Ö±ÓÚ¹Ø½Ú·½ÏòµÄµ¯ĞÔÏµÊı£¬¼´ÕÛÍäÏµÊı
-* @param damping ×èÄáÏµÊı
-* @return ¹Ç÷ÀÊÇ·ñ´æÔÚ
+* ä¸ºéª¨éª¼æ·»åŠ ç‰©ç†æ¨¡æ‹Ÿæ”¯æŒ
+* @param name å…³èŠ‚åç§°
+* @param mass å…³èŠ‚æœ«ç«¯è´¨é‡
+* @param hk æ²¿å…³èŠ‚æ–¹å‘çš„å¼¹æ€§ç³»æ•°ï¼Œå³æ‹‰ä¼¸ç³»æ•°
+* @param vk å‚ç›´äºå…³èŠ‚æ–¹å‘çš„å¼¹æ€§ç³»æ•°ï¼Œå³æŠ˜å¼¯ç³»æ•°
+* @param damping é˜»å°¼ç³»æ•°
+* @return éª¨éª¼æ˜¯å¦å­˜åœ¨
 */
 bool CMeshData::SetPhysics(const string& name, float mass, float hk, float vk, float damping) {
 	SJoint* pJoint = GetJoint(name);
@@ -259,13 +259,13 @@ bool CMeshData::SetPhysics(const string& name, float mass, float hk, float vk, f
 }
 
 /**
-* ÉèÖÃ¹Ç÷À³¯Ïòµã
-* @param name ¹Ø½ÚÃû³Æ
-* @param front ¹Ø½ÚµÄÇ°³¯Ïò(ÎïÌå×ø±êÏµ)
-* @param point ÉèÖÃµÄ³¯ÏòÎ»ÖÃ(ÊÀ½ç×ø±êÏµ)
-* @param angle Ğı×ª½Ç¶ÈÏŞÖÆ
-* @param damping ×èÄáÏµÊı
-* @return ¹Ç÷ÀÊÇ·ñ´æÔÚ
+* è®¾ç½®éª¨éª¼æœå‘ç‚¹
+* @param name å…³èŠ‚åç§°
+* @param front å…³èŠ‚çš„å‰æœå‘(ç‰©ä½“åæ ‡ç³»)
+* @param point è®¾ç½®çš„æœå‘ä½ç½®(ä¸–ç•Œåæ ‡ç³»)
+* @param angle æ—‹è½¬è§’åº¦é™åˆ¶
+* @param damping é˜»å°¼ç³»æ•°
+* @return éª¨éª¼æ˜¯å¦å­˜åœ¨
 */
 bool CMeshData::SetFacing(const string& name, const CVector3& front, const CVector3& point, float angle, float damping) {
 	SJoint* pJoint = GetJoint(name);
@@ -286,7 +286,7 @@ bool CMeshData::SetFacing(const string& name, const CVector3& front, const CVect
 }
 
 /**
-* Çå¿ÕËùÓĞÍø¸ñ
+* æ¸…ç©ºæ‰€æœ‰ç½‘æ ¼
 */
 void CMeshData::ClearMesh() {
 	size_t count = m_pMeshData->meshes.size();
@@ -295,7 +295,7 @@ void CMeshData::ClearMesh() {
 }
 
 /**
-* Çå¿ÕËùÓĞ¹Ø½Ú
+* æ¸…ç©ºæ‰€æœ‰å…³èŠ‚
 */
 void CMeshData::ClearJoint() {
 	size_t count = m_pMeshData->joints.size();
@@ -304,7 +304,7 @@ void CMeshData::ClearJoint() {
 }
 
 /**
-* Çå¿ÕËùÓĞ¶¯»­
+* æ¸…ç©ºæ‰€æœ‰åŠ¨ç”»
 */
 void CMeshData::ClearAnimation() {
 	m_pMeshData->animationNames.clear();
@@ -313,7 +313,7 @@ void CMeshData::ClearAnimation() {
 }
 
 /**
-* ¿ËÂ¡Íø¸ñ¶ÔÏó
+* å…‹éš†ç½‘æ ¼å¯¹è±¡
 */
 CMeshData* CMeshData::Clone() const {
 	CMeshData* meshData = new CMeshData();

@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CVERTEXJOINT_H_
@@ -7,36 +7,36 @@
 #include "AvatarConfig.h"
 
 /**
-* @brief ¶¥µã¹Ç÷À°ó¶¨Àà
+* @brief é¡¶ç‚¹éª¨éª¼ç»‘å®šç±»
 */
 class AVATAR_EXPORT CVertexJoint {
 public:
-	//! Ä¬ÈÏ¹¹Ôìº¯Êı
+	//! é»˜è®¤æ„é€ å‡½æ•°
 	CVertexJoint();
-	//! ¸´ÖÆ¹¹Ôìº¯Êı
+	//! å¤åˆ¶æ„é€ å‡½æ•°
 	CVertexJoint(const CVertexJoint& joint);
-	//! ¹¹Ôì½öÓĞÒ»¸ö¹Ç÷ÀÓ°ÏìµÄÊµÀı
+	//! æ„é€ ä»…æœ‰ä¸€ä¸ªéª¨éª¼å½±å“çš„å®ä¾‹
 	CVertexJoint(int jointId);
-	//! ¹¹ÔìËÄ¸ö°ó¶¨ĞÅÏ¢ÊµÀı
+	//! æ„é€ å››ä¸ªç»‘å®šä¿¡æ¯å®ä¾‹
 	CVertexJoint(const int jointId[4], const float weight[4]);
 
-	//! Ìí¼Ó°ó¶¨
+	//! æ·»åŠ ç»‘å®š
 	CVertexJoint& AddBind(int jointId, float weight);
-	//! Ìí¼Ó°ó¶¨
+	//! æ·»åŠ ç»‘å®š
 	CVertexJoint& AddBind(const CVertexJoint& bind, float scale);
-	//! µ¥Î»»¯È¨ÖØ
+	//! å•ä½åŒ–æƒé‡
 	CVertexJoint& Normalize();
 
 public:
-	//! ¸³ÖµÔËËã·û
+	//! èµ‹å€¼è¿ç®—ç¬¦
 	CVertexJoint& operator = (const CVertexJoint& joint);
 
 public:
-	//! °ó¶¨µÄÊıÁ¿(×î´óÎª4)
+	//! ç»‘å®šçš„æ•°é‡(æœ€å¤§ä¸º4)
 	int m_iCount;
-	//! ¹Ç÷ÀIDÊı×é
+	//! éª¨éª¼IDæ•°ç»„
 	int m_iJointId[4];
-	//! °ó¶¨È¨ÖØÊı×é
+	//! ç»‘å®šæƒé‡æ•°ç»„
 	float m_fWeight[4];
 };
 

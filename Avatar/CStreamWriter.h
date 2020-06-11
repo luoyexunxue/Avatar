@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CSTREAMWRITER_H_
@@ -8,12 +8,12 @@
 #include <cstring>
 
 /**
-* @brief Á÷Ğ´ÈëÀà
+* @brief æµå†™å…¥ç±»
 */
 class CStreamWriter {
 public:
 	/**
-	* Ä¬ÈÏ¹¹Ôìº¯Êı
+	* é»˜è®¤æ„é€ å‡½æ•°
 	*/
 	CStreamWriter(unsigned char* buffer, int size) {
 		m_pBuffer = buffer;
@@ -23,7 +23,7 @@ public:
 	}
 
 	/**
-	* ÉèÖÃÁ÷Ö¸ÕëÎ»ÖÃ
+	* è®¾ç½®æµæŒ‡é’ˆä½ç½®
 	*/
 	CStreamWriter& SetPosition(int pos) {
 		m_pCurrent = m_pBuffer + pos;
@@ -35,7 +35,7 @@ public:
 	}
 
 	/**
-	* ½«Á÷Ö¸ÕëÌø¹ıÖ¸¶¨×Ö½ÚÊı
+	* å°†æµæŒ‡é’ˆè·³è¿‡æŒ‡å®šå­—èŠ‚æ•°
 	*/
 	CStreamWriter& Skip(int nByte) {
 		m_pCurrent += nByte;
@@ -47,28 +47,28 @@ public:
 	}
 
 	/**
-	* »ñÈ¡µ±Ç°Î»ÖÃ
+	* è·å–å½“å‰ä½ç½®
 	*/
 	int GetPosition() {
 		return m_iCurrentPos;
 	}
 
 	/**
-	* Ê£Óà×Ö½ÚÊı
+	* å‰©ä½™å­—èŠ‚æ•°
 	*/
 	int Available() {
 		return m_iBufferSize - m_iCurrentPos;
 	}
 
 	/**
-	* »ñÈ¡µ±Ç°Ö¸Õë
+	* è·å–å½“å‰æŒ‡é’ˆ
 	*/
 	unsigned char* GetPointer() {
 		return m_pCurrent;
 	}
 
 	/**
-	* ÉèÖÃÖµ
+	* è®¾ç½®å€¼
 	*/
 	template <typename T>
 	void SetValue(T& value) {
@@ -81,7 +81,7 @@ public:
 	}
 
 	/**
-	* Ğ´ÈëÊı¾İ
+	* å†™å…¥æ•°æ®
 	*/
 	int Write(unsigned char* data, int size) {
 		int writeSize = m_iCurrentPos + size > m_iBufferSize? m_iBufferSize - m_iCurrentPos: size;
@@ -92,7 +92,7 @@ public:
 	}
 
 	/**
-	* Á÷²Ù×÷·û
+	* æµæ“ä½œç¬¦
 	*/
 	template <typename T>
 	CStreamWriter& operator << (T& value) {

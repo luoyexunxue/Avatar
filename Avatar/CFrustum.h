@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CFRUSTUM_H_
@@ -10,41 +10,41 @@
 #include "CBoundingBox.h"
 
 /**
-* @brief Ïà»ú¿ÉÊÓ¿Õ¼äÊÓ¾°ÌåÀà
+* @brief ç›¸æœºå¯è§†ç©ºé—´è§†æ™¯ä½“ç±»
 */
 class AVATAR_EXPORT CFrustum {
 public:
-	//! Ä¬ÈÏ¹¹Ôìº¯Êı
+	//! é»˜è®¤æ„é€ å‡½æ•°
 	CFrustum();
-	//! ¸´ÖÆ¹¹Ôìº¯Êı
+	//! å¤åˆ¶æ„é€ å‡½æ•°
 	CFrustum(const CFrustum& frustum);
-	//! ÓÉ6Æ½Ãæ·½³Ì²ÎÊıÊı×é¹¹ÔìÊÓ¾°Ìå
+	//! ç”±6å¹³é¢æ–¹ç¨‹å‚æ•°æ•°ç»„æ„é€ è§†æ™¯ä½“
 	CFrustum(const float frustum[6][4]);
-	//! ÓÉÊÓÍ¼Í¶Ó°¾ØÕó¹¹Ôì
+	//! ç”±è§†å›¾æŠ•å½±çŸ©é˜µæ„é€ 
 	CFrustum(const CMatrix4& clipMat);
 
-	//! À©Õ¹ÊÓ¾°Ìå
+	//! æ‰©å±•è§†æ™¯ä½“
 	CFrustum& Enlarge(float horizontal, float vertical, float depth);
-	//! ´ÓÊÓÍ¼Í¶Ó°¾ØÕó
+	//! ä»è§†å›¾æŠ•å½±çŸ©é˜µ
 	CFrustum& FromViewProj(const CMatrix4& viewProj);
 
-	//! ÅĞ¶ÏµãÊÇ·ñÔÚÊÓ¾°ÌåÄÚ
+	//! åˆ¤æ–­ç‚¹æ˜¯å¦åœ¨è§†æ™¯ä½“å†…
 	bool IsContain(const CVector3& point) const;
-	//! ÅĞ¶ÏÇòÊÇ·ñÔÚÊÓ¾°ÌåÄÚ
+	//! åˆ¤æ–­çƒæ˜¯å¦åœ¨è§†æ™¯ä½“å†…
 	bool IsSphereInside(const CVector3& center, float radius) const;
-	//! ÅĞ¶Ï°üÎ§ºĞÊÇ·ñÔÚÊÓ¾°ÌåÄÚ
+	//! åˆ¤æ–­åŒ…å›´ç›’æ˜¯å¦åœ¨è§†æ™¯ä½“å†…
 	bool IsAABBInside(const CBoundingBox& aabb) const;
 
 public:
-	//! ÖØÔØÔËËã·û ==
+	//! é‡è½½è¿ç®—ç¬¦ ==
 	bool operator == (const CFrustum& frustum) const;
-	//! ÖØÔØÔËËã·û !=
+	//! é‡è½½è¿ç®—ç¬¦ !=
 	bool operator != (const CFrustum& frustum) const;
 
 public:
 	/**
-	* ÊÓ¾°Ìå 6 ¸öÆ½ÃæÒ»°ã·½³Ì²ÎÊı£¬
-	* ÒÀ´ÎÎª ÓÒ£¬×ó£¬ÉÏ£¬ÏÂ£¬Ô¶£¬½ü
+	* è§†æ™¯ä½“ 6 ä¸ªå¹³é¢ä¸€èˆ¬æ–¹ç¨‹å‚æ•°ï¼Œ
+	* ä¾æ¬¡ä¸º å³ï¼Œå·¦ï¼Œä¸Šï¼Œä¸‹ï¼Œè¿œï¼Œè¿‘
 	*/
 	float m_fPlane[6][4];
 };

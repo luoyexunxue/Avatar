@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CCameraFree.h"
@@ -8,7 +8,7 @@
 #include <cmath>
 
 /**
-* ¹¹Ôìº¯Êı
+* æ„é€ å‡½æ•°
 */
 CCameraFree::CCameraFree() {
 	m_fDamping = 5.0f;
@@ -22,7 +22,7 @@ CCameraFree::CCameraFree() {
 }
 
 /**
-* »ñÈ¡Ïà»úÃû³Æ
+* è·å–ç›¸æœºåç§°
 * @return free
 */
 const char* CCameraFree::GetName() const {
@@ -30,7 +30,7 @@ const char* CCameraFree::GetName() const {
 }
 
 /**
-* ¿ØÖÆĞÅÏ¢ÊäÈë
+* æ§åˆ¶ä¿¡æ¯è¾“å…¥
 */
 void CCameraFree::Input(CInputManager::SInput* input) {
 	if (!m_bControlAttached) return;
@@ -48,21 +48,21 @@ void CCameraFree::Input(CInputManager::SInput* input) {
 }
 
 /**
-* ÉèÖÃÏà»ú¸ß¶È
+* è®¾ç½®ç›¸æœºé«˜åº¦
 */
 void CCameraFree::SetHeight(float height) {
 	m_cPosInAdvance[2] = height;
 }
 
 /**
-* ÉèÖÃÏà»úÎ»ÖÃ
+* è®¾ç½®ç›¸æœºä½ç½®
 */
 void CCameraFree::SetPosition(const CVector3& pos) {
 	m_cPosInAdvance = pos;
 }
 
 /**
-* ÉèÖÃÏà»ú·½Î»
+* è®¾ç½®ç›¸æœºæ–¹ä½
 */
 void CCameraFree::SetAngle(float yaw, float pitch, float roll) {
 	if (!m_bTrackFollow) {
@@ -75,12 +75,12 @@ void CCameraFree::SetAngle(float yaw, float pitch, float roll) {
 }
 
 /**
-* ÉèÖÃÏà»úÄ¿±ê
+* è®¾ç½®ç›¸æœºç›®æ ‡
 */
 void CCameraFree::SetTarget(const CVector3& pos) {
 	CVector3 lookVec = pos - m_cPosInAdvance;
 	if (!m_bTrackFollow && lookVec.Length() > 0) {
-		// ¸üĞÂÏà»ú·½Î»½Ç
+		// æ›´æ–°ç›¸æœºæ–¹ä½è§’
 		lookVec.Normalize();
 		float yaw;
 		float pitch;
@@ -91,13 +91,13 @@ void CCameraFree::SetTarget(const CVector3& pos) {
 }
 
 /**
-* ¸üĞÂÏà»ú
+* æ›´æ–°ç›¸æœº
 */
 void CCameraFree::Update(float dt) {
-	// ¶ÔÏà»úÎ»ÖÃºÍ·½Î»½øĞĞ²åÖµ
+	// å¯¹ç›¸æœºä½ç½®å’Œæ–¹ä½è¿›è¡Œæ’å€¼
 	float interpolation = m_fDamping * dt;
 	if (interpolation > 1.0f) interpolation = 1.0f;
-	// ÏßÂ·ÂşÓÎ
+	// çº¿è·¯æ¼«æ¸¸
 	if (m_vecTrackLine.empty()) {
 		m_cPosition = m_cPosition.Lerp(m_cPosInAdvance, interpolation);
 		m_cOrientation = m_cOrientation.Slerp(m_cOrientInAdvance, interpolation);
@@ -107,26 +107,26 @@ void CCameraFree::Update(float dt) {
 		m_cPosition = m_cPosition.Lerp(m_cPosInAdvance, interpolation);
 		m_cOrientation = m_cOrientation.SlerpShortest(m_cOrientInAdvance, interpolation);
 	}
-	// ¼ÆËãÏà»ú·½Î»³¯Ïò
+	// è®¡ç®—ç›¸æœºæ–¹ä½æœå‘
 	m_cLookVector = m_cOrientation * CVector3::Y;
 	m_cUpVector = m_cOrientation * CVector3::Z;
 	CCamera::Update(dt);
 }
 
 /**
-* ÉèÖÃ×èÄáÏµÊı
-* @param k ×èÄáÏµÊı£¬Ô½´ó¹ßĞÔ±íÏÖÔ½Ğ¡
+* è®¾ç½®é˜»å°¼ç³»æ•°
+* @param k é˜»å°¼ç³»æ•°ï¼Œè¶Šå¤§æƒ¯æ€§è¡¨ç°è¶Šå°
 */
 void CCameraFree::SetDamping(float k) {
 	m_fDamping = k;
 }
 
 /**
-* ¿ªÊ¼ÂşÓÎÂ·Ïß
-* @param track ÏßÂ·
-* @param speed ÂşÓÎËÙ¶È
-* @param follow ±£³ÖÏà»úÊÓÏß¸úËæ
-* @param loop Ñ­»·ÂşÓÎ
+* å¼€å§‹æ¼«æ¸¸è·¯çº¿
+* @param track çº¿è·¯
+* @param speed æ¼«æ¸¸é€Ÿåº¦
+* @param follow ä¿æŒç›¸æœºè§†çº¿è·Ÿéš
+* @param loop å¾ªç¯æ¼«æ¸¸
 */
 void CCameraFree::StartLineTrack(const vector<CVector3>& track, float speed, bool follow, bool loop) {
 	m_vecTrackLine.clear();
@@ -135,7 +135,7 @@ void CCameraFree::StartLineTrack(const vector<CVector3>& track, float speed, boo
 	start.time = 0.0f;
 	start.position = track[0];
 	m_vecTrackLine.push_back(start);
-	// Ô¤ÏÈ¼ÆËãÃ¿¸öµãµÄÂşÓÎµ½µÄÊ±¼ä
+	// é¢„å…ˆè®¡ç®—æ¯ä¸ªç‚¹çš„æ¼«æ¸¸åˆ°çš„æ—¶é—´
 	for (size_t i = 1; i < track.size(); i++) {
 		STrackPoint point;
 		point.time = m_vecTrackLine.back().time + (track[i] - track[i - 1]).Length() / speed;
@@ -151,7 +151,7 @@ void CCameraFree::StartLineTrack(const vector<CVector3>& track, float speed, boo
 }
 
 /**
-* Í£Ö¹ÂşÓÎÏßÂ·
+* åœæ­¢æ¼«æ¸¸çº¿è·¯
 */
 void CCameraFree::StopLineTrack() {
 	m_vecTrackLine.clear();
@@ -159,29 +159,29 @@ void CCameraFree::StopLineTrack() {
 }
 
 /**
-* ÉèÖÃÂşÓÎÆ«ÒÆ
-* @param offset Î»ÖÃÆ«ÒÆ
+* è®¾ç½®æ¼«æ¸¸åç§»
+* @param offset ä½ç½®åç§»
 */
 void CCameraFree::OffsetLineTrack(const CVector3& offset) {
 	m_cTrackOffset.SetValue(offset);
 }
 
 /**
-* ¼ÆËãµ±Ç°ÂşÓÎÎ»ÖÃºÍ·½Ïò
-* @param dt ²½½øÊ±¼ä
-* @param pos ²åÖµÊä³öÎ»ÖÃ
-* @param orient ²åÖµÊä³ö·½Ïò
+* è®¡ç®—å½“å‰æ¼«æ¸¸ä½ç½®å’Œæ–¹å‘
+* @param dt æ­¥è¿›æ—¶é—´
+* @param pos æ’å€¼è¾“å‡ºä½ç½®
+* @param orient æ’å€¼è¾“å‡ºæ–¹å‘
 */
 void CCameraFree::TrackLine(float dt, CVector3& pos, CQuaternion& orient) {
 	while ((size_t)m_iTrackPoint < m_vecTrackLine.size()) {
 		if (m_fTrackTime < m_vecTrackLine[m_iTrackPoint++].time) {
 			m_iTrackPoint -= 1;
-			// ÏßĞÔ²åÖµ
+			// çº¿æ€§æ’å€¼
 			float t1 = m_fTrackTime - m_vecTrackLine[m_iTrackPoint - 1].time;
 			float t2 = m_vecTrackLine[m_iTrackPoint].time - m_vecTrackLine[m_iTrackPoint - 1].time;
 			CVector3 dir = m_vecTrackLine[m_iTrackPoint].position - m_vecTrackLine[m_iTrackPoint - 1].position;
 			pos = m_vecTrackLine[m_iTrackPoint - 1].position + dir * (t1 / t2);
-			// ¼ÆËãÏà»ú·½Ïò
+			// è®¡ç®—ç›¸æœºæ–¹å‘
 			if (m_bTrackFollow && m_iTrackPointPrev != m_iTrackPoint) {
 				float cosa = CVector3::Y.DotProduct(dir);
 				if (cosa < -1.0f) cosa = -1.0f;
@@ -193,7 +193,7 @@ void CCameraFree::TrackLine(float dt, CVector3& pos, CQuaternion& orient) {
 			m_fTrackTime += dt;
 			break;
 		}
-		// Ñ­»·ÂşÓÎÏßÂ·
+		// å¾ªç¯æ¼«æ¸¸çº¿è·¯
 		if (m_bTrackLoop && (size_t)m_iTrackPoint == m_vecTrackLine.size()) {
 			m_fTrackTime -= m_vecTrackLine.back().time;
 			m_iTrackPoint = 1;

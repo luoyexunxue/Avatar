@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CMESHSLICER_H_
@@ -14,45 +14,45 @@ using std::vector;
 using std::list;
 
 /**
-* @brief Íø¸ñÇĞ¸îÀà
+* @brief ç½‘æ ¼åˆ‡å‰²ç±»
 *
-* ¿ÉÒÔÊ¹ÓÃÖ¸¶¨Æ½ÃæÇĞ¸îÍø¸ñ¶ÔÏó£¬µÃµ½Ïß¶Î¹ì¼£
+* å¯ä»¥ä½¿ç”¨æŒ‡å®šå¹³é¢åˆ‡å‰²ç½‘æ ¼å¯¹è±¡ï¼Œå¾—åˆ°çº¿æ®µè½¨è¿¹
 */
 class AVATAR_EXPORT CMeshSlicer {
 public:
-	//! Ä¬ÈÏ¹¹Ôìº¯Êı
+	//! é»˜è®¤æ„é€ å‡½æ•°
 	CMeshSlicer();
-	//! Ê¹ÓÃÍø¸ñ¶ÔÏó¹¹ÔìÇĞ¸îÀà
+	//! ä½¿ç”¨ç½‘æ ¼å¯¹è±¡æ„é€ åˆ‡å‰²ç±»
 	CMeshSlicer(const CMesh* mesh);
 
-	//! Ìí¼ÓÍø¸ñ
+	//! æ·»åŠ ç½‘æ ¼
 	void AddMesh(const CMesh* mesh);
 
-	//! °´Ö¸¶¨Æ½ÃæÇĞ¸î
+	//! æŒ‰æŒ‡å®šå¹³é¢åˆ‡å‰²
 	bool Slice(const CPlane& plane);
-	//! °´Ö¸¶¨×ø±êÖáÇĞ¸î
+	//! æŒ‰æŒ‡å®šåæ ‡è½´åˆ‡å‰²
 	bool Slice(int axis, float value);
 
-	//! »ñÈ¡¹ì¼£¸öÊı
+	//! è·å–è½¨è¿¹ä¸ªæ•°
 	int GetTrackCount() const;
-	//! »ñÈ¡Ò»¸ö¹ì¼£µÄµã¸öÊı
+	//! è·å–ä¸€ä¸ªè½¨è¿¹çš„ç‚¹ä¸ªæ•°
 	int GetTrackPointCount(int track) const;
-	//! »ñÈ¡Ò»¸ö¹ì¼£µÄÖ¸¶¨µã
+	//! è·å–ä¸€ä¸ªè½¨è¿¹çš„æŒ‡å®šç‚¹
 	const CVector3& GetTrackPoint(int track, int point) const;
 
-	//! ´´½¨¿ÉäÖÈ¾µÄ³¡¾°½Úµã
+	//! åˆ›å»ºå¯æ¸²æŸ“çš„åœºæ™¯èŠ‚ç‚¹
 	CSceneNode* CreateRenderLine(CSceneNode* src, int track, bool depth, bool point);
 
 private:
-	//! ÇĞ¸îÈı½ÇĞÎ
+	//! åˆ‡å‰²ä¸‰è§’å½¢
 	void SliceTriangle(const CPlane& plane, const CVector3& a, const CVector3& b, const CVector3& c);
-	//! ´ÓÇĞ¸îºóµÄÏß¶ÎÉú³ÉÇĞÃæ
+	//! ä»åˆ‡å‰²åçš„çº¿æ®µç”Ÿæˆåˆ‡é¢
 	void BuildTrackLine();
-	//! ÅĞ¶ÏÁ½µãÊÇ·ñÏàÍ¬
+	//! åˆ¤æ–­ä¸¤ç‚¹æ˜¯å¦ç›¸åŒ
 	inline bool IsEqual(const CVector3& a, const CVector3& b) const;
 
 private:
-	//! ÇĞ¸îÏß¶Î¶¨Òå
+	//! åˆ‡å‰²çº¿æ®µå®šä¹‰
 	typedef struct _STrackSegment {
 		CVector3 a;
 		CVector3 b;

@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CSCENENODEBLAST_H_
@@ -7,45 +7,45 @@
 #include "CSceneNode.h"
 
 /**
-* @brief ±¬Õ¨Ä£Äâ³¡¾°½Úµã
+* @brief çˆ†ç‚¸æ¨¡æ‹Ÿåœºæ™¯èŠ‚ç‚¹
 */
 class AVATAR_EXPORT CSceneNodeBlast: public CSceneNode {
 public:
-	//! ¹¹Ôì·½·¨
+	//! æ„é€ æ–¹æ³•
 	CSceneNodeBlast(const string& name, const string& texture, int row, int column);
 
-	//! ³õÊ¼»¯³¡¾°½Úµã
+	//! åˆå§‹åŒ–åœºæ™¯èŠ‚ç‚¹
 	virtual bool Init();
-	//! Ïú»Ù³¡¾°½Úµã
+	//! é”€æ¯åœºæ™¯èŠ‚ç‚¹
 	virtual void Destroy();
-	//! äÖÈ¾³¡¾°½Úµã
+	//! æ¸²æŸ“åœºæ™¯èŠ‚ç‚¹
 	virtual void Render();
-	//! Ä£Äâ¸üĞÂ
+	//! æ¨¡æ‹Ÿæ›´æ–°
 	virtual void Update(float dt);
 
-	//! ±¬Õ¨³õÊ¼»¯
+	//! çˆ†ç‚¸åˆå§‹åŒ–
 	void InitBlast(float duration, float size);
-	//! ÅĞ¶ÏÊÇ·ñ½áÊø
+	//! åˆ¤æ–­æ˜¯å¦ç»“æŸ
 	bool IsFinished() { return !m_bBlast; }
 
 private:
-	//! ±¬Õ¨Ä£Äâ
+	//! çˆ†ç‚¸æ¨¡æ‹Ÿ
 	bool m_bBlast;
-	//! ±¬Õ¨ÎÆÀí
+	//! çˆ†ç‚¸çº¹ç†
 	string m_strTexture;
-	//! Ä£ÄâÊ±¼ä
+	//! æ¨¡æ‹Ÿæ—¶é—´
 	float m_fTimeElapse;
-	//! ³ÖĞøÊ±¼ä
+	//! æŒç»­æ—¶é—´
 	float m_fDuration;
-	//! ×İÏòÖ¡
+	//! çºµå‘å¸§
 	int m_iFrameRow;
-	//! ºáÏòÖ¡
+	//! æ¨ªå‘å¸§
 	int m_iFrameCol;
-	//! ×ÜĞĞÊı
+	//! æ€»è¡Œæ•°
 	int m_iTotalRow;
-	//! ×ÜÁĞÊı
+	//! æ€»åˆ—æ•°
 	int m_iTotalCol;
-	//! Íø¸ñ¶ÔÏó
+	//! ç½‘æ ¼å¯¹è±¡
 	CMesh* m_pMesh;
 };
 

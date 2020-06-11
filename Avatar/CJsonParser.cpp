@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CJsonParser.h"
@@ -12,7 +12,7 @@ using std::string;
 #endif
 
 /**
-* ¹¹Ôìº¯Êı
+* æ„é€ å‡½æ•°
 */
 CJsonParser::CJsonParser() {
 	m_sValue.type = SValue::NIL;
@@ -21,7 +21,7 @@ CJsonParser::CJsonParser() {
 }
 
 /**
-* ¹¹Ôìº¯Êı
+* æ„é€ å‡½æ•°
 */
 CJsonParser::CJsonParser(const char* content) {
 	m_sValue.type = SValue::NIL;
@@ -31,7 +31,7 @@ CJsonParser::CJsonParser(const char* content) {
 }
 
 /**
-* ¹¹Ôìº¯Êı
+* æ„é€ å‡½æ•°
 */
 CJsonParser::CJsonParser(const char* content, int length) {
 	m_sValue.type = SValue::NIL;
@@ -41,7 +41,7 @@ CJsonParser::CJsonParser(const char* content, int length) {
 }
 
 /**
-* ½âÎöÖ¸¶¨×Ö·û´®
+* è§£ææŒ‡å®šå­—ç¬¦ä¸²
 */
 bool CJsonParser::Parse(const char* content, int length) {
 	m_sValue.type = SValue::NIL;
@@ -60,63 +60,63 @@ bool CJsonParser::Parse(const char* content, int length) {
 }
 
 /**
-* ÅĞ¶ÏÊÇ·ñ°üº¬Ö¸¶¨Öµ
+* åˆ¤æ–­æ˜¯å¦åŒ…å«æŒ‡å®šå€¼
 */
 bool CJsonParser::IsContain(const char* name) const {
 	return m_mapValues.count(name) > 0;
 }
 
 /**
-* »ñÈ¡Êı×é½ÚµãÊı×é´óĞ¡
+* è·å–æ•°ç»„èŠ‚ç‚¹æ•°ç»„å¤§å°
 */
 int CJsonParser::GetCount() const {
 	return m_vecValues.size();
 }
 
 /**
-* »ñÈ¡½ÚµãÄÚÖ¸¶¨Ãû³ÆµÄÖµ
+* è·å–èŠ‚ç‚¹å†…æŒ‡å®šåç§°çš„å€¼
 */
 CJsonParser& CJsonParser::GetValue(const char* name) {
 	return m_mapValues[name];
 }
 
 /**
-* »ñÈ¡½ÚµãÄÚÖ¸¶¨Ãû³ÆµÄÖµ
+* è·å–èŠ‚ç‚¹å†…æŒ‡å®šåç§°çš„å€¼
 */
 CJsonParser& CJsonParser::GetValue(const string& name) {
 	return m_mapValues[name];
 }
 
 /**
-* »ñÈ¡Êı×é½ÚµãÄÚÖ¸¶¨µÄÖµ
+* è·å–æ•°ç»„èŠ‚ç‚¹å†…æŒ‡å®šçš„å€¼
 */
 CJsonParser& CJsonParser::GetValue(int index) {
 	return m_vecValues[index];
 }
 
 /**
-* Í¬ GetValue(const char* name)
+* åŒ GetValue(const char* name)
 */
 CJsonParser& CJsonParser::operator [] (const char* name) {
 	return m_mapValues[name];
 }
 
 /**
-* Í¬ GetValue(const string& name)
+* åŒ GetValue(const string& name)
 */
 CJsonParser& CJsonParser::operator [] (const string& name) {
 	return m_mapValues[name];
 }
 
 /**
-* Í¬ GetValue(int index)
+* åŒ GetValue(int index)
 */
 CJsonParser& CJsonParser::operator [] (int index) {
 	return m_vecValues[index];
 }
 
 /**
-* ×ª»»Îª²¼¶ûÀàĞÍ
+* è½¬æ¢ä¸ºå¸ƒå°”ç±»å‹
 */
 bool CJsonParser::ToBool() const {
 	if (m_sValue.type == SValue::BOOL) return m_sValue.bValue;
@@ -132,7 +132,7 @@ bool CJsonParser::ToBool() const {
 }
 
 /**
-* ×ª»»ÎªÕûĞÍÀàĞÍ
+* è½¬æ¢ä¸ºæ•´å‹ç±»å‹
 */
 int CJsonParser::ToInt() const {
 	if (m_sValue.type == SValue::INTEGER) return m_sValue.iValue;
@@ -143,7 +143,7 @@ int CJsonParser::ToInt() const {
 }
 
 /**
-* ×ª»»Îª¸¡µãÀàĞÍ
+* è½¬æ¢ä¸ºæµ®ç‚¹ç±»å‹
 */
 float CJsonParser::ToFloat() const {
 	if (m_sValue.type == SValue::FLOAT) return m_sValue.fValue;
@@ -154,7 +154,7 @@ float CJsonParser::ToFloat() const {
 }
 
 /**
-* ×ª»»Îª×Ö·û´®ÀàĞÍ
+* è½¬æ¢ä¸ºå­—ç¬¦ä¸²ç±»å‹
 */
 string CJsonParser::ToString() const {
 	if (m_sValue.type == SValue::STRING) return string().assign(m_sValue.pValue, m_sValue.length);
@@ -173,7 +173,7 @@ string CJsonParser::ToString() const {
 }
 
 /**
-* ½âÎö¶ÔÏóÖµ
+* è§£æå¯¹è±¡å€¼
 */
 int CJsonParser::ParseObject(const char* data, int length, CJsonParser& parser) {
 	if (length < 2 || data[0] != '{') return 0;
@@ -225,7 +225,7 @@ int CJsonParser::ParseObject(const char* data, int length, CJsonParser& parser) 
 }
 
 /**
-* ½âÎöÊı×éÖµ
+* è§£ææ•°ç»„å€¼
 */
 int CJsonParser::ParseArray(const char* data, int length, CJsonParser& parser) {
 	if (length < 2 || data[0] != '[') return 0;
@@ -275,7 +275,7 @@ int CJsonParser::ParseArray(const char* data, int length, CJsonParser& parser) {
 }
 
 /**
-* ½âÎöÆÕÍ¨×Ö·û´®
+* è§£ææ™®é€šå­—ç¬¦ä¸²
 */
 int CJsonParser::ParseString(const char* data, int length, CJsonParser& parser) {
 	if (length < 2) return 0;
@@ -294,7 +294,7 @@ int CJsonParser::ParseString(const char* data, int length, CJsonParser& parser) 
 }
 
 /**
-* ½âÎö¿ÕÖµ
+* è§£æç©ºå€¼
 */
 int CJsonParser::ParseNull(const char* data, int length, CJsonParser& parser) {
 	if (length < 4) return 0;
@@ -311,7 +311,7 @@ int CJsonParser::ParseNull(const char* data, int length, CJsonParser& parser) {
 }
 
 /**
-* ½âÎö²¼¶û×Ö·û´®
+* è§£æå¸ƒå°”å­—ç¬¦ä¸²
 */
 int CJsonParser::ParseBool(const char* data, int length, CJsonParser& parser) {
 	if (length < 4) return 0;
@@ -339,7 +339,7 @@ int CJsonParser::ParseBool(const char* data, int length, CJsonParser& parser) {
 }
 
 /**
-* ½âÎöÊı×Ö×Ö·û´®
+* è§£ææ•°å­—å­—ç¬¦ä¸²
 */
 int CJsonParser::ParseNumber(const char* data, int length, CJsonParser& parser) {
 	if (length < 1) return 0;

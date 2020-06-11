@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CDeviceAndroid.h"
@@ -10,25 +10,25 @@
 #include "CLog.h"
 
 /**
-* ¹¹Ôìº¯Êı
+* æ„é€ å‡½æ•°
 */
 CDeviceAndroid::CDeviceAndroid() {
 }
 
 /**
-* Îö¹¹º¯Êı
+* ææ„å‡½æ•°
 */
 CDeviceAndroid::~CDeviceAndroid() {
 	m_pInstance = 0;
 }
 
 /**
-* µ¥ÀıÊµÀı
+* å•ä¾‹å®ä¾‹
 */
 CDeviceAndroid* CDeviceAndroid::m_pInstance = 0;
 
 /**
-* ´´½¨´°¿Ú
+* åˆ›å»ºçª—å£
 */
 bool CDeviceAndroid::Create(const string& title, int width, int height, bool resizable, bool fullscreen, bool antialias) {
 	CEngine::GetGraphicsManager()->SetWindowSize(width, height);
@@ -36,20 +36,20 @@ bool CDeviceAndroid::Create(const string& title, int width, int height, bool res
 }
 
 /**
-* ÊµÀıÏú»Ù
+* å®ä¾‹é”€æ¯
 */
 void CDeviceAndroid::Destroy() {
 	delete this;
 }
 
 /**
-* »æÖÆ´°¿Ú
+* ç»˜åˆ¶çª—å£
 */
 void CDeviceAndroid::Render() {
 }
 
 /**
-* ÏûÏ¢´¦Àí
+* æ¶ˆæ¯å¤„ç†
 */
 void CDeviceAndroid::Handle(float dt) {
 }

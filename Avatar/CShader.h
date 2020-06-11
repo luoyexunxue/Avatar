@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CSHADER_H_
@@ -14,66 +14,66 @@ using std::string;
 using std::map;
 
 /**
-* @brief ×ÅÉ«Æ÷Àà
-* @attention ÉèÖÃ Uniform ÖµÇ°ĞèÒªÏÈµ÷ÓÃ UseShader()
+* @brief ç€è‰²å™¨ç±»
+* @attention è®¾ç½® Uniform å€¼å‰éœ€è¦å…ˆè°ƒç”¨ UseShader()
 */
 class AVATAR_EXPORT CShader {
 public:
-	//! Uniform ±äÁ¿ÀàĞÍÃ¶¾Ù
+	//! Uniform å˜é‡ç±»å‹æšä¸¾
 	enum UniformType { UNKNOWN, BOOL, INT, FLOAT, VEC2, VEC3, VEC4, MAT3, MAT4 };
 
 public:
-	//! ×ÅÉ«Æ÷ÊÇ·ñÓĞĞ§
+	//! ç€è‰²å™¨æ˜¯å¦æœ‰æ•ˆ
 	bool IsValid() const;
-	//! »ñÈ¡×ÅÉ«Æ÷Ãû³Æ
+	//! è·å–ç€è‰²å™¨åç§°
 	const string& GetName() const;
 
-	//! ÅĞ¶ÏÊÇ·ñº¬ÓĞÖ¸¶¨Ãû³ÆµÄ Uniform
+	//! åˆ¤æ–­æ˜¯å¦å«æœ‰æŒ‡å®šåç§°çš„ Uniform
 	bool IsUniform(const string& name) const;
-	//! »ñÈ¡Ö¸¶¨Ãû³ÆµÄ Uniform Î»ÖÃ
+	//! è·å–æŒ‡å®šåç§°çš„ Uniform ä½ç½®
 	int GetUniform(const string& name) const;
-	//! »ñÈ¡×ÅÉ«Æ÷ID
+	//! è·å–ç€è‰²å™¨ID
 	unsigned int GetProgramId() const;
 
-	//! ÉèÖÃ Uniform Öµ bool
+	//! è®¾ç½® Uniform å€¼ bool
 	void SetUniform(const string& name, bool value) const;
-	//! ÉèÖÃ Uniform Öµ int
+	//! è®¾ç½® Uniform å€¼ int
 	void SetUniform(const string& name, int value) const;
-	//! ÉèÖÃ Uniform Öµ float
+	//! è®¾ç½® Uniform å€¼ float
 	void SetUniform(const string& name, float value) const;
-	//! ÉèÖÃ Uniform Öµ vec2
+	//! è®¾ç½® Uniform å€¼ vec2
 	void SetUniform(const string& name, const CVector2& value) const;
-	//! ÉèÖÃ Uniform Öµ vec3
+	//! è®¾ç½® Uniform å€¼ vec3
 	void SetUniform(const string& name, const CVector3& value) const;
-	//! ÉèÖÃ Uniform Öµ mat4
+	//! è®¾ç½® Uniform å€¼ mat4
 	void SetUniform(const string& name, const CMatrix4& value) const;
-	//! ÉèÖÃ Uniform Öµ float[]
+	//! è®¾ç½® Uniform å€¼ float[]
 	void SetUniform(const string& name, const float value[], int size, int length) const;
 
-	//! ÉèÖÃ Uniform Öµ bool
+	//! è®¾ç½® Uniform å€¼ bool
 	void SetUniform(int location, bool value) const;
-	//! ÉèÖÃ Uniform Öµ int
+	//! è®¾ç½® Uniform å€¼ int
 	void SetUniform(int location, int value) const;
-	//! ÉèÖÃ Uniform Öµ float
+	//! è®¾ç½® Uniform å€¼ float
 	void SetUniform(int location, float value) const;
-	//! ÉèÖÃ Uniform Öµ vec2
+	//! è®¾ç½® Uniform å€¼ vec2
 	void SetUniform(int location, const CVector2& value) const;
-	//! ÉèÖÃ Uniform Öµ vec3
+	//! è®¾ç½® Uniform å€¼ vec3
 	void SetUniform(int location, const CVector3& value) const;
-	//! ÉèÖÃ Uniform Öµ mat4
+	//! è®¾ç½® Uniform å€¼ mat4
 	void SetUniform(int location, const CMatrix4& value) const;
-	//! ÉèÖÃ Uniform Öµ float[]
+	//! è®¾ç½® Uniform å€¼ float[]
 	void SetUniform(int location, const float value[], int size, int length) const;
 
-	//! Ê¹ÓÃ×ÅÉ«Æ÷
+	//! ä½¿ç”¨ç€è‰²å™¨
 	void UseShader();
-	//! Ôö¼ÓÒıÓÃ
+	//! å¢åŠ å¼•ç”¨
 	CShader* AddReference();
 
 protected:
-	//! ÊÜ±£»¤¹¹Ôìº¯Êı£¬Ö»ÄÜÍ¨¹ı CShaderManager ´´½¨
+	//! å—ä¿æŠ¤æ„é€ å‡½æ•°ï¼Œåªèƒ½é€šè¿‡ CShaderManager åˆ›å»º
 	CShader(class CShaderManager* manager);
-	//! ÊÜ±£»¤Îö¹¹º¯Êı
+	//! å—ä¿æŠ¤ææ„å‡½æ•°
 	~CShader();
 
 private:

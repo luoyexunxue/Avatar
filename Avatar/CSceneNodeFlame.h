@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CSCENENODEFLAME_H_
@@ -7,37 +7,37 @@
 #include "CSceneNode.h"
 
 /**
-* @brief »ğÑæÄ£Äâ³¡¾°½Úµã
+* @brief ç«ç„°æ¨¡æ‹Ÿåœºæ™¯èŠ‚ç‚¹
 */
 class AVATAR_EXPORT CSceneNodeFlame: public CSceneNode {
 public:
-	//! ¹¹Ôì·½·¨
+	//! æ„é€ æ–¹æ³•
 	CSceneNodeFlame(const string& name, const string& texture, const string& distortionMap,
 		const string& alphaMask, float width, float height);
 
-	//! ³õÊ¼»¯³¡¾°½Úµã
+	//! åˆå§‹åŒ–åœºæ™¯èŠ‚ç‚¹
 	virtual bool Init();
-	//! Ïú»Ù³¡¾°½Úµã
+	//! é”€æ¯åœºæ™¯èŠ‚ç‚¹
 	virtual void Destroy();
-	//! äÖÈ¾³¡¾°½Úµã
+	//! æ¸²æŸ“åœºæ™¯èŠ‚ç‚¹
 	virtual void Render();
-	//! Ä£Äâ¸üĞÂ
+	//! æ¨¡æ‹Ÿæ›´æ–°
 	virtual void Update(float dt);
 
 private:
-	//! Ä£ÄâÊ±¼ä
+	//! æ¨¡æ‹Ÿæ—¶é—´
 	float m_fTimeElapse;
-	//! »ğÑæÎÆÀí
+	//! ç«ç„°çº¹ç†
 	string m_strTexture;
-	//! »ğÑæÈÅ¶¯Í¼
+	//! ç«ç„°æ‰°åŠ¨å›¾
 	string m_strDistortionMap;
-	//! Í¸Ã÷ÃÉ°æ
+	//! é€æ˜è’™ç‰ˆ
 	string m_strAlphaMask;
-	//! ¿í¶È
+	//! å®½åº¦
 	float m_fWidth;
-	//! ¸ß¶È
+	//! é«˜åº¦
 	float m_fHeight;
-	//! Íø¸ñ¶ÔÏó
+	//! ç½‘æ ¼å¯¹è±¡
 	CMesh* m_pMesh;
 };
 

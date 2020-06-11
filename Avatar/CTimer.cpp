@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CTimer.h"
@@ -14,7 +14,7 @@
 using std::map;
 
 /**
-* ¾²Ì¬³ÉÔ±±äÁ¿ÉêÃ÷
+* é™æ€æˆå‘˜å˜é‡ç”³æ˜
 */
 static bool TimerEnabled;
 static float TimerLastTime;
@@ -28,7 +28,7 @@ static timespec TimerStart;
 #endif
 
 /**
-* ³õÊ¼»¯¶¨Ê±Æ÷
+* åˆå§‹åŒ–å®šæ—¶å™¨
 */
 void CTimer::Init() {
 	TimerEnabled = true;
@@ -46,7 +46,7 @@ void CTimer::Init() {
 }
 
 /**
-* ÖØÖÃ¼ÆÊ±£¬²¢·µ»Ø¾àÉÏ´Îµ÷ÓÃ¾­¹ıµÄÊ±¼ä
+* é‡ç½®è®¡æ—¶ï¼Œå¹¶è¿”å›è·ä¸Šæ¬¡è°ƒç”¨ç»è¿‡çš„æ—¶é—´
 */
 float CTimer::Reset(const string& name, bool reset) {
 #ifdef AVATAR_WINDOWS
@@ -71,7 +71,7 @@ float CTimer::Reset(const string& name, bool reset) {
 }
 
 /**
-* ÔİÍ£¼ÆÊ±Æ÷¼ÆÊ±
+* æš‚åœè®¡æ—¶å™¨è®¡æ—¶
 */
 void CTimer::Pause(bool pause) {
 	if (TimerEnabled != pause) return;
@@ -90,7 +90,7 @@ void CTimer::Pause(bool pause) {
 }
 
 /**
-* ºÁÃëÑÓÊ±
+* æ¯«ç§’å»¶æ—¶
 */
 void CTimer::Sleep(unsigned long ms) {
 #ifdef AVATAR_WINDOWS
@@ -101,8 +101,8 @@ void CTimer::Sleep(unsigned long ms) {
 }
 
 /**
-* °´Ö¸¶¨¸ñÊ½»ñÈ¡µ±Ç°Ê±¼ä×Ö·û´®
-* Èô format Îª¿ÕÔòÄ¬ÈÏÎª %Y-%m-%d %H:%M:%S
+* æŒ‰æŒ‡å®šæ ¼å¼è·å–å½“å‰æ—¶é—´å­—ç¬¦ä¸²
+* è‹¥ format ä¸ºç©ºåˆ™é»˜è®¤ä¸º %Y-%m-%d %H:%M:%S
 */
 void CTimer::GetTimeString(const char* format, char* buffer) {
 	time_t _time;
@@ -120,8 +120,8 @@ void CTimer::GetTimeString(const char* format, char* buffer) {
 }
 
 /**
-* °´Ö¸¶¨¸ñÊ½»ñÈ¡µ±Ç°Ê±¼ä×Ö·û´®
-* Èô format Îª¿ÕÔòÄ¬ÈÏÎª %Y-%m-%d %H:%M:%S
+* æŒ‰æŒ‡å®šæ ¼å¼è·å–å½“å‰æ—¶é—´å­—ç¬¦ä¸²
+* è‹¥ format ä¸ºç©ºåˆ™é»˜è®¤ä¸º %Y-%m-%d %H:%M:%S
 */
 string CTimer::GetTimeString(const char* format) {
 	char buff[64];

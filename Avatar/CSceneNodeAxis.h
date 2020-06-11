@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CSCENENODEAXIS_H_
@@ -7,24 +7,24 @@
 #include "CSceneNode.h"
 
 /**
-* @brief ×ø±êÖáÖ¸Ê¾Æ÷³¡¾°½Úµã
+* @brief åæ ‡è½´æŒ‡ç¤ºå™¨åœºæ™¯èŠ‚ç‚¹
 */
 class AVATAR_EXPORT CSceneNodeAxis: public CSceneNode {
 public:
-	//! ¹¹Ôì·½·¨
+	//! æ„é€ æ–¹æ³•
 	CSceneNodeAxis(const string& name);
 
-	//! ³õÊ¼»¯³¡¾°½Úµã
+	//! åˆå§‹åŒ–åœºæ™¯èŠ‚ç‚¹
 	virtual bool Init();
-	//! Ïú»Ù³¡¾°½Úµã
+	//! é”€æ¯åœºæ™¯èŠ‚ç‚¹
 	virtual void Destroy();
-	//! äÖÈ¾³¡¾°½Úµã
+	//! æ¸²æŸ“åœºæ™¯èŠ‚ç‚¹
 	virtual void Render();
-	//! ¸üĞÂ³¡¾°½Úµã
+	//! æ›´æ–°åœºæ™¯èŠ‚ç‚¹
 	virtual void Update(float dt);
 
 private:
-	//! Íø¸ñ¶ÔÏó
+	//! ç½‘æ ¼å¯¹è±¡
 	CMesh* m_pMesh;
 };
 

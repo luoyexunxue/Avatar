@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CVECTOR2_H_
@@ -7,100 +7,100 @@
 #include "AvatarConfig.h"
 
 /**
-* @brief ¶şÎ¬ÏòÁ¿Àà
+* @brief äºŒç»´å‘é‡ç±»
 */
 class AVATAR_EXPORT CVector2 {
 public:
-	//! Ä¬ÈÏ¹¹Ôìº¯Êı
+	//! é»˜è®¤æ„é€ å‡½æ•°
 	CVector2();
-	//! ¸´ÖÆ¹¹Ôìº¯Êı
+	//! å¤åˆ¶æ„é€ å‡½æ•°
 	CVector2(const CVector2& vector);
-	//! Ê¹ÓÃµ¥Ò»Öµ¸³Öµ
+	//! ä½¿ç”¨å•ä¸€å€¼èµ‹å€¼
 	CVector2(float val);
-	//! Ê¹ÓÃÊı×é¹¹ÔìÏòÁ¿
+	//! ä½¿ç”¨æ•°ç»„æ„é€ å‘é‡
 	CVector2(const float vector[2]);
-	//! Ê¹ÓÃxy¹¹ÔìÏòÁ¿
+	//! ä½¿ç”¨xyæ„é€ å‘é‡
 	CVector2(float x, float y);
-	//! Ê¹ÓÃxy¹¹ÔìÏòÁ¿
+	//! ä½¿ç”¨xyæ„é€ å‘é‡
 	CVector2(int x, int y);
 
-	//! ÉèÖÃÏòÁ¿Öµ
+	//! è®¾ç½®å‘é‡å€¼
 	void SetValue(const CVector2& vector);
-	//! ÉèÖÃÏòÁ¿Öµ
+	//! è®¾ç½®å‘é‡å€¼
 	void SetValue(const float vector[2]);
-	//! ÉèÖÃÏòÁ¿Öµ
+	//! è®¾ç½®å‘é‡å€¼
 	void SetValue(float x, float y);
 
-	//! ×ª»»Îªµ¥Î»ÏòÁ¿
+	//! è½¬æ¢ä¸ºå•ä½å‘é‡
 	CVector2& Normalize();
 
-	//! ¼ÓÖ¸¶¨Öµ
+	//! åŠ æŒ‡å®šå€¼
 	CVector2& Add(const CVector2& vector);
-	//! ¼ÓÖ¸¶¨Öµ
+	//! åŠ æŒ‡å®šå€¼
 	CVector2& Add(const float vector[2]);
-	//! ¼ÓÖ¸¶¨Öµ
+	//! åŠ æŒ‡å®šå€¼
 	CVector2& Add(float x, float y);
-	//! ¼õÖ¸¶¨Öµ
+	//! å‡æŒ‡å®šå€¼
 	CVector2& Sub(const CVector2& vector);
-	//! ¼õÖ¸¶¨Öµ
+	//! å‡æŒ‡å®šå€¼
 	CVector2& Sub(const float vector[2]);
-	//! ¼õÖ¸¶¨Öµ
+	//! å‡æŒ‡å®šå€¼
 	CVector2& Sub(float x, float y);
-	//! Ëõ·ÅÖ¸¶¨Öµ
+	//! ç¼©æ”¾æŒ‡å®šå€¼
 	CVector2& Scale(float scale);
-	//! Ëõ·ÅÖ¸¶¨Öµ
+	//! ç¼©æ”¾æŒ‡å®šå€¼
 	CVector2& Scale(float sx, float sy);
 
-	//! È¡µÃÏòÁ¿µÄ³¤¶È
+	//! å–å¾—å‘é‡çš„é•¿åº¦
 	float Length() const;
-	//! ÏòÁ¿µã³Ë
+	//! å‘é‡ç‚¹ä¹˜
 	float DotProduct(const CVector2& vector) const;
-	//! ÏòÁ¿²æ³Ë
+	//! å‘é‡å‰ä¹˜
 	float CrossProduct(const CVector2& vector) const;
-	//! ÏßĞÔ²åÖµ
+	//! çº¿æ€§æ’å€¼
 	CVector2 Lerp(const CVector2& vector, float t) const;
-	//! »¡ĞÎ²åÖµ
+	//! å¼§å½¢æ’å€¼
 	CVector2 Slerp(const CVector2& vector, float t) const;
-	//! Çó·´ÉäÏòÁ¿
+	//! æ±‚åå°„å‘é‡
 	CVector2 Reflect(const CVector2& normal) const;
 
 public:
-	//! ÏÂ±êÔËËã·û []
+	//! ä¸‹æ ‡è¿ç®—ç¬¦ []
 	float& operator [] (int index);
-	//! ÖØÔØÔËËã·û ==
+	//! é‡è½½è¿ç®—ç¬¦ ==
 	bool operator == (const CVector2& vector) const;
-	//! ÖØÔØÔËËã·û !=
+	//! é‡è½½è¿ç®—ç¬¦ !=
 	bool operator != (const CVector2& vector) const;
 
-	//! ¼Ó·¨ÔËËã
+	//! åŠ æ³•è¿ç®—
 	CVector2 operator + (const CVector2& vector) const;
-	//! ¼õ·¨ÔËËã
+	//! å‡æ³•è¿ç®—
 	CVector2 operator - (const CVector2& vector) const;
-	//! ³ËÒò×ÓÔËËã
+	//! ä¹˜å› å­è¿ç®—
 	CVector2 operator * (float factor) const;
-	//! ³ıÒò×ÓÔËËã
+	//! é™¤å› å­è¿ç®—
 	CVector2 operator / (float factor) const;
 
-	//! ÖØÔØÔËËã·û +=
+	//! é‡è½½è¿ç®—ç¬¦ +=
 	CVector2& operator += (const CVector2& vector);
-	//! ÖØÔØÔËËã·û -=
+	//! é‡è½½è¿ç®—ç¬¦ -=
 	CVector2& operator -= (const CVector2& vector);
-	//! ÖØÔØÔËËã·û *=
+	//! é‡è½½è¿ç®—ç¬¦ *=
 	CVector2& operator *= (float factor);
-	//! ÖØÔØÔËËã·û /=
+	//! é‡è½½è¿ç®—ç¬¦ /=
 	CVector2& operator /= (float factor);
 
 public:
 	/**
-	* ÏòÁ¿´æ´¢·½Ê½
+	* å‘é‡å­˜å‚¨æ–¹å¼
 	* [x, y]
 	*/
 	float m_fValue[2];
-	//! ÁãÏòÁ¿³£Á¿
+	//! é›¶å‘é‡å¸¸é‡
 	const static CVector2 Zero;
-	//! µ¥Î»XÏòÁ¿³£Á¿
+	//! å•ä½Xå‘é‡å¸¸é‡
 	const static CVector2 X;
-	//! µ¥Î»YÏòÁ¿³£Á¿
+	//! å•ä½Yå‘é‡å¸¸é‡
 	const static CVector2 Y;
 };
 

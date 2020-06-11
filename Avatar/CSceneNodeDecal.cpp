@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CSceneNodeDecal.h"
@@ -9,7 +9,7 @@
 #include "CRay.h"
 
 /**
-* ¹¹Ôìº¯Êı
+* æ„é€ å‡½æ•°
 */
 CSceneNodeDecal::CSceneNodeDecal(const string& name, const string& texture, const CMatrix4& proj)
 	: CSceneNode("decal", name) {
@@ -19,7 +19,7 @@ CSceneNodeDecal::CSceneNodeDecal(const string& name, const string& texture, cons
 }
 
 /**
-* ³õÊ¼»¯³¡¾°½Úµã
+* åˆå§‹åŒ–åœºæ™¯èŠ‚ç‚¹
 */
 bool CSceneNodeDecal::Init() {
 	if (m_pParent && m_pParent->GetMeshData()) {
@@ -32,14 +32,14 @@ bool CSceneNodeDecal::Init() {
 }
 
 /**
-* Ïú»Ù³¡¾°½Úµã
+* é”€æ¯åœºæ™¯èŠ‚ç‚¹
 */
 void CSceneNodeDecal::Destroy() {
 	delete m_pMesh;
 }
 
 /**
-* äÖÈ¾³¡¾°½Úµã
+* æ¸²æŸ“åœºæ™¯èŠ‚ç‚¹
 */
 void CSceneNodeDecal::Render() {
 	CGraphicsManager* pGraphicsMgr = CEngine::GetGraphicsManager();
@@ -49,7 +49,7 @@ void CSceneNodeDecal::Render() {
 }
 
 /**
-* ¸üĞÂ±ä»»¾ØÕó
+* æ›´æ–°å˜æ¢çŸ©é˜µ
 */
 void CSceneNodeDecal::Transform() {
 	SetupFrustum();
@@ -57,8 +57,8 @@ void CSceneNodeDecal::Transform() {
 }
 
 /**
-* ¼ÆËãÌù»¨Í¶Ó°ÊÓ¾°Ìå
-* ´Ë´¦½øĞĞÔ¤¼ÆËã£¬ºóÃæ»áÓÃµ½
+* è®¡ç®—è´´èŠ±æŠ•å½±è§†æ™¯ä½“
+* æ­¤å¤„è¿›è¡Œé¢„è®¡ç®—ï¼Œåé¢ä¼šç”¨åˆ°
 */
 void CSceneNodeDecal::SetupFrustum() {
 	const CVector3 dir = m_cOrientation * CVector3::Y;
@@ -71,7 +71,7 @@ void CSceneNodeDecal::SetupFrustum() {
 	m_cClipPlane[3].SetValue(m_cDecalFrustum.m_fPlane[3], true);
 	m_cClipPlane[4].SetValue(m_cDecalFrustum.m_fPlane[4], true);
 	m_cClipPlane[5].SetValue(m_cDecalFrustum.m_fPlane[5], true);
-	// ¼ÆËãÎÆÀíÍ¶Ó°¾ØÕó
+	// è®¡ç®—çº¹ç†æŠ•å½±çŸ©é˜µ
 	const float biasMat[16] = {
 		0.5f, 0.0f, 0.0f, 0.0f,
 		0.0f, 0.5f, 0.0f, 0.0f,
@@ -82,12 +82,12 @@ void CSceneNodeDecal::SetupFrustum() {
 }
 
 /**
-* Çó³öÏà½»µÄÍø¸ñ
-* ¼ÆËã·½·¨£º
-*    ¶ÔÃ¿¸öÈı½ÇĞÎ
-*        ¼ÆËã¾­¹ıÊÓ¾°Ìå²Ã¼ôºóµÄÓĞĞò¶¥µã¼¯ºÏ£¨ÖÊĞÄ×ø±ê£©
-*        ¼ÆËãĞÂµÄ¶¥µãÎÆÀí×ø±ê
-*        Í¨¹ıÖÊĞÄ×ø±êÉú³ÉĞÂµÄÈı½ÇĞÎ
+* æ±‚å‡ºç›¸äº¤çš„ç½‘æ ¼
+* è®¡ç®—æ–¹æ³•ï¼š
+*    å¯¹æ¯ä¸ªä¸‰è§’å½¢
+*        è®¡ç®—ç»è¿‡è§†æ™¯ä½“è£å‰ªåçš„æœ‰åºé¡¶ç‚¹é›†åˆï¼ˆè´¨å¿ƒåæ ‡ï¼‰
+*        è®¡ç®—æ–°çš„é¡¶ç‚¹çº¹ç†åæ ‡
+*        é€šè¿‡è´¨å¿ƒåæ ‡ç”Ÿæˆæ–°çš„ä¸‰è§’å½¢
 */
 void CSceneNodeDecal::UpdateMesh() {
 	m_pMesh->RemoveVertex(0, -1);
@@ -95,7 +95,7 @@ void CSceneNodeDecal::UpdateMesh() {
 	CMeshData* pMeshData = m_pParent->GetMeshData();
 	for (int m = 0; m < pMeshData->GetMeshCount(); m++) {
 		CMesh* mesh = pMeshData->GetMesh(m);
-		// ¶ÔËùÓĞ¶¥µã½øĞĞ±ä»»
+		// å¯¹æ‰€æœ‰é¡¶ç‚¹è¿›è¡Œå˜æ¢
 		CBoundingBox boundingBox;
 		vector<CVertex> vertices;
 		vertices.resize(mesh->GetVertexCount());
@@ -107,30 +107,30 @@ void CSceneNodeDecal::UpdateMesh() {
 			vertices[i].SetNormal(nor);
 			boundingBox.Update(pos);
 		}
-		// ¶Ô²»ÔÚÍ¶Ó°ÊÓ¾°ÌåÄÚµÄÍø¸ñÌø¹ı
+		// å¯¹ä¸åœ¨æŠ•å½±è§†æ™¯ä½“å†…çš„ç½‘æ ¼è·³è¿‡
 		if (!m_cDecalFrustum.IsAABBInside(boundingBox)) continue;
-		// ¶ÔËùÓĞÈı½ÇĞÎ½øĞĞ²Ã¼ô
+		// å¯¹æ‰€æœ‰ä¸‰è§’å½¢è¿›è¡Œè£å‰ª
 		for (int i = 0; i < mesh->GetTriangleCount(); i++) {
 			unsigned int vertexIndices[3];
 			mesh->GetTriangle(i, vertexIndices);
 			CVector3 p1 = CVector3(vertices[vertexIndices[0]].m_fPosition);
 			CVector3 p2 = CVector3(vertices[vertexIndices[1]].m_fPosition);
 			CVector3 p3 = CVector3(vertices[vertexIndices[2]].m_fPosition);
-			// ÇóÈı½ÇĞÎÓëÊÓ¾°Ìå²Ã¼ô
+			// æ±‚ä¸‰è§’å½¢ä¸è§†æ™¯ä½“è£å‰ª
 			float intersect[12];
 			int count = IntersectWithFrustum(p1, p2, p3, intersect);
 			if (count < 3) continue;
-			// Èı½ÇĞÎ·¨ÏòÁ¿
+			// ä¸‰è§’å½¢æ³•å‘é‡
 			CVector3 n1 = CVector3(vertices[vertexIndices[0]].m_fNormal);
 			CVector3 n2 = CVector3(vertices[vertexIndices[1]].m_fNormal);
 			CVector3 n3 = CVector3(vertices[vertexIndices[2]].m_fNormal);
-			// Éú³ÉÈı½ÇĞÎ
+			// ç”Ÿæˆä¸‰è§’å½¢
 			int baseIndex = m_pMesh->GetVertexCount();
 			for (int n = 0; n < count; n++) {
 				const float bu = intersect[n * 2];
 				const float bv = intersect[n * 2 + 1];
 				const float bw = 1.0f - bu - bv;
-				// Í¨¹ıÖÊĞÄ×ø±ê²åÖµ¼ÆËã½»µãµÄ×ø±êºÍ·¨Ïò£¬²¢¼ÆËãÎÆÀí×ø±ê
+				// é€šè¿‡è´¨å¿ƒåæ ‡æ’å€¼è®¡ç®—äº¤ç‚¹çš„åæ ‡å’Œæ³•å‘ï¼Œå¹¶è®¡ç®—çº¹ç†åæ ‡
 				CVector3 vp = p1 * bw + p2 * bu + p3 * bv;
 				CVector3 vn = n1 * bw + n2 * bu + n3 * bv;
 				CVector3 st = m_cTexCoordProj * vp;
@@ -147,20 +147,20 @@ void CSceneNodeDecal::UpdateMesh() {
 }
 
 /**
-* ÇóÈı½ÇĞÎÔÚÍ¶Ó°¿òÄÚµÄ½»µã
-* @param p1 Èı½ÇĞÎµÚÒ»¸ö¶¥µã
-* @param p2 Èı½ÇĞÎµÚ¶ş¸ö¶¥µã
-* @param p3 Èı½ÇĞÎµÚÈı¸ö¶¥µã
-* @param result ÖÊĞÄ×ø±êÏµ
-* @return ½»µã¸öÊı
-* @note ½»µã×ø±ê = (1 - u - v) * p1 + u * p2 + v * p3 ÆäÖĞ (u,v) ÎªÖÊĞÄ×ø±ê
-* ¼ÆËã·½·¨£º
-*    ³õÊ¼»¯¶¥µã¼¯ºÏ1£¬½«Èı½ÇĞÎÈı¸ö¶¥µã¼ÓÈë¶¥µã¼¯ºÏ1
-*    ¶ÔÊÓ¾°ÌåÃ¿¸ö²Ã¼ôÃæ¼ÆËã
-*        ¶Ô¼¯ºÏ1ÖĞÃ¿¸ö¶¥µã£¬¼ÆËãÊÇ·ñÔÚÃæÄÚ²¿£¬ÈôÊÇÔò¼ÓÈë¶¥µã¼¯ºÏ2
-*        ¼ÆËãÕâ¸ö¶¥µãÓëÏÂ¸ö¶¥µã×é³ÉµÄÏß¶ÎÓëÃæµÄ½»µã²¢¼ÓÈë¶¥µã¼¯ºÏ2
-*        ½»»»¶¥µã¼¯ºÏ
-*    ½«×îÖÕµÃµ½µÄ¶¥µã¼¯ºÏ×ª»»ÎªÖÊĞÄ×ø±ê£¬¼ÆËãÍê³É
+* æ±‚ä¸‰è§’å½¢åœ¨æŠ•å½±æ¡†å†…çš„äº¤ç‚¹
+* @param p1 ä¸‰è§’å½¢ç¬¬ä¸€ä¸ªé¡¶ç‚¹
+* @param p2 ä¸‰è§’å½¢ç¬¬äºŒä¸ªé¡¶ç‚¹
+* @param p3 ä¸‰è§’å½¢ç¬¬ä¸‰ä¸ªé¡¶ç‚¹
+* @param result è´¨å¿ƒåæ ‡ç³»
+* @return äº¤ç‚¹ä¸ªæ•°
+* @note äº¤ç‚¹åæ ‡ = (1 - u - v) * p1 + u * p2 + v * p3 å…¶ä¸­ (u,v) ä¸ºè´¨å¿ƒåæ ‡
+* è®¡ç®—æ–¹æ³•ï¼š
+*    åˆå§‹åŒ–é¡¶ç‚¹é›†åˆ1ï¼Œå°†ä¸‰è§’å½¢ä¸‰ä¸ªé¡¶ç‚¹åŠ å…¥é¡¶ç‚¹é›†åˆ1
+*    å¯¹è§†æ™¯ä½“æ¯ä¸ªè£å‰ªé¢è®¡ç®—
+*        å¯¹é›†åˆ1ä¸­æ¯ä¸ªé¡¶ç‚¹ï¼Œè®¡ç®—æ˜¯å¦åœ¨é¢å†…éƒ¨ï¼Œè‹¥æ˜¯åˆ™åŠ å…¥é¡¶ç‚¹é›†åˆ2
+*        è®¡ç®—è¿™ä¸ªé¡¶ç‚¹ä¸ä¸‹ä¸ªé¡¶ç‚¹ç»„æˆçš„çº¿æ®µä¸é¢çš„äº¤ç‚¹å¹¶åŠ å…¥é¡¶ç‚¹é›†åˆ2
+*        äº¤æ¢é¡¶ç‚¹é›†åˆ
+*    å°†æœ€ç»ˆå¾—åˆ°çš„é¡¶ç‚¹é›†åˆè½¬æ¢ä¸ºè´¨å¿ƒåæ ‡ï¼Œè®¡ç®—å®Œæˆ
 */
 int CSceneNodeDecal::IntersectWithFrustum(const CVector3& p1, const CVector3& p2, const CVector3& p3, float* result) {
 	CBoundingBox aabb;
@@ -169,9 +169,9 @@ int CSceneNodeDecal::IntersectWithFrustum(const CVector3& p1, const CVector3& p2
 	aabb.Update(p3);
 	if (!m_cDecalFrustum.IsAABBInside(aabb)) return 0;
 	CVector3 vt = (p2 - p1).CrossProduct(p3 - p1);
-	// ¼ì²éÈı½ÇĞÎÊÇ·ñÃæÏòÍ¶Ó°µã
+	// æ£€æŸ¥ä¸‰è§’å½¢æ˜¯å¦é¢å‘æŠ•å½±ç‚¹
 	if (vt.DotProduct(m_cPosition - p1) <= 0.0f) return 0;
-	// ¶ÔÊÓ¾°ÌåÃ¿¸öÆ½Ãæ½øĞĞÏà½»²âÊÔ
+	// å¯¹è§†æ™¯ä½“æ¯ä¸ªå¹³é¢è¿›è¡Œç›¸äº¤æµ‹è¯•
 	int current = 0;
 	int vertexCount[2] = {0, 0};
 	CVector3 vertexBuffer[2][6];

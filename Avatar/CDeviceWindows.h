@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CDEVICEWINDOWS_H_
@@ -11,24 +11,24 @@
 #include <Windows.h>
 
 /**
-* @brief Windows Éè±¸Àà
+* @brief Windows è®¾å¤‡ç±»
 */
 class CDeviceWindows: public CDevice {
 public:
-	//! »ñÈ¡ Windows Éè±¸ÊµÀı
+	//! è·å– Windows è®¾å¤‡å®ä¾‹
 	static CDeviceWindows* GetInstance() {
 		if (m_pInstance) return m_pInstance;
 		m_pInstance = new CDeviceWindows();
 		return m_pInstance;
 	}
 
-	//! ´´½¨´°¿Ú
+	//! åˆ›å»ºçª—å£
 	virtual bool Create(const string& title, int width, int height, bool resizable, bool fullscreen, bool antialias);
-	//! Ïú»Ù´°¿Ú
+	//! é”€æ¯çª—å£
 	virtual void Destroy();
-	//! »æÖÆÊä³ö
+	//! ç»˜åˆ¶è¾“å‡º
 	virtual void Render();
-	//! ÏûÏ¢´¦Àí
+	//! æ¶ˆæ¯å¤„ç†
 	virtual void Handle(float dt);
 
 private:
@@ -46,9 +46,9 @@ private:
 		_SContext(): created(true), changed(false), hdc(0), hrc(0), hwnd(0) {}
 	} SContext;
 
-	//! Éè±¸ÉÏÏÂÎÄ
+	//! è®¾å¤‡ä¸Šä¸‹æ–‡
 	SContext* m_pContext;
-	//! ÊµÀı
+	//! å®ä¾‹
 	static CDeviceWindows* m_pInstance;
 };
 

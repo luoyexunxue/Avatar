@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CMeshLoaderCollada.h"
@@ -11,7 +11,7 @@
 using std::istringstream;
 
 /**
-* ¼ÓÔØ DAE Ä£ĞÍ
+* åŠ è½½ DAE æ¨¡å‹
 */
 CMeshData* CMeshLoaderCollada::LoadFile(const string& filename, const string& type) {
 	CFileManager::CTextFile file;
@@ -26,7 +26,7 @@ CMeshData* CMeshLoaderCollada::LoadFile(const string& filename, const string& ty
 	if (strncmp(version, "1.4", 3) && strncmp(version, "1.5", 3)) return 0;
 	xml_node<>* up_axis = root->first_node("asset")->first_node("up_axis");
 	const char* axis = up_axis? up_axis->value(): "Y_UP";
-	// ¶ÁÈ¡Êı¾İ½Úµã
+	// è¯»å–æ•°æ®èŠ‚ç‚¹
 	xml_node<>* library_images = root->first_node("library_images");
 	xml_node<>* library_materials = root->first_node("library_materials");
 	xml_node<>* library_effects = root->first_node("library_effects");
@@ -43,25 +43,25 @@ CMeshData* CMeshLoaderCollada::LoadFile(const string& filename, const string& ty
 	m_mapJointsMapper.clear();
 	m_mapJointsName.clear();
 	m_mapVertexJoint.clear();
-	// ÏòÉÏ·½ÏòĞŞÕı£¨´æÔÚ¶¯»­µÄÇé¿öÏÂ²»ÄÜÊ¹ÓÃ£¬±ÜÃâÔì³É¶¯»­´íÎó£©
+	// å‘ä¸Šæ–¹å‘ä¿®æ­£ï¼ˆå­˜åœ¨åŠ¨ç”»çš„æƒ…å†µä¸‹ä¸èƒ½ä½¿ç”¨ï¼Œé¿å…é€ æˆåŠ¨ç”»é”™è¯¯ï¼‰
 	CMatrix4 model_transform;
 	if (!library_animations) {
 		if (!strcmp(axis, "Y_UP")) model_transform.RotateX(1.570796f);
 		if (!strcmp(axis, "X_UP")) model_transform.RotateY(-1.570796f);
 	}
-	// ¶ÁÈ¡½ÚµãÊı¾İ
+	// è¯»å–èŠ‚ç‚¹æ•°æ®
 	CMeshData* pMeshData = new CMeshData();
 	if (library_images) ReadImages(library_images);
 	if (library_materials) ReadMaterials(library_materials);
-	// ÓÉÓÚ²¿·Ö Collada ÎÄ¼ş¹Ç÷À½ÚµãÎ´±êÃ÷ type="JOINT"
-	// Òò´ËÊ¹ÓÃ¶¯»­Êı¾İÖĞµÄ¹Ç÷ÀÃû³ÆÀ´È·¶¨ÄÄĞ©ÊÇ¹Ç÷À½Úµã
+	// ç”±äºéƒ¨åˆ† Collada æ–‡ä»¶éª¨éª¼èŠ‚ç‚¹æœªæ ‡æ˜ type="JOINT"
+	// å› æ­¤ä½¿ç”¨åŠ¨ç”»æ•°æ®ä¸­çš„éª¨éª¼åç§°æ¥ç¡®å®šå“ªäº›æ˜¯éª¨éª¼èŠ‚ç‚¹
 	if (library_animations) ReadAnimationJoint(library_animations);
 	if (library_visual_scenes) ReadVisualScenes(library_visual_scenes, model_transform, pMeshData);
 	if (library_controllers) ReadControllers(library_controllers, pMeshData);
 	if (library_geometries) ReadGeometries(library_geometries, pMeshData);
 	if (library_effects) ReadEffects(library_effects, pMeshData);
 	if (library_animations) ReadAnimations(library_animations, pMeshData);
-	// ´´½¨Íø¸ñ¶ÔÏó
+	// åˆ›å»ºç½‘æ ¼å¯¹è±¡
 	for (int i = 0; i < pMeshData->GetMeshCount(); i++) {
 		pMeshData->GetMesh(i)->Create(library_animations != 0);
 	}
@@ -69,7 +69,7 @@ CMeshData* CMeshLoaderCollada::LoadFile(const string& filename, const string& ty
 }
 
 /**
-* ¶ÁÈ¡Í¼Æ¬½Úµã
+* è¯»å–å›¾ç‰‡èŠ‚ç‚¹
 */
 void CMeshLoaderCollada::ReadImages(xml_node<>* images) {
 	xml_node<>* image = images->first_node();
@@ -84,7 +84,7 @@ void CMeshLoaderCollada::ReadImages(xml_node<>* images) {
 }
 
 /**
-* ¶ÁÈ¡²ÄÖÊ½Úµã
+* è¯»å–æè´¨èŠ‚ç‚¹
 */
 void CMeshLoaderCollada::ReadMaterials(xml_node<>* materials) {
 	xml_node<>* material = materials->first_node();
@@ -97,21 +97,21 @@ void CMeshLoaderCollada::ReadMaterials(xml_node<>* materials) {
 }
 
 /**
-* ¶ÁÈ¡³¡¾°½Úµã
+* è¯»å–åœºæ™¯èŠ‚ç‚¹
 */
 void CMeshLoaderCollada::ReadVisualScenes(xml_node<>* visualScenes, const CMatrix4& matrix, CMeshData* meshData) {
-	// ¶ÁÈ¡³¡¾°Êı¾İ
+	// è¯»å–åœºæ™¯æ•°æ®
 	xml_node<>* visual_scene = visualScenes->first_node();
 	while (visual_scene) {
 		ReadNode(visual_scene, matrix, 0);
 		visual_scene = visual_scene->next_sibling();
 	}
-	// Ìí¼Ó¹Ø½ÚĞÅÏ¢
+	// æ·»åŠ å…³èŠ‚ä¿¡æ¯
 	map<string, SJoint*> jointMap;
 	for (map<string, SJoint*>::iterator i = m_mapJoints.begin(); i != m_mapJoints.end(); ++i) {
 		jointMap.insert(std::pair<string, SJoint*>(i->second->name, i->second));
 	}
-	// °´¸¸¹Ø½ÚÓÅÏÈµÄË³ĞòÌí¼Ó
+	// æŒ‰çˆ¶å…³èŠ‚ä¼˜å…ˆçš„é¡ºåºæ·»åŠ 
 	vector<SJoint*> jointList;
 	map<string, SJoint*>::iterator iter = jointMap.begin();
 	while (iter != jointMap.end()) {
@@ -130,7 +130,7 @@ void CMeshLoaderCollada::ReadVisualScenes(xml_node<>* visualScenes, const CMatri
 }
 
 /**
-* ¶ÁÈ¡¿ØÖÆ½Úµã
+* è¯»å–æ§åˆ¶èŠ‚ç‚¹
 */
 void CMeshLoaderCollada::ReadControllers(xml_node<>* controllers, CMeshData* meshData) {
 	xml_node<>* controller = controllers->first_node();
@@ -143,7 +143,7 @@ void CMeshLoaderCollada::ReadControllers(xml_node<>* controllers, CMeshData* mes
 }
 
 /**
-* ¶ÁÈ¡¼¸ºÎ½Úµã
+* è¯»å–å‡ ä½•èŠ‚ç‚¹
 */
 void CMeshLoaderCollada::ReadGeometries(xml_node<>* geometries, CMeshData* meshData) {
 	xml_node<>* geometry = geometries->first_node();
@@ -156,7 +156,7 @@ void CMeshLoaderCollada::ReadGeometries(xml_node<>* geometries, CMeshData* meshD
 }
 
 /**
-* ¶ÁÈ¡Ğ§¹û½Úµã
+* è¯»å–æ•ˆæœèŠ‚ç‚¹
 */
 void CMeshLoaderCollada::ReadEffects(xml_node<>* effects, CMeshData* meshData) {
 	xml_node<>* effect = effects->first_node();
@@ -169,7 +169,7 @@ void CMeshLoaderCollada::ReadEffects(xml_node<>* effects, CMeshData* meshData) {
 }
 
 /**
-* ¶ÁÈ¡¶¯»­½Úµã
+* è¯»å–åŠ¨ç”»èŠ‚ç‚¹
 */
 void CMeshLoaderCollada::ReadAnimations(xml_node<>* animations, CMeshData* meshData) {
 	xml_node<>* animation = animations->first_node();
@@ -194,7 +194,7 @@ void CMeshLoaderCollada::ReadAnimations(xml_node<>* animations, CMeshData* meshD
 }
 
 /**
-* ½âÎö½ÚµãÊı¾İ
+* è§£æèŠ‚ç‚¹æ•°æ®
 */
 void CMeshLoaderCollada::ReadNode(xml_node<>* node, const CMatrix4& matrix, SJoint* joint) {
 	CMatrix4 transform;
@@ -255,13 +255,13 @@ void CMeshLoaderCollada::ReadNode(xml_node<>* node, const CMatrix4& matrix, SJoi
 }
 
 /**
-* ½âÎöÃÉÆ¤Êı¾İ
+* è§£æè’™çš®æ•°æ®
 */
 void CMeshLoaderCollada::ReadSkin(xml_node<>* skin, const string& id, CMeshData* meshData) {
 	const string mesh_id = skin->first_attribute("source")->value();
 	xml_node<>* vertex_weights = skin->first_node("vertex_weights");
 	m_mapVertexJoint[mesh_id].resize(atoi(vertex_weights->first_attribute("count")->value()));
-	// »ñÈ¡°ó¶¨¾ØÕó
+	// è·å–ç»‘å®šçŸ©é˜µ
 	xml_node<>* bind_shape_matrix = skin->first_node("bind_shape_matrix");
 	if (bind_shape_matrix) {
 		float mat[16];
@@ -269,7 +269,7 @@ void CMeshLoaderCollada::ReadSkin(xml_node<>* skin, const string& id, CMeshData*
 		for (int i = 0; i < 16; i++) stream_bind_shape_mat >> mat[i];
 		m_mapMeshTransform[mesh_id] = CMatrix4(mat).Transpose() * m_mapMeshTransform[mesh_id];
 	}
-	// »ñÈ¡ÊäÈëÔ´
+	// è·å–è¾“å…¥æº
 	map<string, xml_node<>*> sourceList;
 	xml_node<>* source = skin->first_node("source");
 	while (source) {
@@ -300,7 +300,7 @@ void CMeshLoaderCollada::ReadSkin(xml_node<>* skin, const string& id, CMeshData*
 			source_offset[1] = input_offset;
 		}
 	}
-	// »ñÈ¡°ó¶¨Äæ¾ØÕó
+	// è·å–ç»‘å®šé€†çŸ©é˜µ
 	xml_node<>* joints_input = skin->first_node("joints")->first_node("input");
 	while (joints_input) {
 		const char* input_semantic = joints_input->first_attribute("semantic")->value();
@@ -314,7 +314,7 @@ void CMeshLoaderCollada::ReadSkin(xml_node<>* skin, const string& id, CMeshData*
 	vector<string> vecJoint;
 	vector<float> vecWeight;
 	vector<float> vecBind;
-	// µÃµ½¹Ø½ÚÃû³ÆÊı×é£¬¹Ø½Ú°ó¶¨¾ØÕóÊı×é£¬¶¥µãÈ¨ÖØÊı×é
+	// å¾—åˆ°å…³èŠ‚åç§°æ•°ç»„ï¼Œå…³èŠ‚ç»‘å®šçŸ©é˜µæ•°ç»„ï¼Œé¡¶ç‚¹æƒé‡æ•°ç»„
 	vecJoint.resize(atoi(source_joint->first_attribute("count")->value()));
 	vecWeight.resize(atoi(source_weight->first_attribute("count")->value()));
 	vecBind.resize(atoi(source_bind->first_attribute("count")->value()));
@@ -337,7 +337,7 @@ void CMeshLoaderCollada::ReadSkin(xml_node<>* skin, const string& id, CMeshData*
 		}
 		vertexJoint[i].Normalize();
 	}
-	// ÉèÖÃ¹Ø½Ú°ó¶¨Äæ¾ØÕó
+	// è®¾ç½®å…³èŠ‚ç»‘å®šé€†çŸ©é˜µ
 	for (size_t i = 0; i < vecJoint.size(); i++) {
 		map<string, SJoint*>::iterator iter = m_mapJoints.find(vecJoint[i]);
 		if (iter != m_mapJoints.end()) {
@@ -352,7 +352,7 @@ void CMeshLoaderCollada::ReadSkin(xml_node<>* skin, const string& id, CMeshData*
 }
 
 /**
-* ½âÎöÍø¸ñÊı¾İ
+* è§£æç½‘æ ¼æ•°æ®
 */
 void CMeshLoaderCollada::ReadMesh(xml_node<>* mesh, const string& id, CMeshData* meshData) {
 	xml_node<>* triangles = mesh->first_node("triangles");
@@ -362,7 +362,7 @@ void CMeshLoaderCollada::ReadMesh(xml_node<>* mesh, const string& id, CMeshData*
 	if (!element) element = polylist;
 	if (!element) element = polygons;
 	if (!element) return;
-	// »ñÈ¡ÊäÈëÔ´
+	// è·å–è¾“å…¥æº
 	vector<CVertexJoint>& vertexJoint = m_mapVertexJoint["#" + id];
 	map<string, vector<float>> sourceList;
 	map<string, int> sourceStride;
@@ -383,14 +383,14 @@ void CMeshLoaderCollada::ReadMesh(xml_node<>* mesh, const string& id, CMeshData*
 			}
 		}
 	}
-	// ½âÎöÊı¾İ
+	// è§£ææ•°æ®
 	while (element) {
 		xml_node<>* element_p = element->first_node("p");
 		xml_attribute<>* element_count = element->first_attribute("count");
 		xml_attribute<>* element_material = element->first_attribute("material");
 		int face_count = atoi(element_count->value());
 		string material_name = element_material? m_mapMaterial[element_material->value()]: "";
-		// ËÄÖÖÊäÈëÔ´ 0-POSITION, 1-NORMAL, 2-TEXCOORD, 3-COLOR
+		// å››ç§è¾“å…¥æº 0-POSITION, 1-NORMAL, 2-TEXCOORD, 3-COLOR
 		string input_source[4];
 		int input_offset[4];
 		int input_stride[4];
@@ -411,7 +411,7 @@ void CMeshLoaderCollada::ReadMesh(xml_node<>* mesh, const string& id, CMeshData*
 			stream_p >> temp;
 			if (temp >= 0) vecIdx.push_back((unsigned int)temp);
 		}
-		// ´´½¨Íø¸ñ¶ÔÏó
+		// åˆ›å»ºç½‘æ ¼å¯¹è±¡
 		CMesh* pMesh = new CMesh();
 		pMesh->GetMaterial()->GetName() = material_name;
 		pMesh->GetMaterial()->SetTexture("");
@@ -422,7 +422,7 @@ void CMeshLoaderCollada::ReadMesh(xml_node<>* mesh, const string& id, CMeshData*
 			if (polylist) stream_v >> face_vert_count;
 			if (polygons) face_vert_count = vecIdx.size() / stride;
 			vertex.resize(face_vert_count);
-			// Ìí¼Ó¶¥µãºÍÈı½ÇĞÎ
+			// æ·»åŠ é¡¶ç‚¹å’Œä¸‰è§’å½¢
 			for (int j = 0; j < face_vert_count; j++) {
 				CVertex vert;
 				vertex[j] = pMesh->GetVertexCount();
@@ -456,7 +456,7 @@ void CMeshLoaderCollada::ReadMesh(xml_node<>* mesh, const string& id, CMeshData*
 		pMesh->Transform(m_mapMeshTransform["#" + id]);
 		pMesh->Reverse(false, false, true);
 		meshData->AddMesh(pMesh);
-		// ÏÂÒ»¸öÍø¸ñ
+		// ä¸‹ä¸€ä¸ªç½‘æ ¼
 		if (triangles) element = element->next_sibling("triangles");
 		else if (polylist) element = element->next_sibling("polylist");
 		else if (polygons) element = element->next_sibling("polygons");
@@ -465,7 +465,7 @@ void CMeshLoaderCollada::ReadMesh(xml_node<>* mesh, const string& id, CMeshData*
 }
 
 /**
-* ½âÎö²ÄÖÊÊı¾İ
+* è§£ææè´¨æ•°æ®
 */
 void CMeshLoaderCollada::ReadProfile(xml_node<>* profile, const string& id, CMeshData* meshData) {
 	string url = "#" + id;
@@ -487,7 +487,7 @@ void CMeshLoaderCollada::ReadProfile(xml_node<>* profile, const string& id, CMes
 						if (surface) mapper[sid] = surface->first_node("init_from")->value();
 						newparam = newparam->next_sibling("newparam");
 					}
-					// ²¿·ÖÎÄ¼ş image ¿ÉÄÜ°üº¬ÔÚ library_effects/effect/profile_COMMON ÄÚ
+					// éƒ¨åˆ†æ–‡ä»¶ image å¯èƒ½åŒ…å«åœ¨ library_effects/effect/profile_COMMON å†…
 					xml_node<>* image = profile->first_node("image");
 					while (image) {
 						string id = image->first_attribute("id")->value();
@@ -518,10 +518,10 @@ void CMeshLoaderCollada::ReadProfile(xml_node<>* profile, const string& id, CMes
 }
 
 /**
-* ¶ÁÈ¡¶¯»­Êı¾İ
+* è¯»å–åŠ¨ç”»æ•°æ®
 */
 void CMeshLoaderCollada::ReadAnimationData(xml_node<>* animation) {
-	// »ñÈ¡ÊäÈëÔ´
+	// è·å–è¾“å…¥æº
 	map<string, xml_node<>*> samplerList;
 	map<string, vector<float>> sourceList;
 	xml_node<>* source = animation->first_node("source");
@@ -542,7 +542,7 @@ void CMeshLoaderCollada::ReadAnimationData(xml_node<>* animation) {
 		samplerList["#" + sampler_id] = sampler;
 		sampler = sampler->next_sibling("sampler");
 	}
-	// ¶¯»­Í¨µÀ
+	// åŠ¨ç”»é€šé“
 	xml_node<>* channel = animation->first_node("channel");
 	while (channel) {
 		SJoint* pJoint = 0;
@@ -554,7 +554,7 @@ void CMeshLoaderCollada::ReadAnimationData(xml_node<>* animation) {
 		map<string, SJoint*>::iterator iter = m_mapJoints.find(joint);
 		if (iter != m_mapJoints.end()) pJoint = iter->second;
 		if (!pJoint) continue;
-		// ²»Ö§³Ö·Ç¾ØÕóµÄ±ä»»·½Ê½
+		// ä¸æ”¯æŒéçŸ©é˜µçš„å˜æ¢æ–¹å¼
 		if (trans != "matrix" && trans != "transform") continue;
 		map<string, xml_node<>*>::iterator iter_sampler = samplerList.find(channel_source);
 		if (iter_sampler == samplerList.end()) continue;
@@ -570,7 +570,7 @@ void CMeshLoaderCollada::ReadAnimationData(xml_node<>* animation) {
 		}
 		const vector<float>& vecInput = sourceList[source_input];
 		const vector<float>& vecOutput = sourceList[source_output];
-		// Collada ¶¯»­Êı¾İÎª¾Ö²¿±ä»»¾ØÕó£¬ĞèÒª×ª»»ÎªÏà¶ÔÓÚ¹Ø½Ú¾Ö²¿±ä»»¾ØÕóµÄĞı×ªºÍÆ½ÒÆÁ¿
+		// Collada åŠ¨ç”»æ•°æ®ä¸ºå±€éƒ¨å˜æ¢çŸ©é˜µï¼Œéœ€è¦è½¬æ¢ä¸ºç›¸å¯¹äºå…³èŠ‚å±€éƒ¨å˜æ¢çŸ©é˜µçš„æ—‹è½¬å’Œå¹³ç§»é‡
 		CMatrix4 localMatrixInv(pJoint->localMatrix);
 		localMatrixInv.Invert();
 		for (size_t i = 0; i < vecInput.size(); i++) {
@@ -588,7 +588,7 @@ void CMeshLoaderCollada::ReadAnimationData(xml_node<>* animation) {
 }
 
 /**
-* ¶ÁÈ¡¶¯»­¹Ø½Ú
+* è¯»å–åŠ¨ç”»å…³èŠ‚
 */
 void CMeshLoaderCollada::ReadAnimationJoint(xml_node<>* animations) {
 	xml_node<>* animation = animations->first_node();
@@ -623,7 +623,7 @@ void CMeshLoaderCollada::ReadAnimationJoint(xml_node<>* animations) {
 }
 
 /**
-* Ó³Éä²ÄÖÊÃû³Æ
+* æ˜ å°„æè´¨åç§°
 */
 void CMeshLoaderCollada::MapMaterial(xml_node<>* material) {
 	xml_node<>* instance_material = material->first_node()->first_node("instance_material");
@@ -636,20 +636,20 @@ void CMeshLoaderCollada::MapMaterial(xml_node<>* material) {
 }
 
 /**
-* Ó³Éä¶¥µã¹Ç÷À
+* æ˜ å°„é¡¶ç‚¹éª¨éª¼
 */
 void CMeshLoaderCollada::MapVertexJoint(const string& id, const vector<string>& joint, CMeshData* meshData) {
 	map<string, int> jointIndexMapper;
 	map<string, string> jointNameMapper;
-	// ¹Ø½ÚÃû³Æ->¹Ø½ÚË÷Òı
+	// å…³èŠ‚åç§°->å…³èŠ‚ç´¢å¼•
 	for (int i = 0; i < meshData->GetJointCount(); i++) {
 		jointIndexMapper.insert(std::pair<string, int>(meshData->GetJoint(i)->name, i));
 	}
-	// ¹Ø½ÚSID->¹Ø½ÚÃû³Æ
+	// å…³èŠ‚SID->å…³èŠ‚åç§°
 	for (map<string, SJoint*>::iterator i = m_mapJoints.begin(); i != m_mapJoints.end(); ++i) {
 		jointNameMapper.insert(std::pair<string, string>(i->first, i->second->name));
 	}
-	// Ö´ĞĞÓ³Éä£¬ĞŞ¸Ä¶¥µã¶ÔÓ¦¹Ø½Ú
+	// æ‰§è¡Œæ˜ å°„ï¼Œä¿®æ”¹é¡¶ç‚¹å¯¹åº”å…³èŠ‚
 	vector<int> jointMap(joint.size());
 	vector<CVertexJoint>& vertexJoint = m_mapVertexJoint[id];
 	for (size_t i = 0; i < joint.size(); i++) {
@@ -664,7 +664,7 @@ void CMeshLoaderCollada::MapVertexJoint(const string& id, const vector<string>& 
 }
 
 /**
-* »ñÈ¡¼¸ºÎÊı¾İÊäÈë
+* è·å–å‡ ä½•æ•°æ®è¾“å…¥
 * 0-POSITION, 1-NORMAL, 2-TEXCOORD, 3-COLOR
 */
 int CMeshLoaderCollada::GetElementInput(xml_node<>* element, string source[4], int offset[4]) {

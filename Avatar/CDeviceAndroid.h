@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CDEVICEANDROID_H_
@@ -10,24 +10,24 @@
 #ifdef AVATAR_ANDROID
 
 /**
-* @brief Android Éè±¸Àà
+* @brief Android è®¾å¤‡ç±»
 */
 class CDeviceAndroid: public CDevice {
 public:
-	//! »ñÈ¡ Android Éè±¸ÊµÀı
+	//! è·å– Android è®¾å¤‡å®ä¾‹
 	static CDeviceAndroid* GetInstance() {
 		if (m_pInstance) return m_pInstance;
 		m_pInstance = new CDeviceAndroid();
 		return m_pInstance;
 	}
 
-	//! ´´½¨´°¿Ú
+	//! åˆ›å»ºçª—å£
 	virtual bool Create(const string& title, int width, int height, bool resizable, bool fullscreen, bool antialias);
-	//! Ïú»Ù´°¿Ú
+	//! é”€æ¯çª—å£
 	virtual void Destroy();
-	//! »æÖÆÊä³ö
+	//! ç»˜åˆ¶è¾“å‡º
 	virtual void Render();
-	//! ÏûÏ¢´¦Àí
+	//! æ¶ˆæ¯å¤„ç†
 	virtual void Handle(float dt);
 
 private:
@@ -35,7 +35,7 @@ private:
 	virtual ~CDeviceAndroid();
 
 private:
-	//! ÊµÀı
+	//! å®ä¾‹
 	static CDeviceAndroid* m_pInstance;
 };
 

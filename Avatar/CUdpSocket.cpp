@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CUdpSocket.h"
@@ -20,12 +20,12 @@ typedef int socklen_t;
 #endif
 
 /**
-* UDP ¿âÒıÓÃ´ÎÊı
+* UDP åº“å¼•ç”¨æ¬¡æ•°
 */
 int CUdpSocket::m_iRefCount = 0;
 
 /**
-* ¹¹Ôìº¯Êı
+* æ„é€ å‡½æ•°
 */
 CUdpSocket::CUdpSocket() {
 	m_iSocket = -1;
@@ -40,7 +40,7 @@ CUdpSocket::CUdpSocket() {
 }
 
 /**
-* Îö¹¹º¯Êı
+* ææ„å‡½æ•°
 */
 CUdpSocket::~CUdpSocket() {
 	Close();
@@ -52,14 +52,14 @@ CUdpSocket::~CUdpSocket() {
 }
 
 /**
-* ´ò¿ªÁ¬½Ó
+* æ‰“å¼€è¿æ¥
 */
 bool CUdpSocket::Open(int port, const char* ip) {
 	m_iPort = port;
 	m_sLocalAddr.sin_family = AF_INET;
 	m_sRemoteAddr.sin_family = AF_INET;
 	m_iSocket = socket(AF_INET, SOCK_DGRAM, 0);
-	// Èô ip Îª¿Õ£¬ÔòÎª·şÎñÆ÷Ä£Ê½
+	// è‹¥ ip ä¸ºç©ºï¼Œåˆ™ä¸ºæœåŠ¡å™¨æ¨¡å¼
 	if (ip) {
 		m_sRemoteAddr.sin_port = htons(port);
 		inet_pton(AF_INET, ip, &m_sRemoteAddr.sin_addr);
@@ -74,7 +74,7 @@ bool CUdpSocket::Open(int port, const char* ip) {
 }
 
 /**
-* ¹Ø±ÕÁ¬½Ó
+* å…³é—­è¿æ¥
 */
 void CUdpSocket::Close() {
 	if (m_bOpened) {
@@ -88,17 +88,17 @@ void CUdpSocket::Close() {
 }
 
 /**
-* ·¢ËÍ×Ö½ÚÏûÏ¢
+* å‘é€å­—èŠ‚æ¶ˆæ¯
 */
 int CUdpSocket::SendData(const void* data, int size) {
-	// Èç¹ûÎŞÄ¿±êµØÖ·£¬ÔòÖ±½Ó·µ»Ø
+	// å¦‚æœæ— ç›®æ ‡åœ°å€ï¼Œåˆ™ç›´æ¥è¿”å›
 	if (ntohs(m_sRemoteAddr.sin_port) == 0) return 0;
 	socklen_t destlen = sizeof(m_sRemoteAddr);
 	return sendto(m_iSocket, (const char*)data, size, 0, (sockaddr*)&m_sRemoteAddr, destlen);
 }
 
 /**
-* ÏòÖ¸¶¨µØÖ·¶Ë¿Ú·¢Êı¾İ£¬·µ»ØÊµ¼Ê·¢ËÍµÄ×Ö½ÚÊı
+* å‘æŒ‡å®šåœ°å€ç«¯å£å‘æ•°æ®ï¼Œè¿”å›å®é™…å‘é€çš„å­—èŠ‚æ•°
 */
 int CUdpSocket::SendData(const void* data, int size, const string& ip, int port) {
 	sockaddr_in remoteAddr;
@@ -109,7 +109,7 @@ int CUdpSocket::SendData(const void* data, int size, const string& ip, int port)
 }
 
 /**
-* ½ÓÊÕ×Ö½ÚÏûÏ¢
+* æ¥æ”¶å­—èŠ‚æ¶ˆæ¯
 */
 int CUdpSocket::RecvData(void* data, int size) {
 	socklen_t destlen = sizeof(m_sRemoteAddr);
@@ -117,14 +117,14 @@ int CUdpSocket::RecvData(void* data, int size) {
 }
 
 /**
-* »ñÈ¡´ò¿ªµÄ¶Ë¿Ú
+* è·å–æ‰“å¼€çš„ç«¯å£
 */
 int CUdpSocket::GetPort() {
 	return m_iPort;
 }
 
 /**
-* »ñÈ¡¿Í»§¶Ë IP µØÖ·
+* è·å–å®¢æˆ·ç«¯ IP åœ°å€
 */
 string CUdpSocket::GetClientIP() {
 	char buffer[32] = { 0 };
@@ -133,7 +133,7 @@ string CUdpSocket::GetClientIP() {
 }
 
 /**
-* Ê¹ÄÜ×èÈûÄ£Ê½
+* ä½¿èƒ½é˜»å¡æ¨¡å¼
 */
 void CUdpSocket::EnableBlockmode(bool enable) {
 	int flag = 0;
@@ -147,7 +147,7 @@ void CUdpSocket::EnableBlockmode(bool enable) {
 }
 
 /**
-* Ê¹ÄÜ¹ã²¥·¢ËÍ
+* ä½¿èƒ½å¹¿æ’­å‘é€
 */
 void CUdpSocket::EnableBroadcast(bool enable) {
 	int optval = 0;
@@ -156,7 +156,7 @@ void CUdpSocket::EnableBroadcast(bool enable) {
 }
 
 /**
-* »ñÈ¡¹ã²¥µØÖ·ÁĞ±í
+* è·å–å¹¿æ’­åœ°å€åˆ—è¡¨
 */
 void CUdpSocket::GetBroadcastAddrList(vector<string>& list) {
 	list.clear();
@@ -174,7 +174,7 @@ void CUdpSocket::GetBroadcastAddrList(vector<string>& list) {
 		list.push_back(inet_ntoa(broadcastAddr));
 	}
 #else
-	// »ñÈ¡ËùÓĞÍø¿¨
+	// è·å–æ‰€æœ‰ç½‘å¡
 	char buf[2048];
 	struct ifconf ifc;
 	ifc.ifc_len = sizeof(buf);

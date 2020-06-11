@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CPOSTPROCESSSNOW_H_
@@ -7,7 +7,7 @@
 #include "CPostProcess.h"
 
 /**
-* @brief ÏÂÑ©Ğ§¹ûºó´¦Àí
+* @brief ä¸‹é›ªæ•ˆæœåå¤„ç†
 */
 class CPostProcessSnow: public CPostProcess {
 public:

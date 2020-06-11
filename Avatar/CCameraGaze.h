@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CCAMERAGAZE_H_
@@ -7,62 +7,62 @@
 #include "CCamera.h"
 
 /**
-* @brief ¹Ì¶¨Ä¿±êµãĞÍÏà»ú
+* @brief å›ºå®šç›®æ ‡ç‚¹å‹ç›¸æœº
 */
 class AVATAR_EXPORT CCameraGaze: public CCamera {
 public:
-	//! Ä¬ÈÏ¹¹Ôìº¯Êı
+	//! é»˜è®¤æ„é€ å‡½æ•°
 	CCameraGaze();
 
-	//! »ñÈ¡Ïà»úÃû³Æ
+	//! è·å–ç›¸æœºåç§°
 	virtual const char* GetName() const;
 
-	//! ¿ØÖÆĞÅÏ¢ÊäÈë
+	//! æ§åˆ¶ä¿¡æ¯è¾“å…¥
 	virtual void Input(CInputManager::SInput* input);
-	//! ÉèÖÃÏà»ú¸ß¶È
+	//! è®¾ç½®ç›¸æœºé«˜åº¦
 	virtual void SetHeight(float height);
-	//! ÉèÖÃÏà»úÎ»ÖÃ
+	//! è®¾ç½®ç›¸æœºä½ç½®
 	virtual void SetPosition(const CVector3& pos);
-	//! ÉèÖÃÏà»ú·½Î»
+	//! è®¾ç½®ç›¸æœºæ–¹ä½
 	virtual void SetAngle(float yaw, float pitch, float roll);
-	//! ÉèÖÃÏà»úÄ¿±ê
+	//! è®¾ç½®ç›¸æœºç›®æ ‡
 	virtual void SetTarget(const CVector3& pos);
 
-	//! ¸üĞÂÏà»ú
+	//! æ›´æ–°ç›¸æœº
 	virtual void Update(float dt);
 
 public:
-	//! ÉèÖÃ×èÄáÏµÊı
+	//! è®¾ç½®é˜»å°¼ç³»æ•°
 	void SetDamping(float k);
-	//! ÉèÖÃÏà»ú¾àÀëÄ¿±ê×î½ü¾àÀë
+	//! è®¾ç½®ç›¸æœºè·ç¦»ç›®æ ‡æœ€è¿‘è·ç¦»
 	void SetMinDistance(float distance);
-	//! ÉèÖÃÏà»ú¾àÀëÄ¿±ê×î´ó¾àÀë
+	//! è®¾ç½®ç›¸æœºè·ç¦»ç›®æ ‡æœ€å¤§è·ç¦»
 	void SetMaxDistance(float distance);
-	//! ÉèÖÃ¸©Ñö½Ç·¶Î§
+	//! è®¾ç½®ä¿¯ä»°è§’èŒƒå›´
 	void SetPitchRange(float min, float max);
 
 private:
-	//! ÏŞÖÆ·½Î»½Ç
+	//! é™åˆ¶æ–¹ä½è§’
 	inline void RestrictYawRange(bool shortest);
 
 private:
-	//! ×èÄáÏµÊı
+	//! é˜»å°¼ç³»æ•°
 	float m_fDamping;
-	//! ×îĞ¡¾àÀë
+	//! æœ€å°è·ç¦»
 	float m_fMinDistance;
-	//! ×î´ó¾àÀë
+	//! æœ€å¤§è·ç¦»
 	float m_fMaxDistance;
-	//! ¸©Ñö½Ç·¶Î§
+	//! ä¿¯ä»°è§’èŒƒå›´
 	float m_fPitchRange[2];
-	//! Ïà»úÔ¤¶¨·½Î»½Ç
+	//! ç›¸æœºé¢„å®šæ–¹ä½è§’
 	float m_fYawInAdvance;
-	//! Ïà»úÔ¤¶¨¸©Ñö½Ç
+	//! ç›¸æœºé¢„å®šä¿¯ä»°è§’
 	float m_fPitchInAdvance;
-	//! Ïà»úÔ¤¶¨·­¹ö½Ç
+	//! ç›¸æœºé¢„å®šç¿»æ»šè§’
 	float m_fRollInAdvance;
-	//! Ä¿±êÎ»ÖÃ
+	//! ç›®æ ‡ä½ç½®
 	CVector3 m_cTargetPos;
-	//! Ïà»úÔ¤¶¨Î»ÖÃ
+	//! ç›¸æœºé¢„å®šä½ç½®
 	CVector3 m_cPosInAdvance;
 };
 

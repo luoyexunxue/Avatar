@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CSCENENODEGEOMETRY_H_
@@ -8,31 +8,31 @@
 #include "CGeometryCreator.h"
 
 /**
-* @brief ¼¸ºÎÌå³¡¾°½Úµã
+* @brief å‡ ä½•ä½“åœºæ™¯èŠ‚ç‚¹
 */
 class AVATAR_EXPORT CSceneNodeGeometry: public CSceneNode {
 public:
-	//! ¹¹Ôì·½·¨
+	//! æ„é€ æ–¹æ³•
 	CSceneNodeGeometry(const string& name, const string& texture, const SGeometry& geometry);
 
-	//! ³õÊ¼»¯³¡¾°½Úµã
+	//! åˆå§‹åŒ–åœºæ™¯èŠ‚ç‚¹
 	virtual bool Init();
-	//! Ïú»Ù³¡¾°½Úµã
+	//! é”€æ¯åœºæ™¯èŠ‚ç‚¹
 	virtual void Destroy();
-	//! äÖÈ¾³¡¾°½Úµã
+	//! æ¸²æŸ“åœºæ™¯èŠ‚ç‚¹
 	virtual void Render();
-	//! »ñÈ¡Íø¸ñÊı¾İ
+	//! è·å–ç½‘æ ¼æ•°æ®
 	virtual CMeshData* GetMeshData();
 
-	//! »ñÈ¡¼¸ºÎ²ÎÊı
+	//! è·å–å‡ ä½•å‚æ•°
 	SGeometry GetGeometry(bool worldspace);
 
 private:
-	//! ¼¸ºÎÌåÎÆÀí
+	//! å‡ ä½•ä½“çº¹ç†
 	string m_strTexture;
-	//! ¼¸ºÎ²ÎÊı
+	//! å‡ ä½•å‚æ•°
 	SGeometry m_sGeometry;
-	//! Íø¸ñ¶ÔÏó
+	//! ç½‘æ ¼å¯¹è±¡
 	CMeshData* m_pMeshData;
 };
 

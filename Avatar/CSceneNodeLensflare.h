@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CSCENENODELENSFLARE_H_
@@ -7,33 +7,33 @@
 #include "CSceneNode.h"
 
 /**
-* @brief ¾µÍ·¹âÔÎ³¡¾°½Úµã
+* @brief é•œå¤´å…‰æ™•åœºæ™¯èŠ‚ç‚¹
 */
 class AVATAR_EXPORT CSceneNodeLensflare: public CSceneNode {
 public:
-	//! ¹¹Ôì·½·¨
+	//! æ„é€ æ–¹æ³•
 	CSceneNodeLensflare(const string& name);
 
-	//! ³õÊ¼»¯³¡¾°½Úµã
+	//! åˆå§‹åŒ–åœºæ™¯èŠ‚ç‚¹
 	virtual bool Init();
-	//! Ïú»Ù³¡¾°½Úµã
+	//! é”€æ¯åœºæ™¯èŠ‚ç‚¹
 	virtual void Destroy();
-	//! äÖÈ¾³¡¾°½Úµã
+	//! æ¸²æŸ“åœºæ™¯èŠ‚ç‚¹
 	virtual void Render();
-	//! ¸üĞÂ³¡¾°½Úµã
+	//! æ›´æ–°åœºæ™¯èŠ‚ç‚¹
 	virtual void Update(float dt);
-	//! ÖØÔØ×ø±ê±ä»»
+	//! é‡è½½åæ ‡å˜æ¢
 	virtual void Transform() {}
 
 private:
-	//! ¹âÔÎ½á¹¹Ìå
+	//! å…‰æ™•ç»“æ„ä½“
 	typedef struct _SLensFlare {
 		float offset;
 		float size;
 		float color[4];
 		CTexture* texture;
 		/**
-		* ÉèÖÃ¹âÔÎ²ÎÊı
+		* è®¾ç½®å…‰æ™•å‚æ•°
 		*/
 		void SetParameter(float offset, float size, float r, float g, float b, float a, CTexture* texture) {
 			this->offset = offset;
@@ -47,21 +47,21 @@ private:
 	} SLensFlare;
 
 private:
-	//! ¹âÔÎÁĞ±í
+	//! å…‰æ™•åˆ—è¡¨
 	SLensFlare m_sLensFlares[6];
-	//! Ì«ÑôÎÆÀí
+	//! å¤ªé˜³çº¹ç†
 	CTexture* m_pTextureFlare;
-	//! ¹âÔÎÎÆÀí1
+	//! å…‰æ™•çº¹ç†1
 	CTexture* m_pTextureGlow;
-	//! ¹âÔÎÎÆÀí2
+	//! å…‰æ™•çº¹ç†2
 	CTexture* m_pTextureHalo;
-	//! ¹âÔÎäÖÈ¾Íø¸ñ
+	//! å…‰æ™•æ¸²æŸ“ç½‘æ ¼
 	CMesh* m_pMesh;
-	//! Ì«ÑôµÄÎ»ÖÃ
+	//! å¤ªé˜³çš„ä½ç½®
 	CVector3 m_cSunPosition;
-	//! ÆÁÄ»ÖĞĞÄÎ»ÖÃ
+	//! å±å¹•ä¸­å¿ƒä½ç½®
 	CVector2 m_cCenterPos;
-	//! Ì«ÑôÔÚÆÁÄ»ÖĞÎ»ÖÃ
+	//! å¤ªé˜³åœ¨å±å¹•ä¸­ä½ç½®
 	CVector3 m_cScreenPos;
 };
 

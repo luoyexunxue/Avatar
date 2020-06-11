@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CPOSTPROCESSGRAY_H_
@@ -7,7 +7,7 @@
 #include "CPostProcess.h"
 
 /**
-* @brief »Ò¶È»¯ºó´¦Àí
+* @brief ç°åº¦åŒ–åå¤„ç†
 */
 class CPostProcessGray: public CPostProcess {
 public:

@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CMeshLoaderBasic.h"
@@ -15,7 +15,7 @@ using std::map;
 using std::istringstream;
 
 /**
-* ¼ÓÔØ STL/OBJ/MS3D/BVH Ä£ĞÍ
+* åŠ è½½ STL/OBJ/MS3D/BVH æ¨¡å‹
 */
 CMeshData* CMeshLoaderBasic::LoadFile(const string& filename, const string& type) {
 	if (type == "STL") return LoadStlFile(filename);
@@ -26,7 +26,7 @@ CMeshData* CMeshLoaderBasic::LoadFile(const string& filename, const string& type
 }
 
 /**
-* ¼ÓÔØ STL Ä£ĞÍ
+* åŠ è½½ STL æ¨¡å‹
 */
 CMeshData* CMeshLoaderBasic::LoadStlFile(const string& filename) {
 	CFileManager::CBinaryFile file;
@@ -34,11 +34,11 @@ CMeshData* CMeshLoaderBasic::LoadStlFile(const string& filename) {
 		return 0;
 	}
 	CStreamReader reader(file.contents, file.size);
-	// Ìø¹ı80×Ö½ÚµÄÍ·²¿
+	// è·³è¿‡80å­—èŠ‚çš„å¤´éƒ¨
 	reader.Skip(80);
-	// Èı½ÇĞÎÊıÁ¿
+	// ä¸‰è§’å½¢æ•°é‡
 	int triangleCount = reader.GetValue<int32_t>();
-	// ²»ÊÇÓĞĞ§µÄ STL ÎÄ¼ş
+	// ä¸æ˜¯æœ‰æ•ˆçš„ STL æ–‡ä»¶
 	if (reader.Available() <  triangleCount * 50) {
 		return 0;
 	}
@@ -65,14 +65,14 @@ CMeshData* CMeshLoaderBasic::LoadStlFile(const string& filename) {
 }
 
 /**
-* ¼ÓÔØ OBJ Ä£ĞÍ
+* åŠ è½½ OBJ æ¨¡å‹
 */
 CMeshData* CMeshLoaderBasic::LoadObjFile(const string& filename) {
 	CFileManager::CTextFile file;
 	if (!CEngine::GetFileManager()->ReadFile(filename, &file)) {
 		return 0;
 	}
-	// ¶¥µãË÷Òı
+	// é¡¶ç‚¹ç´¢å¼•
 	struct SVertIndex {
 		int v;
 		int vt;
@@ -83,7 +83,7 @@ CMeshData* CMeshLoaderBasic::LoadObjFile(const string& filename) {
 			vn = index[2];
 		}
 	};
-	// map µÄ±È½Ïº¯Êı£¬¼ÓÔØ OBJ ÎÄ¼şÊ±ÓÃÀ´Ïû³ıÖØ¸´¶¥µã
+	// map çš„æ¯”è¾ƒå‡½æ•°ï¼ŒåŠ è½½ OBJ æ–‡ä»¶æ—¶ç”¨æ¥æ¶ˆé™¤é‡å¤é¡¶ç‚¹
 	struct SComparekey {
 		bool operator () (const CVertex& v1, const CVertex& v2) const {
 			if (v1.m_fPosition[0] != v2.m_fPosition[0]) return v1.m_fPosition[0] < v2.m_fPosition[0];
@@ -116,7 +116,7 @@ CMeshData* CMeshLoaderBasic::LoadObjFile(const string& filename) {
 	while (!stream.eof()) {
 		char line[256];
 		stream.getline(line, 256);
-		// ÎŞĞ§ĞĞ
+		// æ— æ•ˆè¡Œ
 		if (strlen(line) == 0 || line[0] == '#') continue;
 		reader.clear();
 		reader.str(line);
@@ -187,9 +187,9 @@ CMeshData* CMeshLoaderBasic::LoadObjFile(const string& filename) {
 			}
 		}
 	}
-	// ¼ÓÔØ²ÄÖÊ
+	// åŠ è½½æè´¨
 	LoadObjMaterial(mtlFile, pMeshData);
-	// ´´½¨Íø¸ñ
+	// åˆ›å»ºç½‘æ ¼
 	for (int i = 0; i < pMeshData->GetMeshCount(); i++) {
 		CMesh* pMesh = pMeshData->GetMesh(i);
 		CVertex* v = pMesh->GetVertex(0);
@@ -203,7 +203,7 @@ CMeshData* CMeshLoaderBasic::LoadObjFile(const string& filename) {
 }
 
 /**
-* ¼ÓÔØ MS3D Ä£ĞÍ
+* åŠ è½½ MS3D æ¨¡å‹
 */
 CMeshData* CMeshLoaderBasic::LoadMs3dFile(const string& filename) {
 	CFileManager::CBinaryFile file;
@@ -212,7 +212,7 @@ CMeshData* CMeshLoaderBasic::LoadMs3dFile(const string& filename) {
 	}
 	string baseDir = CFileManager::GetDirectory(filename);
 	CStreamReader reader(file.contents, file.size);
-	// ¶ÁÈ¡ÎÄ¼şÍ·
+	// è¯»å–æ–‡ä»¶å¤´
 	char magicId[10];
 	reader.Read((unsigned char*)magicId, 10);
 	int version = reader.GetValue<int32_t>();
@@ -273,7 +273,7 @@ CMeshData* CMeshLoaderBasic::LoadMs3dFile(const string& filename) {
 		materialReader.Skip(16);
 		materialReader >> mtl->m_fColor[0] >> mtl->m_fColor[1] >> mtl->m_fColor[2] >> mtl->m_fColor[3];
 		materialReader.Skip(41).Read((unsigned char*)texture, 128);
-		// ÉèÖÃÎÆÀíÍ¼Æ¬£¬Èç¹ûÃ»ÓĞÔòÊ¹ÓÃ´¿»ÒÉ«
+		// è®¾ç½®çº¹ç†å›¾ç‰‡ï¼Œå¦‚æœæ²¡æœ‰åˆ™ä½¿ç”¨çº¯ç°è‰²
 		if (strlen(texture) > 0) mtl->SetTexture(baseDir + texture);
 		else mtl->SetTexture("");
 		pMesh->Create(true);
@@ -293,7 +293,7 @@ CMeshData* CMeshLoaderBasic::LoadMs3dFile(const string& filename) {
 		pJoint->localMatrix.RotateX(rotation[0]).RotateY(rotation[1]).RotateZ(rotation[2]);
 		pJoint->localMatrix.Translate(translation[0], translation[1], translation[2]);
 		pJoint->worldMatrix = pJoint->localMatrix;
-		// ¹Ø½Ú¶¯»­±ä»»¹Ø¼üÖ¡
+		// å…³èŠ‚åŠ¨ç”»å˜æ¢å…³é”®å¸§
 		int numRotationKeyframes = reader.GetValue<uint16_t>();
 		int numTranslationKeyframes = reader.GetValue<uint16_t>();
 		for (int j = 0; j < numRotationKeyframes; j++) {
@@ -313,7 +313,7 @@ CMeshData* CMeshLoaderBasic::LoadMs3dFile(const string& filename) {
 		pMeshData->AddJoint(pJoint);
 		vecJointParents.push_back(parentName);
 	}
-	// ¶Ô¹Ç÷À½ÚµãÉú³É¸¸¼¶¹ØÏµ£¬ms3d ÀïµÄµÚÒ»¸ö½Úµã¾ÍÊÇ¸ù½Úµã
+	// å¯¹éª¨éª¼èŠ‚ç‚¹ç”Ÿæˆçˆ¶çº§å…³ç³»ï¼Œms3d é‡Œçš„ç¬¬ä¸€ä¸ªèŠ‚ç‚¹å°±æ˜¯æ ¹èŠ‚ç‚¹
 	for (int i = 0; i < numJoints; i++) {
 		SJoint* pJoint = pMeshData->GetJoint(i);
 		for (int j = 0; j < numJoints; j++) {
@@ -327,7 +327,7 @@ CMeshData* CMeshLoaderBasic::LoadMs3dFile(const string& filename) {
 		pJoint->bindMatrixInv.SetValue(pJoint->worldMatrix);
 		pJoint->bindMatrixInv.Invert();
 	}
-	// Ìí¼Ó¶¯»­ĞÅÏ¢
+	// æ·»åŠ åŠ¨ç”»ä¿¡æ¯
 	float endTime = 0.0f;
 	for (int i = 0; i < numJoints; i++) {
 		SJoint* pJoint = pMeshData->GetJoint(i);
@@ -339,7 +339,7 @@ CMeshData* CMeshLoaderBasic::LoadMs3dFile(const string& filename) {
 }
 
 /**
-* ¼ÓÔØ BVH ¶¯»­
+* åŠ è½½ BVH åŠ¨ç”»
 */
 CMeshData* CMeshLoaderBasic::LoadBvhFile(const string& filename) {
 	CFileManager::CTextFile file;
@@ -349,7 +349,7 @@ CMeshData* CMeshLoaderBasic::LoadBvhFile(const string& filename) {
 	string line;
 	istringstream stream((char*)file.contents);
 	stream >> line;
-	// ¶ÁÈ¡¹Ç÷À½á¹¹
+	// è¯»å–éª¨éª¼ç»“æ„
 	if (line != "HIERARCHY") return 0;
 	CMeshData* pMeshData = new CMeshData();
 	map<string, vector<string>> jointChannels;
@@ -385,7 +385,7 @@ CMeshData* CMeshLoaderBasic::LoadBvhFile(const string& filename) {
 			pParent = pParent->parent;
 		}
 	} while (braceCount > 0 && !stream.eof());
-	// ¶ÁÈ¡¶¯»­Êı¾İ
+	// è¯»å–åŠ¨ç”»æ•°æ®
 	stream >> line;
 	if (line == "MOTION") {
 		int frameCount;
@@ -424,7 +424,7 @@ CMeshData* CMeshLoaderBasic::LoadBvhFile(const string& filename) {
 }
 
 /**
-* ¼ÓÔØ OBJ ²ÄÖÊĞÅÏ¢
+* åŠ è½½ OBJ æè´¨ä¿¡æ¯
 */
 void CMeshLoaderBasic::LoadObjMaterial(const string& filename, CMeshData* meshData) {
 	CFileManager::CTextFile file;
@@ -440,7 +440,7 @@ void CMeshLoaderBasic::LoadObjMaterial(const string& filename, CMeshData* meshDa
 	while (!stream.eof()) {
 		char line[256];
 		stream.getline(line, 256);
-		// ÎŞĞ§ĞĞ
+		// æ— æ•ˆè¡Œ
 		if (strlen(line) == 0 || line[0] == '#') continue;
 		reader.clear();
 		reader.str(line);
@@ -472,19 +472,19 @@ void CMeshLoaderBasic::LoadObjMaterial(const string& filename, CMeshData* meshDa
 			else pCurrentMaterial->SetTexture(baseDir + p);
 		}
 	}
-	// ¶ÔÍø¸ñ¸³Óè²ÄÖÊ
+	// å¯¹ç½‘æ ¼èµ‹äºˆæè´¨
 	for (int i = 0; i < meshData->GetMeshCount(); i++) {
 		map<string, CMaterial*>::iterator iter = mapMaterials.find(meshData->GetMesh(i)->GetMaterial()->GetName());
 		if (iter != mapMaterials.end()) {
 			CMesh* mesh = meshData->GetMesh(i);
 			mesh->GetMaterial()->CopyFrom(iter->second);
-			// Èç¹ûÎÆÀíÎª¿ÕÔòÉèÖÃÎªÄ¬ÈÏµÄ»ÒÉ«ÎÆÀí
+			// å¦‚æœçº¹ç†ä¸ºç©ºåˆ™è®¾ç½®ä¸ºé»˜è®¤çš„ç°è‰²çº¹ç†
 			if (!mesh->GetMaterial()->GetTexture()) {
 				mesh->GetMaterial()->SetTexture("");
 			}
 		}
 	}
-	// ÊÍ·Å²ÄÖÊÊı×éÕ¼ÓÃµÄÄÚ´æ
+	// é‡Šæ”¾æè´¨æ•°ç»„å ç”¨çš„å†…å­˜
 	map<string, CMaterial*>::iterator iter = mapMaterials.begin();
 	while (iter != mapMaterials.end()) {
 		delete iter->second;
@@ -493,7 +493,7 @@ void CMeshLoaderBasic::LoadObjMaterial(const string& filename, CMeshData* meshDa
 }
 
 /**
-* ½âÎö OBJ ÎÄ¼şÃæ¶¨Òå
+* è§£æ OBJ æ–‡ä»¶é¢å®šä¹‰
 */
 int CMeshLoaderBasic::ParseObjFace(const string& face, int index[3]) {
 	char temp[32];

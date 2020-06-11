@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CTIMER_H_
@@ -9,22 +9,22 @@
 using std::string;
 
 /**
-* @brief ¶¨Ê±Æ÷Àà
+* @brief å®šæ—¶å™¨ç±»
 */
 class AVATAR_EXPORT CTimer {
 public:
-	//! ³õÊ¼»¯¶¨Ê±Æ÷
+	//! åˆå§‹åŒ–å®šæ—¶å™¨
 	static void Init();
-	//! ÖØÖÃ¼ÆÊ±
+	//! é‡ç½®è®¡æ—¶
 	static float Reset(const string& name, bool reset = true);
-	//! ÔİÍ£¼ÆÊ±Æ÷
+	//! æš‚åœè®¡æ—¶å™¨
 	static void Pause(bool pause);
 
-	//! ºÁÃëÑÓÊ±
+	//! æ¯«ç§’å»¶æ—¶
 	static void Sleep(unsigned long ms);
-	//! °´Ö¸¶¨¸ñÊ½»ñÈ¡µ±Ç°Ê±¼ä×Ö·û´®
+	//! æŒ‰æŒ‡å®šæ ¼å¼è·å–å½“å‰æ—¶é—´å­—ç¬¦ä¸²
 	static void GetTimeString(const char* format, char* buffer);
-	//! °´Ö¸¶¨¸ñÊ½»ñÈ¡µ±Ç°Ê±¼ä×Ö·û´®
+	//! æŒ‰æŒ‡å®šæ ¼å¼è·å–å½“å‰æ—¶é—´å­—ç¬¦ä¸²
 	static string GetTimeString(const char* format);
 };
 

@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CGuiLabel.h"
@@ -9,7 +9,7 @@
 #include <cstdlib>
 
 /**
-* ¹¹Ôìº¯Êı£¬Ö¸¶¨Ãû³Æ
+* æ„é€ å‡½æ•°ï¼ŒæŒ‡å®šåç§°
 */
 CGuiLabel::CGuiLabel(const string& name) : CGuiElement(name) {
 	m_cRegion.SetValue(0, 0, 0, 32);
@@ -30,7 +30,7 @@ CGuiLabel::CGuiLabel(const string& name) : CGuiElement(name) {
 }
 
 /**
-* ÊôĞÔÉèÖÃ
+* å±æ€§è®¾ç½®
 */
 bool CGuiLabel::SetAttribute(const string& name, const string& value) {
 	if (name == "visible") m_bVisible = value == "true";
@@ -65,7 +65,7 @@ bool CGuiLabel::SetAttribute(const string& name, const string& value) {
 }
 
 /**
-* »ñÈ¡ÊôĞÔ
+* è·å–å±æ€§
 */
 string CGuiLabel::GetAttribute(const string& name) {
 	if (name == "visible") return m_bVisible? "true": "false";
@@ -98,10 +98,10 @@ string CGuiLabel::GetAttribute(const string& name) {
 }
 
 /**
-* ¿Ø¼ş»æÖÆ
+* æ§ä»¶ç»˜åˆ¶
 */
 void CGuiLabel::Draw(const CRectangle& rect, unsigned char* buffer) {
-	// »æÖÆÎÄ±¾
+	// ç»˜åˆ¶æ–‡æœ¬
 	int width = m_cRegion.GetWidth();
 	int height = m_cRegion.GetHeight();
 	CFontManager::CTextImage image(width, height);
@@ -109,7 +109,7 @@ void CGuiLabel::Draw(const CRectangle& rect, unsigned char* buffer) {
 	pFontMgr->UseFont(m_strFont);
 	pFontMgr->SetSize(m_iFontSize);
 	pFontMgr->DrawText(m_strText, &image, (CFontManager::Alignment)m_iAlignment, m_bStretchText);
-	// Ìî³ä GUI »º³åÇø
+	// å¡«å…… GUI ç¼“å†²åŒº
 	int offsetX = rect.GetLeft() - m_cRegionScreen.GetLeft();
 	int offsetY = rect.GetTop() - m_cRegionScreen.GetTop();
 	int drawWidth = rect.GetWidth();

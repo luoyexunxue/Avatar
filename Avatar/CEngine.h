@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CENGINE_H_
@@ -20,12 +20,12 @@
 #include <list>
 
 /**
-* @brief ÒıÇæÅäÖÃ
+* @brief å¼•æ“é…ç½®
 */
 struct SEngineConfig {
-	//! ×ÊÔ´Ä¿Â¼
+	//! èµ„æºç›®å½•
 	string directory;
-	//! Í¼ĞÎÅäÖÃ
+	//! å›¾å½¢é…ç½®
 	struct SGraphic {
 		string title;
 		int width;
@@ -34,7 +34,7 @@ struct SEngineConfig {
 		bool fullscreen;
 		bool antialias;
 	} graphic;
-	//! ÈÕÖ¾ÅäÖÃ
+	//! æ—¥å¿—é…ç½®
 	struct SLog {
 		string name;
 		bool enable;
@@ -43,7 +43,7 @@ struct SEngineConfig {
 		bool file;
 		bool time;
 	} log;
-	//! Ä¬ÈÏÖµ
+	//! é»˜è®¤å€¼
 	SEngineConfig() {
 		directory = "media";
 		graphic.title = "AVATAR";
@@ -62,95 +62,95 @@ struct SEngineConfig {
 };
 
 /**
-* @brief ÒıÇæÀà
+* @brief å¼•æ“ç±»
 */
 class AVATAR_EXPORT CEngine {
 public:
-	//! Ä¬ÈÏ¹¹Ôìº¯Êı
+	//! é»˜è®¤æ„é€ å‡½æ•°
 	CEngine();
 
-	//! ³õÊ¼»¯ÒıÇæ
+	//! åˆå§‹åŒ–å¼•æ“
 	bool Init(const SEngineConfig& config);
-	//! Ïú»ÙÒıÇæ
+	//! é”€æ¯å¼•æ“
 	void Destroy();
-	//! ¸üĞÂ
+	//! æ›´æ–°
 	void Update();
-	//! äÖÈ¾
+	//! æ¸²æŸ“
 	void Render();
-	//! ÅĞ¶ÏÒıÇæÊÇ·ñ»î¶¯
+	//! åˆ¤æ–­å¼•æ“æ˜¯å¦æ´»åŠ¨
 	bool IsActive() { return m_bActive; }
-	//! ÅĞ¶ÏÒıÇæÊÇ·ñÔËĞĞ
+	//! åˆ¤æ–­å¼•æ“æ˜¯å¦è¿è¡Œ
 	bool IsRunning() { return m_bRunning; }
 
-	//! ÉèÖÃÔËĞĞËÙ¶È
+	//! è®¾ç½®è¿è¡Œé€Ÿåº¦
 	void SetTimeSpeed(float speed, bool fixed);
-	//! »ñÈ¡ÒıÇæ°æ±¾
+	//! è·å–å¼•æ“ç‰ˆæœ¬
 	int GetVersion(const char** version);
-	//! »ñÈ¡Ê±¼ä¼ä¸ô
+	//! è·å–æ—¶é—´é—´éš”
 	float GetTimeSpan();
 
-	//! »ñÈ¡Í¼ĞÎ¹ÜÀíÆ÷ÊµÀı
+	//! è·å–å›¾å½¢ç®¡ç†å™¨å®ä¾‹
 	static CGraphicsManager* GetGraphicsManager();
-	//! »ñÈ¡ÎÄ¼ş¹ÜÀíÆ÷ÊµÀı
+	//! è·å–æ–‡ä»¶ç®¡ç†å™¨å®ä¾‹
 	static CFileManager* GetFileManager();
-	//! »ñÈ¡ÊäÈë¹ÜÀíÆ÷ÊµÀı
+	//! è·å–è¾“å…¥ç®¡ç†å™¨å®ä¾‹
 	static CInputManager* GetInputManager();
-	//! »ñÈ¡ÉùÒô¹ÜÀíÆ÷ÊµÀı
+	//! è·å–å£°éŸ³ç®¡ç†å™¨å®ä¾‹
 	static CSoundManager* GetSoundManager();
-	//! »ñÈ¡³¡¾°¹ÜÀíÆ÷ÊµÀı
+	//! è·å–åœºæ™¯ç®¡ç†å™¨å®ä¾‹
 	static CSceneManager* GetSceneManager();
-	//! »ñÈ¡×ÖÌå¹ÜÀíÆ÷ÊµÀı
+	//! è·å–å­—ä½“ç®¡ç†å™¨å®ä¾‹
 	static CFontManager* GetFontManager();
-	//! »ñÈ¡ÎÆÀí¹ÜÀíÆ÷ÊµÀı
+	//! è·å–çº¹ç†ç®¡ç†å™¨å®ä¾‹
 	static CTextureManager* GetTextureManager();
-	//! »ñÈ¡×ÅÉ«Æ÷¹ÜÀíÆ÷ÊµÀı
+	//! è·å–ç€è‰²å™¨ç®¡ç†å™¨å®ä¾‹
 	static CShaderManager* GetShaderManager();
-	//! »ñÈ¡ÎïÀí¹ÜÀíÆ÷ÊµÀı
+	//! è·å–ç‰©ç†ç®¡ç†å™¨å®ä¾‹
 	static CPhysicsManager* GetPhysicsManager();
-	//! »ñÈ¡½Å±¾¹ÜÀíÆ÷ÊµÀı
+	//! è·å–è„šæœ¬ç®¡ç†å™¨å®ä¾‹
 	static CScriptManager* GetScriptManager();
-	//! »ñÈ¡ºó´¦Àí¹ÜÀíÆ÷ÊµÀı
+	//! è·å–åå¤„ç†ç®¡ç†å™¨å®ä¾‹
 	static CPostProcessManager* GetPostProcessManager();
-	//! »ñÈ¡¶¯»­¹ÜÀíÆ÷ÊµÀı
+	//! è·å–åŠ¨ç”»ç®¡ç†å™¨å®ä¾‹
 	static CAnimationManager* GetAnimationManager();
 
 public:
-	//! ÊÂ¼şÍ¨Öª½Ó¿Ú
+	//! äº‹ä»¶é€šçŸ¥æ¥å£
 	class CNotifyHandler {
 	public:
-		//! ĞéÎö¹¹º¯Êı
+		//! è™šææ„å‡½æ•°
 		virtual ~CNotifyHandler() {}
-		//! ÊÂ¼şÍ¨Öª·½·¨
+		//! äº‹ä»¶é€šçŸ¥æ–¹æ³•
 		virtual void Handle() = 0;
 	};
 
-	//! ×¢²áÊÂ¼ş»Øµ÷
+	//! æ³¨å†Œäº‹ä»¶å›è°ƒ
 	bool RegisterEvent(const string& eventType, CNotifyHandler* handle);
-	//! È¡ÏûÊÂ¼ş×¢²á
+	//! å–æ¶ˆäº‹ä»¶æ³¨å†Œ
 	void UnRegisterEvent(const string& eventType, CNotifyHandler* handle, bool release);
 
 private:
-	//! »ñÈ¡Éè±¸ÊµÀı
+	//! è·å–è®¾å¤‡å®ä¾‹
 	CDevice* GetDevice();
-	//! ¼ÓÔØÏµÍ³×ÅÉ«Æ÷
+	//! åŠ è½½ç³»ç»Ÿç€è‰²å™¨
 	void LoadShader();
-	//! ¼ÓÔØÏµÍ³²å¼ş
+	//! åŠ è½½ç³»ç»Ÿæ’ä»¶
 	void LoadPlugin();
 
 private:
-	//! ÊÇ·ñ»î¶¯×´Ì¬
+	//! æ˜¯å¦æ´»åŠ¨çŠ¶æ€
 	bool m_bActive;
-	//! ÊÇ·ñÔËĞĞ×´Ì¬
+	//! æ˜¯å¦è¿è¡ŒçŠ¶æ€
 	bool m_bRunning;
-	//! ÊÇ·ñ¹Ì¶¨µÄÊ±¼ä²½³¤
+	//! æ˜¯å¦å›ºå®šçš„æ—¶é—´æ­¥é•¿
 	bool m_bFixedTimeSpan;
-	//! ÒıÇæÔËĞĞÊ±¼ä²½³¤
+	//! å¼•æ“è¿è¡Œæ—¶é—´æ­¥é•¿
 	float m_fTimeSpan;
-	//! ÒıÇæÊ±¼äËÙ¶È
+	//! å¼•æ“æ—¶é—´é€Ÿåº¦
 	float m_fSpeedOfTime;
-	//! ¸üĞÂÊÂ¼şÍ¨Öª¼àÌıÁĞ±í
+	//! æ›´æ–°äº‹ä»¶é€šçŸ¥ç›‘å¬åˆ—è¡¨
 	std::list<CNotifyHandler*> m_lstUpdateListener;
-	//! äÖÈ¾ÊÂ¼şÍ¨Öª¼àÌıÁĞ±í
+	//! æ¸²æŸ“äº‹ä»¶é€šçŸ¥ç›‘å¬åˆ—è¡¨
 	std::list<CNotifyHandler*> m_lstRenderListener;
 };
 

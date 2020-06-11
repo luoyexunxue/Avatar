@@ -1,15 +1,15 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CFFT.h"
 #include <cmath>
 
 /**
-* FFT ±ä»»
-* @param data ÊäÈëÊı¾İ¼°±ä»»½á¹û
-* @param count Êı¾İ³¤¶È
-* @return ³É¹¦·µ»Ø true
+* FFT å˜æ¢
+* @param data è¾“å…¥æ•°æ®åŠå˜æ¢ç»“æœ
+* @param count æ•°æ®é•¿åº¦
+* @return æˆåŠŸè¿”å› true
 */
 bool CFFT::Forward(complex<float>* data, int count) {
 	if (!data || count < 1 || count & (count - 1)) {
@@ -21,11 +21,11 @@ bool CFFT::Forward(complex<float>* data, int count) {
 }
 
 /**
-* FFT ±ä»»
-* @param input ÊäÈëÊı¾İ
-* @param output ±ä»»½á¹û
-* @param count Êı¾İ³¤¶È
-* @return ³É¹¦·µ»Ø true
+* FFT å˜æ¢
+* @param input è¾“å…¥æ•°æ®
+* @param output å˜æ¢ç»“æœ
+* @param count æ•°æ®é•¿åº¦
+* @return æˆåŠŸè¿”å› true
 */
 bool CFFT::Forward(const complex<float>* input, complex<float>* output, int count) {
 	if (!input || !output || count < 1 || count & (count - 1)) {
@@ -37,11 +37,11 @@ bool CFFT::Forward(const complex<float>* input, complex<float>* output, int coun
 }
 
 /**
-* FFT Äæ±ä»»
-* @param data ÊäÈëÊı¾İ¼°±ä»»½á¹û
-* @param count Êı¾İ³¤¶È
-* @param scale ÊÇ·ñ¶Ô½á¹û¹éÒ»»¯
-* @return ³É¹¦·µ»Ø true
+* FFT é€†å˜æ¢
+* @param data è¾“å…¥æ•°æ®åŠå˜æ¢ç»“æœ
+* @param count æ•°æ®é•¿åº¦
+* @param scale æ˜¯å¦å¯¹ç»“æœå½’ä¸€åŒ–
+* @return æˆåŠŸè¿”å› true
 */
 bool CFFT::Inverse(complex<float>* data, int count, bool scale) {
 	if (!data || count < 1 || count & (count - 1)) {
@@ -59,12 +59,12 @@ bool CFFT::Inverse(complex<float>* data, int count, bool scale) {
 }
 
 /**
-* FFT Äæ±ä»»
-* @param input ÊäÈëÊı¾İ
-* @param output ±ä»»½á¹û
-* @param count Êı¾İ³¤¶È
-* @param scale ÊÇ·ñ¶Ô½á¹û¹éÒ»»¯
-* @return ³É¹¦·µ»Ø true
+* FFT é€†å˜æ¢
+* @param input è¾“å…¥æ•°æ®
+* @param output å˜æ¢ç»“æœ
+* @param count æ•°æ®é•¿åº¦
+* @param scale æ˜¯å¦å¯¹ç»“æœå½’ä¸€åŒ–
+* @return æˆåŠŸè¿”å› true
 */
 bool CFFT::Inverse(const complex<float>* input, complex<float>* output, int count, bool scale) {
 	if (!input || !output || count < 1 || count & (count - 1)) {
@@ -82,11 +82,11 @@ bool CFFT::Inverse(const complex<float>* input, complex<float>* output, int coun
 }
 
 /**
-* »ñÈ¡ÆµÆ×Ö÷Æµ
-* @param data ÆµÆ×Êı¾İ
-* @param count Êı¾İ³¤¶È
-* @param sampleRate ²ÉÑùÆµÂÊ
-* @return Ö÷ÆµÂÊÖµ
+* è·å–é¢‘è°±ä¸»é¢‘
+* @param data é¢‘è°±æ•°æ®
+* @param count æ•°æ®é•¿åº¦
+* @param sampleRate é‡‡æ ·é¢‘ç‡
+* @return ä¸»é¢‘ç‡å€¼
 */
 float CFFT::DominantFrequency(const complex<float>* data, int count, float sampleRate) {
 	count >>= 1;
@@ -103,7 +103,7 @@ float CFFT::DominantFrequency(const complex<float>* data, int count, float sampl
 }
 
 /**
-* ÖØĞÂÅÅÁĞÊı×é
+* é‡æ–°æ’åˆ—æ•°ç»„
 */
 void CFFT::Rearrange(complex<float>* data, int count) {
 	int target = 0;
@@ -122,7 +122,7 @@ void CFFT::Rearrange(complex<float>* data, int count) {
 }
 
 /**
-* ÖØĞÂÅÅÁĞÊı×é
+* é‡æ–°æ’åˆ—æ•°ç»„
 */
 void CFFT::Rearrange(const complex<float>* input, complex<float>* output, int count) {
 	int target = 0;
@@ -137,7 +137,7 @@ void CFFT::Rearrange(const complex<float>* input, complex<float>* output, int co
 }
 
 /**
-* ¿ìËÙ¸µÀïÒ¶±ä»»ÊµÏÖ
+* å¿«é€Ÿå‚…é‡Œå¶å˜æ¢å®ç°
 */
 void CFFT::Perform(complex<float>* data, int count, bool inverse) {
 	const float PI = inverse ? 3.14159f : -3.14159f;

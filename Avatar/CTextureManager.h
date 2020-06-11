@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CTEXTUREMANAGER_H_
@@ -19,78 +19,78 @@ using std::vector;
 using std::map;
 
 /**
-* @brief ÎÆÀí×ÊÔ´¹ÜÀíÆ÷
+* @brief çº¹ç†èµ„æºç®¡ç†å™¨
 */
 class AVATAR_EXPORT CTextureManager {
 public:
-	//! »ñÈ¡¹ÜÀíÆ÷ÊµÀı
+	//! è·å–ç®¡ç†å™¨å®ä¾‹
 	static CTextureManager* GetInstance() {
 		if (m_pInstance) return m_pInstance;
 		m_pInstance = new CTextureManager();
 		return m_pInstance;
 	}
 
-	//! ÊµÀıÏú»Ù£¬ÊÍ·ÅËùÓĞÎÆÀí×ÊÔ´
+	//! å®ä¾‹é”€æ¯ï¼Œé‡Šæ”¾æ‰€æœ‰çº¹ç†èµ„æº
 	void Destroy();
 
-	//! ´ÓÎÄ¼ş´´½¨ÎÆÀí
+	//! ä»æ–‡ä»¶åˆ›å»ºçº¹ç†
 	CTexture* Create(const string& file);
-	//! ´ÓÎÄ¼ş´´½¨Á¢·½ÌåÎÆÀí
+	//! ä»æ–‡ä»¶åˆ›å»ºç«‹æ–¹ä½“çº¹ç†
 	CTexture* Create(const string& name, const string files[6]);
-	//! ´ÓÄÚ´æ´´½¨ÎÆÀí
+	//! ä»å†…å­˜åˆ›å»ºçº¹ç†
 	CTexture* Create(const string& name, int width, int height, int channel, const void* data, bool mipmap);
-	//! ´´½¨äÖÈ¾ÎÆÀí
+	//! åˆ›å»ºæ¸²æŸ“çº¹ç†
 	CTexture* Create(const string& name, int width, int height, bool floating, bool useDepth, bool mipmap);
-	//! ´´½¨Á¢·½ÌåäÖÈ¾ÎÆÀí
+	//! åˆ›å»ºç«‹æ–¹ä½“æ¸²æŸ“çº¹ç†
 	CTexture* Create(const string& name, int size, bool floating, bool useDepth, bool mipmap);
-	//! ´´½¨³ÌĞòÎÆÀí
+	//! åˆ›å»ºç¨‹åºçº¹ç†
 	CTexture* Create(const string& name, int width, int height, const string& shader);
 
-	//! ÊÍ·ÅÖ¸¶¨µÄÎÆÀí×ÊÔ´
+	//! é‡Šæ”¾æŒ‡å®šçš„çº¹ç†èµ„æº
 	void Drop(CTexture* texture);
-	//! ¸üĞÂËùÓĞ³ÌĞòÎÆÀí
+	//! æ›´æ–°æ‰€æœ‰ç¨‹åºçº¹ç†
 	bool Update();
-	//! ¸üĞÂÎÆÀíÍ¼Æ¬
+	//! æ›´æ–°çº¹ç†å›¾ç‰‡
 	bool Update(CTexture* texture, const string& file);
-	//! ¸üĞÂÎÆÀíÊı¾İ
+	//! æ›´æ–°çº¹ç†æ•°æ®
 	bool Update(CTexture* texture, const unsigned char* data);
-	//! ¸üĞÂ¾Ö²¿ÎÆÀíÊı¾İ
+	//! æ›´æ–°å±€éƒ¨çº¹ç†æ•°æ®
 	bool Update(CTexture* texture, const unsigned char* data, const CRectangle& rect);
-	//! ¸üĞÂ¾Ö²¿ÎÆÀíÑÕÉ«
+	//! æ›´æ–°å±€éƒ¨çº¹ç†é¢œè‰²
 	bool Update(CTexture* texture, const CColor& color, const CRectangle& rect);
-	//! Í¨¹ı×ÅÉ«Æ÷¸üĞÂ
+	//! é€šè¿‡ç€è‰²å™¨æ›´æ–°
 	bool Update(CTexture* texture, const string& input, const string& shader, int level);
-	//! ¸üĞÂÎÆÀí´óĞ¡
+	//! æ›´æ–°çº¹ç†å¤§å°
 	void Resize(CTexture* texture, int width, int height);
-	//! ¶ÁÈ¡ÎÆÀíÊı¾İÖÁRGBAÊı×é
+	//! è¯»å–çº¹ç†æ•°æ®è‡³RGBAæ•°ç»„
 	void ReadData(CTexture* texture, int face, int level, void* buffer);
 
-	//! »ñÈ¡Ö¸¶¨Ãû³ÆµÄÎÆÀí
+	//! è·å–æŒ‡å®šåç§°çš„çº¹ç†
 	CTexture* GetTexture(const string& name);
-	//! »ñÈ¡µ±Ç°Ê¹ÓÃµÄÎÆÀí
+	//! è·å–å½“å‰ä½¿ç”¨çš„çº¹ç†
 	CTexture* GetCurrentTexture();
-	//! »ñÈ¡¹ÜÀíµÄËùÓĞÎÆÀíÁĞ±í
+	//! è·å–ç®¡ç†çš„æ‰€æœ‰çº¹ç†åˆ—è¡¨
 	void GetTextureList(vector<CTexture*>& textureList);
 
 public:
-	//! ¶ÁÈ¡Í¼Æ¬
+	//! è¯»å–å›¾ç‰‡
 	static CFileManager::CImageFile* ReadImage(const string& file, bool resize);
-	//! Ğı×ªÍ¼Æ¬
+	//! æ—‹è½¬å›¾ç‰‡
 	static void RotateImage(CFileManager::CImageFile* image, int angle);
-	//! ¾µÏñÍ¼Æ¬
+	//! é•œåƒå›¾ç‰‡
 	static void MirrorImage(CFileManager::CImageFile* image, bool horizontal);
-	//! Ëõ·ÅÍ¼Æ¬
+	//! ç¼©æ”¾å›¾ç‰‡
 	static void ScaleImage(CFileManager::CImageFile* image, int width, int height);
 
 private:
 	CTextureManager();
 	~CTextureManager();
 
-	//! ¼ÓÔØÔ¤¶¨ÒåÎÆÀí
+	//! åŠ è½½é¢„å®šä¹‰çº¹ç†
 	void LoadDefaultTexture();
 
 private:
-	//! ³ÌĞòÎÆÀí¶¨Òå
+	//! ç¨‹åºçº¹ç†å®šä¹‰
 	typedef struct _SProceduralTexture {
 		CTexture* texture;
 		CShader* shader;
@@ -99,19 +99,19 @@ private:
 	} SProceduralTexture;
 
 private:
-	//! ¿ÕäÖÈ¾ÎÆÀí
+	//! ç©ºæ¸²æŸ“çº¹ç†
 	unsigned int m_iDummyFrameBuffer;
-	//! µ±Ç°ÎÆÀí
+	//! å½“å‰çº¹ç†
 	CTexture* m_pCurrentTexture;
-	//! ÎÆÀí¼¯ºÏ
+	//! çº¹ç†é›†åˆ
 	map<string, CTexture*> m_mapTexture;
-	//! äÖÈ¾³ÌĞòÎÆÀíÊ¹ÓÃµÄ¶¥µã
+	//! æ¸²æŸ“ç¨‹åºçº¹ç†ä½¿ç”¨çš„é¡¶ç‚¹
 	vector<CVertex> m_vecProceduralVertices;
-	//! ³ÌĞòÎÆÀí¼¯ºÏ
+	//! ç¨‹åºçº¹ç†é›†åˆ
 	map<string, SProceduralTexture> m_mapProceduralTexture;
-	//! ÊµÀı
+	//! å®ä¾‹
 	static CTextureManager* m_pInstance;
-	//! ÉèÖÃÓÑÔªÀà
+	//! è®¾ç½®å‹å…ƒç±»
 	friend class CTexture;
 };
 

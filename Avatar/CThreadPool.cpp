@@ -1,12 +1,12 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CThreadPool.h"
 #include "CTimer.h"
 
 /**
-* Ä¬ÈÏ¹¹Ôìº¯Êı
+* é»˜è®¤æ„é€ å‡½æ•°
 */
 CThreadPool::CThreadPool(int size) {
 	m_bRunning = true;
@@ -25,7 +25,7 @@ CThreadPool::CThreadPool(int size) {
 }
 
 /**
-* Ä¬ÈÏÎö¹¹º¯Êı
+* é»˜è®¤ææ„å‡½æ•°
 */
 CThreadPool::~CThreadPool() {
 	m_bRunning = false;
@@ -41,7 +41,7 @@ CThreadPool::~CThreadPool() {
 	pthread_mutex_destroy(&m_sMutex);
 #endif
 	m_vecThread.clear();
-	// É¾³ıÎ´Ö´ĞĞµÄÈÎÎñ
+	// åˆ é™¤æœªæ‰§è¡Œçš„ä»»åŠ¡
 	while (!m_queTask.empty()) {
 		STask task = m_queTask.front();
 		delete task.task;
@@ -50,7 +50,7 @@ CThreadPool::~CThreadPool() {
 }
 
 /**
-* ĞÂÔöÈÎÎñ
+* æ–°å¢ä»»åŠ¡
 */
 void CThreadPool::AddTask(CThreadTask* task, void* param) {
 	STask item;
@@ -68,21 +68,21 @@ void CThreadPool::AddTask(CThreadTask* task, void* param) {
 }
 
 /**
-* »ñÈ¡×ÜµÄÏß³ÌÊıÁ¿
+* è·å–æ€»çš„çº¿ç¨‹æ•°é‡
 */
 int CThreadPool::GetThreadCount() {
 	return m_vecThread.size();
 }
 
 /**
-* »ñÈ¡Î´´¦ÀíµÄÈÎÎñÊıÁ¿
+* è·å–æœªå¤„ç†çš„ä»»åŠ¡æ•°é‡
 */
 int CThreadPool::GetTaskCount() {
 	return m_queTask.size();
 }
 
 /**
-* ¹¤×÷Ïß³Ì
+* å·¥ä½œçº¿ç¨‹
 */
 #ifdef AVATAR_WINDOWS
 DWORD WINAPI CThreadPool::TaskThread(LPVOID param) {

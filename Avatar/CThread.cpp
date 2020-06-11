@@ -1,12 +1,12 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CThread.h"
 #include "CTimer.h"
 
 /**
-* Ä¬ÈÏ¹¹Ôìº¯Êı
+* é»˜è®¤æ„é€ å‡½æ•°
 */
 CThread::CThread() {
 	m_bRunning = false;
@@ -21,7 +21,7 @@ CThread::CThread() {
 }
 
 /**
-* Ê¹ÓÃÏß³Ì·½·¨³õÊ¼»¯
+* ä½¿ç”¨çº¿ç¨‹æ–¹æ³•åˆå§‹åŒ–
 */
 CThread::CThread(Runnable func) {
 	m_bRunning = false;
@@ -36,7 +36,7 @@ CThread::CThread(Runnable func) {
 }
 
 /**
-* Ä¬ÈÏÎö¹¹º¯Êı
+* é»˜è®¤ææ„å‡½æ•°
 */
 CThread::~CThread() {
 	m_bRunning = false;
@@ -50,21 +50,21 @@ CThread::~CThread() {
 }
 
 /**
-* Æô¶¯Ïß³Ì
+* å¯åŠ¨çº¿ç¨‹
 */
 void CThread::Start() {
 	Start(0);
 }
 
 /**
-* Æô¶¯Ïß³Ì²¢ÖÆ¶¨²ÎÊı
+* å¯åŠ¨çº¿ç¨‹å¹¶åˆ¶å®šå‚æ•°
 */
 void CThread::Start(void* param) {
 	Start(m_pRunnable, param);
 }
 
 /**
-* Æô¶¯ÖÆ¶¨Ïß³Ì²¢´«µİ²ÎÊı
+* å¯åŠ¨åˆ¶å®šçº¿ç¨‹å¹¶ä¼ é€’å‚æ•°
 */
 void CThread::Start(Runnable func, void* param) {
 	if (m_bRunning) return;
@@ -79,14 +79,14 @@ void CThread::Start(Runnable func, void* param) {
 }
 
 /**
-* ·¢ËÍÍ£Ö¹ĞÅºÅ
+* å‘é€åœæ­¢ä¿¡å·
 */
 void CThread::Stop() {
 	m_bRunning = false;
 }
 
 /**
-* µÈ´ıÏß³ÌÍË³ö
+* ç­‰å¾…çº¿ç¨‹é€€å‡º
 */
 void CThread::Join() {
 #ifdef AVATAR_WINDOWS
@@ -97,7 +97,7 @@ void CThread::Join() {
 }
 
 /**
-* ¼Ó»¥³âËø
+* åŠ äº’æ–¥é”
 */
 void CThread::Lock() {
 #ifdef AVATAR_WINDOWS
@@ -108,7 +108,7 @@ void CThread::Lock() {
 }
 
 /**
-* ³¢ÊÔ¼ÓËø
+* å°è¯•åŠ é”
 */
 bool CThread::TryLock() {
 #ifdef AVATAR_WINDOWS
@@ -119,7 +119,7 @@ bool CThread::TryLock() {
 }
 
 /**
-* »¥³â½âËø
+* äº’æ–¥è§£é”
 */
 void CThread::Unlock() {
 #ifdef AVATAR_WINDOWS
@@ -130,7 +130,7 @@ void CThread::Unlock() {
 }
 
 /**
-* ¹¤×÷Ïß³Ì
+* å·¥ä½œçº¿ç¨‹
 */
 #ifdef AVATAR_WINDOWS
 DWORD WINAPI CThread::Run(LPVOID param) {

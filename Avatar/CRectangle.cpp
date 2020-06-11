@@ -1,16 +1,16 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CRectangle.h"
 
 /**
-* ¾²Ì¬³£Á¿
+* é™æ€å¸¸é‡
 */
 const CRectangle CRectangle::Empty;
 
 /**
-* ¹¹Ôìº¯Êı
+* æ„é€ å‡½æ•°
 */
 CRectangle::CRectangle() {
 	m_iValue[0] = 0;
@@ -20,7 +20,7 @@ CRectangle::CRectangle() {
 }
 
 /**
-* ¸´ÖÆ¹¹Ôìº¯Êı
+* å¤åˆ¶æ„é€ å‡½æ•°
 */
 CRectangle::CRectangle(const CRectangle& rect) {
 	m_iValue[0] = rect.m_iValue[0];
@@ -30,7 +30,7 @@ CRectangle::CRectangle(const CRectangle& rect) {
 }
 
 /**
-* ¹¹Ôìº¯Êı£¬Ö¸¶¨×óÉÏ¿í¸ßÖµ
+* æ„é€ å‡½æ•°ï¼ŒæŒ‡å®šå·¦ä¸Šå®½é«˜å€¼
 */
 CRectangle::CRectangle(const int rect[4]) {
 	m_iValue[0] = rect[0];
@@ -40,7 +40,7 @@ CRectangle::CRectangle(const int rect[4]) {
 }
 
 /**
-* ¹¹Ôìº¯Êı£¬Ö¸¶¨×óÉÏ¿í¸ßÖµ
+* æ„é€ å‡½æ•°ï¼ŒæŒ‡å®šå·¦ä¸Šå®½é«˜å€¼
 */
 CRectangle::CRectangle(int x, int y, int w, int h) {
 	m_iValue[0] = x;
@@ -50,7 +50,7 @@ CRectangle::CRectangle(int x, int y, int w, int h) {
 }
 
 /**
-* ÉèÖÃ¾ØĞÎÖµ
+* è®¾ç½®çŸ©å½¢å€¼
 */
 void CRectangle::SetValue(const CRectangle& rect) {
 	m_iValue[0] = rect.m_iValue[0];
@@ -60,7 +60,7 @@ void CRectangle::SetValue(const CRectangle& rect) {
 }
 
 /**
-* ÉèÖÃ¾ØĞÎÖµ
+* è®¾ç½®çŸ©å½¢å€¼
 */
 void CRectangle::SetValue(const int rect[4]) {
 	m_iValue[0] = rect[0];
@@ -70,7 +70,7 @@ void CRectangle::SetValue(const int rect[4]) {
 }
 
 /**
-* ÉèÖÃ¾ØĞÎÖµ
+* è®¾ç½®çŸ©å½¢å€¼
 */
 void CRectangle::SetValue(int x, int y, int w, int h) {
 	m_iValue[0] = x;
@@ -80,7 +80,7 @@ void CRectangle::SetValue(int x, int y, int w, int h) {
 }
 
 /**
-* ÉèÖÃÆ«ÒÆ
+* è®¾ç½®åç§»
 */
 CRectangle& CRectangle::Offset(int x, int y) {
 	m_iValue[0] += x;
@@ -89,7 +89,7 @@ CRectangle& CRectangle::Offset(int x, int y) {
 }
 
 /**
-* ÉèÖÃÆ«ÒÆ
+* è®¾ç½®åç§»
 */
 CRectangle& CRectangle::Offset(int offset[2]) {
 	m_iValue[0] += offset[0];
@@ -98,7 +98,7 @@ CRectangle& CRectangle::Offset(int offset[2]) {
 }
 
 /**
-* ÉèÖÃÆ«ÒÆ
+* è®¾ç½®åç§»
 */
 CRectangle& CRectangle::Offset(const CRectangle& rect) {
 	m_iValue[0] += rect.m_iValue[0];
@@ -107,7 +107,7 @@ CRectangle& CRectangle::Offset(const CRectangle& rect) {
 }
 
 /**
-* ÉèÖÃËõ·Å
+* è®¾ç½®ç¼©æ”¾
 */
 CRectangle& CRectangle::Scale(float scale, bool center) {
 	if (center) {
@@ -120,7 +120,16 @@ CRectangle& CRectangle::Scale(float scale, bool center) {
 }
 
 /**
-* ÉèÖÃÇøÓòÎª¿Õ
+* è®¾ç½®å®½é«˜
+*/
+CRectangle& CRectangle::Resize(int width, int height) {
+	m_iValue[2] = width;
+	m_iValue[3] = height;
+	return *this;
+}
+
+/**
+* è®¾ç½®åŒºåŸŸä¸ºç©º
 */
 void CRectangle::SetEmpty() {
 	m_iValue[2] = 0;
@@ -128,7 +137,7 @@ void CRectangle::SetEmpty() {
 }
 
 /**
-* ÅĞ¶ÏÇøÓòÊÇ·ñÎª¿Õ
+* åˆ¤æ–­åŒºåŸŸæ˜¯å¦ä¸ºç©º
 */
 bool CRectangle::IsEmpty() const {
 	if (m_iValue[2] <= 0 || m_iValue[3] <= 0) {
@@ -138,7 +147,7 @@ bool CRectangle::IsEmpty() const {
 }
 
 /**
-* ÅĞ¶ÏÊÇ·ñÓĞ½»¼¯
+* åˆ¤æ–­æ˜¯å¦æœ‰äº¤é›†
 */
 bool CRectangle::IsIntersect(const CRectangle& rect) const {
 	if (IsEmpty() || rect.IsEmpty()) return false;
@@ -152,7 +161,7 @@ bool CRectangle::IsIntersect(const CRectangle& rect) const {
 }
 
 /**
-* ÅĞ¶ÏÊÇ·ñ°üº¬µã
+* åˆ¤æ–­æ˜¯å¦åŒ…å«ç‚¹
 */
 bool CRectangle::IsContain(int x, int y) const {
 	if (IsEmpty()) return false;
@@ -164,7 +173,7 @@ bool CRectangle::IsContain(int x, int y) const {
 }
 
 /**
-* ÅĞ¶ÏÊÇ·ñ°üº¬ÇøÓò
+* åˆ¤æ–­æ˜¯å¦åŒ…å«åŒºåŸŸ
 */
 bool CRectangle::IsContain(const CRectangle& rect) const {
 	if (IsEmpty() || rect.IsEmpty()) return false;
@@ -178,49 +187,49 @@ bool CRectangle::IsContain(const CRectangle& rect) const {
 }
 
 /**
-* »ñÈ¡×ó±ßÎ»ÖÃ
+* è·å–å·¦è¾¹ä½ç½®
 */
 int CRectangle::GetLeft() const {
 	return m_iValue[0];
 }
 
 /**
-* »ñÈ¡ÉÏ±ßÎ»ÖÃ
+* è·å–ä¸Šè¾¹ä½ç½®
 */
 int CRectangle::GetTop() const {
 	return m_iValue[1];
 }
 
 /**
-* »ñÈ¡ÓÒ±ßÎ»ÖÃ
+* è·å–å³è¾¹ä½ç½®
 */
 int CRectangle::GetRight() const {
 	return m_iValue[0] + m_iValue[2];
 }
 
 /**
-* »ñÈ¡ÏÂ±ßÎ»ÖÃ
+* è·å–ä¸‹è¾¹ä½ç½®
 */
 int CRectangle::GetBottom() const {
 	return m_iValue[1] + m_iValue[3];
 }
 
 /**
-* »ñÈ¡¿í¶È
+* è·å–å®½åº¦
 */
 int CRectangle::GetWidth() const {
 	return m_iValue[2];
 }
 
 /**
-* »ñÈ¡¸ß¶È
+* è·å–é«˜åº¦
 */
 int CRectangle::GetHeight() const {
 	return m_iValue[3];
 }
 
 /**
-* »ñÈ¡ÇøÓòÃæ»ı
+* è·å–åŒºåŸŸé¢ç§¯
 */
 int CRectangle::GetArea() const {
 	if (IsEmpty()) return 0;
@@ -228,7 +237,7 @@ int CRectangle::GetArea() const {
 }
 
 /**
-* Óë rect Çó²¢¼¯
+* ä¸ rect æ±‚å¹¶é›†
 */
 CRectangle CRectangle::Union(const CRectangle& rect) const {
 	if (IsEmpty()) return rect;
@@ -245,7 +254,7 @@ CRectangle CRectangle::Union(const CRectangle& rect) const {
 }
 
 /**
-* Óë rect Çó½»¼¯
+* ä¸ rect æ±‚äº¤é›†
 */
 CRectangle CRectangle::Intersect(const CRectangle& rect) const {
 	int x1 = m_iValue[0] + m_iValue[2];
@@ -261,14 +270,14 @@ CRectangle CRectangle::Intersect(const CRectangle& rect) const {
 }
 
 /**
-* ÖØÔØÔËËã·û []
+* é‡è½½è¿ç®—ç¬¦ []
 */
 int& CRectangle::operator [] (int index) {
 	return m_iValue[index];
 }
 
 /**
-* ÖØÔØÔËËã·û ==
+* é‡è½½è¿ç®—ç¬¦ ==
 */
 bool CRectangle::operator == (const CRectangle& rect) const {
 	if (m_iValue[0] == rect.m_iValue[0] &&
@@ -281,14 +290,14 @@ bool CRectangle::operator == (const CRectangle& rect) const {
 }
 
 /**
-* ÖØÔØÔËËã·û !=
+* é‡è½½è¿ç®—ç¬¦ !=
 */
 bool CRectangle::operator != (const CRectangle& rect) const {
 	return !(*this == rect);
 }
 
 /**
-* ²¢¼¯¼ÆËã
+* å¹¶é›†è®¡ç®—
 */
 CRectangle& CRectangle::operator += (const CRectangle& rect) {
 	if (IsEmpty()) {
@@ -311,7 +320,7 @@ CRectangle& CRectangle::operator += (const CRectangle& rect) {
 }
 
 /**
-* ½»¼¯¼ÆËã
+* äº¤é›†è®¡ç®—
 */
 CRectangle& CRectangle::operator *= (const CRectangle& rect) {
 	int x1 = m_iValue[0] + m_iValue[2];

@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CDEVICELINUX_H_
@@ -12,24 +12,24 @@
 #include <GL/glx.h>
 
 /**
-* @brief Linux Éè±¸Àà
+* @brief Linux è®¾å¤‡ç±»
 */
 class CDeviceLinux: public CDevice {
 public:
-	//! »ñÈ¡ Linux Éè±¸ÊµÀı
+	//! è·å– Linux è®¾å¤‡å®ä¾‹
 	static CDeviceLinux* GetInstance() {
 		if (m_pInstance) return m_pInstance;
 		m_pInstance = new CDeviceLinux();
 		return m_pInstance;
 	}
 
-	//! ´´½¨´°¿Ú
+	//! åˆ›å»ºçª—å£
 	virtual bool Create(const string& title, int width, int height, bool resizable, bool fullscreen, bool antialias);
-	//! Ïú»Ù´°¿Ú
+	//! é”€æ¯çª—å£
 	virtual void Destroy();
-	//! »æÖÆÊä³ö
+	//! ç»˜åˆ¶è¾“å‡º
 	virtual void Render();
-	//! ÏûÏ¢´¦Àí
+	//! æ¶ˆæ¯å¤„ç†
 	virtual void Handle(float dt);
 
 private:
@@ -44,9 +44,9 @@ private:
 		_SContext(): display(0), window(0), context(0) {}
 	} SContext;
 
-	//! Éè±¸ÉÏÏÂÎÄ
+	//! è®¾å¤‡ä¸Šä¸‹æ–‡
 	SContext* m_pContext;
-	//! ÊµÀı
+	//! å®ä¾‹
 	static CDeviceLinux* m_pInstance;
 };
 

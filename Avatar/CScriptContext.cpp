@@ -1,19 +1,19 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CScriptContext.h"
 #include "thirdparty/lua/lua.hpp"
 
 /**
-* Ä¬ÈÏ¹¹Ôìº¯Êı
+* é»˜è®¤æ„é€ å‡½æ•°
 */
 CScriptContext::CScriptContext() {
 	m_pLuaState = 0;
 }
 
 /**
-* »ñÈ¡µ±Ç°ÊµÀı
+* è·å–å½“å‰å®ä¾‹
 */
 CScriptContext* CScriptContext::GetCurrent(struct lua_State* lua) {
 	m_pLuaState = lua;
@@ -21,7 +21,7 @@ CScriptContext* CScriptContext::GetCurrent(struct lua_State* lua) {
 }
 
 /**
-* °ó¶¨½Å±¾·½·¨
+* ç»‘å®šè„šæœ¬æ–¹æ³•
 */
 void CScriptContext::BindFunction(const string& name, void* function) {
 	lua_pushcfunction(m_pLuaState, (lua_CFunction)function);
@@ -29,7 +29,7 @@ void CScriptContext::BindFunction(const string& name, void* function) {
 }
 
 /**
-* °ó¶¨½Å±¾·½·¨
+* ç»‘å®šè„šæœ¬æ–¹æ³•
 */
 void CScriptContext::BindFunction(const string& group, const string& name, void* function) {
 	if (lua_getglobal(m_pLuaState, group.c_str()) != LUA_TTABLE) {
@@ -48,98 +48,98 @@ void CScriptContext::BindFunction(const string& group, const string& name, void*
 }
 
 /**
-* ÅĞ¶ÏÊÇ·ñ bool ÀàĞÍ
+* åˆ¤æ–­æ˜¯å¦ bool ç±»å‹
 */
 bool CScriptContext::IsBoolean(int index) {
 	return lua_isboolean(m_pLuaState, index);
 }
 
 /**
-* ÅĞ¶ÏÊÇ·ñ int ÀàĞÍ
+* åˆ¤æ–­æ˜¯å¦ int ç±»å‹
 */
 bool CScriptContext::IsInteger(int index) {
 	return lua_isinteger(m_pLuaState, index) != 0;
 }
 
 /**
-* ÅĞ¶ÏÊÇ·ñ float ÀàĞÍ
+* åˆ¤æ–­æ˜¯å¦ float ç±»å‹
 */
 bool CScriptContext::IsNumber(int index) {
 	return lua_isnumber(m_pLuaState, index) != 0;
 }
 
 /**
-* ÅĞ¶ÏÊÇ·ñ string ÀàĞÍ
+* åˆ¤æ–­æ˜¯å¦ string ç±»å‹
 */
 bool CScriptContext::IsString(int index) {
 	return lua_isstring(m_pLuaState, index) != 0;
 }
 
 /**
-* ÅĞ¶ÏÊÇ·ñ function ÀàĞÍ
+* åˆ¤æ–­æ˜¯å¦ function ç±»å‹
 */
 bool CScriptContext::IsFunction(int index) {
 	return lua_isfunction(m_pLuaState, index);
 }
 
 /**
-* »ñÈ¡ bool Öµ
+* è·å– bool å€¼
 */
 bool CScriptContext::ToBoolean(int index) {
 	return lua_toboolean(m_pLuaState, index) != 0;
 }
 
 /**
-* »ñÈ¡ int Öµ
+* è·å– int å€¼
 */
 int CScriptContext::ToInteger(int index) {
 	return (int)lua_tointeger(m_pLuaState, index);
 }
 
 /**
-* »ñÈ¡ float Öµ
+* è·å– float å€¼
 */
 float CScriptContext::ToNumber(int index) {
 	return (float)lua_tonumber(m_pLuaState, index);
 }
 
 /**
-* »ñÈ¡ string Öµ
+* è·å– string å€¼
 */
 const char* CScriptContext::ToString(int index) {
 	return lua_tostring(m_pLuaState, index);
 }
 
 /**
-* ½« bool ÖµÑ¹Õ»
+* å°† bool å€¼å‹æ ˆ
 */
 void CScriptContext::PushValue(bool value) {
 	lua_pushboolean(m_pLuaState, value ? 1 : 0);
 }
 
 /**
-* ½« int ÖµÑ¹Õ»
+* å°† int å€¼å‹æ ˆ
 */
 void CScriptContext::PushValue(int value) {
 	lua_pushinteger(m_pLuaState, value);
 }
 
 /**
-* ½« float ÖµÑ¹Õ»
+* å°† float å€¼å‹æ ˆ
 */
 void CScriptContext::PushValue(float value) {
 	lua_pushnumber(m_pLuaState, value);
 }
 
 /**
-* ½« string ÖµÑ¹Õ»
+* å°† string å€¼å‹æ ˆ
 */
 void CScriptContext::PushValue(const char* value) {
 	lua_pushstring(m_pLuaState, value);
 }
 
 /**
-* ÒıÓÃ»Øµ÷·½·¨
+* å¼•ç”¨å›è°ƒæ–¹æ³•
 */
 int CScriptContext::RefCallback() {
 	int paramCount = lua_gettop(m_pLuaState);
@@ -150,28 +150,28 @@ int CScriptContext::RefCallback() {
 }
 
 /**
-* È¡Ïû»Øµ÷ÒıÓÃ
+* å–æ¶ˆå›è°ƒå¼•ç”¨
 */
 void CScriptContext::UnrefCallback(int callback) {
 	luaL_unref(m_pLuaState, LUA_REGISTRYINDEX, callback);
 }
 
 /**
-* ¿ªÊ¼µ÷ÓÃ»Øµ÷·½·¨
+* å¼€å§‹è°ƒç”¨å›è°ƒæ–¹æ³•
 */
 void CScriptContext::InvokeBegin(int callback) {
 	lua_rawgeti(m_pLuaState, LUA_REGISTRYINDEX, callback);
 }
 
 /**
-* ¿ªÊ¼µ÷ÓÃ»Øµ÷·½·¨
+* å¼€å§‹è°ƒç”¨å›è°ƒæ–¹æ³•
 */
 void CScriptContext::InvokeBegin(const string& function) {
 	lua_getglobal(m_pLuaState, function.c_str());
 }
 
 /**
-* ½áÊøµ÷ÓÃ»Øµ÷·½·¨
+* ç»“æŸè°ƒç”¨å›è°ƒæ–¹æ³•
 */
 void CScriptContext::InvokeEnd(int params) {
 	lua_pcall(m_pLuaState, params, 0, 0);

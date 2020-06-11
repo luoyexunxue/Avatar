@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CURLCONNECTION_H_
@@ -14,51 +14,51 @@ using std::map;
 typedef void CURL;
 
 /**
-* @brief URL Á¬½ÓÀà
-* @remark Ö§³Ö HTTP/FTP/FTPS µÈ¶àÖÖĞ­Òé
+* @brief URL è¿æ¥ç±»
+* @remark æ”¯æŒ HTTP/FTP/FTPS ç­‰å¤šç§åè®®
 */
 class AVATAR_EXPORT CUrlConnection {
 public:
-	//! Ä¬ÈÏ¹¹Ôìº¯Êı
+	//! é»˜è®¤æ„é€ å‡½æ•°
 	CUrlConnection();
-	//! ´´½¨µ÷ÊÔÄ£Ê½µÄ URL Á¬½Ó
+	//! åˆ›å»ºè°ƒè¯•æ¨¡å¼çš„ URL è¿æ¥
 	CUrlConnection(bool debug);
-	//! Ä¬ÈÏÎö¹¹º¯Êı
+	//! é»˜è®¤ææ„å‡½æ•°
 	~CUrlConnection();
 
-	//! ÉèÖÃ¶ÁÈ¡³¬Ê±Ê±¼ä
+	//! è®¾ç½®è¯»å–è¶…æ—¶æ—¶é—´
 	void SetTimeout(int second);
 
-	//! »ñÈ¡Êı¾İ½Ó¿Ú
+	//! è·å–æ•°æ®æ¥å£
 	int Request(const string& url, string& response);
-	//! »ñÈ¡Êı¾İ½Ó¿Ú
+	//! è·å–æ•°æ®æ¥å£
 	int Request(const string& url, vector<unsigned char>& response);
-	//! »ñÈ¡Êı¾İ½Ó¿Ú
+	//! è·å–æ•°æ®æ¥å£
 	int Request(const string& url, const string& param, string& response);
-	//! »ñÈ¡Êı¾İ½Ó¿Ú
+	//! è·å–æ•°æ®æ¥å£
 	int Request(const string& url, const string& param, vector<unsigned char>& response);
 
-	//! µ¥´Î HTTP GET ÇëÇó
+	//! å•æ¬¡ HTTP GET è¯·æ±‚
 	int HttpGet(const string& url, string& response);
-	//! µ¥´Î HTTP GET ÇëÇó
+	//! å•æ¬¡ HTTP GET è¯·æ±‚
 	int HttpGet(const string& url, vector<unsigned char>& response);
-	//! µ¥´Î HTTP POST ÇëÇó
+	//! å•æ¬¡ HTTP POST è¯·æ±‚
 	int HttpPost(const string& url, const string& param, string& response);
-	//! µ¥´Î HTTP POST ÇëÇó
+	//! å•æ¬¡ HTTP POST è¯·æ±‚
 	int HttpPost(const string& url, const string& param, vector<unsigned char>& response);
-	//! µ¥´Î HTTP POST ÇëÇó£¬¿É×Ô¶¨ÒåHTTPÍ·²¿
+	//! å•æ¬¡ HTTP POST è¯·æ±‚ï¼Œå¯è‡ªå®šä¹‰HTTPå¤´éƒ¨
 	int HttpPost(const string& url, const string& param, const map<string, string>& headers, string& response);
-	//! µ¥´Î HTTP POST ÇëÇó£¬¿É×Ô¶¨ÒåHTTPÍ·²¿
+	//! å•æ¬¡ HTTP POST è¯·æ±‚ï¼Œå¯è‡ªå®šä¹‰HTTPå¤´éƒ¨
 	int HttpPost(const string& url, const string& param, const map<string, string>& headers, vector<unsigned char>& response);
 
 private:
-	//! »º´æµÄÁ¬½Ó
+	//! ç¼“å­˜çš„è¿æ¥
 	CURL* m_pCachedUrl;
-	//! µ÷ÊÔĞÅÏ¢¿ª¹Ø
+	//! è°ƒè¯•ä¿¡æ¯å¼€å…³
 	bool m_bDebugInfo;
-	//! ³¬Ê±Ê±¼ä
+	//! è¶…æ—¶æ—¶é—´
 	int m_iTimeout;
-	//! ¼ÇÂ¼ÒıÓÃ´ÎÊı
+	//! è®°å½•å¼•ç”¨æ¬¡æ•°
 	static int m_iRefCount;
 };
 

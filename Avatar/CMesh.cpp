@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CMesh.h"
@@ -27,7 +27,7 @@ using std::list;
 #endif
 
 /**
-* ¹¹Ôìº¯Êı
+* æ„é€ å‡½æ•°
 */
 CMesh::CMesh() {
 	m_iVertexArraySize = 0;
@@ -40,7 +40,7 @@ CMesh::CMesh() {
 }
 
 /**
-* Îö¹¹º¯Êı
+* ææ„å‡½æ•°
 */
 CMesh::~CMesh() {
 	delete m_pMaterial;
@@ -49,25 +49,25 @@ CMesh::~CMesh() {
 }
 
 /**
-* ÉèÖÃ¶¥µãÊ¹ÓÃ¸öÊı
-* @param count ¶¥µã¸öÊı
+* è®¾ç½®é¡¶ç‚¹ä½¿ç”¨ä¸ªæ•°
+* @param count é¡¶ç‚¹ä¸ªæ•°
 */
 void CMesh::SetVertexUsage(unsigned int count) {
 	m_vecVertexArray.reserve(count);
 }
 
 /**
-* Ìí¼ÓÒ»¸ö¶¥µã
-* @param vertex ¶¥µã
+* æ·»åŠ ä¸€ä¸ªé¡¶ç‚¹
+* @param vertex é¡¶ç‚¹
 */
 void CMesh::AddVertex(const CVertex& vertex) {
 	m_vecVertexArray.push_back(vertex);
 }
 
 /**
-* Ìí¼ÓÒ»¸ö¶¥µã²¢Ö¸¶¨¹Ç÷À°ó¶¨
-* @param vertex ¶¥µã
-* @param bind ¹Ç÷À°ó¶¨
+* æ·»åŠ ä¸€ä¸ªé¡¶ç‚¹å¹¶æŒ‡å®šéª¨éª¼ç»‘å®š
+* @param vertex é¡¶ç‚¹
+* @param bind éª¨éª¼ç»‘å®š
 */
 void CMesh::AddVertex(const CVertex& vertex, const CVertexJoint& bind) {
 	m_vecVertexArray.push_back(vertex);
@@ -75,10 +75,10 @@ void CMesh::AddVertex(const CVertex& vertex, const CVertexJoint& bind) {
 }
 
 /**
-* Ìí¼ÓÒ»¸öÈı½ÇĞÎ£¨Ë÷Òı·½Ê½£©
-* @param a ¶¥µãË÷Òı1
-* @param b ¶¥µãË÷Òı2
-* @param c ¶¥µãË÷Òı3
+* æ·»åŠ ä¸€ä¸ªä¸‰è§’å½¢ï¼ˆç´¢å¼•æ–¹å¼ï¼‰
+* @param a é¡¶ç‚¹ç´¢å¼•1
+* @param b é¡¶ç‚¹ç´¢å¼•2
+* @param c é¡¶ç‚¹ç´¢å¼•3
 */
 void CMesh::AddTriangle(unsigned int a, unsigned int b, unsigned int c) {
 	m_vecIndexArray.push_back(a);
@@ -87,17 +87,17 @@ void CMesh::AddTriangle(unsigned int a, unsigned int b, unsigned int c) {
 }
 
 /**
-* Ìí¼ÓÒ»¸öÈı½ÇĞÎ£¨¶¥µã·½Ê½£©
-* @param a ¶¥µã1
-* @param b ¶¥µã2
-* @param c ¶¥µã3
+* æ·»åŠ ä¸€ä¸ªä¸‰è§’å½¢ï¼ˆé¡¶ç‚¹æ–¹å¼ï¼‰
+* @param a é¡¶ç‚¹1
+* @param b é¡¶ç‚¹2
+* @param c é¡¶ç‚¹3
 */
 void CMesh::AddTriangle(const CVertex& a, const CVertex& b, const CVertex& c) {
-	// Ìí¼Ó¶¥µã
+	// æ·»åŠ é¡¶ç‚¹
 	m_vecVertexArray.push_back(a);
 	m_vecVertexArray.push_back(b);
 	m_vecVertexArray.push_back(c);
-	// Èı½ÇĞÎ
+	// ä¸‰è§’å½¢
 	unsigned int baseIndex = m_vecVertexArray.size();
 	m_vecIndexArray.push_back(baseIndex - 3);
 	m_vecIndexArray.push_back(baseIndex - 2);
@@ -105,9 +105,9 @@ void CMesh::AddTriangle(const CVertex& a, const CVertex& b, const CVertex& c) {
 }
 
 /**
-* ÒÆ³ıÍø¸ñ¶¥µã
-* @param index ÆğÊ¼Î»ÖÃ
-* @param count ¶¥µã¸öÊı
+* ç§»é™¤ç½‘æ ¼é¡¶ç‚¹
+* @param index èµ·å§‹ä½ç½®
+* @param count é¡¶ç‚¹ä¸ªæ•°
 */
 void CMesh::RemoveVertex(unsigned int index, int count) {
 	const int vertexCount = static_cast<int>(m_vecVertexArray.size());
@@ -125,9 +125,9 @@ void CMesh::RemoveVertex(unsigned int index, int count) {
 }
 
 /**
-* ÒÆ³ıÍø¸ñÈı½ÇĞÎ
-* @param index ÆğÊ¼Î»ÖÃ
-* @param count Èı½ÇĞÎ¸öÊı
+* ç§»é™¤ç½‘æ ¼ä¸‰è§’å½¢
+* @param index èµ·å§‹ä½ç½®
+* @param count ä¸‰è§’å½¢ä¸ªæ•°
 */
 void CMesh::RemoveTriangle(unsigned int index, int count) {
 	const int triangleCount = static_cast<int>(m_vecIndexArray.size()) / 3;
@@ -139,8 +139,8 @@ void CMesh::RemoveTriangle(unsigned int index, int count) {
 }
 
 /**
-* ¸½¼ÓÒ»¸öÍø¸ñ
-* @param mesh ĞèÒªÌí¼ÓµÄÍø¸ñ
+* é™„åŠ ä¸€ä¸ªç½‘æ ¼
+* @param mesh éœ€è¦æ·»åŠ çš„ç½‘æ ¼
 */
 void CMesh::Append(const CMesh* mesh) {
 	size_t nv = m_vecVertexArray.size();
@@ -157,18 +157,18 @@ void CMesh::Append(const CMesh* mesh) {
 }
 
 /**
-* ¶ÔËùÓĞ¶¥µã½øĞĞ¾ØÕó±ä»»
-* @param matrix ±ä»»¾ØÕó
+* å¯¹æ‰€æœ‰é¡¶ç‚¹è¿›è¡ŒçŸ©é˜µå˜æ¢
+* @param matrix å˜æ¢çŸ©é˜µ
 */
 void CMesh::Transform(const CMatrix4& matrix) {
 	for (size_t i = 0; i < m_vecVertexArray.size(); i++) {
 		CVertex* vert = &m_vecVertexArray[i];
 		CVector3 position = matrix * CVector3(vert->m_fPosition);
 		CVector3 normal = matrix * CVector3(vert->m_fNormal, vert->m_fNormal[3]);
-		// µ¥Î»»¯·¨Ïò²¢Æë´Î»¯×ø±ê
+		// å•ä½åŒ–æ³•å‘å¹¶é½æ¬¡åŒ–åæ ‡
 		normal.Normalize();
 		float t = 1.0f / position[3];
-		// ÉèÖÃ±ä»»ºóµÄ¶¥µã×ø±êºÍ·¨ÏòÁ¿
+		// è®¾ç½®å˜æ¢åçš„é¡¶ç‚¹åæ ‡å’Œæ³•å‘é‡
 		vert->m_fPosition[0] = position[0] * t;
 		vert->m_fPosition[1] = position[1] * t;
 		vert->m_fPosition[2] = position[2] * t;
@@ -181,8 +181,8 @@ void CMesh::Transform(const CMatrix4& matrix) {
 }
 
 /**
-* ×Ô¶¯¼ÆËã¶¥µã·¨ÏòÁ¿
-* @note ÒÔÆ½»¬µÄ·½Ê½¼ÆËãËùÓĞ¶¥µã·¨ÏòÁ¿
+* è‡ªåŠ¨è®¡ç®—é¡¶ç‚¹æ³•å‘é‡
+* @note ä»¥å¹³æ»‘çš„æ–¹å¼è®¡ç®—æ‰€æœ‰é¡¶ç‚¹æ³•å‘é‡
 */
 void CMesh::SetupNormal() {
 	for (size_t i = 0; i < m_vecVertexArray.size(); i++) {
@@ -218,13 +218,13 @@ void CMesh::SetupNormal() {
 }
 
 /**
-* ·´×ª¶¥µã·¨ÏòºÍÎÆÀí×ø±ê
-* @param normal ·´×ª¶¥µã·¨Ïò
-* @param texCoordU Ë®Æ½·´×ªÎÆÀí
-* @param texCoordV ´¹Ö±·´×ªÎÆÀí
+* åè½¬é¡¶ç‚¹æ³•å‘å’Œçº¹ç†åæ ‡
+* @param normal åè½¬é¡¶ç‚¹æ³•å‘
+* @param texCoordU æ°´å¹³åè½¬çº¹ç†
+* @param texCoordV å‚ç›´åè½¬çº¹ç†
 */
 void CMesh::Reverse(bool normal, bool texCoordU, bool texCoordV) {
-	// ·´×ª·¨ÏòÁ¿
+	// åè½¬æ³•å‘é‡
 	if (normal) {
 		for (size_t i = 0; i < m_vecIndexArray.size(); i += 3) {
 			unsigned int a = m_vecIndexArray[i + 0];
@@ -239,7 +239,7 @@ void CMesh::Reverse(bool normal, bool texCoordU, bool texCoordV) {
 			vert->m_fNormal[2] = -vert->m_fNormal[2];
 		}
 	}
-	// ·´×ªÎÆÀí×ø±ê
+	// åè½¬çº¹ç†åæ ‡
 	if (texCoordU || texCoordV) {
 		for (size_t i = 0; i < m_vecVertexArray.size(); i++) {
 			CVertex* vert = &m_vecVertexArray[i];
@@ -251,52 +251,52 @@ void CMesh::Reverse(bool normal, bool texCoordU, bool texCoordV) {
 }
 
 /**
-* »ñÈ¡¶¥µã¸öÊı
-* @return ¶¥µã¸öÊı
+* è·å–é¡¶ç‚¹ä¸ªæ•°
+* @return é¡¶ç‚¹ä¸ªæ•°
 */
 int CMesh::GetVertexCount() const {
 	return m_vecVertexArray.size();
 }
 
 /**
-* »ñÈ¡Èı½ÇĞÎ¸öÊı
-* @return Èı½ÇĞÎ¸öÊı
+* è·å–ä¸‰è§’å½¢ä¸ªæ•°
+* @return ä¸‰è§’å½¢ä¸ªæ•°
 */
 int CMesh::GetTriangleCount() const {
 	return m_vecIndexArray.size() / 3;
 }
 
 /**
-* »ñÈ¡°ó¶¨¹Ç÷ÀµÄ¶¥µãÊıÁ¿
-* @return °ó¶¨¹Ç÷À¶¥µãÊıÁ¿
+* è·å–ç»‘å®šéª¨éª¼çš„é¡¶ç‚¹æ•°é‡
+* @return ç»‘å®šéª¨éª¼é¡¶ç‚¹æ•°é‡
 */
 int CMesh::GetBindCount() const {
 	return m_vecBindArray.size();
 }
 
 /**
-* »ñÈ¡Íø¸ñ¶¥µã
-* @param index ¶¥µãË÷Òı
-* @return ¶¥µã
+* è·å–ç½‘æ ¼é¡¶ç‚¹
+* @param index é¡¶ç‚¹ç´¢å¼•
+* @return é¡¶ç‚¹
 */
 CVertex* CMesh::GetVertex(unsigned int index) {
 	return &m_vecVertexArray[index];
 }
 
 /**
-* »ñÈ¡Íø¸ñ¶¥µã
-* @param face Èı½ÇĞÎË÷Òı
-* @param index ¶¥µãË÷Òı(0,1,2)
-* @return ¶¥µã
+* è·å–ç½‘æ ¼é¡¶ç‚¹
+* @param face ä¸‰è§’å½¢ç´¢å¼•
+* @param index é¡¶ç‚¹ç´¢å¼•(0,1,2)
+* @return é¡¶ç‚¹
 */
 CVertex* CMesh::GetVertex(unsigned int face, unsigned int index) {
 	return &m_vecVertexArray[m_vecIndexArray[face * 3 + index]];
 }
 
 /**
-* »ñÈ¡Èı½ÇĞÎ¶¥µã
-* @param index Èı½ÇĞÎË÷Òı
-* @param vertices Êä³öÈı½ÇĞÎµÄÈı¸ö¶¥µã
+* è·å–ä¸‰è§’å½¢é¡¶ç‚¹
+* @param index ä¸‰è§’å½¢ç´¢å¼•
+* @param vertices è¾“å‡ºä¸‰è§’å½¢çš„ä¸‰ä¸ªé¡¶ç‚¹
 */
 void CMesh::GetTriangle(unsigned int index, CVertex* vertices[3]) {
 	vertices[0] = &m_vecVertexArray[m_vecIndexArray[index * 3 + 0]];
@@ -305,9 +305,9 @@ void CMesh::GetTriangle(unsigned int index, CVertex* vertices[3]) {
 }
 
 /**
-* »ñÈ¡Èı½ÇĞÎ¶¥µãË÷Òı
-* @param index Èı½ÇĞÎË÷Òı
-* @param vertices Êä³öÈı½ÇĞÎµÄÈı¸ö¶¥µãË÷Òı
+* è·å–ä¸‰è§’å½¢é¡¶ç‚¹ç´¢å¼•
+* @param index ä¸‰è§’å½¢ç´¢å¼•
+* @param vertices è¾“å‡ºä¸‰è§’å½¢çš„ä¸‰ä¸ªé¡¶ç‚¹ç´¢å¼•
 */
 void CMesh::GetTriangle(unsigned int index, unsigned int vertices[3]) {
 	vertices[0] = m_vecIndexArray[index * 3 + 0];
@@ -316,28 +316,28 @@ void CMesh::GetTriangle(unsigned int index, unsigned int vertices[3]) {
 }
 
 /**
-* »ñÈ¡¶¥µã¹Ç÷À°ó¶¨ĞÅÏ¢
-* @param index ¶¥µãË÷Òı
-* @return ¹Ç÷À°ó¶¨ĞÅÏ¢
+* è·å–é¡¶ç‚¹éª¨éª¼ç»‘å®šä¿¡æ¯
+* @param index é¡¶ç‚¹ç´¢å¼•
+* @return éª¨éª¼ç»‘å®šä¿¡æ¯
 */
 CVertexJoint* CMesh::GetBind(unsigned int index) {
 	return &m_vecBindArray[index];
 }
 
 /**
-* Éú³ÉÍø¸ñ
-* @param dynamic Ö¸¶¨Îª¶¯Ì¬Íø¸ñ
-* @note ¶Ô²»ĞèÒª¾­³£¸üĞÂµÄÍø¸ñÖ¸¶¨Îª¾²Ì¬ÒÔÌá¸ßĞÔÄÜ
+* ç”Ÿæˆç½‘æ ¼
+* @param dynamic æŒ‡å®šä¸ºåŠ¨æ€ç½‘æ ¼
+* @note å¯¹ä¸éœ€è¦ç»å¸¸æ›´æ–°çš„ç½‘æ ¼æŒ‡å®šä¸ºé™æ€ä»¥æé«˜æ€§èƒ½
 */
 void CMesh::Create(bool dynamic) {
 	if (m_bCreated) return;
 	if (m_vecVertexArray.empty() || m_vecIndexArray.empty()) return;
 	GLenum usage = dynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW;
-	// ´´½¨¶¥µã»º³å
+	// åˆ›å»ºé¡¶ç‚¹ç¼“å†²
 	size_t vertex_array_size = m_vecVertexArray.size() * sizeof(CVertex);
 	glBindBuffer(GL_ARRAY_BUFFER, m_iVertexBuffer);
 	glBufferData(GL_ARRAY_BUFFER, vertex_array_size, &m_vecVertexArray[0], usage);
-	// ´´½¨Ë÷Òı»º³å
+	// åˆ›å»ºç´¢å¼•ç¼“å†²
 	if (m_vecVertexArray.size() > 0x10000) {
 		size_t index_array_size = m_vecIndexArray.size() * sizeof(unsigned int);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_iIndexBuffer);
@@ -356,14 +356,14 @@ void CMesh::Create(bool dynamic) {
 }
 
 /**
-* ¸üĞÂ»º³å
-* @param bufferType Òª¸üĞÂµÄ»º³å£¨0-È«²¿£¬1-¶¥µã»º³å£¬2-Ë÷Òı»º³å£©
-* @note Èç¹û¶¨µã»º³å»òË÷Òı»º³å´óĞ¡¸Ä±ä£¬Ôò²»ÊÜ bufferType ¿ØÖÆ
+* æ›´æ–°ç¼“å†²
+* @param bufferType è¦æ›´æ–°çš„ç¼“å†²ï¼ˆ0-å…¨éƒ¨ï¼Œ1-é¡¶ç‚¹ç¼“å†²ï¼Œ2-ç´¢å¼•ç¼“å†²ï¼‰
+* @note å¦‚æœå®šç‚¹ç¼“å†²æˆ–ç´¢å¼•ç¼“å†²å¤§å°æ”¹å˜ï¼Œåˆ™ä¸å— bufferType æ§åˆ¶
 */
 void CMesh::Update(int bufferType) {
 	if (!m_bCreated) return;
 	GLenum usage = m_bDynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW;
-	// ¸üĞÂ¶¥µã»º³å
+	// æ›´æ–°é¡¶ç‚¹ç¼“å†²
 	if (m_iVertexArraySize != m_vecVertexArray.size()) {
 		size_t vertex_array_size = m_vecVertexArray.size() * sizeof(CVertex);
 		glBindBuffer(GL_ARRAY_BUFFER, m_iVertexBuffer);
@@ -374,7 +374,7 @@ void CMesh::Update(int bufferType) {
 		glBindBuffer(GL_ARRAY_BUFFER, m_iVertexBuffer);
 		glBufferSubData(GL_ARRAY_BUFFER, 0, vertex_array_size, &m_vecVertexArray[0]);
 	}
-	// ¸üĞÂË÷Òı»º³å
+	// æ›´æ–°ç´¢å¼•ç¼“å†²
 	if (m_iIndexArraySize != m_vecIndexArray.size() || 0 == bufferType || 2 == bufferType) {
 		void* buffer = m_vecIndexArray.data();
 		size_t index_array_size = m_vecIndexArray.size() * sizeof(unsigned int);
@@ -397,8 +397,8 @@ void CMesh::Update(int bufferType) {
 }
 
 /**
-* äÖÈ¾Íø¸ñ
-* @param material Ê¹ÓÃÍø¸ñ²ÄÖÊ
+* æ¸²æŸ“ç½‘æ ¼
+* @param material ä½¿ç”¨ç½‘æ ¼æè´¨
 */
 void CMesh::Render(bool material) {
 	if (!m_bCreated) return;
@@ -423,11 +423,11 @@ void CMesh::Render(bool material) {
 }
 
 /**
-* Íø¸ñÏ¸·Ö
-* @note Ê¹ÓÃ Loop Ëã·¨½«Ã¿¸öÈı½ÇĞÎÏ¸·ÖÎªËÄ¸öÈı½ÇĞÎ
+* ç½‘æ ¼ç»†åˆ†
+* @note ä½¿ç”¨ Loop ç®—æ³•å°†æ¯ä¸ªä¸‰è§’å½¢ç»†åˆ†ä¸ºå››ä¸ªä¸‰è§’å½¢
 */
 void CMesh::Subdivision() {
-	// Éú³É±ß-ÃæºÍ±ß-¶¥µãÒÔ¼°¶¥µã-±ßµÄ²éÕÒ±í
+	// ç”Ÿæˆè¾¹-é¢å’Œè¾¹-é¡¶ç‚¹ä»¥åŠé¡¶ç‚¹-è¾¹çš„æŸ¥æ‰¾è¡¨
 	bool haveJoint = m_vecVertexArray.size() == m_vecBindArray.size();
 	const size_t vertexCount = m_vecVertexArray.size();
 	const size_t triangleCount = m_vecIndexArray.size() / 3;
@@ -444,7 +444,7 @@ void CMesh::Subdivision() {
 			edge_vertex[key] = std::pair<unsigned int, unsigned int>(v1, v2);
 		}
 	}
-	// ¶ÔÃ¿Ìõ±ßÉú³ÉĞÂ¶¥µã
+	// å¯¹æ¯æ¡è¾¹ç”Ÿæˆæ–°é¡¶ç‚¹
 	vector<CVertex> vertexArray;
 	vector<CVertexJoint> bindArray;
 	vector<unsigned int> triangleArray;
@@ -485,7 +485,7 @@ void CMesh::Subdivision() {
 		edgePointsLookup[iter->first] = vertexArray.size() - 1;
 		++iter;
 	}
-	// ¸üĞÂÔ­À´µÄ¶¥µã×ø±ê
+	// æ›´æ–°åŸæ¥çš„é¡¶ç‚¹åæ ‡
 	unsigned int edgeVertexCount = static_cast<unsigned int>(vertexArray.size());
 	for (size_t v = 0; v < vertexCount; v++) {
 		float vertexWeight = 0.0f;
@@ -517,7 +517,7 @@ void CMesh::Subdivision() {
 		vertexArray.push_back(vertex);
 		if (haveJoint) bindArray.push_back(vertJoint.Normalize());
 	}
-	// ÔÚÔ­¶¥µãºÍ±ß¶¥µãÖ®¼äÉú³ÉĞÂµÄÈı½ÇĞÎÃæ
+	// åœ¨åŸé¡¶ç‚¹å’Œè¾¹é¡¶ç‚¹ä¹‹é—´ç”Ÿæˆæ–°çš„ä¸‰è§’å½¢é¢
 	for (size_t t = 0; t < triangleCount; t++) {
 		unsigned int* v = &m_vecIndexArray[t * 3];
 		unsigned int cv1 = static_cast<unsigned int>(edgePointsLookup[v[0] < v[1] ? v[1] + v[0] * vertexCount : v[0] + v[1] * vertexCount]);
@@ -528,7 +528,7 @@ void CMesh::Subdivision() {
 		triangleArray.push_back(edgeVertexCount + v[2]); triangleArray.push_back(cv3); triangleArray.push_back(cv2);
 		triangleArray.push_back(cv1); triangleArray.push_back(cv2); triangleArray.push_back(cv3);
 	}
-	// ¸üĞÂÔ­Íø¸ñ¶¥µãÊı×éºÍÈı½ÇĞÎÊı×é
+	// æ›´æ–°åŸç½‘æ ¼é¡¶ç‚¹æ•°ç»„å’Œä¸‰è§’å½¢æ•°ç»„
 	m_vecVertexArray.clear();
 	m_vecIndexArray.clear();
 	m_vecBindArray.clear();
@@ -540,8 +540,8 @@ void CMesh::Subdivision() {
 }
 
 /**
-* »ñÈ¡°üÎ§ºĞ
-* @return °üº¬ËùÓĞ¶¥µãµÄ×îĞ¡°üÎ§ºĞ
+* è·å–åŒ…å›´ç›’
+* @return åŒ…å«æ‰€æœ‰é¡¶ç‚¹çš„æœ€å°åŒ…å›´ç›’
 */
 CBoundingBox CMesh::GetBoundingBox() const {
 	CBoundingBox boundingBox;
@@ -558,13 +558,13 @@ CBoundingBox CMesh::GetBoundingBox() const {
 }
 
 /**
-* ÉäÏßÊ°È¡£¬·µ»Ø¾àÀë£¬²¢»ñÈ¡Ïà½»Èı½ÇĞÎË÷ÒıºÍÖÊĞÄ×ø±ê
-* @param ray Ê°È¡ÉäÏß
-* @param face Ïà½»µÄÈı½ÇĞÎË÷Òı
-* @param bu ÖÊĞÄ×ø±ê u ·ÖÁ¿
-* @param bv ÖÊĞÄ×ø±ê v ·ÖÁ¿
-* @return ½»µã¾àÀëÉäÏßÆğµãµÄ¾àÀë£¬¸ºÊı±íÊ¾²»Ïà½»
-* @note ½»µã×ø±ê = (1 - u - v)V0 + uV1 + vV2 ÆäÖĞ V0 V1 V2 ÎªÈı½ÇĞÎÈı¸ö¶¥µã×ø±ê
+* å°„çº¿æ‹¾å–ï¼Œè¿”å›è·ç¦»ï¼Œå¹¶è·å–ç›¸äº¤ä¸‰è§’å½¢ç´¢å¼•å’Œè´¨å¿ƒåæ ‡
+* @param ray æ‹¾å–å°„çº¿
+* @param face ç›¸äº¤çš„ä¸‰è§’å½¢ç´¢å¼•
+* @param bu è´¨å¿ƒåæ ‡ u åˆ†é‡
+* @param bv è´¨å¿ƒåæ ‡ v åˆ†é‡
+* @return äº¤ç‚¹è·ç¦»å°„çº¿èµ·ç‚¹çš„è·ç¦»ï¼Œè´Ÿæ•°è¡¨ç¤ºä¸ç›¸äº¤
+* @note äº¤ç‚¹åæ ‡ = (1 - u - v)V0 + uV1 + vV2 å…¶ä¸­ V0 V1 V2 ä¸ºä¸‰è§’å½¢ä¸‰ä¸ªé¡¶ç‚¹åæ ‡
 */
 float CMesh::Intersects(const CRay& ray, int* face, float* bu, float* bv) const {
 	float distance = -1.0f;
@@ -577,20 +577,20 @@ float CMesh::Intersects(const CRay& ray, int* face, float* bu, float* bv) const 
 		CVector3 e2(v2[0] - v0[0], v2[1] - v0[1], v2[2] - v0[2]);
 		CVector3 p = ray.m_cDirection.CrossProduct(e2);
 		float det = e1.DotProduct(p);
-		// ÉäÏßÆ½ĞĞÓÚÈı½ÇĞÎ
+		// å°„çº¿å¹³è¡Œäºä¸‰è§’å½¢
 		if (fabs(det) < 0.000001f) continue;
 		CVector3 t = ray.m_cOrigin - CVector3(v0);
-		// ¼ÆËã½»µãÖÊĞÄ×ø±ê²ÎÊı u
+		// è®¡ç®—äº¤ç‚¹è´¨å¿ƒåæ ‡å‚æ•° u
 		float u = t.DotProduct(p);
 		if (u < 0.0f || u > det) continue;
 		CVector3 q = t.CrossProduct(e1);
-		// ¼ÆËã½»µãÖÊĞÄ×ø±ê²ÎÊı v
+		// è®¡ç®—äº¤ç‚¹è´¨å¿ƒåæ ‡å‚æ•° v
 		float v = ray.m_cDirection.DotProduct(q);
 		if (v < 0.0f || u + v > det) continue;
-		// ¼ÆËã½»µã¾àÀë
+		// è®¡ç®—äº¤ç‚¹è·ç¦»
 		det = 1.0f / det;
 		float d = e2.DotProduct(q) * det;
-		// ¼ÇÂ¼Ïà½»¾àÀë×îĞ¡µÄ²ÎÊı
+		// è®°å½•ç›¸äº¤è·ç¦»æœ€å°çš„å‚æ•°
 		if (d < distance || distance < 0) {
 			*face = i / 3;
 			*bu = u * det;
@@ -602,9 +602,9 @@ float CMesh::Intersects(const CRay& ray, int* face, float* bu, float* bv) const 
 }
 
 /**
-* ¼ÆËãÌå»ı²¢·µ»ØÖÊĞÄ×ø±ê
-* @param centroid ·µ»ØµÄÖÊĞÄ×ø±ê
-* @return Íø¸ñÌå»ı
+* è®¡ç®—ä½“ç§¯å¹¶è¿”å›è´¨å¿ƒåæ ‡
+* @param centroid è¿”å›çš„è´¨å¿ƒåæ ‡
+* @return ç½‘æ ¼ä½“ç§¯
 */
 float CMesh::Volume(CVector3& centroid) const {
 	size_t indexCount = m_vecIndexArray.size();
@@ -625,8 +625,8 @@ float CMesh::Volume(CVector3& centroid) const {
 }
 
 /**
-* ¼ÆËã±íÃæ»ı
-* @return Íø¸ñ±íÃæ»ı
+* è®¡ç®—è¡¨é¢ç§¯
+* @return ç½‘æ ¼è¡¨é¢ç§¯
 */
 float CMesh::SurfaceArea() const {
 	size_t indexCount = m_vecIndexArray.size();
@@ -643,7 +643,7 @@ float CMesh::SurfaceArea() const {
 }
 
 /**
-* ¿ËÂ¡Íø¸ñ¶ÔÏó
+* å…‹éš†ç½‘æ ¼å¯¹è±¡
 */
 CMesh* CMesh::Clone() const {
 	CMesh* mesh = new CMesh();

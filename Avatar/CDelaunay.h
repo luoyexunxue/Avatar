@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CDELAUNAY_H_
@@ -13,44 +13,44 @@ using std::vector;
 using std::list;
 
 /**
-* @brief Delaunay Èı½ÇÍøÉú³ÉÆ÷
+* @brief Delaunay ä¸‰è§’ç½‘ç”Ÿæˆå™¨
 */
 class AVATAR_EXPORT CDelaunay {
 public:
-	//! Ä¬ÈÏ¹¹Ôìº¯Êı
+	//! é»˜è®¤æ„é€ å‡½æ•°
 	CDelaunay();
-	//! »ùÓÚ¶¥µãÁĞ±í¹¹Ôì
+	//! åŸºäºé¡¶ç‚¹åˆ—è¡¨æ„é€ 
 	CDelaunay(const vector<CVector3>& points);
 
-	//! Ìí¼Óµã
+	//! æ·»åŠ ç‚¹
 	void AddPoint(const CVector3& point);
-	//! Ìí¼Ó×ø±êµã
+	//! æ·»åŠ åæ ‡ç‚¹
 	void AddPoint(float x, float y, float z);
-	//! Çå¿ÕÒÑÌí¼Óµã
+	//! æ¸…ç©ºå·²æ·»åŠ ç‚¹
 	void ClearPoint();
-	//! Éú³ÉÈı½ÇÍø
+	//! ç”Ÿæˆä¸‰è§’ç½‘
 	bool Generate();
 
-	//! »ñÈ¡¶¥µãÊıÁ¿
+	//! è·å–é¡¶ç‚¹æ•°é‡
 	int GetPointCount() const;
-	//! »ñÈ¡Ò»¸ö¶¥µã
+	//! è·å–ä¸€ä¸ªé¡¶ç‚¹
 	CVector3 GetPoint(int index) const;
-	//! »ñÈ¡Èı½ÇĞÎÊıÁ¿
+	//! è·å–ä¸‰è§’å½¢æ•°é‡
 	int GetTriangleCount() const;
-	//! »ñÈ¡Ò»¸öÈı½ÇĞÎ
+	//! è·å–ä¸€ä¸ªä¸‰è§’å½¢
 	void GetTriangle(int index, int vertices[3]) const;
 
-	//! Éú³ÉÍø¸ñ¶ÔÏó
+	//! ç”Ÿæˆç½‘æ ¼å¯¹è±¡
 	CMesh* CreateMesh(bool dynamic, bool gradient);
 
 private:
-	//! Èı½ÇĞÎ±ß¶¨Òå
+	//! ä¸‰è§’å½¢è¾¹å®šä¹‰
 	typedef struct _SEdge {
 		size_t v1;
 		size_t v2;
 		_SEdge(size_t a, size_t b): v1(a), v2(b) {}
 	} SEdge;
-	//! Èı½ÇĞÎ¶¨Òå
+	//! ä¸‰è§’å½¢å®šä¹‰
 	typedef struct _STriangle {
 		size_t a;
 		size_t b;
@@ -62,21 +62,21 @@ private:
 	} STriangle;
 
 private:
-	//! ½«ËùÓĞ¶¥µãÑØXÖáÅÅĞò
+	//! å°†æ‰€æœ‰é¡¶ç‚¹æ²¿Xè½´æ’åº
 	void SortPointsAlongX(vector<CVector3>& vertices, vector<size_t>& indices);
-	//! Ìí¼Ó³¬¼¶Èı½ÇĞÎµ½¶¥µãÁĞ±íÄ©Î²
+	//! æ·»åŠ è¶…çº§ä¸‰è§’å½¢åˆ°é¡¶ç‚¹åˆ—è¡¨æœ«å°¾
 	void AddSuperTriangle(vector<CVector3>& vertices);
-	//! ¼ÆËãÈı½ÇĞÎÍâ½ÓÔ²
+	//! è®¡ç®—ä¸‰è§’å½¢å¤–æ¥åœ†
 	STriangle& Circumcircle(STriangle& triangle);
-	//! ÒÆ³ı±ßÁĞ±íÖĞµÄÖØ¸´±ß
+	//! ç§»é™¤è¾¹åˆ—è¡¨ä¸­çš„é‡å¤è¾¹
 	void RemoveDoublyEdge(list<SEdge>& edges);
-	//! Éú³ÉÈı½ÇĞÎÁĞ±í
+	//! ç”Ÿæˆä¸‰è§’å½¢åˆ—è¡¨
 	void BuildTriangles(list<STriangle>& triangles);
 
 private:
-	//! ¶¥µãÊı×é
+	//! é¡¶ç‚¹æ•°ç»„
 	vector<CVector3> m_vecPoints;
-	//! Èı½ÇĞÎÁĞ±í
+	//! ä¸‰è§’å½¢åˆ—è¡¨
 	vector<STriangle> m_vecTriangles;
 };
 

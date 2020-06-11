@@ -1,12 +1,12 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CQuaternion.h"
 #include <cmath>
 
 /**
-* ¹¹Ôìº¯Êı
+* æ„é€ å‡½æ•°
 */
 CQuaternion::CQuaternion() {
 	m_fValue[0] = 0;
@@ -16,7 +16,7 @@ CQuaternion::CQuaternion() {
 }
 
 /**
-* ¸´ÖÆ¹¹Ôìº¯Êı
+* å¤åˆ¶æ„é€ å‡½æ•°
 */
 CQuaternion::CQuaternion(const CQuaternion& quaternion) {
 	m_fValue[0] = quaternion.m_fValue[0];
@@ -26,7 +26,7 @@ CQuaternion::CQuaternion(const CQuaternion& quaternion) {
 }
 
 /**
-* ¹¹Ôìº¯Êı£¬Ö¸¶¨ËÄÔªÊı4¸öÖµ
+* æ„é€ å‡½æ•°ï¼ŒæŒ‡å®šå››å…ƒæ•°4ä¸ªå€¼
 */
 CQuaternion::CQuaternion(const float quaternion[4]) {
 	m_fValue[0] = quaternion[0];
@@ -36,7 +36,7 @@ CQuaternion::CQuaternion(const float quaternion[4]) {
 }
 
 /**
-* ¹¹Ôìº¯Êı£¬Ö¸¶¨ËÄÔªÊı4¸öÖµ
+* æ„é€ å‡½æ•°ï¼ŒæŒ‡å®šå››å…ƒæ•°4ä¸ªå€¼
 */
 CQuaternion::CQuaternion(float x, float y, float z, float w) {
 	m_fValue[0] = x;
@@ -46,7 +46,7 @@ CQuaternion::CQuaternion(float x, float y, float z, float w) {
 }
 
 /**
-* ÉèÖÃËÄÔªÊıÖµ
+* è®¾ç½®å››å…ƒæ•°å€¼
 */
 void CQuaternion::SetValue(const CQuaternion& quaternion) {
 	m_fValue[0] = quaternion.m_fValue[0];
@@ -56,7 +56,7 @@ void CQuaternion::SetValue(const CQuaternion& quaternion) {
 }
 
 /**
-* ÉèÖÃËÄÔªÊıÖµ
+* è®¾ç½®å››å…ƒæ•°å€¼
 */
 void CQuaternion::SetValue(float x, float y, float z, float w) {
 	m_fValue[0] = x;
@@ -66,7 +66,7 @@ void CQuaternion::SetValue(float x, float y, float z, float w) {
 }
 
 /**
-* µ¥Î»»¯
+* å•ä½åŒ–
 */
 CQuaternion& CQuaternion::Normalize() {
 	float l1 = m_fValue[0] * m_fValue[0];
@@ -88,7 +88,7 @@ CQuaternion& CQuaternion::Normalize() {
 }
 
 /**
-* ¹²éî
+* å…±è½­
 */
 CQuaternion& CQuaternion::Conjugate() {
 	m_fValue[0] = -m_fValue[0];
@@ -98,7 +98,7 @@ CQuaternion& CQuaternion::Conjugate() {
 }
 
 /**
-* È¡Äæ
+* å–é€†
 */
 CQuaternion& CQuaternion::Inverse() {
 	float x2 = m_fValue[0] * m_fValue[0];
@@ -114,8 +114,8 @@ CQuaternion& CQuaternion::Inverse() {
 }
 
 /**
-* ÓÉÅ·À­½Ç×ªÎªËÄÔªÊı
-* @note Éú³ÉµÄËÄÔªÊı±íÊ¾ÏÈÈÆ X ÖáĞı×ª x »¡¶È£¬ÔÙÈÆ Y ÖáĞı×ª y »¡¶È£¬ÔÙÈÆ Z ÖáĞı×ª z »¡¶È
+* ç”±æ¬§æ‹‰è§’è½¬ä¸ºå››å…ƒæ•°
+* @note ç”Ÿæˆçš„å››å…ƒæ•°è¡¨ç¤ºå…ˆç»• X è½´æ—‹è½¬ x å¼§åº¦ï¼Œå†ç»• Y è½´æ—‹è½¬ y å¼§åº¦ï¼Œå†ç»• Z è½´æ—‹è½¬ z å¼§åº¦
 */
 CQuaternion& CQuaternion::FromEulerAngles(float x, float y, float z) {
 	x *= 0.5f;
@@ -144,7 +144,7 @@ CQuaternion& CQuaternion::FromEulerAngles(float x, float y, float z) {
 }
 
 /**
-* ÓÉÖá½Ç×ªÎªËÄÔªÊı
+* ç”±è½´è§’è½¬ä¸ºå››å…ƒæ•°
 */
 CQuaternion& CQuaternion::FromAxisAngle(const CVector3& axis, float angle) {
 	CVector3 vn(axis);
@@ -159,7 +159,7 @@ CQuaternion& CQuaternion::FromAxisAngle(const CVector3& axis, float angle) {
 }
 
 /**
-* ÓÉÏòÁ¿×ªÎªËÄÔªÊı
+* ç”±å‘é‡è½¬ä¸ºå››å…ƒæ•°
 */
 CQuaternion& CQuaternion::FromVector(const CVector3& from, const CVector3& to) {
 	CVector3 a(from);
@@ -173,7 +173,7 @@ CQuaternion& CQuaternion::FromVector(const CVector3& from, const CVector3& to) {
 }
 
 /**
-* ÓÉ¾ØÕó×ªÎªËÄÔªÊı
+* ç”±çŸ©é˜µè½¬ä¸ºå››å…ƒæ•°
 */
 CQuaternion& CQuaternion::FromMatrix(const CMatrix4& matrix) {
 	const float* m = matrix.m_fValue;
@@ -210,7 +210,7 @@ CQuaternion& CQuaternion::FromMatrix(const CMatrix4& matrix) {
 }
 
 /**
-* ×ª»»ÎªÅ·À­½Ç±íÊ¾
+* è½¬æ¢ä¸ºæ¬§æ‹‰è§’è¡¨ç¤º
 */
 void CQuaternion::ToEulerAngles(float* x, float* y, float* z) const {
 	float tempax = 1.0f - 2.0f * (m_fValue[0] * m_fValue[0] + m_fValue[1] * m_fValue[1]);
@@ -224,7 +224,7 @@ void CQuaternion::ToEulerAngles(float* x, float* y, float* z) const {
 }
 
 /**
-* ×ª»»ÎªÖá½Ç±íÊ¾
+* è½¬æ¢ä¸ºè½´è§’è¡¨ç¤º
 */
 void CQuaternion::ToAxisAngle(CVector3& axis, float* angle) const {
 	float len = sqrtf(m_fValue[0] * m_fValue[0] + m_fValue[1] * m_fValue[1] + m_fValue[2] * m_fValue[2]);
@@ -236,7 +236,7 @@ void CQuaternion::ToAxisAngle(CVector3& axis, float* angle) const {
 }
 
 /**
-* ×ª»»Îª¾ØÕó±íÊ¾
+* è½¬æ¢ä¸ºçŸ©é˜µè¡¨ç¤º
 */
 CMatrix4 CQuaternion::ToMatrix() const {
 	float x2 = 2.0f * m_fValue[0] * m_fValue[0];
@@ -270,7 +270,7 @@ CMatrix4 CQuaternion::ToMatrix() const {
 }
 
 /**
-* ÇòĞÎ²åÖµ
+* çƒå½¢æ’å€¼
 */
 CQuaternion CQuaternion::Slerp(const CQuaternion& quaternion, float t) const {
 	float cosa = m_fValue[0] * quaternion.m_fValue[0];
@@ -295,7 +295,7 @@ CQuaternion CQuaternion::Slerp(const CQuaternion& quaternion, float t) const {
 }
 
 /**
-* ×î¶ÌÂ·¾¶ÇòĞÎ²åÖµ
+* æœ€çŸ­è·¯å¾„çƒå½¢æ’å€¼
 */
 CQuaternion CQuaternion::SlerpShortest(const CQuaternion& quaternion, float t) const {
 	float cosa = m_fValue[0] * quaternion.m_fValue[0];
@@ -328,14 +328,14 @@ CQuaternion CQuaternion::SlerpShortest(const CQuaternion& quaternion, float t) c
 }
 
 /**
-* ÖØÔØÔËËã·û []
+* é‡è½½è¿ç®—ç¬¦ []
 */
 float& CQuaternion::operator [] (int index) {
 	return m_fValue[index];
 }
 
 /**
-* ÖØÔØÔËËã·û ==
+* é‡è½½è¿ç®—ç¬¦ ==
 */
 bool CQuaternion::operator == (const CQuaternion& quaternion) const {
 	if (m_fValue[0] == quaternion.m_fValue[0] &&
@@ -348,14 +348,14 @@ bool CQuaternion::operator == (const CQuaternion& quaternion) const {
 }
 
 /**
-* ÖØÔØÔËËã·û !=
+* é‡è½½è¿ç®—ç¬¦ !=
 */
 bool CQuaternion::operator != (const CQuaternion& quaternion) const {
 	return !(*this == quaternion);
 }
 
 /**
-* ÖØÔØÔËËã·û +
+* é‡è½½è¿ç®—ç¬¦ +
 */
 CQuaternion CQuaternion::operator + (const CQuaternion& quaternion) const {
 	float qTemp[4];
@@ -367,7 +367,7 @@ CQuaternion CQuaternion::operator + (const CQuaternion& quaternion) const {
 }
 
 /**
-* ÖØÔØÔËËã·û -
+* é‡è½½è¿ç®—ç¬¦ -
 */
 CQuaternion CQuaternion::operator - (const CQuaternion& quaternion) const {
 	float qTemp[4];
@@ -379,7 +379,7 @@ CQuaternion CQuaternion::operator - (const CQuaternion& quaternion) const {
 }
 
 /**
-* ÖØÔØÔËËã·û *
+* é‡è½½è¿ç®—ç¬¦ *
 */
 CQuaternion CQuaternion::operator * (const CQuaternion& quaternion) const {
 	float qTemp[4];
@@ -395,7 +395,7 @@ CQuaternion CQuaternion::operator * (const CQuaternion& quaternion) const {
 }
 
 /**
-* ÖØÔØÔËËã·û *
+* é‡è½½è¿ç®—ç¬¦ *
 */
 CQuaternion CQuaternion::operator * (float scale) const {
 	float qTemp[4];
@@ -407,8 +407,8 @@ CQuaternion CQuaternion::operator * (float scale) const {
 }
 
 /**
-* ÖØÔØÔËËã·û *
-* @note ËÄÔªÊı³ËÒÔÏòÁ¿µÈÍ¬ÓÚÊ©¼ÓĞı×ªµ½ÏòÁ¿ÉÏ
+* é‡è½½è¿ç®—ç¬¦ *
+* @note å››å…ƒæ•°ä¹˜ä»¥å‘é‡ç­‰åŒäºæ–½åŠ æ—‹è½¬åˆ°å‘é‡ä¸Š
 */
 CVector3 CQuaternion::operator * (const CVector3& vector) const {
 	CQuaternion qvec(vector.m_fValue[0], vector.m_fValue[1], vector.m_fValue[2], 0);
@@ -419,7 +419,7 @@ CVector3 CQuaternion::operator * (const CVector3& vector) const {
 }
 
 /**
-* ÖØÔØÔËËã·û +=
+* é‡è½½è¿ç®—ç¬¦ +=
 */
 CQuaternion& CQuaternion::operator += (const CQuaternion& quaternion) {
 	m_fValue[0] += quaternion.m_fValue[0];
@@ -430,7 +430,7 @@ CQuaternion& CQuaternion::operator += (const CQuaternion& quaternion) {
 }
 
 /**
-* ÖØÔØÔËËã·û -=
+* é‡è½½è¿ç®—ç¬¦ -=
 */
 CQuaternion& CQuaternion::operator -= (const CQuaternion& quaternion) {
 	m_fValue[0] -= quaternion.m_fValue[0];
@@ -441,7 +441,7 @@ CQuaternion& CQuaternion::operator -= (const CQuaternion& quaternion) {
 }
 
 /**
-* ÖØÔØÔËËã·û *=
+* é‡è½½è¿ç®—ç¬¦ *=
 */
 CQuaternion& CQuaternion::operator *= (const CQuaternion& quaternion) {
 	float qTemp[4];
@@ -461,7 +461,7 @@ CQuaternion& CQuaternion::operator *= (const CQuaternion& quaternion) {
 }
 
 /**
-* ÖØÔØÔËËã·û *=
+* é‡è½½è¿ç®—ç¬¦ *=
 */
 CQuaternion& CQuaternion::operator *= (float scale) {
 	m_fValue[0] *= scale;

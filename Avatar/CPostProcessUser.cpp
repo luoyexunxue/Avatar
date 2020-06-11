@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CPostProcessUser.h"
@@ -8,7 +8,7 @@
 #include "CStringUtil.h"
 
 /**
-* ¹¹Ôìº¯Êı
+* æ„é€ å‡½æ•°
 */
 CPostProcessUser::CPostProcessUser(const string& name, const char* shader, const char* texture, bool cube) {
 	m_strName = name;
@@ -19,7 +19,7 @@ CPostProcessUser::CPostProcessUser(const string& name, const char* shader, const
 }
 
 /**
-* ³õÊ¼»¯ºó´¦Àí¶ÔÏó
+* åˆå§‹åŒ–åå¤„ç†å¯¹è±¡
 */
 bool CPostProcessUser::Init(int width, int height) {
 	CShaderManager* pShaderMgr = CEngine::GetShaderManager();
@@ -45,7 +45,7 @@ bool CPostProcessUser::Init(int width, int height) {
 }
 
 /**
-* äÖÈ¾ÇøÓò´óĞ¡¸Ä±ä
+* æ¸²æŸ“åŒºåŸŸå¤§å°æ”¹å˜
 */
 void CPostProcessUser::Resize(int width, int height) {
 	CEngine::GetTextureManager()->Resize(m_pRenderTexture, width, height);
@@ -54,7 +54,7 @@ void CPostProcessUser::Resize(int width, int height) {
 }
 
 /**
-* Ïú»Ùºó´¦Àí¶ÔÏó
+* é”€æ¯åå¤„ç†å¯¹è±¡
 */
 void CPostProcessUser::Destroy() {
 	CEngine::GetTextureManager()->Drop(m_pRenderTexture);
@@ -65,7 +65,7 @@ void CPostProcessUser::Destroy() {
 }
 
 /**
-* Ó¦ÓÃµ±Ç°ºó´¦Àí
+* åº”ç”¨å½“å‰åå¤„ç†
 */
 void CPostProcessUser::Apply(CTexture* target, CMesh* mesh) {
 	CEngine::GetGraphicsManager()->SetRenderTarget(target, 0, true, true, true);

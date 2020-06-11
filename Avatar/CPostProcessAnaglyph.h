@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CPOSTPROCESSANAGLYPH_H_
@@ -7,7 +7,7 @@
 #include "CPostProcess.h"
 
 /**
-* @brief ºìÀ¶Á¢Ìåºó´¦Àí
+* @brief çº¢è“ç«‹ä½“åå¤„ç†
 */
 class CPostProcessAnaglyph: public CPostProcess {
 public:

@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CSTRINGUTIL_H_
@@ -11,47 +11,52 @@ using std::string;
 using std::vector;
 
 /**
-* @brief ×Ö·û´®ÊµÓÃ¹¤¾ßÀà
+* @brief å­—ç¬¦ä¸²å®ç”¨å·¥å…·ç±»
 */
 class AVATAR_EXPORT CStringUtil {
 public:
-	//! ¸ñÊ½»¯×Ö·û´®
+	//! æ ¼å¼åŒ–å­—ç¬¦ä¸²
 	static string Format(const char* format, ...);
 
-	//! ×ª»»ÎªĞ¡Ğ´
+	//! è½¬æ¢ä¸ºå°å†™
 	static string LowerCase(const string& str);
-	//! ×ª»»Îª´óĞ´
+	//! è½¬æ¢ä¸ºå¤§å†™
 	static string UpperCase(const string& str);
 
-	//! È¥³ı×óÓÒ¿Õ°×
+	//! å»é™¤å·¦å³ç©ºç™½
 	static string Trim(const string& str);
-	//! È¥³ı×ó±ß¿Õ°×
+	//! å»é™¤å·¦è¾¹ç©ºç™½
 	static string TrimLeft(const string& str);
-	//! È¥³ıÓÒ±ß¿Õ°×
+	//! å»é™¤å³è¾¹ç©ºç™½
 	static string TrimRight(const string& str);
 
-	//! Ìæ»»Ö¸¶¨×Ö·û´®
+	//! æ›¿æ¢æŒ‡å®šå­—ç¬¦ä¸²
 	static string Replace(const string& str, const char* from, const char* to);
-	//! ÒÆ³ıÖ¸¶¨×Ö·û´®
+	//! ç§»é™¤æŒ‡å®šå­—ç¬¦ä¸²
 	static string Remove(const string& str, const char* key);
 
-	//! °´Ö¸¶¨µÄ×Ö·û´®·Ö¸î
+	//! æŒ‰æŒ‡å®šçš„å­—ç¬¦ä¸²åˆ†å‰²
 	static int Split(vector<string>& output, const string& str, const char* key, bool trim);
-	//! °´Ö¸¶¨µÄ×Ö·û´®·Ö¸î
+	//! æŒ‰æŒ‡å®šçš„å­—ç¬¦ä¸²åˆ†å‰²
 	static int Split(string output[], int size, const string& str, const char* key, bool trim);
-	//! Ê¹ÓÃÖ¸¶¨µÄ·Ö¸ô·ûÁ¬½Ó×Ö·û´®Êı×é
+	//! ä½¿ç”¨æŒ‡å®šçš„åˆ†éš”ç¬¦è¿æ¥å­—ç¬¦ä¸²æ•°ç»„
 	static string Join(const vector<string>& input, const char* key);
-	//! Ê¹ÓÃÖ¸¶¨µÄ·Ö¸ô·ûÁ¬½Ó×Ö·û´®Êı×é
+	//! ä½¿ç”¨æŒ‡å®šçš„åˆ†éš”ç¬¦è¿æ¥å­—ç¬¦ä¸²æ•°ç»„
 	static string Join(const string input[], int size, const char* key);
 
-	//! UTF8 ×Ö·û´®×ª»»Îª wchar_t Êı×é
+	//! æ˜¯å¦ä»¥æŒ‡å®šå­—ç¬¦ä¸²å¼€å¤´
+	static bool StartWith(const string& str, const char* key, bool ignoreCase = false);
+	//! æ˜¯å¦ä»¥æŒ‡å®šå­—ç¬¦ä¸²ç»“å°¾
+	static bool EndWith(const string& str, const char* key, bool ignoreCase = false);
+
+	//! UTF8 å­—ç¬¦ä¸²è½¬æ¢ä¸º wchar_t æ•°ç»„
 	static void Utf8ToWideCharArray(const char* src, wchar_t* buffer, int size);
-	//! wchar_t Êı×é×ª»»Îª UTF8 ×Ö·û´®
+	//! wchar_t æ•°ç»„è½¬æ¢ä¸º UTF8 å­—ç¬¦ä¸²
 	static void WideCharArrayToUtf8(const wchar_t* src, char* buffer, int size);
-	//! ×Ö½ÚÊı×é×ªÎªÊ®Áù½øÖÆ×Ö·û´®
+	//! å­—èŠ‚æ•°ç»„è½¬ä¸ºåå…­è¿›åˆ¶å­—ç¬¦ä¸²
 	static string ByteArrayToHexString(const string& split, const unsigned char* data, int size);
 
-	//! Éú³ÉÈ«ÇòÎ¨Ò»ID
+	//! ç”Ÿæˆå…¨çƒå”¯ä¸€ID
 	static string Guid();
 };
 

@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CBOUNDINGBOX_H_
@@ -8,65 +8,65 @@
 #include "CVector3.h"
 
 /**
-* @brief Öá¶ÔÆë°üÎ§ºĞÀà
+* @brief è½´å¯¹é½åŒ…å›´ç›’ç±»
 */
 class AVATAR_EXPORT CBoundingBox {
 public:
-	//! Ä¬ÈÏ¹¹Ôìº¯Êı
+	//! é»˜è®¤æ„é€ å‡½æ•°
 	CBoundingBox();
-	//! ¸´ÖÆ¹¹Ôìº¯Êı
+	//! å¤åˆ¶æ„é€ å‡½æ•°
 	CBoundingBox(const CBoundingBox& aabb);
-	//! Ê¹ÓÃ¼«Öµ×ø±ê¹¹Ôì°üÎ§ºĞ
+	//! ä½¿ç”¨æå€¼åæ ‡æ„é€ åŒ…å›´ç›’
 	CBoundingBox(const CVector3& min, const CVector3& max);
-	//! Ê¹ÓÃ¼«Öµ×ø±ê¹¹Ôì°üÎ§ºĞ
+	//! ä½¿ç”¨æå€¼åæ ‡æ„é€ åŒ…å›´ç›’
 	CBoundingBox(float minx, float miny, float minz, float maxx, float maxy, float maxz);
 
-	//! ÉèÖÃ°üÎ§ºĞÖµ
+	//! è®¾ç½®åŒ…å›´ç›’å€¼
 	void SetValue(const CBoundingBox& aabb);
-	//! ÉèÖÃ°üÎ§ºĞÖµ
+	//! è®¾ç½®åŒ…å›´ç›’å€¼
 	void SetValue(const CVector3& min, const CVector3& max);
-	//! ÉèÖÃ°üÎ§ºĞÖµ
+	//! è®¾ç½®åŒ…å›´ç›’å€¼
 	void SetValue(float minx, float miny, float minz, float maxx, float maxy, float maxz);
-	//! ÉèÖÃÎªÎŞĞ§°üÎ§ºĞ
+	//! è®¾ç½®ä¸ºæ— æ•ˆåŒ…å›´ç›’
 	void SetInvalid();
-	//! ¸üĞÂ°üÎ§ºĞ
+	//! æ›´æ–°åŒ…å›´ç›’
 	void Update(const CVector3& point);
-	//! ¸üĞÂ°üÎ§ºĞ
+	//! æ›´æ–°åŒ…å›´ç›’
 	void Update(const CBoundingBox& aabb);
 
-	//! ÅĞ¶ÏÊÇ·ñÎªÓĞĞ§°üÎ§ºĞ
+	//! åˆ¤æ–­æ˜¯å¦ä¸ºæœ‰æ•ˆåŒ…å›´ç›’
 	bool IsValid() const;
-	//! ÊÇ·ñºÍÁíÒ»¸ö°üÎ§ºĞÖØµş
+	//! æ˜¯å¦å’Œå¦ä¸€ä¸ªåŒ…å›´ç›’é‡å 
 	bool IsOverlap(const CBoundingBox& aabb) const;
-	//! ÊÇ·ñ°üº¬Ö¸¶¨°üÎ§ºĞ
+	//! æ˜¯å¦åŒ…å«æŒ‡å®šåŒ…å›´ç›’
 	bool IsContain(const CBoundingBox& aabb) const;
-	//! ÊÇ·ñ°üº¬Ö¸¶¨µã
+	//! æ˜¯å¦åŒ…å«æŒ‡å®šç‚¹
 	bool IsContain(const CVector3& point) const;
-	//! ¼ÆËã±íÃæ»ı
+	//! è®¡ç®—è¡¨é¢ç§¯
 	float SurfaceArea() const;
-	//! ¼ÆËã¸÷ÖáµÄ´óĞ¡
+	//! è®¡ç®—å„è½´çš„å¤§å°
 	float Size(int axis) const;
-	//! ¼ÆËãÖĞĞÄµãÎ»ÖÃ
+	//! è®¡ç®—ä¸­å¿ƒç‚¹ä½ç½®
 	CVector3 Center() const;
-	//! ¶Ô°üÎ§ºĞ½øĞĞËõ·Å
+	//! å¯¹åŒ…å›´ç›’è¿›è¡Œç¼©æ”¾
 	CBoundingBox& Scale(const CVector3& scale);
-	//! ¶Ô°üÎ§ºĞ½øĞĞÆ«ÒÆ
+	//! å¯¹åŒ…å›´ç›’è¿›è¡Œåç§»
 	CBoundingBox& Offset(const CVector3& offset);
 
 public:
-	//! ÖØÔØÔËËã·û ==
+	//! é‡è½½è¿ç®—ç¬¦ ==
 	bool operator == (const CBoundingBox& aabb) const;
-	//! ÖØÔØÔËËã·û !=
+	//! é‡è½½è¿ç®—ç¬¦ !=
 	bool operator != (const CBoundingBox& aabb) const;
-	//! ²¢¼¯ÔËËã·û +
+	//! å¹¶é›†è¿ç®—ç¬¦ +
 	CBoundingBox operator + (const CBoundingBox& aabb) const;
-	//! ²¢¼¯ÔËËã·û +=
+	//! å¹¶é›†è¿ç®—ç¬¦ +=
 	CBoundingBox& operator += (const CBoundingBox& aabb);
 
 public:
-	//! ×îĞ¡(x,y,z)×ø±ê
+	//! æœ€å°(x,y,z)åæ ‡
 	CVector3 m_cMin;
-	//! ×î´ó(x,y,z)×ø±ê
+	//! æœ€å¤§(x,y,z)åæ ‡
 	CVector3 m_cMax;
 };
 

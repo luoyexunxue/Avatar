@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CSCENENODETERRAIN_H_
@@ -12,32 +12,32 @@
 using std::vector;
 
 /**
-* @brief µØĞÎ³¡¾°½Úµã
+* @brief åœ°å½¢åœºæ™¯èŠ‚ç‚¹
 */
 class AVATAR_EXPORT CSceneNodeTerrain: public CSceneNode {
 public:
-	//! ¹¹Ôì·½·¨
+	//! æ„é€ æ–¹æ³•
 	CSceneNodeTerrain(const string& name, const string& heightMap, float mapScale,
 		float heightScale, const string texture[4], const string& blendMap);
 
-	//! ³õÊ¼»¯³¡¾°½Úµã
+	//! åˆå§‹åŒ–åœºæ™¯èŠ‚ç‚¹
 	virtual bool Init();
-	//! Ïú»Ù³¡¾°½Úµã
+	//! é”€æ¯åœºæ™¯èŠ‚ç‚¹
 	virtual void Destroy();
-	//! äÖÈ¾³¡¾°½Úµã
+	//! æ¸²æŸ“åœºæ™¯èŠ‚ç‚¹
 	virtual void Render();
-	//! ÖØÔØ×ø±ê±ä»»
+	//! é‡è½½åæ ‡å˜æ¢
 	virtual void Transform();
-	//! »ñÈ¡Íø¸ñÊı¾İ
+	//! è·å–ç½‘æ ¼æ•°æ®
 	virtual CMeshData* GetMeshData();
 
-	//! »ñÈ¡Ö¸¶¨µØµãµÄ¸ß¶È
+	//! è·å–æŒ‡å®šåœ°ç‚¹çš„é«˜åº¦
 	float GetHeight(float x, float y) const;
-	//! »ñÈ¡Ö¸¶¨µØµãµÄ·¨Ïò
+	//! è·å–æŒ‡å®šåœ°ç‚¹çš„æ³•å‘
 	CVector3 GetNormal(float x, float y) const;
 
 private:
-	//! ¸ß¶ÈÍ¼¶¨Òå
+	//! é«˜åº¦å›¾å®šä¹‰
 	typedef struct _SHeightMap {
 		int size;
 		bool* flag;
@@ -47,7 +47,7 @@ private:
 		_SHeightMap(): size(0), flag(0), data(0) {}
 	} SHeightMap;
 
-	//! ËÄ²æÊ÷½Úµã
+	//! å››å‰æ ‘èŠ‚ç‚¹
 	typedef struct _SQuadTree {
 		bool visible;
 		int level;
@@ -66,43 +66,43 @@ private:
 	} SQuadTree;
 
 private:
-	//! ¶ÁÈ¡¸ß¶ÈÍ¼
+	//! è¯»å–é«˜åº¦å›¾
 	bool LoadHeightMap(const string& filename, SHeightMap* heightMap);
-	//! Éú³ÉµØĞÎËÄ²æÊ÷
+	//! ç”Ÿæˆåœ°å½¢å››å‰æ ‘
 	SQuadTree* BuildQuadTree(SQuadTree* parent, int index, int level, int size);
-	//! Éú³ÉµØĞÎÍø¸ñ
+	//! ç”Ÿæˆåœ°å½¢ç½‘æ ¼
 	void BuildTerrainMesh(SQuadTree* node, int index, int size);
-	//! Çå¿ÕËÄ²æÊ÷
+	//! æ¸…ç©ºå››å‰æ ‘
 	void DeleteQuadTree(SQuadTree* node);
-	//! ¼ì²éËÄ²æÊ÷½Úµã¿É¼ûĞÔ
+	//! æ£€æŸ¥å››å‰æ ‘èŠ‚ç‚¹å¯è§æ€§
 	void CheckVisibility(SQuadTree* node, const CFrustum& frustum, const CVector3& eye);
-	//! µİ¹éäÖÈ¾µØĞÎ
+	//! é€’å½’æ¸²æŸ“åœ°å½¢
 	void RenderTerrain(SQuadTree* node, bool useMaterial);
-	//! µİ¹éÆ½ÒÆµØĞÎÍø¸ñ
+	//! é€’å½’å¹³ç§»åœ°å½¢ç½‘æ ¼
 	void TranslateMesh(SQuadTree* node);
-	//! ¸üĞÂµØĞÎÍø¸ñË÷Òı»º³å
+	//! æ›´æ–°åœ°å½¢ç½‘æ ¼ç´¢å¼•ç¼“å†²
 	bool UpdateIndexBuffer(SQuadTree* node);
-	//! Ìí¼ÓÈı½ÇĞÎ²¢ĞŞ²¹ÁÑ·ì
+	//! æ·»åŠ ä¸‰è§’å½¢å¹¶ä¿®è¡¥è£‚ç¼
 	void AddTriangle(SQuadTree* node, int center, int index1, int index2, int flag1, int flag2);
-	//! ¼ÆËã¸ß¶ÈÍ¼Ä³´¦µÄ·¨ÏòÁ¿
+	//! è®¡ç®—é«˜åº¦å›¾æŸå¤„çš„æ³•å‘é‡
 	inline void GetMapNormal(int x, int y, CVector3& normal) const;
 
 private:
-	//! ¸ß¶ÈÍ¼
+	//! é«˜åº¦å›¾
 	string m_strHeightMap;
-	//! µØĞÎ 4 ¸öÍ¨µÀÎÆÀí
+	//! åœ°å½¢ 4 ä¸ªé€šé“çº¹ç†
 	string m_strTexture[4];
-	//! µØĞÎÎÆÀí»ìºÏÍ¨µÀ
+	//! åœ°å½¢çº¹ç†æ··åˆé€šé“
 	string m_strBlendTexture;
-	//! ¸ß¶ÈÍ¼Êı¾İ
+	//! é«˜åº¦å›¾æ•°æ®
 	SHeightMap* m_pHeightMap;
-	//! ËÄ²æÊ÷¸ù½Úµã
+	//! å››å‰æ ‘æ ¹èŠ‚ç‚¹
 	SQuadTree* m_pTreeRoot;
-	//! Íø¸ñÊı¾İ
+	//! ç½‘æ ¼æ•°æ®
 	CMeshData* m_pMeshData;
-	//! ËÄ²æÊ÷×î´ó¼¶±ğ
+	//! å››å‰æ ‘æœ€å¤§çº§åˆ«
 	int m_iMaxLevel;
-	//! Íø¸ñËùÔÚµÄËÄ²æÊ÷¼¶±ğ
+	//! ç½‘æ ¼æ‰€åœ¨çš„å››å‰æ ‘çº§åˆ«
 	int m_iMeshLevel;
 };
 

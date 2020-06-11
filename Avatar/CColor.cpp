@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CColor.h"
@@ -7,7 +7,7 @@
 #include <algorithm>
 
 /**
-* ¾²Ì¬³£Á¿
+* é™æ€å¸¸é‡
 */
 const CColor CColor::Transparent(0.0f, 0.0f, 0.0f, 0.0f);
 const CColor CColor::White(1.0f, 1.0f, 1.0f, 1.0f);
@@ -20,7 +20,7 @@ const CColor CColor::Yellow(1.0f, 1.0f, 0.0f, 1.0f);
 const CColor CColor::Purple(1.0f, 0.0f, 1.0f, 1.0f);
 
 /**
-* Ä¬ÈÏ¹¹Ôìº¯Êı
+* é»˜è®¤æ„é€ å‡½æ•°
 */
 CColor::CColor() {
 	m_fValue[0] = 1.0f;
@@ -30,7 +30,7 @@ CColor::CColor() {
 }
 
 /**
-* ¸´ÖÆ¹¹Ôìº¯Êı
+* å¤åˆ¶æ„é€ å‡½æ•°
 */
 CColor::CColor(const CColor& color) {
 	m_fValue[0] = color.m_fValue[0];
@@ -40,7 +40,7 @@ CColor::CColor(const CColor& color) {
 }
 
 /**
-* ÓÉÊı×éĞÎÊ½µÄRGBA¹¹Ôì
+* ç”±æ•°ç»„å½¢å¼çš„RGBAæ„é€ 
 */
 CColor::CColor(const float color[4]) {
 	m_fValue[0] = color[0];
@@ -50,7 +50,7 @@ CColor::CColor(const float color[4]) {
 }
 
 /**
-* ÓÉËÄ×Ö½ÚÕûÊı¹¹Ôì
+* ç”±å››å­—èŠ‚æ•´æ•°æ„é€ 
 */
 CColor::CColor(unsigned int color) {
 	const float scale = 1.0f / 255.0f;
@@ -61,7 +61,7 @@ CColor::CColor(unsigned int color) {
 }
 
 /**
-* ÓÉRGB¹¹ÔìÑÕÉ«
+* ç”±RGBæ„é€ é¢œè‰²
 */
 CColor::CColor(float r, float g, float b) {
 	m_fValue[0] = r;
@@ -71,7 +71,7 @@ CColor::CColor(float r, float g, float b) {
 }
 
 /**
-* ÓÉRGBA¹¹ÔìÑÕÉ«
+* ç”±RGBAæ„é€ é¢œè‰²
 */
 CColor::CColor(float r, float g, float b, float a) {
 	m_fValue[0] = r;
@@ -81,7 +81,7 @@ CColor::CColor(float r, float g, float b, float a) {
 }
 
 /**
-* ÓÉRGB×Ö½Ú¹¹ÔìÑÕÉ«
+* ç”±RGBå­—èŠ‚æ„é€ é¢œè‰²
 */
 CColor::CColor(int r, int g, int b) {
 	const float scale = 1.0f / 255.0f;
@@ -92,7 +92,7 @@ CColor::CColor(int r, int g, int b) {
 }
 
 /**
-* ÓÉRGBA×Ö½Ú¹¹ÔìÑÕÉ«
+* ç”±RGBAå­—èŠ‚æ„é€ é¢œè‰²
 */
 CColor::CColor(int r, int g, int b, int a) {
 	const float scale = 1.0f / 255.0f;
@@ -103,7 +103,7 @@ CColor::CColor(int r, int g, int b, int a) {
 }
 
 /**
-* ÓÉ×Ö·û´®¹¹Ôì
+* ç”±å­—ç¬¦ä¸²æ„é€ 
 */
 CColor::CColor(const string& color) {
 	if (!color.empty() && (color.at(0) == '#' || color.find("0x") == 0)) {
@@ -146,7 +146,7 @@ CColor::CColor(const string& color) {
 }
 
 /**
-* ÉèÖÃÑÕÉ«Öµ
+* è®¾ç½®é¢œè‰²å€¼
 */
 void CColor::SetValue(const CColor& color) {
 	m_fValue[0] = color.m_fValue[0];
@@ -156,7 +156,7 @@ void CColor::SetValue(const CColor& color) {
 }
 
 /**
-* ÉèÖÃÑÕÉ«Öµ
+* è®¾ç½®é¢œè‰²å€¼
 */
 void CColor::SetValue(const float color[4]) {
 	m_fValue[0] = color[0];
@@ -166,7 +166,7 @@ void CColor::SetValue(const float color[4]) {
 }
 
 /**
-* ÉèÖÃÑÕÉ«Öµ
+* è®¾ç½®é¢œè‰²å€¼
 */
 void CColor::SetValue(float r, float g, float b) {
 	m_fValue[0] = r;
@@ -176,7 +176,7 @@ void CColor::SetValue(float r, float g, float b) {
 }
 
 /**
-* ÉèÖÃÑÕÉ«Öµ
+* è®¾ç½®é¢œè‰²å€¼
 */
 void CColor::SetValue(float r, float g, float b, float a) {
 	m_fValue[0] = r;
@@ -186,7 +186,7 @@ void CColor::SetValue(float r, float g, float b, float a) {
 }
 
 /**
-* »ñÈ¡ÑÕÉ«Öµ
+* è·å–é¢œè‰²å€¼
 */
 void CColor::GetValue(float* color) const {
 	color[0] = m_fValue[0];
@@ -196,7 +196,7 @@ void CColor::GetValue(float* color) const {
 }
 
 /**
-* »ñÈ¡ÑÕÉ«Öµ
+* è·å–é¢œè‰²å€¼
 */
 void CColor::GetValue(unsigned char* color) const {
 	color[0] = (unsigned char)(m_fValue[0] * 255.0f);
@@ -206,7 +206,7 @@ void CColor::GetValue(unsigned char* color) const {
 }
 
 /**
-* Ìî³ä»º³åÇø
+* å¡«å……ç¼“å†²åŒº
 */
 void CColor::FillBuffer(float* buffer, int size, int stride) const {
 	int channel = std::min(stride, 4);
@@ -218,7 +218,7 @@ void CColor::FillBuffer(float* buffer, int size, int stride) const {
 }
 
 /**
-* Ìî³ä»º³åÇø
+* å¡«å……ç¼“å†²åŒº
 */
 void CColor::FillBuffer(unsigned char* buffer, int size, int stride) const {
 	unsigned char color[4];
@@ -235,7 +235,7 @@ void CColor::FillBuffer(unsigned char* buffer, int size, int stride) const {
 }
 
 /**
-* ÑÕÉ«Ïà¼Ó£¬Ïàµ±ÓÚ¼ÓÉÏ color * scale
+* é¢œè‰²ç›¸åŠ ï¼Œç›¸å½“äºåŠ ä¸Š color * scale
 */
 CColor& CColor::Add(const CColor& color, float scale) {
 	m_fValue[0] += color.m_fValue[0] * scale;
@@ -246,7 +246,7 @@ CColor& CColor::Add(const CColor& color, float scale) {
 }
 
 /**
-* ÑÕÉ«Ïà¼Ó£¬Ïàµ±ÓÚ¼ÓÉÏ color * scale
+* é¢œè‰²ç›¸åŠ ï¼Œç›¸å½“äºåŠ ä¸Š color * scale
 */
 CColor& CColor::Add(const float color[4], float scale) {
 	m_fValue[0] += color[0] * scale;
@@ -257,7 +257,7 @@ CColor& CColor::Add(const float color[4], float scale) {
 }
 
 /**
-* ·¶Î§ÏŞÖÆÔÚ 0.0 ÖÁ 1.0 Ö®¼ä
+* èŒƒå›´é™åˆ¶åœ¨ 0.0 è‡³ 1.0 ä¹‹é—´
 */
 CColor& CColor::Clamp() {
 	if (m_fValue[0] < 0.0f) m_fValue[0] = 0.0f;
@@ -272,7 +272,7 @@ CColor& CColor::Clamp() {
 }
 
 /**
-* ÑÕÉ«·´×ª
+* é¢œè‰²åè½¬
 */
 CColor& CColor::Invert() {
 	m_fValue[0] = 1.0f - m_fValue[0];
@@ -282,11 +282,11 @@ CColor& CColor::Invert() {
 }
 
 /**
-* ´Ó HSLA ÑÕÉ«¿Õ¼ä×ª»»
-* @param h É«Ïà hue, ·¶Î§ 0-360
-* @param s ±¥ºÍ¶È saturation, ·¶Î§ 0-100
-* @param l ÁÁ¶È lightness, ·¶Î§ 0-100
-* @param a ²»Í¸Ã÷¶È alpha, ·¶Î§ 0-1
+* ä» HSLA é¢œè‰²ç©ºé—´è½¬æ¢
+* @param h è‰²ç›¸ hue, èŒƒå›´ 0-360
+* @param s é¥±å’Œåº¦ saturation, èŒƒå›´ 0-100
+* @param l äº®åº¦ lightness, èŒƒå›´ 0-100
+* @param a ä¸é€æ˜åº¦ alpha, èŒƒå›´ 0-1
 */
 CColor& CColor::FromHsla(float h, float s, float l, float a) {
 	h *= 0.002777f;
@@ -322,7 +322,7 @@ CColor& CColor::FromHsla(float h, float s, float l, float a) {
 }
 
 /**
-* ´ÓÃû³Æ»ñÈ¡ÑÕÉ«Öµ
+* ä»åç§°è·å–é¢œè‰²å€¼
 */
 CColor& CColor::FromName(const string& color) {
 	if (color == "transparent") this->SetValue(CColor::Transparent);
@@ -339,7 +339,7 @@ CColor& CColor::FromName(const string& color) {
 }
 
 /**
-* ·µ»ØÑÕÉ«´úÂë
+* è¿”å›é¢œè‰²ä»£ç 
 */
 string CColor::ToString() {
 	char buffer[10];
@@ -352,14 +352,14 @@ string CColor::ToString() {
 }
 
 /**
-* ÖØÔØÔËËã·û []
+* é‡è½½è¿ç®—ç¬¦ []
 */
 float& CColor::operator [] (int index) {
 	return m_fValue[index];
 }
 
 /**
-* ÖØÔØÔËËã·û ==
+* é‡è½½è¿ç®—ç¬¦ ==
 */
 bool CColor::operator == (const CColor& color) const {
 	if (m_fValue[0] == color.m_fValue[0] &&
@@ -372,14 +372,14 @@ bool CColor::operator == (const CColor& color) const {
 }
 
 /**
-* ÖØÔØÔËËã·û ==
+* é‡è½½è¿ç®—ç¬¦ ==
 */
 bool CColor::operator != (const CColor& color) const {
 	return !(*this == color);
 }
 
 /**
-* ¼Ó·¨ÔËËã
+* åŠ æ³•è¿ç®—
 */
 CColor CColor::operator + (const CColor& color) const {
 	float vTemp[4];
@@ -391,7 +391,7 @@ CColor CColor::operator + (const CColor& color) const {
 }
 
 /**
-* ¼õ·¨ÔËËã
+* å‡æ³•è¿ç®—
 */
 CColor CColor::operator - (const CColor& color) const {
 	float vTemp[4];
@@ -403,7 +403,7 @@ CColor CColor::operator - (const CColor& color) const {
 }
 
 /**
-* ³Ë·¨ÔËËã
+* ä¹˜æ³•è¿ç®—
 */
 CColor CColor::operator * (const CColor& color) const {
 	float vTemp[4];
@@ -415,7 +415,7 @@ CColor CColor::operator * (const CColor& color) const {
 }
 
 /**
-* ÖØÔØÔËËã·û +=
+* é‡è½½è¿ç®—ç¬¦ +=
 */
 CColor CColor::operator += (const CColor& color) {
 	m_fValue[0] = std::min(m_fValue[0] + color.m_fValue[0], 1.0f);
@@ -426,7 +426,7 @@ CColor CColor::operator += (const CColor& color) {
 }
 
 /**
-* ÖØÔØÔËËã·û -=
+* é‡è½½è¿ç®—ç¬¦ -=
 */
 CColor CColor::operator -= (const CColor& color) {
 	m_fValue[0] = std::max(m_fValue[0] - color.m_fValue[0], 0.0f);
@@ -437,7 +437,7 @@ CColor CColor::operator -= (const CColor& color) {
 }
 
 /**
-* ÖØÔØÔËËã·û *=
+* é‡è½½è¿ç®—ç¬¦ *=
 */
 CColor CColor::operator *= (const CColor& color) {
 	m_fValue[0] *= color.m_fValue[0];

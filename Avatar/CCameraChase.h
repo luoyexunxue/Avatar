@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CCAMERACHASE_H_
@@ -7,50 +7,50 @@
 #include "CCamera.h"
 
 /**
-* @brief ×·ÖğÊ½Ïà»ú
+* @brief è¿½é€å¼ç›¸æœº
 *
-* Õë¶Ô»ù±¾Ïà»úÀàĞÍ»ù´¡ÉÏÔö¼ÓÁËÆ½»¬ÒÆ¶¯Ğ§¹û
+* é’ˆå¯¹åŸºæœ¬ç›¸æœºç±»å‹åŸºç¡€ä¸Šå¢åŠ äº†å¹³æ»‘ç§»åŠ¨æ•ˆæœ
 */
 class AVATAR_EXPORT CCameraChase: public CCamera {
 public:
-	//! Ä¬ÈÏ¹¹Ôìº¯Êı
+	//! é»˜è®¤æ„é€ å‡½æ•°
 	CCameraChase();
 
-	//! »ñÈ¡Ïà»úÃû³Æ
+	//! è·å–ç›¸æœºåç§°
 	virtual const char* GetName() const;
 
-	//! ¿ØÖÆĞÅÏ¢ÊäÈë
+	//! æ§åˆ¶ä¿¡æ¯è¾“å…¥
 	virtual void Input(CInputManager::SInput* input);
-	//! ÉèÖÃÏà»ú¸ß¶È
+	//! è®¾ç½®ç›¸æœºé«˜åº¦
 	virtual void SetHeight(float height);
-	//! ÉèÖÃÏà»úÎ»ÖÃ
+	//! è®¾ç½®ç›¸æœºä½ç½®
 	virtual void SetPosition(const CVector3& pos);
-	//! ÉèÖÃÏà»ú·½Î»
+	//! è®¾ç½®ç›¸æœºæ–¹ä½
 	virtual void SetAngle(float yaw, float pitch, float roll);
-	//! ÉèÖÃÏà»úÄ¿±ê
+	//! è®¾ç½®ç›¸æœºç›®æ ‡
 	virtual void SetTarget(const CVector3& pos);
 
-	//! ¸üĞÂÏà»ú
+	//! æ›´æ–°ç›¸æœº
 	virtual void Update(float dt);
 
 public:
-	//! ÉèÖÃ×èÄáÏµÊı
+	//! è®¾ç½®é˜»å°¼ç³»æ•°
 	void SetDamping(float k);
 
 private:
-	//! ÏŞÖÆ·½Î»½Ç
+	//! é™åˆ¶æ–¹ä½è§’
 	inline void RestrictYawRange(bool shortest);
 
 private:
-	//! ×èÄáÏµÊı
+	//! é˜»å°¼ç³»æ•°
 	float m_fDamping;
-	//! Ïà»úÔ¤¶¨·½Î»½Ç
+	//! ç›¸æœºé¢„å®šæ–¹ä½è§’
 	float m_fYawInAdvance;
-	//! Ïà»úÔ¤¶¨¸©Ñö½Ç
+	//! ç›¸æœºé¢„å®šä¿¯ä»°è§’
 	float m_fPitchInAdvance;
-	//! Ïà»úÔ¤¶¨·­¹ö½Ç
+	//! ç›¸æœºé¢„å®šç¿»æ»šè§’
 	float m_fRollInAdvance;
-	//! Ïà»úÔ¤¶¨Î»ÖÃ
+	//! ç›¸æœºé¢„å®šä½ç½®
 	CVector3 m_cPosInAdvance;
 };
 

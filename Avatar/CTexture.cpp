@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CTexture.h"
@@ -20,7 +20,7 @@
 #endif
 
 /**
-* ¹¹Ôìº¯Êı
+* æ„é€ å‡½æ•°
 */
 CTexture::CTexture(CTextureManager* manager) {
 	m_pManager = manager;
@@ -38,7 +38,7 @@ CTexture::CTexture(CTextureManager* manager) {
 }
 
 /**
-* Îö¹¹º¯Êı
+* ææ„å‡½æ•°
 */
 CTexture::~CTexture() {
 	if (m_bIsValid) glDeleteTextures(1, &m_iTexture);
@@ -53,84 +53,84 @@ CTexture::~CTexture() {
 }
 
 /**
-* ÎÆÀíÊÇ·ñÓĞĞ§
+* çº¹ç†æ˜¯å¦æœ‰æ•ˆ
 */
 bool CTexture::IsValid() const {
 	return m_bIsValid;
 }
 
 /**
-* ÎÆÀíÊÇ·ñÎªÁ¢·½ÌåÌùÍ¼
+* çº¹ç†æ˜¯å¦ä¸ºç«‹æ–¹ä½“è´´å›¾
 */
 bool CTexture::IsCubeMap() const {
 	return m_iTextureType == GL_TEXTURE_CUBE_MAP;
 }
 
 /**
-* ÊÇ·ñäÖÈ¾ÎÆÀí
+* æ˜¯å¦æ¸²æŸ“çº¹ç†
 */
 bool CTexture::IsRenderTarget() const {
 	return m_iFrameBuffer != 0;
 }
 
 /**
-* ÊÇ·ñ¸¡µãÎÆÀí
+* æ˜¯å¦æµ®ç‚¹çº¹ç†
 */
 bool CTexture::IsFloatType() const {
 	return m_iPixelFormat == GL_R32F;
 }
 
 /**
-* »ñÈ¡ÎÆÀíÍ¨µÀ
+* è·å–çº¹ç†é€šé“
 */
 int CTexture::GetChannel() const {
 	return m_iChannel;
 }
 
 /**
-* »ñÈ¡ÎÆÀí¿í¶È
+* è·å–çº¹ç†å®½åº¦
 */
 int CTexture::GetWidth() const {
 	return m_iWidth;
 }
 
 /**
-* »ñÈ¡ÎÆÀí¸ß¶È
+* è·å–çº¹ç†é«˜åº¦
 */
 int CTexture::GetHeight() const {
 	return m_iHeight;
 }
 
 /**
-* »ñÈ¡ÎÆÀíÏñËØ¸ñÊ½
+* è·å–çº¹ç†åƒç´ æ ¼å¼
 */
 int CTexture::GetPixelFormat() const {
 	return m_iPixelFormat;
 }
 
 /**
-* »ñÈ¡ÎÆÀíID
+* è·å–çº¹ç†ID
 */
 unsigned int CTexture::GetTextureId() const {
 	return m_iTexture;
 }
 
 /**
-* »ñÈ¡¹ØÁªµÄÖ¡»º´æ
+* è·å–å…³è”çš„å¸§ç¼“å­˜
 */
 unsigned int CTexture::GetFramebuffer() const {
 	return m_iFrameBuffer;
 }
 
 /**
-* »ñÈ¡ÎÆÀíÍ¼Æ¬Â·¾¶
+* è·å–çº¹ç†å›¾ç‰‡è·¯å¾„
 */
 const string& CTexture::GetFilePath() const {
 	return m_strFilePath;
 }
 
 /**
-* ÉèÖÃÎÆÀí±ß½çÄ£Ê½ÎªÖØ¸´
+* è®¾ç½®çº¹ç†è¾¹ç•Œæ¨¡å¼ä¸ºé‡å¤
 */
 void CTexture::SetWrapModeRepeat(bool s, bool t) const {
 	if (m_bIsValid) {
@@ -141,7 +141,7 @@ void CTexture::SetWrapModeRepeat(bool s, bool t) const {
 }
 
 /**
-* ÉèÖÃÎÆÀí±ß½çÄ£Ê½Îª±ßÔµÀ­ÉìÌî³ä£¬ÎÆÀí×ø±ê³¬³ö1µÄÊ¹ÓÃ±ß½çÏñËØÌî³ä
+* è®¾ç½®çº¹ç†è¾¹ç•Œæ¨¡å¼ä¸ºè¾¹ç¼˜æ‹‰ä¼¸å¡«å……ï¼Œçº¹ç†åæ ‡è¶…å‡º1çš„ä½¿ç”¨è¾¹ç•Œåƒç´ å¡«å……
 */
 void CTexture::SetWrapModeClampToEdge(bool s, bool t) const {
 	if (m_bIsValid) {
@@ -152,7 +152,7 @@ void CTexture::SetWrapModeClampToEdge(bool s, bool t) const {
 }
 
 /**
-* ÉèÖÃÎÆÀí±ß½çÄ£Ê½Îª¾µÏñÖØ¸´
+* è®¾ç½®çº¹ç†è¾¹ç•Œæ¨¡å¼ä¸ºé•œåƒé‡å¤
 */
 void CTexture::SetWrapModeMirroredRepeat(bool s, bool t) const {
 	if (m_bIsValid) {
@@ -163,29 +163,29 @@ void CTexture::SetWrapModeMirroredRepeat(bool s, bool t) const {
 }
 
 /**
-* ¿ªÊ¼Ó³ÉäÎÆÀíÊı¾İ£¬·µ»ØÎÆÀíÊı¾İ»º³åÇøÖ¸Õë
+* å¼€å§‹æ˜ å°„çº¹ç†æ•°æ®ï¼Œè¿”å›çº¹ç†æ•°æ®ç¼“å†²åŒºæŒ‡é’ˆ
 */
 void* CTexture::MapBuffer(bool clear) {
 	if (!m_bIsValid || m_iTextureType == GL_TEXTURE_CUBE_MAP) return 0;
 	int bufferSize = m_iWidth * m_iHeight * m_iChannel;
-	// ´´½¨ PBO
+	// åˆ›å»º PBO
 	if (!m_iPixelBuffer) {
 		glGenBuffers(1, &m_iPixelBuffer);
         glBindBuffer(GL_PIXEL_UNPACK_BUFFER, m_iPixelBuffer);
         glBufferData(GL_PIXEL_UNPACK_BUFFER, bufferSize, 0, GL_STREAM_DRAW);
 	}
-	// ¸üĞÂÎÆÀí
+	// æ›´æ–°çº¹ç†
 	glBindTexture(GL_TEXTURE_2D, m_iTexture);
 	glBindBuffer(GL_PIXEL_UNPACK_BUFFER, m_iPixelBuffer);
 	glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, m_iWidth, m_iHeight, m_iPixelFormat, GL_UNSIGNED_BYTE, 0);
-	// Ó³ÉäÎÆÀíÄÚ´æ
+	// æ˜ å°„çº¹ç†å†…å­˜
 	void* pBuffer = glMapBufferRange(GL_PIXEL_UNPACK_BUFFER, 0, bufferSize, GL_MAP_WRITE_BIT);
 	if (clear) memset(pBuffer, 0, bufferSize);
 	return pBuffer;
 }
 
 /**
-* ½áÊøÓ³ÉäÎÆÀíÊı¾İ
+* ç»“æŸæ˜ å°„çº¹ç†æ•°æ®
 */
 void CTexture::UnmapBuffer() {
 	glUnmapBuffer(GL_PIXEL_UNPACK_BUFFER);
@@ -193,7 +193,7 @@ void CTexture::UnmapBuffer() {
 }
 
 /**
-* Ê¹ÓÃÎÆÀí
+* ä½¿ç”¨çº¹ç†
 */
 void CTexture::UseTexture() {
 	if (m_pManager->m_pCurrentTexture != this) {
@@ -203,7 +203,7 @@ void CTexture::UseTexture() {
 }
 
 /**
-* Ê¹ÓÃÎÆÀí£¬ÎÆÀíµ¥Ôª´Ó¸ßÖÁµÍÊ¹ÓÃ
+* ä½¿ç”¨çº¹ç†ï¼Œçº¹ç†å•å…ƒä»é«˜è‡³ä½ä½¿ç”¨
 */
 void CTexture::UseTexture(int unit) {
 	glActiveTexture(GL_TEXTURE0 + unit);
@@ -212,7 +212,7 @@ void CTexture::UseTexture(int unit) {
 }
 
 /**
-* Ôö¼ÓÒıÓÃ
+* å¢åŠ å¼•ç”¨
 */
 CTexture* CTexture::AddReference() {
 	m_iRefCount += 1;

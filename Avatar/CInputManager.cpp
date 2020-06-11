@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CInputManager.h"
@@ -7,7 +7,7 @@
 #include <cstring>
 
 /**
-* ¹¹Ôìº¯Êı
+* æ„é€ å‡½æ•°
 */
 CInputManager::CInputManager() {
 	m_pInput = new SInput();
@@ -32,19 +32,19 @@ CInputManager::CInputManager() {
 }
 
 /**
-* Îö¹¹º¯Êı
+* ææ„å‡½æ•°
 */
 CInputManager::~CInputManager() {
 	m_pInstance = 0;
 }
 
 /**
-* µ¥ÀıÊµÀı
+* å•ä¾‹å®ä¾‹
 */
 CInputManager* CInputManager::m_pInstance = 0;
 
 /**
-* ÊµÀıÏú»Ù
+* å®ä¾‹é”€æ¯
 */
 void CInputManager::Destroy() {
 	delete m_pInput;
@@ -53,21 +53,21 @@ void CInputManager::Destroy() {
 }
 
 /**
-* »ñÈ¡ÊäÈë
+* è·å–è¾“å…¥
 */
 CInputManager::SInput* CInputManager::GetInput() {
 	return m_pInput;
 }
 
 /**
-* ÊäÈë¸üĞÂ
+* è¾“å…¥æ›´æ–°
 */
 void CInputManager::Update() {
-	// ½«»º³åµÄÊäÈë¸´ÖÆµ½µ±Ç°ÊäÈëÌåÖĞ
+	// å°†ç¼“å†²çš„è¾“å…¥å¤åˆ¶åˆ°å½“å‰è¾“å…¥ä½“ä¸­
 	memcpy(m_pInput, m_pBufferedInput, sizeof(SInput));
 	m_pInput->bMove = m_pInput->fRightLeft != 0.0f || m_pInput->fForthBack != 0.0f || m_pInput->fUpDown != 0.0f;
 	m_pInput->bTurn = m_pInput->fYaw != 0.0f || m_pInput->fPitch != 0.0f || m_pInput->fRoll != 0.0f;
-	// ÖØÖÃÊäÈë»º³å
+	// é‡ç½®è¾“å…¥ç¼“å†²
 	m_pBufferedInput->bFire = false;
 	m_pBufferedInput->bJump = false;
 	m_pBufferedInput->bMove = false;
@@ -88,49 +88,49 @@ void CInputManager::Update() {
 }
 
 /**
-* ÓÒ×óÒÆ¶¯
+* å³å·¦ç§»åŠ¨
 */
 void CInputManager::RightLeft(float step) {
 	m_pBufferedInput->fRightLeft += step;
 }
 
 /**
-* Ç°ºóÒÆ¶¯
+* å‰åç§»åŠ¨
 */
 void CInputManager::ForthBack(float step) {
 	m_pBufferedInput->fForthBack += step;
 }
 
 /**
-* ÉÏÏÂÒÆ¶¯
+* ä¸Šä¸‹ç§»åŠ¨
 */
 void CInputManager::UpDown(float step) {
 	m_pBufferedInput->fUpDown += step;
 }
 
 /**
-* ·½Î»½ÇÊäÈë
+* æ–¹ä½è§’è¾“å…¥
 */
 void CInputManager::Yaw(float angle) {
 	m_pBufferedInput->fYaw += angle;
 }
 
 /**
-* ¸©Ñö½ÇÊäÈë
+* ä¿¯ä»°è§’è¾“å…¥
 */
 void CInputManager::Pitch(float angle) {
 	m_pBufferedInput->fPitch += angle;
 }
 
 /**
-* ·­¹ö½ÇÊäÈë
+* ç¿»æ»šè§’è¾“å…¥
 */
 void CInputManager::Roll(float angle) {
 	m_pBufferedInput->fRoll += angle;
 }
 
 /**
-* Î»ÖÃÊäÈë
+* ä½ç½®è¾“å…¥
 */
 void CInputManager::Position(float x, float y, float z) {
 	m_pBufferedInput->fPosition[0] = x;
@@ -140,7 +140,7 @@ void CInputManager::Position(float x, float y, float z) {
 }
 
 /**
-* ·½Î»ÊäÈë£¨ËÄÔªÊı£©
+* æ–¹ä½è¾“å…¥ï¼ˆå››å…ƒæ•°ï¼‰
 */
 void CInputManager::Orientation(float x, float y, float z, float w) {
 	m_pBufferedInput->fOrientation[0] = x;
@@ -151,71 +151,71 @@ void CInputManager::Orientation(float x, float y, float z, float w) {
 }
 
 /**
-* ¿ª»ğ
+* å¼€ç«
 */
 void CInputManager::Fire() {
 	m_pBufferedInput->bFire = true;
 }
 
 /**
-* ÌøÔ¾
+* è·³è·ƒ
 */
 void CInputManager::Jump() {
 	m_pBufferedInput->bJump = true;
 }
 
 /**
-* ¿ªÊ¼
+* å¼€å§‹
 */
 void CInputManager::Start() {
 	m_pBufferedInput->bPause = false;
 }
 
 /**
-* ÔİÍ£
+* æš‚åœ
 */
 void CInputManager::Pause() {
 	m_pBufferedInput->bPause = true;
 }
 
 /**
-* ÍË³ö
+* é€€å‡º
 */
 void CInputManager::Quit() {
 	m_pBufferedInput->bQuit = true;
 }
 
 /**
-* ÏÂÒ»¸ö×´Ì¬
+* ä¸‹ä¸€ä¸ªçŠ¶æ€
 */
 void CInputManager::NextState() {
 	m_pBufferedInput->iState++;
 }
 
 /**
-* ÉÏÒ»¸ö×´Ì¬
+* ä¸Šä¸€ä¸ªçŠ¶æ€
 */
 void CInputManager::PrevState() {
 	m_pBufferedInput->iState--;
 }
 
 /**
-* ¸´Î»×´Ì¬
+* å¤ä½çŠ¶æ€
 */
 void CInputManager::ResetState() {
 	m_pBufferedInput->iState = 0;
 }
 
 /**
-* ¹¦ÄÜÑ¡Ôñ
-* @param func ¹¦ÄÜ¼ü 1,2,3¡­¡­
+* åŠŸèƒ½é€‰æ‹©
+* @param func åŠŸèƒ½é”® 1,2,3â€¦â€¦
 */
 void CInputManager::Function(int func) {
 	m_pBufferedInput->iFunction = func;
 }
 
 /**
-* ´°¿Ú´óĞ¡¸Ä±ä
+* çª—å£å¤§å°æ”¹å˜
 */
 void CInputManager::Resize(int width, int height) {
 	m_pBufferedInput->iWidth = width;
@@ -223,11 +223,11 @@ void CInputManager::Resize(int width, int height) {
 }
 
 /**
-* Êó±êÊäÈë
-* @param x ÆÁÄ»×ø±ê X Öµ
-* @param y ÆÁÄ»×ø±ê Y Öµ
-* @param button 0 ÎŞ°´¼ü£¬1 ×ó¼ü°´ÏÂ£¬2 ÓÒ¼ü°´ÏÂ£¬3 ÖĞ¼ü°´ÏÂ
-* @param delta ¹öÂÖ¹ö¶¯Öµ
+* é¼ æ ‡è¾“å…¥
+* @param x å±å¹•åæ ‡ X å€¼
+* @param y å±å¹•åæ ‡ Y å€¼
+* @param button 0 æ— æŒ‰é”®ï¼Œ1 å·¦é”®æŒ‰ä¸‹ï¼Œ2 å³é”®æŒ‰ä¸‹ï¼Œ3 ä¸­é”®æŒ‰ä¸‹
+* @param delta æ»šè½®æ»šåŠ¨å€¼
 */
 void CInputManager::MouseInput(int x, int y, int button, int delta) {
 	m_pBufferedInput->iInputX = x;
@@ -237,7 +237,7 @@ void CInputManager::MouseInput(int x, int y, int button, int delta) {
 	m_iMouseLastPos[0] = x;
 	m_iMouseLastPos[1] = y;
 
-	// ¼ì²éÊÇ·ñÎª GUI ÊäÈë
+	// æ£€æŸ¥æ˜¯å¦ä¸º GUI è¾“å…¥
 	if (!CGuiEnvironment::GetInstance()->MouseEvent(x, y, button, delta) && !m_bDisableMouse) {
 		button = m_iMouseButtonMap[button];
 		m_pBufferedInput->fForthBack += delta * m_fMouseInputScale[0] * 100.0f;
@@ -265,14 +265,14 @@ void CInputManager::MouseInput(int x, int y, int button, int delta) {
 }
 
 /**
-* ¼üÅÌÊäÈë
-* @param key °´¼üÖµ
+* é”®ç›˜è¾“å…¥
+* @param key æŒ‰é”®å€¼
 */
 void CInputManager::KeyboardInput(int key) {
-	// ¼ì²éÊÇ·ñÎª GUI ÊäÈë
+	// æ£€æŸ¥æ˜¯å¦ä¸º GUI è¾“å…¥
 	if (!CGuiEnvironment::GetInstance()->KeyboardEvent(key) && !m_bDisableKeyboard) {
 		m_pBufferedInput->iInputKey = key;
-		// ×ÖÄ¸×ª»»Îª´óĞ´
+		// å­—æ¯è½¬æ¢ä¸ºå¤§å†™
 		if (key > 0x60 && key < 0x7B) key -= 0x20;
 		switch (key) {
 		case 0x1B: m_pBufferedInput->bQuit = true; break;
@@ -287,10 +287,10 @@ void CInputManager::KeyboardInput(int key) {
 }
 
 /**
-* ÖØÁ¦ÊäÈë
-* @param x ÖØÁ¦ X ·ÖÁ¿
-* @param y ÖØÁ¦ Y ·ÖÁ¿
-* @param z ÖØÁ¦ Z ·ÖÁ¿
+* é‡åŠ›è¾“å…¥
+* @param x é‡åŠ› X åˆ†é‡
+* @param y é‡åŠ› Y åˆ†é‡
+* @param z é‡åŠ› Z åˆ†é‡
 */
 void CInputManager::GravityInput(float x, float y, float z) {
 	if (!m_bDisableGravity) {
@@ -302,10 +302,10 @@ void CInputManager::GravityInput(float x, float y, float z) {
 }
 
 /**
-* ½ûÓÃ¿ØÖÆÊäÈë
-* @param mouse ÊÇ·ñ½ûÓÃÊó±êÊäÈë
-* @param keyboard ÊÇ·ñ½ûÓÃ¼üÅÌÊäÈë
-* @param gravity ÊÇ·ñ½ûÓÃÖØÁ¦ÊäÈë
+* ç¦ç”¨æ§åˆ¶è¾“å…¥
+* @param mouse æ˜¯å¦ç¦ç”¨é¼ æ ‡è¾“å…¥
+* @param keyboard æ˜¯å¦ç¦ç”¨é”®ç›˜è¾“å…¥
+* @param gravity æ˜¯å¦ç¦ç”¨é‡åŠ›è¾“å…¥
 */
 void CInputManager::DisableInput(bool mouse, bool keyboard, bool gravity) {
 	m_bDisableMouse = mouse;
@@ -314,10 +314,10 @@ void CInputManager::DisableInput(bool mouse, bool keyboard, bool gravity) {
 }
 
 /**
-* Êó±ê°´¼üÓ³Éä
-* @param left Êó±ê×ó¼üÓ³ÉäÖµ£¬Ä¬ÈÏÎª 1
-* @param right Êó±êÓÒ¼üÓ³ÉäÖµ£¬Ä¬ÈÏÎª 2
-* @param middle Êó±êÖĞ¼üÓ³ÉäÖµ£¬Ä¬ÈÏÎª 3
+* é¼ æ ‡æŒ‰é”®æ˜ å°„
+* @param left é¼ æ ‡å·¦é”®æ˜ å°„å€¼ï¼Œé»˜è®¤ä¸º 1
+* @param right é¼ æ ‡å³é”®æ˜ å°„å€¼ï¼Œé»˜è®¤ä¸º 2
+* @param middle é¼ æ ‡ä¸­é”®æ˜ å°„å€¼ï¼Œé»˜è®¤ä¸º 3
 */
 void CInputManager::MapMouseButton(int left, int right, int middle) {
 	m_iMouseButtonMap[1] = left;
@@ -326,10 +326,10 @@ void CInputManager::MapMouseButton(int left, int right, int middle) {
 }
 
 /**
-* »ñÈ¡»òÉèÖÃÊó±êÊäÈë¿ØÖÆ±ÈÀı´óĞ¡
-* @param set ÉèÖÃÊó±êÁéÃô¶È
-* @param move ÒÆ¶¯ËÙ¶È
-* @param turn ×ª¶¯ËÙ¶È
+* è·å–æˆ–è®¾ç½®é¼ æ ‡è¾“å…¥æ§åˆ¶æ¯”ä¾‹å¤§å°
+* @param set è®¾ç½®é¼ æ ‡çµæ•åº¦
+* @param move ç§»åŠ¨é€Ÿåº¦
+* @param turn è½¬åŠ¨é€Ÿåº¦
 */
 void CInputManager::MouseSensitivity(bool set, float& move, float& turn) {
 	if (set) {
@@ -342,10 +342,10 @@ void CInputManager::MouseSensitivity(bool set, float& move, float& turn) {
 }
 
 /**
-* ÉèÖÃÖØÁ¦ÊäÈëÏµÊı
-* @param sx X·ÖÁ¿ÏµÊı
-* @param sy Y·ÖÁ¿ÏµÊı
-* @param sz Z·ÖÁ¿ÏµÊı
+* è®¾ç½®é‡åŠ›è¾“å…¥ç³»æ•°
+* @param sx Xåˆ†é‡ç³»æ•°
+* @param sy Yåˆ†é‡ç³»æ•°
+* @param sz Zåˆ†é‡ç³»æ•°
 */
 void CInputManager::GravityScale(float sx, float sy, float sz) {
 	m_fGravityScale[0] = sx;

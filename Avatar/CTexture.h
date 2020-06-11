@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CTEXTURE_H_
@@ -9,56 +9,56 @@
 using std::string;
 
 /**
-* @brief ÎÆÀíÀà
+* @brief çº¹ç†ç±»
 */
 class AVATAR_EXPORT CTexture {
 public:
-	//! ÎÆÀíÊÇ·ñÓĞĞ§
+	//! çº¹ç†æ˜¯å¦æœ‰æ•ˆ
 	bool IsValid() const;
-	//! ÎÆÀíÊÇ·ñÎªÁ¢·½ÌåÌùÍ¼
+	//! çº¹ç†æ˜¯å¦ä¸ºç«‹æ–¹ä½“è´´å›¾
 	bool IsCubeMap() const;
-	//! ÊÇ·ñäÖÈ¾ÎÆÀí
+	//! æ˜¯å¦æ¸²æŸ“çº¹ç†
 	bool IsRenderTarget() const;
-	//! ÊÇ·ñ¸¡µãÎÆÀí
+	//! æ˜¯å¦æµ®ç‚¹çº¹ç†
 	bool IsFloatType() const;
-	//! »ñÈ¡ÎÆÀíÍ¨µÀ
+	//! è·å–çº¹ç†é€šé“
 	int GetChannel() const;
-	//! »ñÈ¡ÎÆÀí¿í¶È
+	//! è·å–çº¹ç†å®½åº¦
 	int GetWidth() const;
-	//! »ñÈ¡ÎÆÀí¸ß¶È
+	//! è·å–çº¹ç†é«˜åº¦
 	int GetHeight() const;
-	//! »ñÈ¡ÎÆÀíÏñËØ¸ñÊ½
+	//! è·å–çº¹ç†åƒç´ æ ¼å¼
 	int GetPixelFormat() const;
-	//! »ñÈ¡ÎÆÀíID
+	//! è·å–çº¹ç†ID
 	unsigned int GetTextureId() const;
-	//! »ñÈ¡¹ØÁªµÄÖ¡»º´æ
+	//! è·å–å…³è”çš„å¸§ç¼“å­˜
 	unsigned int GetFramebuffer() const;
-	//! »ñÈ¡ÎÆÀíÍ¼Æ¬Â·¾¶
+	//! è·å–çº¹ç†å›¾ç‰‡è·¯å¾„
 	const string& GetFilePath() const;
 
-	//! ÉèÖÃÎÆÀíÄ£Ê½ÎªÖØ¸´
+	//! è®¾ç½®çº¹ç†æ¨¡å¼ä¸ºé‡å¤
 	void SetWrapModeRepeat(bool s, bool t) const;
-	//! ÉèÖÃÎÆÀíÄ£Ê½ÎªÏŞÖÆµ½±ß½ç
+	//! è®¾ç½®çº¹ç†æ¨¡å¼ä¸ºé™åˆ¶åˆ°è¾¹ç•Œ
 	void SetWrapModeClampToEdge(bool s, bool t) const;
-	//! ÉèÖÃÎÆÀíÄ£Ê½Îª¾µÏñÖØ¸´
+	//! è®¾ç½®çº¹ç†æ¨¡å¼ä¸ºé•œåƒé‡å¤
 	void SetWrapModeMirroredRepeat(bool s, bool t) const;
 
-	//! ¿ªÊ¼Ó³ÉäÎÆÀíÊı¾İ
+	//! å¼€å§‹æ˜ å°„çº¹ç†æ•°æ®
 	void* MapBuffer(bool clear);
-	//! ½áÊøÓ³ÉäÎÆÀíÊı¾İ
+	//! ç»“æŸæ˜ å°„çº¹ç†æ•°æ®
 	void UnmapBuffer();
 
-	//! Ê¹ÓÃÎÆÀí
+	//! ä½¿ç”¨çº¹ç†
 	void UseTexture();
-	//! Ê¹ÓÃÎÆÀíÖÁÖ¸¶¨ÎÆÀíµ¥Ôª
+	//! ä½¿ç”¨çº¹ç†è‡³æŒ‡å®šçº¹ç†å•å…ƒ
 	void UseTexture(int unit);
-	//! Ôö¼ÓÒıÓÃ
+	//! å¢åŠ å¼•ç”¨
 	CTexture* AddReference();
 
 protected:
-	//! ÊÜ±£»¤¹¹Ôìº¯Êı£¬Ö»ÄÜÍ¨¹ı CTextureManager ´´½¨
+	//! å—ä¿æŠ¤æ„é€ å‡½æ•°ï¼Œåªèƒ½é€šè¿‡ CTextureManager åˆ›å»º
 	CTexture(class CTextureManager* manager);
-	//! ÊÜ±£»¤Îö¹¹º¯Êı
+	//! å—ä¿æŠ¤ææ„å‡½æ•°
 	~CTexture();
 
 private:

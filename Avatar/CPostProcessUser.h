@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CPOSTPROCESSUSER_H_
@@ -11,7 +11,7 @@ using std::vector;
 using std::string;
 
 /**
-* @brief ÓÃ»§×Ô¶¨Òåºó´¦Àí
+* @brief ç”¨æˆ·è‡ªå®šä¹‰åå¤„ç†
 */
 class CPostProcessUser: public CPostProcess {
 public:

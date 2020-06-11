@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CSCENENODEPLANT_H_
@@ -7,44 +7,44 @@
 #include "CSceneNode.h"
 
 /**
-* @brief Ö²±»Ä£ĞÍ³¡¾°½Úµã
-* @attention ´Ë½ÚµãÒÀÀµÓÚµØĞÎ½Úµã
+* @brief æ¤è¢«æ¨¡å‹åœºæ™¯èŠ‚ç‚¹
+* @attention æ­¤èŠ‚ç‚¹ä¾èµ–äºåœ°å½¢èŠ‚ç‚¹
 */
 class AVATAR_EXPORT CSceneNodePlant: public CSceneNode {
 public:
-	//! ¹¹Ôì·½·¨
+	//! æ„é€ æ–¹æ³•
 	CSceneNodePlant(const string& name, const string& texture, float width, float height,
 		const string& distributionMap, int count, float density, float range);
 
-	//! ³õÊ¼»¯³¡¾°½Úµã
+	//! åˆå§‹åŒ–åœºæ™¯èŠ‚ç‚¹
 	virtual bool Init();
-	//! Ïú»Ù³¡¾°½Úµã
+	//! é”€æ¯åœºæ™¯èŠ‚ç‚¹
 	virtual void Destroy();
-	//! äÖÈ¾³¡¾°½Úµã
+	//! æ¸²æŸ“åœºæ™¯èŠ‚ç‚¹
 	virtual void Render();
 
 private:
-	//! Éú³ÉÖ²±»²ã
+	//! ç”Ÿæˆæ¤è¢«å±‚
 	CMesh* BuildMesh();
-	//! ¼ÓÈëÖ²±»µ½Íø¸ñ
+	//! åŠ å…¥æ¤è¢«åˆ°ç½‘æ ¼
 	void AddPlant(CMesh* mesh, float x, float y, float z, float angle);
 
 private:
-	//! Ö²±»ÎÆÀí
+	//! æ¤è¢«çº¹ç†
 	string m_strTexture;
-	//! Ö²±»¿í¶È
+	//! æ¤è¢«å®½åº¦
 	float m_fWidth;
-	//! Ö²±»¸ß¶È
+	//! æ¤è¢«é«˜åº¦
 	float m_fHeight;
-	//! ·Ö²¼Í¼
+	//! åˆ†å¸ƒå›¾
 	string m_strDistributionMap;
-	//! Ö²±»×ÜÊı
+	//! æ¤è¢«æ€»æ•°
 	int m_iTotalCount;
-	//! ·Ö²¼ÃÜ¶È
+	//! åˆ†å¸ƒå¯†åº¦
 	float m_fDensity;
-	//! ·Ö²¼·¶Î§
+	//! åˆ†å¸ƒèŒƒå›´
 	float m_fRange;
-	//! Íø¸ñ¶ÔÏó
+	//! ç½‘æ ¼å¯¹è±¡
 	CMesh* m_pMesh;
 };
 

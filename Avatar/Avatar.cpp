@@ -1,18 +1,18 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "AvatarConfig.h"
 
 /**
-* VLD ÔÚ windows ÏÂ¿ÉÓÃ£¬Ö»ÔÚ Debug °æ±¾ÏÂÊ¹ÓÃ
+* VLD åœ¨ windows ä¸‹å¯ç”¨ï¼Œåªåœ¨ Debug ç‰ˆæœ¬ä¸‹ä½¿ç”¨
 */
 #if (defined AVATAR_ENABLE_VLD) && (defined AVATAR_WINDOWS) && (defined _DEBUG)
 #include <vld.h>
 #endif
 
 /**
-* ÍøÂç¿ØÖÆ
+* ç½‘ç»œæ§åˆ¶
 */
 #ifdef AVATAR_CONTROL_NETWORK
 #include "CUdpSocket.h"
@@ -28,12 +28,12 @@
 using std::ostringstream;
 
 /**
-* Êä³öµ÷ÊÔĞÅÏ¢
+* è¾“å‡ºè°ƒè¯•ä¿¡æ¯
 */
 void DumpInfo();
 
 /**
-* ¿ØÖÆÏß³Ì
+* æ§åˆ¶çº¿ç¨‹
 */
 #ifdef AVATAR_WINDOWS
 #include <Windows.h>
@@ -48,11 +48,11 @@ void* ThreadRecv(void* pParam);
 #endif
 
 /**
-* Windows¡¢Linux Æ½Ì¨
+* Windowsã€Linux å¹³å°
 */
 #if (defined AVATAR_WINDOWS) || (defined AVATAR_LINUX)
 int main(int argc, char **argv) {
-	// ÒıÇæ³õÊ¼»¯²ÎÊı
+	// å¼•æ“åˆå§‹åŒ–å‚æ•°
 	SEngineConfig conf;
 	if (argc > 1) {
 		for (int i = 1; i < argc; i++) {
@@ -77,19 +77,19 @@ int main(int argc, char **argv) {
 			}
 		}
 	}
-	// µ÷ÊÔÄ£Ê½´ò¿ªÈÕÖ¾
+	// è°ƒè¯•æ¨¡å¼æ‰“å¼€æ—¥å¿—
 #ifdef _DEBUG
 	conf.log.enable = true;
 	conf.log.console = true;
 	conf.log.time = true;
 #endif
-	// ÓÎÏ·³õÊ¼»¯
+	// æ¸¸æˆåˆå§‹åŒ–
 	CEngine* engine = new CEngine();
 	if (!engine->Init(conf)) {
 		return 1;
 	}
 
-	// ´´½¨¿ØÖÆÏß³Ì
+	// åˆ›å»ºæ§åˆ¶çº¿ç¨‹
 #ifdef AVATAR_CONTROL_NETWORK
 #ifdef AVATAR_WINDOWS
 	static DWORD threadId;
@@ -104,7 +104,7 @@ int main(int argc, char **argv) {
 		engine->Update();
 		engine->Render();
 	}
-	// Ïú»ÙÓÎÏ·ÊµÀı
+	// é”€æ¯æ¸¸æˆå®ä¾‹
 	DumpInfo();
 	engine->Destroy();
 	delete engine;
@@ -113,13 +113,13 @@ int main(int argc, char **argv) {
 #endif
 
 /**
-* Android Æ½Ì¨
+* Android å¹³å°
 */
 #ifdef AVATAR_ANDROID
 #include <jni.h>
 
 /**
-* JNI ½Ó¿Ú
+* JNI æ¥å£
 */
 extern "C" {
 	JNIEXPORT void JNICALL Java_com_luoyexunxue_avatar_AvatarNative_init(JNIEnv* env, jobject obj, jstring directory, jint width, jint height);
@@ -135,16 +135,16 @@ extern "C" {
 };
 
 /**
-* Engine ÊµÀıÖ¸Õë
+* Engine å®ä¾‹æŒ‡é’ˆ
 */
 static CEngine* engine;
 /**
-* ±ê¼ÇÊÇ·ñ³õÊ¼»¯
+* æ ‡è®°æ˜¯å¦åˆå§‹åŒ–
 */
 static bool _avatar_init = false;
 
 /**
-* ³õÊ¼»¯
+* åˆå§‹åŒ–
 */
 JNIEXPORT void JNICALL Java_com_luoyexunxue_avatar_AvatarNative_init(JNIEnv* env, jobject obj, jstring directory, jint width, jint height) {
 	if (engine) {
@@ -153,7 +153,7 @@ JNIEXPORT void JNICALL Java_com_luoyexunxue_avatar_AvatarNative_init(JNIEnv* env
 	}
 	engine = new CEngine();
 
-	// ÓÎÏ·³õÊ¼»¯
+	// æ¸¸æˆåˆå§‹åŒ–
 	char path[256] = {0};
 	env->GetStringUTFRegion(directory, 0, env->GetStringLength(directory), path);
 	SEngineConfig conf;
@@ -166,7 +166,7 @@ JNIEXPORT void JNICALL Java_com_luoyexunxue_avatar_AvatarNative_init(JNIEnv* env
 	if (!engine->Init(conf)) {
 		return;
 	}
-	// ´´½¨¿ØÖÆÏß³Ì
+	// åˆ›å»ºæ§åˆ¶çº¿ç¨‹
 #if (defined AVATAR_CONTROL_NETWORK)
 	static pthread_t threadId;
 	pthread_create(&threadId, 0, ThreadRecv, engine);
@@ -175,7 +175,7 @@ JNIEXPORT void JNICALL Java_com_luoyexunxue_avatar_AvatarNative_init(JNIEnv* env
 }
 
 /**
-* ´°Ìå´óĞ¡
+* çª—ä½“å¤§å°
 */
 JNIEXPORT void JNICALL Java_com_luoyexunxue_avatar_AvatarNative_resize(JNIEnv* env, jobject obj, jint width, jint height) {
 	if (_avatar_init) {
@@ -184,7 +184,7 @@ JNIEXPORT void JNICALL Java_com_luoyexunxue_avatar_AvatarNative_resize(JNIEnv* e
 }
 
 /**
-* ¸üĞÂºÍäÖÈ¾
+* æ›´æ–°å’Œæ¸²æŸ“
 */
 JNIEXPORT void JNICALL Java_com_luoyexunxue_avatar_AvatarNative_update(JNIEnv* env, jobject obj) {
 	if (_avatar_init && engine->IsRunning()) {
@@ -194,7 +194,7 @@ JNIEXPORT void JNICALL Java_com_luoyexunxue_avatar_AvatarNative_update(JNIEnv* e
 }
 
 /**
-* ÒÆ¶¯
+* ç§»åŠ¨
 */
 JNIEXPORT void JNICALL Java_com_luoyexunxue_avatar_AvatarNative_move(JNIEnv* env, jobject obj, jfloat rightLeft, jfloat forthBack, jfloat upDown) {
 	if (_avatar_init) {
@@ -206,7 +206,7 @@ JNIEXPORT void JNICALL Java_com_luoyexunxue_avatar_AvatarNative_move(JNIEnv* env
 }
 
 /**
-* ÉãÏñ»ú·½Î»
+* æ‘„åƒæœºæ–¹ä½
 */
 JNIEXPORT void JNICALL Java_com_luoyexunxue_avatar_AvatarNative_orient(JNIEnv* env, jobject obj, jfloat qx, jfloat qy, jfloat qz, jfloat qw) {
 	if (_avatar_init) {
@@ -215,7 +215,7 @@ JNIEXPORT void JNICALL Java_com_luoyexunxue_avatar_AvatarNative_orient(JNIEnv* e
 }
 
 /**
-* ÖØÁ¦¸ĞÓ¦ÊäÈë
+* é‡åŠ›æ„Ÿåº”è¾“å…¥
 */
 JNIEXPORT void JNICALL Java_com_luoyexunxue_avatar_AvatarNative_gravity(JNIEnv* env, jobject obj, jfloat gx, jfloat gy, jfloat gz) {
 	if (_avatar_init) {
@@ -226,7 +226,7 @@ JNIEXPORT void JNICALL Java_com_luoyexunxue_avatar_AvatarNative_gravity(JNIEnv* 
 }
 
 /**
-* Êó±êÊäÈë
+* é¼ æ ‡è¾“å…¥
 */
 JNIEXPORT void JNICALL Java_com_luoyexunxue_avatar_AvatarNative_mouse(JNIEnv* env, jobject obj, jint x, jint y, jint button, jint delta) {
 	if (_avatar_init) {
@@ -235,7 +235,7 @@ JNIEXPORT void JNICALL Java_com_luoyexunxue_avatar_AvatarNative_mouse(JNIEnv* en
 }
 
 /**
-* ¹¦ÄÜÑ¡Ôñ
+* åŠŸèƒ½é€‰æ‹©
 */
 JNIEXPORT void JNICALL Java_com_luoyexunxue_avatar_AvatarNative_function(JNIEnv* env, jobject obj, jint function) {
 	if (_avatar_init) {
@@ -244,7 +244,7 @@ JNIEXPORT void JNICALL Java_com_luoyexunxue_avatar_AvatarNative_function(JNIEnv*
 }
 
 /**
-* Ö´ĞĞ½Å±¾
+* æ‰§è¡Œè„šæœ¬
 */
 JNIEXPORT void JNICALL Java_com_luoyexunxue_avatar_AvatarNative_script(JNIEnv* env, jobject obj, jstring script) {
 	if (_avatar_init) {
@@ -255,7 +255,7 @@ JNIEXPORT void JNICALL Java_com_luoyexunxue_avatar_AvatarNative_script(JNIEnv* e
 }
 
 /**
-* ÍË³ö
+* é€€å‡º
 */
 JNIEXPORT void JNICALL Java_com_luoyexunxue_avatar_AvatarNative_exit(JNIEnv* env, jobject obj) {
 	if (engine) {
@@ -269,7 +269,7 @@ JNIEXPORT void JNICALL Java_com_luoyexunxue_avatar_AvatarNative_exit(JNIEnv* env
 #endif
 
 /**
-* Êä³öµ÷ÊÔĞÅÏ¢
+* è¾“å‡ºè°ƒè¯•ä¿¡æ¯
 */
 void DumpInfo() {
 	CFileManager* pFileMgr = CEngine::GetFileManager();
@@ -349,7 +349,7 @@ void DumpInfo() {
 }
 
 /**
-* '¸ß¼¶¿ØÖÆ' ½ÓÊÕÏß³Ì
+* 'é«˜çº§æ§åˆ¶' æ¥æ”¶çº¿ç¨‹
 */
 #ifdef AVATAR_WINDOWS
 DWORD WINAPI ThreadRecv(LPVOID pParam) {

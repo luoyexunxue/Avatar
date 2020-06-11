@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CGuiPanel.h"
@@ -9,7 +9,7 @@
 #include <algorithm>
 
 /**
-* ¹¹Ôìº¯Êı£¬Ö¸¶¨Ãû³Æ
+* æ„é€ å‡½æ•°ï¼ŒæŒ‡å®šåç§°
 */
 CGuiPanel::CGuiPanel(const string& name) : CGuiElement(name) {
 	m_cRegion.SetValue(0, 0, 0, 32);
@@ -23,7 +23,7 @@ CGuiPanel::CGuiPanel(const string& name) : CGuiElement(name) {
 }
 
 /**
-* ÍÏ¶¯²Ù×÷
+* æ‹–åŠ¨æ“ä½œ
 */
 bool CGuiPanel::Drag(bool release, int dx, int dy, CRectangle& region) {
 	CRectangle rect(0, 0, 0, 0);
@@ -55,7 +55,7 @@ bool CGuiPanel::Drag(bool release, int dx, int dy, CRectangle& region) {
 }
 
 /**
-* ÊôĞÔÉèÖÃ
+* å±æ€§è®¾ç½®
 */
 bool CGuiPanel::SetAttribute(const string& name, const string& value) {
 	if (name == "visible") m_bVisible = value == "true";
@@ -72,7 +72,7 @@ bool CGuiPanel::SetAttribute(const string& name, const string& value) {
 }
 
 /**
-* »ñÈ¡ÊôĞÔ
+* è·å–å±æ€§
 */
 string CGuiPanel::GetAttribute(const string& name) {
 	if (name == "visible") return m_bVisible? "true": "false";
@@ -90,7 +90,7 @@ string CGuiPanel::GetAttribute(const string& name) {
 }
 
 /**
-* ¿Ø¼ş»æÖÆ
+* æ§ä»¶ç»˜åˆ¶
 */
 void CGuiPanel::Draw(const CRectangle& rect, unsigned char* buffer) {
 	int drawWidth = rect.GetWidth();

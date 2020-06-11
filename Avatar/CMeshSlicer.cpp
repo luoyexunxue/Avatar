@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CMeshSlicer.h"
@@ -7,27 +7,27 @@
 #include <cmath>
 
 /**
-* ¹¹Ôìº¯Êı
+* æ„é€ å‡½æ•°
 */
 CMeshSlicer::CMeshSlicer() {
 }
 
 /**
-* Ê¹ÓÃÖ¸¶¨Íø¸ñ¶ÔÏó¹¹Ôì
+* ä½¿ç”¨æŒ‡å®šç½‘æ ¼å¯¹è±¡æ„é€ 
 */
 CMeshSlicer::CMeshSlicer(const CMesh* mesh) {
 	m_vecMeshes.push_back(mesh);
 }
 
 /**
-* Ìí¼ÓÍø¸ñ
+* æ·»åŠ ç½‘æ ¼
 */
 void CMeshSlicer::AddMesh(const CMesh* mesh) {
 	m_vecMeshes.push_back(mesh);
 }
 
 /**
-* °´Ö¸¶¨Æ½ÃæÇĞ¸î
+* æŒ‰æŒ‡å®šå¹³é¢åˆ‡å‰²
 */
 bool CMeshSlicer::Slice(const CPlane& plane) {
 	for (size_t i = 0; i < m_vecMeshes.size(); i++) {
@@ -45,9 +45,9 @@ bool CMeshSlicer::Slice(const CPlane& plane) {
 }
 
 /**
-* °´Ö¸¶¨×ø±êÖáÇĞ¸î
-* @param axis ×ø±êÖá 1,2,3 ·Ö±ğÎª X,Y,Z Öá
-* @param value ×ø±êÖµ
+* æŒ‰æŒ‡å®šåæ ‡è½´åˆ‡å‰²
+* @param axis åæ ‡è½´ 1,2,3 åˆ†åˆ«ä¸º X,Y,Z è½´
+* @param value åæ ‡å€¼
 */
 bool CMeshSlicer::Slice(int axis, float value) {
 	CVector3 normal;
@@ -64,24 +64,24 @@ bool CMeshSlicer::Slice(int axis, float value) {
 }
 
 /**
-* »ñÈ¡¹ì¼£¸öÊı
-* @note ÇĞ¸îºó¿ÉÄÜ°üº¬²»Ö¹Ò»¸ö¹ì¼££¬ÈçÖĞ¿Õ½á¹¹µÄÄ£ĞÍ
+* è·å–è½¨è¿¹ä¸ªæ•°
+* @note åˆ‡å‰²åå¯èƒ½åŒ…å«ä¸æ­¢ä¸€ä¸ªè½¨è¿¹ï¼Œå¦‚ä¸­ç©ºç»“æ„çš„æ¨¡å‹
 */
 int CMeshSlicer::GetTrackCount() const {
 	return m_vecTrackLines.size();
 }
 
 /**
-* »ñÈ¡Ò»¸ö¹ì¼£µÄµã¸öÊı
-* @note ¹ì¼£ÉÏµÄµãÔÚÇĞ¸îÆ½ÃæÉÏ°´ÄæÊ±Õë´ÎĞòÒÀ´ÎÅÅÁĞ£¬
-*	ÈôÎªË³Ê±ÕëÅÅÁĞ£¬Ôò±íÊ¾´Ë¹ì¼£ÎªÄÚ²¿¿ÕÇ»
+* è·å–ä¸€ä¸ªè½¨è¿¹çš„ç‚¹ä¸ªæ•°
+* @note è½¨è¿¹ä¸Šçš„ç‚¹åœ¨åˆ‡å‰²å¹³é¢ä¸ŠæŒ‰é€†æ—¶é’ˆæ¬¡åºä¾æ¬¡æ’åˆ—ï¼Œ
+*	è‹¥ä¸ºé¡ºæ—¶é’ˆæ’åˆ—ï¼Œåˆ™è¡¨ç¤ºæ­¤è½¨è¿¹ä¸ºå†…éƒ¨ç©ºè…”
 */
 int CMeshSlicer::GetTrackPointCount(int track) const {
 	return m_vecTrackLines[track].size();
 }
 
 /**
-* »ñÈ¡¹ì¼£µÄÖ¸¶¨µã
+* è·å–è½¨è¿¹çš„æŒ‡å®šç‚¹
 */
 const CVector3& CMeshSlicer::GetTrackPoint(int track, int point) const {
 	list<CVector3>::const_iterator iter = m_vecTrackLines[track].begin();
@@ -90,7 +90,7 @@ const CVector3& CMeshSlicer::GetTrackPoint(int track, int point) const {
 }
 
 /**
-* ´´½¨¿ÉäÖÈ¾µÄ³¡¾°½Úµã
+* åˆ›å»ºå¯æ¸²æŸ“çš„åœºæ™¯èŠ‚ç‚¹
 */
 CSceneNode* CMeshSlicer::CreateRenderLine(CSceneNode* src, int track, bool depth, bool point) {
 	if (!src) {
@@ -110,14 +110,14 @@ CSceneNode* CMeshSlicer::CreateRenderLine(CSceneNode* src, int track, bool depth
 }
 
 /**
-* ÇĞ¸îÈı½ÇĞÎ
+* åˆ‡å‰²ä¸‰è§’å½¢
 */
 void CMeshSlicer::SliceTriangle(const CPlane& plane, const CVector3& a, const CVector3& b, const CVector3& c) {
 	CVector3 ab = b - a;
 	CVector3 bc = c - b;
 	CVector3 ca = a - c;
 	CVector3 norm(plane.m_fNormal);
-	// ¶ÔÈı½ÇĞÎÈı±ß×é³ÉµÄÏß¶ÎÓëÆ½ÃæÇó½»
+	// å¯¹ä¸‰è§’å½¢ä¸‰è¾¹ç»„æˆçš„çº¿æ®µä¸å¹³é¢æ±‚äº¤
 	float t1 = plane.m_fDistance - a.DotProduct(norm);
 	float d1 = ab.DotProduct(norm);
 	float t2 = plane.m_fDistance - b.DotProduct(norm);
@@ -133,11 +133,11 @@ void CMeshSlicer::SliceTriangle(const CPlane& plane, const CVector3& a, const CV
 	if (d2 >= 1e-6 && t2 >= 0.0f && t2 <= d2) intersect[count++] = b + bc * (t2 / d2);
 	if (d3 >= 1e-6 && t3 >= 0.0f && t3 <= d3) intersect[count++] = c + ca * (t3 / d3);
 	if (count < 2) return;
-	// Ïà½»ÓÚÈı½ÇĞÎµÄÒ»¸ö¶¥µã£¬ºöÂÔ
+	// ç›¸äº¤äºä¸‰è§’å½¢çš„ä¸€ä¸ªé¡¶ç‚¹ï¼Œå¿½ç•¥
 	if (count == 2 && IsEqual(intersect[0], intersect[1])) return;
-	// ÓëÈı½ÇĞÎÒ»¸ö¶¥µãÏà½»¼°¶Ô±ßÏà½»
+	// ä¸ä¸‰è§’å½¢ä¸€ä¸ªé¡¶ç‚¹ç›¸äº¤åŠå¯¹è¾¹ç›¸äº¤
 	if (count == 3 && IsEqual(intersect[0], intersect[1])) intersect[1] = intersect[2];
-	// ¼ì²é·½Ïò
+	// æ£€æŸ¥æ–¹å‘
 	CVector3 dir = norm.CrossProduct(ab.CrossProduct(bc));
 	if (dir.DotProduct(intersect[1] - intersect[0]) > 0) {
 		m_lstTrackSet.push_back(STrackSegment(intersect[0], intersect[1]));
@@ -147,14 +147,14 @@ void CMeshSlicer::SliceTriangle(const CPlane& plane, const CVector3& a, const CV
 }
 
 /**
-* ´ÓÇĞ¸îºóµÄÏß¶ÎÉú³ÉÇĞÃæ
-* @attention Ã¿¸öÇĞÃæµÄµÚÒ»¸ö¶¥µãºÍ×îºóÒ»¸ö¶¥µã²»ÖØ¸´
+* ä»åˆ‡å‰²åçš„çº¿æ®µç”Ÿæˆåˆ‡é¢
+* @attention æ¯ä¸ªåˆ‡é¢çš„ç¬¬ä¸€ä¸ªé¡¶ç‚¹å’Œæœ€åä¸€ä¸ªé¡¶ç‚¹ä¸é‡å¤
 */
 void CMeshSlicer::BuildTrackLine() {
 	m_vecTrackLines.clear();
 	if (m_lstTrackSet.empty()) return;
 
-	// Ñ­»·´¦ÀíÃ¿¸öÏß¶Î£¬Ê¹ÆäÍ·Î²Ïà½Ó
+	// å¾ªç¯å¤„ç†æ¯ä¸ªçº¿æ®µï¼Œä½¿å…¶å¤´å°¾ç›¸æ¥
 	while (!m_lstTrackSet.empty()) {
 		list<STrackSegment>::iterator iter = m_lstTrackSet.begin();
 		CVector3 from = iter->a;
@@ -184,7 +184,7 @@ void CMeshSlicer::BuildTrackLine() {
 }
 
 /**
-* ÅĞ¶ÏÁ½µãÊÇ·ñÏàÍ¬
+* åˆ¤æ–­ä¸¤ç‚¹æ˜¯å¦ç›¸åŒ
 */
 bool CMeshSlicer::IsEqual(const CVector3& a, const CVector3& b) const {
 	float x = a.m_fValue[0] - b.m_fValue[0];

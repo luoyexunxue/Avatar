@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CSceneManager.h"
@@ -8,7 +8,7 @@
 #include <cstring>
 
 /**
-* ¹¹Ôìº¯Êı
+* æ„é€ å‡½æ•°
 */
 CSceneManager::CSceneManager() {
 	m_pRootNode = new CRootNode();
@@ -17,19 +17,19 @@ CSceneManager::CSceneManager() {
 }
 
 /**
-* Îö¹¹º¯Êı
+* ææ„å‡½æ•°
 */
 CSceneManager::~CSceneManager() {
 	m_pInstance = 0;
 }
 
 /**
-* µ¥ÀıÊµÀı
+* å•ä¾‹å®ä¾‹
 */
 CSceneManager* CSceneManager::m_pInstance = 0;
 
 /**
-* Ïú»Ù³¡¾°¹ÜÀíÆ÷
+* é”€æ¯åœºæ™¯ç®¡ç†å™¨
 */
 void CSceneManager::Destroy() {
 	ClearNode();
@@ -38,12 +38,12 @@ void CSceneManager::Destroy() {
 }
 
 /**
-* äÖÈ¾ËùÓĞµÄ 3D ³¡¾°½Úµã
-* @param view Ïà»úÊÓÍ¼¾ØÕó
-* @param proj Ïà»úÍ¶Ó°¾ØÕó
+* æ¸²æŸ“æ‰€æœ‰çš„ 3D åœºæ™¯èŠ‚ç‚¹
+* @param view ç›¸æœºè§†å›¾çŸ©é˜µ
+* @param proj ç›¸æœºæŠ•å½±çŸ©é˜µ
 */
 void CSceneManager::RenderScene(const CMatrix4& view, const CMatrix4& proj) {
-	// ÉèÖÃÊÓÍ¼Í¶Ó°¾ØÕó
+	// è®¾ç½®è§†å›¾æŠ•å½±çŸ©é˜µ
 	CCamera* pCamera = CEngine::GetGraphicsManager()->GetCamera();
 	for (size_t i = 0; i < m_vecShaderList.size(); i++) {
 		CShader* shader = m_vecShaderList[i];
@@ -52,7 +52,7 @@ void CSceneManager::RenderScene(const CMatrix4& view, const CMatrix4& proj) {
 		shader->SetUniform("uViewMatrix", view);
 		shader->SetUniform("uCameraPos", pCamera->m_cPosition);
 	}
-	// ¶Ô³¡¾°½Úµã½øĞĞ·Ö×éäÖÈ¾
+	// å¯¹åœºæ™¯èŠ‚ç‚¹è¿›è¡Œåˆ†ç»„æ¸²æŸ“
 	for (size_t i = 0; i < m_vecRenderGroup.size(); i++) {
 		SRenderGroup& renderGroup = m_vecRenderGroup[i];
 		list<SRenderNode>::iterator iter = renderGroup.nodeList.begin();
@@ -72,18 +72,18 @@ void CSceneManager::RenderScene(const CMatrix4& view, const CMatrix4& proj) {
 }
 
 /**
-* äÖÈ¾ÆÁÄ»³¡¾°½Úµã
-* @param proj Í¶Ó°¾ØÕó
-* @param offset ¾àÀëÆÁÄ»ÖĞĞÄµÄÆ«ÒÆ
-* @note ĞèÒª½«Éî¶È²âÊÔ¹Ø±Õ£¬±ÜÃâ½á¹û´íÎó
+* æ¸²æŸ“å±å¹•åœºæ™¯èŠ‚ç‚¹
+* @param proj æŠ•å½±çŸ©é˜µ
+* @param offset è·ç¦»å±å¹•ä¸­å¿ƒçš„åç§»
+* @note éœ€è¦å°†æ·±åº¦æµ‹è¯•å…³é—­ï¼Œé¿å…ç»“æœé”™è¯¯
 */
 void CSceneManager::RenderScreen(const CMatrix4& proj, const CVector2& offset) {
-	// ÉèÖÃÍ¶Ó°¾ØÕó£¬ºÍÖĞĞÄÆ«ÒÆ
+	// è®¾ç½®æŠ•å½±çŸ©é˜µï¼Œå’Œä¸­å¿ƒåç§»
 	CShader* pShader = CEngine::GetShaderManager()->GetShader("screen");
 	pShader->UseShader();
 	pShader->SetUniform("uProjMatrix", proj);
 	pShader->SetUniform("uOffset", offset);
-	// äÖÈ¾ËùÓĞÆÁÄ»³¡¾°½Úµã
+	// æ¸²æŸ“æ‰€æœ‰å±å¹•åœºæ™¯èŠ‚ç‚¹
 	list<CSceneNode*>::iterator iter = m_lstScreenNode.begin();
 	while (iter != m_lstScreenNode.end()) {
 		CSceneNode* pSceneNode = *iter;
@@ -96,16 +96,16 @@ void CSceneManager::RenderScreen(const CMatrix4& proj, const CVector2& offset) {
 }
 
 /**
-* äÖÈ¾Éî¶ÈÌùÍ¼
-* @param viewProj äÖÈ¾Éî¶ÈµÄÊÓÍ¼Í¶Ó°¾ØÕó
-* @param shader Éî¶ÈäÖÈ¾µÄ×ÅÉ«Æ÷Ãû³Æ
-* @note ĞèÒª½«ÑÕÉ«»ìºÏ¹Ø±Õ£¬±ÜÃâ½á¹û´íÎó
+* æ¸²æŸ“æ·±åº¦è´´å›¾
+* @param viewProj æ¸²æŸ“æ·±åº¦çš„è§†å›¾æŠ•å½±çŸ©é˜µ
+* @param shader æ·±åº¦æ¸²æŸ“çš„ç€è‰²å™¨åç§°
+* @note éœ€è¦å°†é¢œè‰²æ··åˆå…³é—­ï¼Œé¿å…ç»“æœé”™è¯¯
 */
 void CSceneManager::RenderDepth(const CMatrix4& viewProj, const string& shader) {
 	CShader* pShader = CEngine::GetShaderManager()->GetShader(shader);
 	pShader->UseShader();
 	pShader->SetUniform("uViewProjMatrix", viewProj);
-	// äÖÈ¾ËùÓĞÊµÌå³¡¾°½Úµã
+	// æ¸²æŸ“æ‰€æœ‰å®ä½“åœºæ™¯èŠ‚ç‚¹
 	list<CSceneNode*>::iterator iter = m_lstDepthNode.begin();
 	while (iter != m_lstDepthNode.end()) {
 		CSceneNode* pSceneNode = *iter;
@@ -118,22 +118,22 @@ void CSceneManager::RenderDepth(const CMatrix4& viewProj, const string& shader) 
 }
 
 /**
-* ¸üĞÂËùÓĞ³¡¾°½Úµã
-* @param dt Ê±¼ä²½³¤
+* æ›´æ–°æ‰€æœ‰åœºæ™¯èŠ‚ç‚¹
+* @param dt æ—¶é—´æ­¥é•¿
 */
 void CSceneManager::Update(float dt) {
-	// µİ¹é¸üĞÂ³¡¾°½Úµã
+	// é€’å½’æ›´æ–°åœºæ™¯èŠ‚ç‚¹
 	UpdateAll(m_pRootNode, dt);
-	// ½ÚµãÅÅĞò
+	// èŠ‚ç‚¹æ’åº
 	SortTranslucentNode();
 	SortScreenNode();
 }
 
 /**
-* Ìí¼Ó³¡¾°½Úµã
-* @param node ´ı²åÈëµÄ³¡¾°½Úµã
-* @param parent ²åÈëµÄ¸¸½Úµã£¬ÈôÎª¿ÕÔò½« node ²åÈë¸ù½Úµã
-* @return ÊÇ·ñ²åÈë³É¹¦£¬Èô·µ»Ø false Ôò node ±»×Ô¶¯ÊÍ·Å
+* æ·»åŠ åœºæ™¯èŠ‚ç‚¹
+* @param node å¾…æ’å…¥çš„åœºæ™¯èŠ‚ç‚¹
+* @param parent æ’å…¥çš„çˆ¶èŠ‚ç‚¹ï¼Œè‹¥ä¸ºç©ºåˆ™å°† node æ’å…¥æ ¹èŠ‚ç‚¹
+* @return æ˜¯å¦æ’å…¥æˆåŠŸï¼Œè‹¥è¿”å› false åˆ™ node è¢«è‡ªåŠ¨é‡Šæ”¾
 */
 bool CSceneManager::InsertNode(CSceneNode* node, CSceneNode* parent) {
 	node->m_pParent = parent ? parent : m_pRootNode;
@@ -142,7 +142,7 @@ bool CSceneManager::InsertNode(CSceneNode* node, CSceneNode* parent) {
 		delete node;
 		return false;
 	}
-	// ½øĞĞ³õÊ¼»¯£¬Èô³õÊ¼»¯²»³É¹¦Ôò½«½ÚµãÉ¾³ı
+	// è¿›è¡Œåˆå§‹åŒ–ï¼Œè‹¥åˆå§‹åŒ–ä¸æˆåŠŸåˆ™å°†èŠ‚ç‚¹åˆ é™¤
 	if (!node->Init()) {
 		CLog::Warn("Initialize scene node '%s' failed", node->GetName().c_str());
 		delete node;
@@ -150,11 +150,11 @@ bool CSceneManager::InsertNode(CSceneNode* node, CSceneNode* parent) {
 	}
 	node->m_pParent->m_lstChildren.push_back(node);
 	m_mapSceneNode.insert(std::pair<string, CSceneNode*>(node->GetName(), node));
-	// Í¨¹ıÅĞ¶Ï½ÚµãÀàĞÍ£¬Ñ¡ÔñĞÔ¼ÓÈëÏàÓ¦ÁĞ±í
+	// é€šè¿‡åˆ¤æ–­èŠ‚ç‚¹ç±»å‹ï¼Œé€‰æ‹©æ€§åŠ å…¥ç›¸åº”åˆ—è¡¨
 	if (node->GetType() == "screen") {
 		m_lstScreenNode.push_back(node);
 	} else {
-		// °´°ëÍ¸Ã÷¹ØÏµ½øĞĞ·Ö×é£¬²¢¶Ô³¡¾°½Úµã°´²ÄÖÊ½øĞĞÅÅĞò£¬¼õÉÙ OpenGL ×´Ì¬ÇĞ»»
+		// æŒ‰åŠé€æ˜å…³ç³»è¿›è¡Œåˆ†ç»„ï¼Œå¹¶å¯¹åœºæ™¯èŠ‚ç‚¹æŒ‰æè´¨è¿›è¡Œæ’åºï¼Œå‡å°‘ OpenGL çŠ¶æ€åˆ‡æ¢
 		SRenderType& renderType = m_mapRenderType.at(node->GetType());
 		SRenderGroup& renderGroup = m_vecRenderGroup[renderType.groupIndex];
 		list<SRenderNode>::iterator iter = renderGroup.nodeList.begin();
@@ -163,7 +163,7 @@ bool CSceneManager::InsertNode(CSceneNode* node, CSceneNode* parent) {
 			++iter;
 		}
 		renderGroup.nodeList.insert(iter, SRenderNode(renderType.shaderIndex, node));
-		// ²ÎÓëÉî¶ÈäÖÈ¾
+		// å‚ä¸æ·±åº¦æ¸²æŸ“
 		if (renderType.renderDepth) {
 			m_lstDepthNode.push_back(node);
 		}
@@ -173,15 +173,15 @@ bool CSceneManager::InsertNode(CSceneNode* node, CSceneNode* parent) {
 }
 
 /**
-* É¾³ı³¡¾°½Úµã£¬Æä×Ó½Úµã½«»á×Ô¶¯¼ÓÈëÆä¸¸½Úµã
-* @param node ĞèÒªÉ¾³ıµÄ³¡¾°½Úµã£¬¸ù½Úµã³ıÍâ
-* @return ÊÇ·ñÉ¾³ı³É¹¦£¬Èô·µ»Ø true Ôò node ±»×Ô¶¯ÊÍ·Å
+* åˆ é™¤åœºæ™¯èŠ‚ç‚¹ï¼Œå…¶å­èŠ‚ç‚¹å°†ä¼šè‡ªåŠ¨åŠ å…¥å…¶çˆ¶èŠ‚ç‚¹
+* @param node éœ€è¦åˆ é™¤çš„åœºæ™¯èŠ‚ç‚¹ï¼Œæ ¹èŠ‚ç‚¹é™¤å¤–
+* @return æ˜¯å¦åˆ é™¤æˆåŠŸï¼Œè‹¥è¿”å› true åˆ™ node è¢«è‡ªåŠ¨é‡Šæ”¾
 */
 bool CSceneManager::DeleteNode(CSceneNode* node) {
 	if (!node) return false;
 	CSceneNode* parent = node->m_pParent;
 	parent->m_lstChildren.remove(node);
-	// ½«ÒÆ³ı½ÚµãµÄ×Ó½Úµã¼ÓÈëÆä¸¸½Úµã
+	// å°†ç§»é™¤èŠ‚ç‚¹çš„å­èŠ‚ç‚¹åŠ å…¥å…¶çˆ¶èŠ‚ç‚¹
 	list<CSceneNode*>::iterator iter = node->m_lstChildren.begin();
 	while (iter != node->m_lstChildren.end()) {
 		parent->m_lstChildren.push_back(*iter);
@@ -190,7 +190,7 @@ bool CSceneManager::DeleteNode(CSceneNode* node) {
 	node->m_pParent = 0;
 	node->m_lstChildren.clear();
 	m_mapSceneNode.erase(node->GetName());
-	// É¾³ı°üº¬ÔÚÆäËûÁĞ±íÖĞµÄ½ÚµãÊı¾İ
+	// åˆ é™¤åŒ…å«åœ¨å…¶ä»–åˆ—è¡¨ä¸­çš„èŠ‚ç‚¹æ•°æ®
 	if (node->GetType() == "screen") {
 		m_lstScreenNode.remove(node);
 	} else {
@@ -208,16 +208,16 @@ bool CSceneManager::DeleteNode(CSceneNode* node) {
 			m_lstDepthNode.remove(node);
 		}
 	}
-	// Ïú»Ù³¡¾°½Úµã
+	// é”€æ¯åœºæ™¯èŠ‚ç‚¹
 	node->Destroy();
 	delete node;
 	return true;
 }
 
 /**
-* É¾³ıÖ¸¶¨Ãû³ÆµÄ³¡¾°½Úµã£¬Æä×Ó½Úµã½«»á×Ô¶¯¼ÓÈëÆä¸¸½Úµã
-* @param name ĞèÒªÉ¾³ıµÄ³¡¾°½ÚµãÃû³Æ
-* @return ÊÇ·ñÉ¾³ı³É¹¦£¬Èô·µ»Ø true Ôò½Úµã±»×Ô¶¯ÊÍ·Å
+* åˆ é™¤æŒ‡å®šåç§°çš„åœºæ™¯èŠ‚ç‚¹ï¼Œå…¶å­èŠ‚ç‚¹å°†ä¼šè‡ªåŠ¨åŠ å…¥å…¶çˆ¶èŠ‚ç‚¹
+* @param name éœ€è¦åˆ é™¤çš„åœºæ™¯èŠ‚ç‚¹åç§°
+* @return æ˜¯å¦åˆ é™¤æˆåŠŸï¼Œè‹¥è¿”å› true åˆ™èŠ‚ç‚¹è¢«è‡ªåŠ¨é‡Šæ”¾
 */
 bool CSceneManager::DeleteNode(const string& name) {
 	map<string, CSceneNode*>::iterator iter = m_mapSceneNode.find(name);
@@ -228,32 +228,32 @@ bool CSceneManager::DeleteNode(const string& name) {
 }
 
 /**
-* Çå³ıËùÓĞ³¡¾°½Úµã
+* æ¸…é™¤æ‰€æœ‰åœºæ™¯èŠ‚ç‚¹
 */
 void CSceneManager::ClearNode() {
 	m_mapSceneNode.clear();
 	m_lstScreenNode.clear();
 	m_lstDepthNode.clear();
-	// Çå³ı·Ö×éÖĞµÄ½Úµã
+	// æ¸…é™¤åˆ†ç»„ä¸­çš„èŠ‚ç‚¹
 	for (size_t i = 0; i < m_vecRenderGroup.size(); i++) {
 		m_vecRenderGroup[i].nodeList.clear();
 	}
-	// Ïú»ÙËùÓĞ½Úµã
+	// é”€æ¯æ‰€æœ‰èŠ‚ç‚¹
 	DeleteAll(m_pRootNode);
 }
 
 /**
-* »ñÈ¡³¡¾°¸ù½Úµã
-* @return ¸ù½Úµã
+* è·å–åœºæ™¯æ ¹èŠ‚ç‚¹
+* @return æ ¹èŠ‚ç‚¹
 */
 CSceneNode* CSceneManager::GetRootNode() {
 	return m_pRootNode;
 }
 
 /**
-* Í¨¹ı ID »ñÈ¡½Úµã
-* @param id ĞèÒª»ñÈ¡µÄ½Úµã ID
-* @return ¶ÔÓ¦µÄ³¡¾°½Úµã£¬ÈôÎŞ¶ÔÓ¦µÄ³¡¾°½Úµã£¬ÔòÎª¿Õ
+* é€šè¿‡ ID è·å–èŠ‚ç‚¹
+* @param id éœ€è¦è·å–çš„èŠ‚ç‚¹ ID
+* @return å¯¹åº”çš„åœºæ™¯èŠ‚ç‚¹ï¼Œè‹¥æ— å¯¹åº”çš„åœºæ™¯èŠ‚ç‚¹ï¼Œåˆ™ä¸ºç©º
 */
 CSceneNode* CSceneManager::GetNodeById(int id) {
 	map<string, CSceneNode*>::iterator iter = m_mapSceneNode.begin();
@@ -267,9 +267,9 @@ CSceneNode* CSceneManager::GetNodeById(int id) {
 }
 
 /**
-* Í¨¹ıÃû³Æ»ñÈ¡½Úµã
-* @param name ĞèÒª»ñÈ¡µÄ½ÚµãÃû³Æ
-* @return ¶ÔÓ¦µÄ³¡¾°½Úµã£¬ÈôÎŞ¶ÔÓ¦µÄ³¡¾°½Úµã£¬ÔòÎª¿Õ
+* é€šè¿‡åç§°è·å–èŠ‚ç‚¹
+* @param name éœ€è¦è·å–çš„èŠ‚ç‚¹åç§°
+* @return å¯¹åº”çš„åœºæ™¯èŠ‚ç‚¹ï¼Œè‹¥æ— å¯¹åº”çš„åœºæ™¯èŠ‚ç‚¹ï¼Œåˆ™ä¸ºç©º
 */
 CSceneNode* CSceneManager::GetNodeByName(const string& name) {
 	map<string, CSceneNode*>::iterator iter = m_mapSceneNode.find(name);
@@ -280,17 +280,17 @@ CSceneNode* CSceneManager::GetNodeByName(const string& name) {
 }
 
 /**
-* Í¨¹ıÀàĞÍ»ñÈ¡½Úµã
-* @param type ĞèÒª»ñÈ¡µÄ½ÚµãÀàĞÍ
-* @param index Ö¸¶¨Æ¥ÅäµÚ index ¸ö½Úµã
-* @param start Ö¸¶¨¸¸½Úµã£¬ÈôÎª¿Õ´ú±í¸ù½Úµã
-* @return ¶ÔÓ¦µÄ³¡¾°½Úµã£¬ÈôÎŞ¶ÔÓ¦µÄ³¡¾°½Úµã£¬ÔòÎª¿Õ
+* é€šè¿‡ç±»å‹è·å–èŠ‚ç‚¹
+* @param type éœ€è¦è·å–çš„èŠ‚ç‚¹ç±»å‹
+* @param index æŒ‡å®šåŒ¹é…ç¬¬ index ä¸ªèŠ‚ç‚¹
+* @param start æŒ‡å®šçˆ¶èŠ‚ç‚¹ï¼Œè‹¥ä¸ºç©ºä»£è¡¨æ ¹èŠ‚ç‚¹
+* @return å¯¹åº”çš„åœºæ™¯èŠ‚ç‚¹ï¼Œè‹¥æ— å¯¹åº”çš„åœºæ™¯èŠ‚ç‚¹ï¼Œåˆ™ä¸ºç©º
 */
 CSceneNode* CSceneManager::GetNodeByType(const string& type, int index, CSceneNode* start) {
 	if (!start) {
 		start = m_pRootNode;
 	}
-	// ·Çµİ¹é·½Ê½±éÀú³¡¾°Ê÷
+	// éé€’å½’æ–¹å¼éå†åœºæ™¯æ ‘
 	list<CSceneNode*> lstStack;
 	lstStack.push_back(start);
 	while(!lstStack.empty()) {
@@ -310,12 +310,12 @@ CSceneNode* CSceneManager::GetNodeByType(const string& type, int index, CSceneNo
 }
 
 /**
-* Í¨¹ıÊ°È¡ÉäÏß»ñÈ¡½Úµã
-* @param ray Ê°È¡ÉäÏß
-* @param hit »ñÈ¡µ½µÄ³¡¾°½ÚµãÓëÉäÏßµÄ½»µã
-* @param mesh »ñÈ¡µ½µÄÓëÉäÏßÏà½»µÄ½ÚµãÍø¸ñ
-* @param face »ñÈ¡µ½µÄÓëÉäÏßÏà½»µÄÈı½ÇĞÎ
-* @return ¶ÔÓ¦µÄ³¡¾°½Úµã£¬ÈôÎŞ¶ÔÓ¦µÄ³¡¾°½Úµã£¬ÔòÎª¿Õ
+* é€šè¿‡æ‹¾å–å°„çº¿è·å–èŠ‚ç‚¹
+* @param ray æ‹¾å–å°„çº¿
+* @param hit è·å–åˆ°çš„åœºæ™¯èŠ‚ç‚¹ä¸å°„çº¿çš„äº¤ç‚¹
+* @param mesh è·å–åˆ°çš„ä¸å°„çº¿ç›¸äº¤çš„èŠ‚ç‚¹ç½‘æ ¼
+* @param face è·å–åˆ°çš„ä¸å°„çº¿ç›¸äº¤çš„ä¸‰è§’å½¢
+* @return å¯¹åº”çš„åœºæ™¯èŠ‚ç‚¹ï¼Œè‹¥æ— å¯¹åº”çš„åœºæ™¯èŠ‚ç‚¹ï¼Œåˆ™ä¸ºç©º
 */
 CSceneNode* CSceneManager::GetNodeByRay(const CRay& ray, CVector3& hit, int* mesh, int* face) {
 	int hitMesh;
@@ -323,14 +323,14 @@ CSceneNode* CSceneManager::GetNodeByRay(const CRay& ray, CVector3& hit, int* mes
 	CVector3 hitPoint;
 	float minDistance = -1.0f;
 	CSceneNode* pPickNode = 0;
-	// ·Çµİ¹é±éÀúÊ÷
+	// éé€’å½’éå†æ ‘
 	list<CSceneNode*> lstStack;
 	lstStack.push_back(m_pRootNode);
 	while(!lstStack.empty()) {
 		CSceneNode* pNode = lstStack.back();
 		lstStack.pop_back();
 		if (pNode->m_bVisible) {
-			// ³¡¾°½ÚµãÓëÉäÏßÏà½»Çé¿ö£¬ÏÈÊ¹ÓÃ°üÎ§ºĞ¿ìËÙ²âÊÔ
+			// åœºæ™¯èŠ‚ç‚¹ä¸å°„çº¿ç›¸äº¤æƒ…å†µï¼Œå…ˆä½¿ç”¨åŒ…å›´ç›’å¿«é€Ÿæµ‹è¯•
 			if (ray.IntersectAABB(pNode->GetBoundingBox(), hitPoint)) {
 				float distance = Picking(pNode, ray, hitPoint, &hitMesh, &hitFace);
 				if (distance >= 0 && (distance < minDistance || minDistance < 0)) {
@@ -352,8 +352,8 @@ CSceneNode* CSceneManager::GetNodeByRay(const CRay& ray, CVector3& hit, int* mes
 }
 
 /**
-* »ñÈ¡¹ÜÀíµÄËùÓĞ½ÚµãÁĞ±í
-* @param nodeList ·µ»ØµÄ½ÚµãÁĞ±í
+* è·å–ç®¡ç†çš„æ‰€æœ‰èŠ‚ç‚¹åˆ—è¡¨
+* @param nodeList è¿”å›çš„èŠ‚ç‚¹åˆ—è¡¨
 */
 void CSceneManager::GetNodeList(vector<CSceneNode*>& nodeList) {
 	nodeList.clear();
@@ -372,9 +372,9 @@ void CSceneManager::GetNodeList(vector<CSceneNode*>& nodeList) {
 }
 
 /**
-* »ñÈ¡¹ÜÀíµÄÖ¸¶¨ÀàĞÍ½ÚµãÁĞ±í
-* @param type ĞèÒª»ñÈ¡µÄ½ÚµãÀàĞÍ
-* @param nodeList ·µ»ØµÄ½ÚµãÁĞ±í
+* è·å–ç®¡ç†çš„æŒ‡å®šç±»å‹èŠ‚ç‚¹åˆ—è¡¨
+* @param type éœ€è¦è·å–çš„èŠ‚ç‚¹ç±»å‹
+* @param nodeList è¿”å›çš„èŠ‚ç‚¹åˆ—è¡¨
 */
 void CSceneManager::GetNodeList(const string& type, vector<CSceneNode*>& nodeList) {
 	nodeList.clear();
@@ -395,8 +395,8 @@ void CSceneManager::GetNodeList(const string& type, vector<CSceneNode*>& nodeLis
 }
 
 /**
-* Í³¼ÆÍø¸ñÊıÁ¿
-* @return Íø¸ñ¶ÔÏóÍ³¼ÆĞÅÏ¢
+* ç»Ÿè®¡ç½‘æ ¼æ•°é‡
+* @return ç½‘æ ¼å¯¹è±¡ç»Ÿè®¡ä¿¡æ¯
 */
 int CSceneManager::GetMeshCount() {
 	int meshCount = 0;
@@ -410,8 +410,8 @@ int CSceneManager::GetMeshCount() {
 }
 
 /**
-* Í³¼ÆÈı½ÇĞÎ¸öÊı
-* @return Èı½ÇĞÎÍ³¼ÆĞÅÏ¢
+* ç»Ÿè®¡ä¸‰è§’å½¢ä¸ªæ•°
+* @return ä¸‰è§’å½¢ç»Ÿè®¡ä¿¡æ¯
 */
 int CSceneManager::GetTriangleCount() {
 	int triangleCount = 0;
@@ -425,8 +425,8 @@ int CSceneManager::GetTriangleCount() {
 }
 
 /**
-* Í³¼Æ¶¥µã¸öÊı
-* @return ¶¥µãÍ³¼ÆĞÅÏ¢
+* ç»Ÿè®¡é¡¶ç‚¹ä¸ªæ•°
+* @return é¡¶ç‚¹ç»Ÿè®¡ä¿¡æ¯
 */
 int CSceneManager::GetVertexCount() {
 	int vertexCount = 0;
@@ -440,16 +440,16 @@ int CSceneManager::GetVertexCount() {
 }
 
 /**
-* µİ¹é¸üĞÂ×Ó³¡¾°½Úµã
-* @param parent ¸¸½Úµã
-* @param dt Ê±¼ä²½³¤
+* é€’å½’æ›´æ–°å­åœºæ™¯èŠ‚ç‚¹
+* @param parent çˆ¶èŠ‚ç‚¹
+* @param dt æ—¶é—´æ­¥é•¿
 */
 void CSceneManager::UpdateAll(CSceneNode* parent, float dt) {
 	list<CSceneNode*>::iterator iter = parent->m_lstChildren.begin();
 	while (iter != parent->m_lstChildren.end()) {
 		CSceneNode* pSceneNode = *iter;
 		if (pSceneNode->m_bEnabled) {
-			// ÏÈ¸üĞÂ¸¸½Úµã
+			// å…ˆæ›´æ–°çˆ¶èŠ‚ç‚¹
 			pSceneNode->Update(dt);
 			UpdateAll(pSceneNode, dt);
 		}
@@ -458,14 +458,14 @@ void CSceneManager::UpdateAll(CSceneNode* parent, float dt) {
 }
 
 /**
-* µİ¹éÒÆ³ıËùÓĞ×Ó½Úµã
-* @param parent ¸¸½Úµã
+* é€’å½’ç§»é™¤æ‰€æœ‰å­èŠ‚ç‚¹
+* @param parent çˆ¶èŠ‚ç‚¹
 */
 void CSceneManager::DeleteAll(CSceneNode* parent) {
 	list<CSceneNode*>::iterator iter = parent->m_lstChildren.begin();
 	while (iter != parent->m_lstChildren.end()) {
 		CSceneNode* pSceneNode = *iter;
-		// ÏÈÉ¾³ı×Ó½Úµã
+		// å…ˆåˆ é™¤å­èŠ‚ç‚¹
 		DeleteAll(pSceneNode);
 		pSceneNode->Destroy();
 		delete pSceneNode;
@@ -475,22 +475,22 @@ void CSceneManager::DeleteAll(CSceneNode* parent) {
 }
 
 /**
-* Ê¹ÓÃÉäÏß¶Ô³¡¾°½ÚµãµÄÍø¸ñÈı½ÇĞÎÑ¡Ôñ
-* @param node ĞèÒª²âÊÔµÄ³¡¾°½Úµã
-* @param ray Ê°È¡ÉäÏß
-* @param hit ÉäÏßÓë½ÚµãµÄ½»µã
-* @param mesh Ïà½»µÄÍø¸ñ
-* @param face Ïà½»µÄÈı½ÇĞÎ
-* @return ½»µã¾àÀë£¬¸ºÊı±íÊ¾²»Ïà½»
+* ä½¿ç”¨å°„çº¿å¯¹åœºæ™¯èŠ‚ç‚¹çš„ç½‘æ ¼ä¸‰è§’å½¢é€‰æ‹©
+* @param node éœ€è¦æµ‹è¯•çš„åœºæ™¯èŠ‚ç‚¹
+* @param ray æ‹¾å–å°„çº¿
+* @param hit å°„çº¿ä¸èŠ‚ç‚¹çš„äº¤ç‚¹
+* @param mesh ç›¸äº¤çš„ç½‘æ ¼
+* @param face ç›¸äº¤çš„ä¸‰è§’å½¢
+* @return äº¤ç‚¹è·ç¦»ï¼Œè´Ÿæ•°è¡¨ç¤ºä¸ç›¸äº¤
 */
 float CSceneManager::Picking(CSceneNode* node, const CRay& ray, CVector3& hit, int* mesh, int* face) {
 	CMeshData* pMeshData = node->GetMeshData();
 	if (!pMeshData) return -1.0f;
-	// ½«ÉäÏß×ª»»µ½½Úµã¾Ö²¿×ø±êÏµÏÂ
+	// å°†å°„çº¿è½¬æ¢åˆ°èŠ‚ç‚¹å±€éƒ¨åæ ‡ç³»ä¸‹
 	CRay localRay = ray;
 	CMatrix4 worldMat(node->m_cWorldMatrix);
 	localRay.Transform(worldMat.Invert());
-	// ¶ÔÃ¿¸öÍø¸ñÄÚµÄÈı½ÇĞÎ½øĞĞÏà½»²âÊÔ
+	// å¯¹æ¯ä¸ªç½‘æ ¼å†…çš„ä¸‰è§’å½¢è¿›è¡Œç›¸äº¤æµ‹è¯•
 	int meshCount = pMeshData->GetMeshCount();
 	int meshIndex, faceIndex;
 	float bu, bv;
@@ -506,7 +506,7 @@ float CSceneManager::Picking(CSceneNode* node, const CRay& ray, CVector3& hit, i
 			distance = d;
 		}
 	}
-	// ÓĞ½»µã
+	// æœ‰äº¤ç‚¹
 	if (distance >= 0) {
 		CMesh* pMesh = pMeshData->GetMesh(meshIndex);
 		float* v0 = pMesh->GetVertex(faceIndex, 0)->m_fPosition;
@@ -524,22 +524,22 @@ float CSceneManager::Picking(CSceneNode* node, const CRay& ray, CVector3& hit, i
 }
 
 /**
-* °ëÍ¸Ã÷·Ö×é½ÚµãÅÅĞò
+* åŠé€æ˜åˆ†ç»„èŠ‚ç‚¹æ’åº
 */
 void CSceneManager::SortTranslucentNode() {
-	// ÅÅĞò°ëÍ¸Ã÷³¡¾°½Úµã
+	// æ’åºåŠé€æ˜åœºæ™¯èŠ‚ç‚¹
 	list<SRenderNode>* translucentList = &m_vecRenderGroup[4].nodeList;
 	if (translucentList->empty()) return;
 	list<SRenderNode>::iterator iter = translucentList->begin();
 	list<SRenderNode>::iterator next = translucentList->begin();
 	CVector3 cameraPos = CEngine::GetGraphicsManager()->GetCamera()->m_cPosition;
-	// ¼ÆËã½ÚµãÓëÉãÏñ»úµÄ¾àÀëÆ½·½
+	// è®¡ç®—èŠ‚ç‚¹ä¸æ‘„åƒæœºçš„è·ç¦»å¹³æ–¹
 	while (iter != translucentList->end()) {
 		CVector3 d = iter->sceneNode->GetWorldPosition() - cameraPos;
 		iter->distance = d[0] * d[0] + d[1] * d[1] + d[2] * d[2];
 		++iter;
 	}
-	// ´Ó´óµ½Ğ¡²åÈëÅÅĞò£¬Õë¶Ô»ù±¾ÓĞĞòÁĞ±í¾ßÓĞ×î¸ßµÄÅÅĞòĞ§ÂÊ
+	// ä»å¤§åˆ°å°æ’å…¥æ’åºï¼Œé’ˆå¯¹åŸºæœ¬æœ‰åºåˆ—è¡¨å…·æœ‰æœ€é«˜çš„æ’åºæ•ˆç‡
 	iter = translucentList->begin();
 	while (++next != translucentList->end()) {
 		if (iter->distance < next->distance) {
@@ -563,8 +563,8 @@ void CSceneManager::SortTranslucentNode() {
 }
 
 /**
-* ÆÁÄ»½ÚµãÅÅĞò
-* @remark °´ position.z µÄÖµ´ÓĞ¡µ½´óÅÅĞò
+* å±å¹•èŠ‚ç‚¹æ’åº
+* @remark æŒ‰ position.z çš„å€¼ä»å°åˆ°å¤§æ’åº
 */
 void CSceneManager::SortScreenNode() {
 	if (m_lstScreenNode.empty()) return;
@@ -600,17 +600,17 @@ void CSceneManager::SortScreenNode() {
 }
 
 /**
-* ³õÊ¼»¯äÖÈ¾·Ö×é
+* åˆå§‹åŒ–æ¸²æŸ“åˆ†ç»„
 */
 void CSceneManager::SetupRenderGroup() {
-	// ³õÊ¼»¯äÖÈ¾·Ö×é£¬ÅÅÔÚÇ°ÃæµÄÓÅÏÈäÖÈ¾
+	// åˆå§‹åŒ–æ¸²æŸ“åˆ†ç»„ï¼Œæ’åœ¨å‰é¢çš„ä¼˜å…ˆæ¸²æŸ“
 	m_vecRenderGroup.push_back(SRenderGroup("opaque"));
 	m_vecRenderGroup.push_back(SRenderGroup("decal"));
 	m_vecRenderGroup.push_back(SRenderGroup("sky"));
 	m_vecRenderGroup.push_back(SRenderGroup("water"));
 	m_vecRenderGroup.push_back(SRenderGroup("translucent"));
 	m_vecRenderGroup.push_back(SRenderGroup("overlay"));
-	// ÏµÍ³ÄÚÖÃ×ÅÉ«Æ÷ÁĞ±í
+	// ç³»ç»Ÿå†…ç½®ç€è‰²å™¨åˆ—è¡¨
 	CShaderManager* pShaderMgr = CEngine::GetShaderManager();
 	m_vecShaderList.push_back(pShaderMgr->GetShader("default"));
 	m_vecShaderList.push_back(pShaderMgr->GetShader("light"));
@@ -623,7 +623,7 @@ void CSceneManager::SetupRenderGroup() {
 	m_vecShaderList.push_back(pShaderMgr->GetShader("flame"));
 	m_vecShaderList.push_back(pShaderMgr->GetShader("blast"));
 	m_vecShaderList.push_back(pShaderMgr->GetShader("water"));
-	// ³¡¾°½ÚµãÀàĞÍ¼¯ºÏ (group_index, shader_index, render_depth)
+	// åœºæ™¯èŠ‚ç‚¹ç±»å‹é›†åˆ (group_index, shader_index, render_depth)
 	m_mapRenderType.insert(std::pair<string, SRenderType>("animation", SRenderType(0, 3, true)));
 	m_mapRenderType.insert(std::pair<string, SRenderType>("axis", SRenderType(0, 1, false)));
 	m_mapRenderType.insert(std::pair<string, SRenderType>("blast", SRenderType(4, 9, false)));

@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CCameraGeographic.h"
@@ -14,7 +14,7 @@
 #endif
 
 /**
-* ¹¹Ôìº¯Êı
+* æ„é€ å‡½æ•°
 */
 CCameraGeographic::CCameraGeographic() {
 	m_fDamping = 5.0f;
@@ -30,7 +30,7 @@ CCameraGeographic::CCameraGeographic() {
 }
 
 /**
-* »ñÈ¡Ïà»úÃû³Æ
+* è·å–ç›¸æœºåç§°
 * @return geographic
 */
 const char* CCameraGeographic::GetName() const {
@@ -38,7 +38,7 @@ const char* CCameraGeographic::GetName() const {
 }
 
 /**
-* ¿ØÖÆĞÅÏ¢ÊäÈë
+* æ§åˆ¶ä¿¡æ¯è¾“å…¥
 */
 void CCameraGeographic::Input(CInputManager::SInput* input) {
 	if (!m_bControlAttached) return;
@@ -63,7 +63,7 @@ void CCameraGeographic::Input(CInputManager::SInput* input) {
 }
 
 /**
-* ÉèÖÃÏà»ú¸ß¶È
+* è®¾ç½®ç›¸æœºé«˜åº¦
 */
 void CCameraGeographic::SetHeight(float height) {
 	float distance = m_fDistanceInAdvance * cosf(m_fPitchInAdvance);
@@ -74,7 +74,7 @@ void CCameraGeographic::SetHeight(float height) {
 }
 
 /**
-* ÉèÖÃÏà»úÎ»ÖÃ
+* è®¾ç½®ç›¸æœºä½ç½®
 */
 void CCameraGeographic::SetPosition(const CVector3& pos) {
 	CVector3 position = pos;
@@ -88,7 +88,7 @@ void CCameraGeographic::SetPosition(const CVector3& pos) {
 		if (right.DotProduct(right) < 0.001f) right = direction.Tangent();
 		CVector3 up = right.Normalize().CrossProduct(direction);
 		GetYawPitchRoll(direction, up, &m_fYawInAdvance, &m_fPitchInAdvance, 0);
-		// ¸©Ñö½ÇĞı×ª½ÇÏŞÖÆÔÚ -89¡ã µ½ 0¡ãÖ®¼ä
+		// ä¿¯ä»°è§’æ—‹è½¬è§’é™åˆ¶åœ¨ -89Â° åˆ° 0Â°ä¹‹é—´
 		const float pitchMin = -1.553343f;
 		if (m_fPitchInAdvance < pitchMin) m_fPitchInAdvance = pitchMin;
 		else if (m_fPitchInAdvance > 0.0f) m_fPitchInAdvance = 0.0f;
@@ -96,64 +96,64 @@ void CCameraGeographic::SetPosition(const CVector3& pos) {
 }
 
 /**
-* ÉèÖÃÏà»ú·½Î»
+* è®¾ç½®ç›¸æœºæ–¹ä½
 */
 void CCameraGeographic::SetAngle(float yaw, float pitch, float roll) {
 	m_fYawInAdvance = yaw;
 	m_fPitchInAdvance = pitch;
-	// ÏŞÖÆ·½Î»½ÇÔÚ [0, 2PI) ·¶Î§ÄÚ
+	// é™åˆ¶æ–¹ä½è§’åœ¨ [0, 2PI) èŒƒå›´å†…
 	const float PI2 = 6.283185307f;
 	float theta = fmodf(m_fYawInAdvance - m_fYaw, PI2);
 	m_fYawInAdvance = fmodf(m_fYawInAdvance, PI2);
 	if (m_fYawInAdvance < 0) m_fYawInAdvance += PI2;
 	m_fYaw = m_fYawInAdvance - theta;
-	// ¸©Ñö½ÇĞı×ª½ÇÏŞÖÆÔÚ -89¡ã µ½ 0¡ãÖ®¼ä
+	// ä¿¯ä»°è§’æ—‹è½¬è§’é™åˆ¶åœ¨ -89Â° åˆ° 0Â°ä¹‹é—´
 	const float pitchMin = -1.553343f;
 	if (m_fPitchInAdvance < pitchMin) m_fPitchInAdvance = pitchMin;
 	else if (m_fPitchInAdvance > 0.0f) m_fPitchInAdvance = 0.0f;
 }
 
 /**
-* ÉèÖÃÏà»úÄ¿±ê
+* è®¾ç½®ç›¸æœºç›®æ ‡
 */
 void CCameraGeographic::SetTarget(const CVector3& pos) {
 	m_cTargetInAdvance = pos;
 }
 
 /**
-* ¸üĞÂÏà»ú
+* æ›´æ–°ç›¸æœº
 */
 void CCameraGeographic::Update(float dt) {
 	dt *= m_fDamping;
 	if (dt > 1.0f) dt = 1.0f;
-	// ²åÖµ¼ÆËã
+	// æ’å€¼è®¡ç®—
 	m_fYaw += (m_fYawInAdvance - m_fYaw) * dt;
 	m_fPitch += (m_fPitchInAdvance - m_fPitch) * dt;
 	m_fDistance += (m_fDistanceInAdvance - m_fDistance) * dt;
 	m_cTargetPos += (m_cTargetInAdvance - m_cTargetPos) * dt;
-	// ¼ÆËãÏà»ú²ÎÊı
+	// è®¡ç®—ç›¸æœºå‚æ•°
 	GetLookVecUpVec(m_fYaw, m_fPitch, m_fRoll, m_cLookVector, m_cUpVector);
 	m_cPosition = m_cTargetPos - m_cLookVector * m_fDistance;
 	CCamera::Update(dt);
 }
 
 /**
-* ÉèÖÃ×èÄáÏµÊı
-* @param k ×èÄáÏµÊı£¬Ô½´ó¹ßĞÔ±íÏÖÔ½Ğ¡
+* è®¾ç½®é˜»å°¼ç³»æ•°
+* @param k é˜»å°¼ç³»æ•°ï¼Œè¶Šå¤§æƒ¯æ€§è¡¨ç°è¶Šå°
 */
 void CCameraGeographic::SetDamping(float k) {
 	m_fDamping = k;
 }
 
 /**
-* ÉèÖÃÏà»ú¾àÀëÄ¿±ê×î½ü¾àÀë
+* è®¾ç½®ç›¸æœºè·ç¦»ç›®æ ‡æœ€è¿‘è·ç¦»
 */
 void CCameraGeographic::SetMinDistance(float distance) {
 	m_fMinDistance = distance;
 }
 
 /**
-* ÉèÖÃÏà»ú¾àÀëÄ¿±ê×îÔ¶¾àÀë
+* è®¾ç½®ç›¸æœºè·ç¦»ç›®æ ‡æœ€è¿œè·ç¦»
 */
 void CCameraGeographic::SetMaxDistance(float distance) {
 	m_fMaxDistance = distance;

@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CSCENENODEDECAL_H_
@@ -10,43 +10,43 @@
 #include "CPlane.h"
 
 /**
-* @brief Ìù»¨³¡¾°½Úµã
-* @attention ĞèÒªÖ¸¶¨¸¸½Úµã£¬Ìù»¨½«ÔÚ¸¸½ÚµãÉÏ½øĞĞ
+* @brief è´´èŠ±åœºæ™¯èŠ‚ç‚¹
+* @attention éœ€è¦æŒ‡å®šçˆ¶èŠ‚ç‚¹ï¼Œè´´èŠ±å°†åœ¨çˆ¶èŠ‚ç‚¹ä¸Šè¿›è¡Œ
 */
 class AVATAR_EXPORT CSceneNodeDecal: public CSceneNode {
 public:
-	//! ¹¹Ôì·½·¨
+	//! æ„é€ æ–¹æ³•
 	CSceneNodeDecal(const string& name, const string& texture, const CMatrix4& proj);
 
-	//! ³õÊ¼»¯³¡¾°½Úµã
+	//! åˆå§‹åŒ–åœºæ™¯èŠ‚ç‚¹
 	virtual bool Init();
-	//! Ïú»Ù³¡¾°½Úµã
+	//! é”€æ¯åœºæ™¯èŠ‚ç‚¹
 	virtual void Destroy();
-	//! äÖÈ¾³¡¾°½Úµã
+	//! æ¸²æŸ“åœºæ™¯èŠ‚ç‚¹
 	virtual void Render();
-	//! ¸üĞÂ±ä»»¾ØÕó
+	//! æ›´æ–°å˜æ¢çŸ©é˜µ
 	virtual void Transform();
 
 private:
-	//! ¼ÆËãÌù»¨Í¶Ó°ÊÓ¾°Ìå
+	//! è®¡ç®—è´´èŠ±æŠ•å½±è§†æ™¯ä½“
 	void SetupFrustum();
-	//! Éú³ÉÌù»¨Íø¸ñ
+	//! ç”Ÿæˆè´´èŠ±ç½‘æ ¼
 	void UpdateMesh();
-	//! ÇóÈı½ÇĞÎÔÚÍ¶Ó°¿òÄÚµÄ½»µã
+	//! æ±‚ä¸‰è§’å½¢åœ¨æŠ•å½±æ¡†å†…çš„äº¤ç‚¹
 	int IntersectWithFrustum(const CVector3& p1, const CVector3& p2, const CVector3& p3, float* result);
 
 private:
-	//! Íø¸ñÎÆÀí
+	//! ç½‘æ ¼çº¹ç†
 	string m_strTexture;
-	//! Ìù»¨Í¶Ó°¾ØÕó
+	//! è´´èŠ±æŠ•å½±çŸ©é˜µ
 	CMatrix4 m_cDecalMatrix;
-	//! Ìù»¨Í¶Ó°¹¹³ÉµÄÊÓ¾°Ìå(ÊÀ½ç×ø±êÏµ)
+	//! è´´èŠ±æŠ•å½±æ„æˆçš„è§†æ™¯ä½“(ä¸–ç•Œåæ ‡ç³»)
 	CFrustum m_cDecalFrustum;
-	//! Ìù»¨Í¶Ó°ÊÓ¾°Ìå6²Ã¼ôÆ½Ãæ
+	//! è´´èŠ±æŠ•å½±è§†æ™¯ä½“6è£å‰ªå¹³é¢
 	CPlane m_cClipPlane[6];
-	//! Ìù»¨ÎÆÀíÍ¶Ó°¾ØÕó
+	//! è´´èŠ±çº¹ç†æŠ•å½±çŸ©é˜µ
 	CMatrix4 m_cTexCoordProj;
-	//! Íø¸ñ¶ÔÏó
+	//! ç½‘æ ¼å¯¹è±¡
 	CMesh* m_pMesh;
 };
 

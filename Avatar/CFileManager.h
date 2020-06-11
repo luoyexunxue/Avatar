@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CFILEMANAGER_H_
@@ -11,51 +11,51 @@ using std::string;
 using std::vector;
 
 /**
-* @brief ÎÄ¼ş¹ÜÀíÆ÷
+* @brief æ–‡ä»¶ç®¡ç†å™¨
 */
 class AVATAR_EXPORT CFileManager {
 public:
-	//! »ñÈ¡¹ÜÀíÆ÷ÊµÀı
+	//! è·å–ç®¡ç†å™¨å®ä¾‹
 	static CFileManager* GetInstance() {
 		if (m_pInstance) return m_pInstance;
 		m_pInstance = new CFileManager();
 		return m_pInstance;
 	}
-	//! ÊµÀıÏú»Ù
+	//! å®ä¾‹é”€æ¯
 	void Destroy();
 
 public:
-	//! »ñÈ¡³ÌĞòÂ·¾¶£¬°üº¬'/'
+	//! è·å–ç¨‹åºè·¯å¾„ï¼ŒåŒ…å«'/'
 	static string GetAppDirectory();
-	//! »ñÈ¡ÎÄ¼şÀ©Õ¹Ãû£¬²»°üº¬'.'
+	//! è·å–æ–‡ä»¶æ‰©å±•åï¼Œä¸åŒ…å«'.'
 	static string GetExtension(const string& path);
-	//! »ñÈ¡ÎÄ¼şÂ·¾¶£¬°üº¬'/'
+	//! è·å–æ–‡ä»¶è·¯å¾„ï¼ŒåŒ…å«'/'
 	static string GetDirectory(const string& path);
-	//! »ñÈ¡ÎÄ¼şÃû³Æ
+	//! è·å–æ–‡ä»¶åç§°
 	static string GetFileName(const string& path, bool withExt);
-	//! ¼ì²éÊÇ·ñÊÇÈ«Â·¾¶
+	//! æ£€æŸ¥æ˜¯å¦æ˜¯å…¨è·¯å¾„
 	static bool IsFullPath(const string& path);
 
-	//! ÉèÖÃ×ÊÔ´Ä¿Â¼
+	//! è®¾ç½®èµ„æºç›®å½•
 	void SetDataDirectory(const string& directory);
-	//! »ñÈ¡×ÊÔ´Ä¿Â¼
+	//! è·å–èµ„æºç›®å½•
 	string GetDataDirectory();
-	//! ¼ì²éÄ¿Â¼ÊÇ·ñ´æÔÚ
+	//! æ£€æŸ¥ç›®å½•æ˜¯å¦å­˜åœ¨
 	bool DirectoryExists(const string& directory);
-	//! ´´½¨Ä¿Â¼
+	//! åˆ›å»ºç›®å½•
 	bool DirectoryCreate(const string& directory);
-	//! ¼ì²éÎÄ¼şÊÇ·ñ´æÔÚ
+	//! æ£€æŸ¥æ–‡ä»¶æ˜¯å¦å­˜åœ¨
 	bool FileExists(const string& filename);
-	//! »ñÈ¡ÎÄ¼ş´óĞ¡
+	//! è·å–æ–‡ä»¶å¤§å°
 	unsigned int FileSize(const string& filename);
-	//! »ñÈ¡Â·¾¶ÏÂËùÓĞÎÄ¼ş
+	//! è·å–è·¯å¾„ä¸‹æ‰€æœ‰æ–‡ä»¶
 	void GetFileList(const string& directory, vector<string>& file);
 
 public:
-	//! Ö§³ÖµÄÎÄ¼şÀàĞÍ
+	//! æ”¯æŒçš„æ–‡ä»¶ç±»å‹
 	enum FileType { BIN, TXT, BMP, TGA, PNG, JPG, WAV, MP3 };
 
-	//! ÎÄ¼şÀà
+	//! æ–‡ä»¶ç±»
 	class CFile {
 	public:
 		FileType type;
@@ -67,21 +67,21 @@ public:
 		virtual ~CFile() { if (contents) delete[] contents; }
 	};
 
-	//! ¶ş½øÖÆÎÄ¼ş
+	//! äºŒè¿›åˆ¶æ–‡ä»¶
 	class CBinaryFile: public CFile {
 	public:
 		CBinaryFile(): CFile(BIN) {}
 		CBinaryFile(unsigned int size): CFile(size, BIN) {}
 	};
 
-	//! ÎÄ±¾ÎÄ¼ş
+	//! æ–‡æœ¬æ–‡ä»¶
 	class CTextFile: public CFile {
 	public:
 		CTextFile(): CFile(TXT) {}
 		CTextFile(unsigned int size): CFile(size + 1, TXT) {}
 	};
 
-	//! Í¼Æ¬ÎÄ¼ş
+	//! å›¾ç‰‡æ–‡ä»¶
 	class CImageFile: public CFile {
 	public:
 		int channels;
@@ -91,7 +91,7 @@ public:
 		CImageFile(unsigned int size, FileType type): CFile(size, type), channels(0), width(0), height(0) {}
 	};
 
-	//! ÒôÆµÎÄ¼ş
+	//! éŸ³é¢‘æ–‡ä»¶
 	class CAudioFile: public CFile {
 	public:
 		int channels;
@@ -102,20 +102,20 @@ public:
 	};
 
 public:
-	//! ÎÄ¼ş¶Á²Ù×÷
+	//! æ–‡ä»¶è¯»æ“ä½œ
 	bool ReadFile(const string& filename, CFile* file);
-	//! ÎÄ¼ş¶Á²Ù×÷
+	//! æ–‡ä»¶è¯»æ“ä½œ
 	bool ReadFile(unsigned char* buffer, unsigned int size, CFile* file);
-	//! ÎÄ¼şĞ´²Ù×÷
+	//! æ–‡ä»¶å†™æ“ä½œ
 	int WriteFile(CFile* file, const string& filename);
-	//! ÎÄ¼şĞ´²Ù×÷
+	//! æ–‡ä»¶å†™æ“ä½œ
 	int WriteFile(CFile* file, unsigned char* buffer, unsigned int size);
 
 private:
 	CFileManager();
 	~CFileManager();
 
-	//! ½âÎö¸÷ÖÖÎÄ¼ş·½·¨
+	//! è§£æå„ç§æ–‡ä»¶æ–¹æ³•
 	bool ParseBinFile(CFile* file, unsigned char* data, unsigned int size);
 	bool ParseTxtFile(CFile* file, unsigned char* data, unsigned int size);
 	bool ParseBmpFile(CFile* file, unsigned char* data, unsigned int size);
@@ -125,7 +125,7 @@ private:
 	bool ParseWavFile(CFile* file, unsigned char* data, unsigned int size);
 	bool ParseMp3File(CFile* file, unsigned char* data, unsigned int size);
 
-	//! ¸÷ÖÖÎÄµµµÄĞòÁĞ»¯
+	//! å„ç§æ–‡æ¡£çš„åºåˆ—åŒ–
 	bool SerializeBinFile(CFile* file, unsigned char** data, unsigned int* size);
 	bool SerializeTxtFile(CFile* file, unsigned char** data, unsigned int* size);
 	bool SerializeBmpFile(CFile* file, unsigned char** data, unsigned int* size);
@@ -136,7 +136,7 @@ private:
 	bool SerializeMp3File(CFile* file, unsigned char** data, unsigned int* size);
 
 private:
-	//! Êı¾İÄ¿Â¼¶¨Òå
+	//! æ•°æ®ç›®å½•å®šä¹‰
 	typedef struct _SDirectory {
 		string path;
 		bool isCompressed;
@@ -144,13 +144,13 @@ private:
 	} SDirectory;
 
 private:
-	//! µ±Ç°ÎÄ¼şÄ¿Â¼
+	//! å½“å‰æ–‡ä»¶ç›®å½•
 	SDirectory* m_pCurrentDirectory;
-	//! URL ÇëÇó½Ó¿Ú
+	//! URL è¯·æ±‚æ¥å£
 	class CUrlConnection* m_pUrlConnection;
-	//! ZIP ¶ÁÈ¡½Ó¿Ú
+	//! ZIP è¯»å–æ¥å£
 	class CZipReader* m_pZipReader;
-	//! ÊµÀı
+	//! å®ä¾‹
 	static CFileManager* m_pInstance;
 };
 

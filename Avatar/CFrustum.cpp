@@ -1,12 +1,12 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CFrustum.h"
 #include <cmath>
 
 /**
-* Ä¬ÈÏ¹¹Ôìº¯Êı
+* é»˜è®¤æ„é€ å‡½æ•°
 */
 CFrustum::CFrustum() {
 	for (int i = 0; i < 6; i++) {
@@ -18,7 +18,7 @@ CFrustum::CFrustum() {
 }
 
 /**
-* ¸´ÖÆ¹¹Ôìº¯Êı
+* å¤åˆ¶æ„é€ å‡½æ•°
 */
 CFrustum::CFrustum(const CFrustum& frustum) {
 	for (int i = 0; i < 6; i++) {
@@ -30,7 +30,7 @@ CFrustum::CFrustum(const CFrustum& frustum) {
 }
 
 /**
-* ÓÉ6Æ½Ãæ·½³Ì²ÎÊıÊı×é¹¹ÔìÊÓ¾°Ìå
+* ç”±6å¹³é¢æ–¹ç¨‹å‚æ•°æ•°ç»„æ„é€ è§†æ™¯ä½“
 */
 CFrustum::CFrustum(const float frustum[6][4]) {
 	for (int i = 0; i < 6; i++) {
@@ -42,18 +42,18 @@ CFrustum::CFrustum(const float frustum[6][4]) {
 }
 
 /**
-* ÓÉÊÓÍ¼Í¶Ó°¾ØÕó¹¹Ôì
+* ç”±è§†å›¾æŠ•å½±çŸ©é˜µæ„é€ 
 */
 CFrustum::CFrustum(const CMatrix4& clipMat) {
 	FromViewProj(clipMat);
 }
 
 /**
-* À©Õ¹ÊÓ¾°Ìå
-* @param horizontal Ë®Æ½À©Õ¹¾àÀë
-* @param vertical ´¹Ö±À©Õ¹¾àÀë
-* @param depth Ç°ºóÀ©Õ¹¾àÀë
-* @return À©Õ¹ºóµÄÊÓ¾°ÌåÒıÓÃ
+* æ‰©å±•è§†æ™¯ä½“
+* @param horizontal æ°´å¹³æ‰©å±•è·ç¦»
+* @param vertical å‚ç›´æ‰©å±•è·ç¦»
+* @param depth å‰åæ‰©å±•è·ç¦»
+* @return æ‰©å±•åçš„è§†æ™¯ä½“å¼•ç”¨
 */
 CFrustum& CFrustum::Enlarge(float horizontal, float vertical, float depth) {
 	CVector3 normal1(m_fPlane[0]);
@@ -72,7 +72,7 @@ CFrustum& CFrustum::Enlarge(float horizontal, float vertical, float depth) {
 }
 
 /**
-* ÓÉÊÓÍ¼Í¶Ó°¾ØÕó¼ÆËã
+* ç”±è§†å›¾æŠ•å½±çŸ©é˜µè®¡ç®—
 */
 CFrustum& CFrustum::FromViewProj(const CMatrix4& viewProj) {
 	for (unsigned int i = 0; i < 6; i++) {
@@ -92,9 +92,9 @@ CFrustum& CFrustum::FromViewProj(const CMatrix4& viewProj) {
 }
 
 /**
-* ¼ì²âµãÊÇ·ñÔÚÊÓ¾°ÌåÖĞ
-* @param point ²âÊÔµÄµãÎ»ÖÃ
-* @return ÈôµãÔÚÊÓ¾°ÌåÖĞ£¬Ôò·µ»Ø true
+* æ£€æµ‹ç‚¹æ˜¯å¦åœ¨è§†æ™¯ä½“ä¸­
+* @param point æµ‹è¯•çš„ç‚¹ä½ç½®
+* @return è‹¥ç‚¹åœ¨è§†æ™¯ä½“ä¸­ï¼Œåˆ™è¿”å› true
 */
 bool CFrustum::IsContain(const CVector3& point) const {
 	for (int i = 0; i < 6; i++) {
@@ -110,10 +110,10 @@ bool CFrustum::IsContain(const CVector3& point) const {
 }
 
 /**
-* ÅĞ¶ÏÇòÊÇ·ñÔÚÊÓ¾°ÌåÄÚ
-* @param center ÇòÌåÖĞĞÄÎ»ÖÃ
-* @param radius ÇòÌå°ë¾¶
-* @return ÈôÇòÔÚÊÓ¾°ÌåÖĞ£¬Ôò·µ»Ø true
+* åˆ¤æ–­çƒæ˜¯å¦åœ¨è§†æ™¯ä½“å†…
+* @param center çƒä½“ä¸­å¿ƒä½ç½®
+* @param radius çƒä½“åŠå¾„
+* @return è‹¥çƒåœ¨è§†æ™¯ä½“ä¸­ï¼Œåˆ™è¿”å› true
 */
 bool CFrustum::IsSphereInside(const CVector3& center, float radius) const {
 	for (int i = 0; i < 6; i++) {
@@ -129,15 +129,15 @@ bool CFrustum::IsSphereInside(const CVector3& center, float radius) const {
 }
 
 /**
-* ÅĞ¶Ï°üÎ§ºĞÊÇ·ñÔÚÊÓ¾°ÌåÄÚ
-* @param aabb ²âÊÔµÄ AABB °üÎ§ºĞ
-* @return Èô°üÎ§ºĞÔÚÊÓ¾°ÌåÖĞ£¬Ôò·µ»Ø true
+* åˆ¤æ–­åŒ…å›´ç›’æ˜¯å¦åœ¨è§†æ™¯ä½“å†…
+* @param aabb æµ‹è¯•çš„ AABB åŒ…å›´ç›’
+* @return è‹¥åŒ…å›´ç›’åœ¨è§†æ™¯ä½“ä¸­ï¼Œåˆ™è¿”å› true
 */
 bool CFrustum::IsAABBInside(const CBoundingBox& aabb) const {
-	// ÎŞĞ§°üÎ§ºĞÖ±½Ó·µ»Ø
+	// æ— æ•ˆåŒ…å›´ç›’ç›´æ¥è¿”å›
 	if (!aabb.IsValid()) return false;
 	for (int i = 0; i < 6; i++) {
-		// ¸ù¾İÆ½Ãæ·¨ÏßÅĞ¶Ï²âÊÔµã£¬±ÈÈç·¨ÏßÔÚµÚÒ»ÏóÏŞ£¬ÔòÊ¹ÓÃµã aabb.m_cMax ²âÊÔ
+		// æ ¹æ®å¹³é¢æ³•çº¿åˆ¤æ–­æµ‹è¯•ç‚¹ï¼Œæ¯”å¦‚æ³•çº¿åœ¨ç¬¬ä¸€è±¡é™ï¼Œåˆ™ä½¿ç”¨ç‚¹ aabb.m_cMax æµ‹è¯•
 		float testPoint[3] = {
 			m_fPlane[i][0] >= 0? aabb.m_cMax.m_fValue[0]: aabb.m_cMin.m_fValue[0],
 			m_fPlane[i][1] >= 0? aabb.m_cMax.m_fValue[1]: aabb.m_cMin.m_fValue[1],
@@ -155,7 +155,7 @@ bool CFrustum::IsAABBInside(const CBoundingBox& aabb) const {
 }
 
 /**
-* ÖØÔØÔËËã·û ==
+* é‡è½½è¿ç®—ç¬¦ ==
 */
 bool CFrustum::operator == (const CFrustum& frustum) const {
 	for (int i = 0; i < 6; i++) {
@@ -170,7 +170,7 @@ bool CFrustum::operator == (const CFrustum& frustum) const {
 }
 
 /**
-* ÖØÔØÔËËã·û !=
+* é‡è½½è¿ç®—ç¬¦ !=
 */
 bool CFrustum::operator != (const CFrustum& frustum) const {
 	return !(*this == frustum);

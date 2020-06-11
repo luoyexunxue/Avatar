@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CSceneNodeSound.h"
@@ -7,7 +7,7 @@
 #include "CEngine.h"
 
 /**
-* ¹¹Ôìº¯Êý
+* æž„é€ å‡½æ•°
 */
 CSceneNodeSound::CSceneNodeSound(const string& name, const string& soundFile, bool loop, bool start)
 	: CSceneNode("sound", name) {
@@ -18,7 +18,7 @@ CSceneNodeSound::CSceneNodeSound(const string& name, const string& soundFile, bo
 }
 
 /**
-* ³õÊ¼»¯³¡¾°½Úµã
+* åˆå§‹åŒ–åœºæ™¯èŠ‚ç‚¹
 */
 bool CSceneNodeSound::Init() {
 	CSoundManager* pSoundMgr = CEngine::GetSoundManager();
@@ -29,7 +29,7 @@ bool CSceneNodeSound::Init() {
 }
 
 /**
-* Ïú»Ù³¡¾°½Úµã
+* é”€æ¯åœºæ™¯èŠ‚ç‚¹
 */
 void CSceneNodeSound::Destroy() {
 	CSoundManager* pSoundMgr = CEngine::GetSoundManager();
@@ -38,20 +38,20 @@ void CSceneNodeSound::Destroy() {
 }
 
 /**
-* äÖÈ¾³¡¾°½Úµã
+* æ¸²æŸ“åœºæ™¯èŠ‚ç‚¹
 */
 void CSceneNodeSound::Render() {
 }
 
 /**
-* Âß¼­¸üÐÂ
+* é€»è¾‘æ›´æ–°
 */
 void CSceneNodeSound::Update(float dt) {
 	CEngine::GetSoundManager()->SetPosition(m_iSoundId, m_pParent->GetWorldPosition());
 }
 
 /**
-* Æô¶¯»òÍ£Ö¹²¥·Å
+* å¯åŠ¨æˆ–åœæ­¢æ’­æ”¾
 */
 void CSceneNodeSound::Play(bool enable) {
 	if (enable) CEngine::GetSoundManager()->Play(m_iSoundId);

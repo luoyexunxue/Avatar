@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CSCRIPTMANAGER_H_
@@ -18,57 +18,57 @@ using std::queue;
 typedef struct lua_State lua_State;
 
 /**
-* @brief ½Å±¾¹ÜÀíÆ÷
+* @brief è„šæœ¬ç®¡ç†å™¨
 */
 class AVATAR_EXPORT CScriptManager {
 public:
-	//! »ñÈ¡¹ÜÀíÆ÷ÊµÀı
+	//! è·å–ç®¡ç†å™¨å®ä¾‹
 	static CScriptManager* GetInstance() {
 		if (m_pInstance) return m_pInstance;
 		m_pInstance = new CScriptManager();
 		return m_pInstance;
 	}
-	//! ÊµÀıÏú»Ù
+	//! å®ä¾‹é”€æ¯
 	void Destroy();
-	//! ´ò¿ªÈë¿Ú½Å±¾
+	//! æ‰“å¼€å…¥å£è„šæœ¬
 	void OpenScript(const string& script, void* engine);
-	//! »ñÈ¡½Ó¿ÚÉÏÏÂÎÄ
+	//! è·å–æ¥å£ä¸Šä¸‹æ–‡
 	CScriptContext* GetContext(lua_State* lua);
 
-	//! ³õÊ¼»¯Íê³ÉÊÂ¼ş
+	//! åˆå§‹åŒ–å®Œæˆäº‹ä»¶
 	void OnReady();
-	//! Âß¼­¸üĞÂÊÂ¼ş
+	//! é€»è¾‘æ›´æ–°äº‹ä»¶
 	void OnUpdate(float dt);
-	//! ÒıÇæÍË³öÊÂ¼ş
+	//! å¼•æ“é€€å‡ºäº‹ä»¶
 	void OnExit();
-	//! ´°Ìå´óĞ¡¸Ä±äÊÂ¼ş
+	//! çª—ä½“å¤§å°æ”¹å˜äº‹ä»¶
 	void OnSize(int width, int height);
-	//! ÊäÈëÊÂ¼ş
+	//! è¾“å…¥äº‹ä»¶
 	void OnInput(const string& name, int value, int arg1, int arg2, int arg3);
-	//! ÊäÈëÊÂ¼ş
+	//! è¾“å…¥äº‹ä»¶
 	void OnInput(const string& name, int value, float arg1, float arg2, float arg3);
 
-	//! ½Å±¾ÃüÁî
+	//! è„šæœ¬å‘½ä»¤
 	void Script(const char* script);
-	//! ×¢²á·½·¨»Øµ÷
+	//! æ³¨å†Œæ–¹æ³•å›è°ƒ
 	void Register(const string& function, void* callback);
-	//! GUI½çÃæÊÂ¼ş
+	//! GUIç•Œé¢äº‹ä»¶
 	void GuiEvent(const string& name, int evt, int arg1, int arg2);
-	//! ÎïÀíÅö×²ÊÂ¼ş
+	//! ç‰©ç†ç¢°æ’äº‹ä»¶
 	void CollideEnter(int callback, const string& name, const CVector3& pos);
-	//! ÎïÀíÅö×²È¡ÏûÊÂ¼ş
+	//! ç‰©ç†ç¢°æ’å–æ¶ˆäº‹ä»¶
 	void CollideLeave(int callback, const string& name);
-	//! ´¦ÀíÊÂ¼ş
+	//! å¤„ç†äº‹ä»¶
 	void HandleEvent();
 
 private:
 	CScriptManager();
 	~CScriptManager();
 
-	//! ×¢²á½Å±¾µ÷ÓÃ½Ó¿Ú
+	//! æ³¨å†Œè„šæœ¬è°ƒç”¨æ¥å£
 	void RegisterInterface(lua_State* lua);
 
-	//! ÏµÍ³½Ó¿Ú
+	//! ç³»ç»Ÿæ¥å£
 	static int DoEngineInfo(lua_State* lua);
 	static int DoEngineFps(lua_State* lua);
 	static int DoEngineLog(lua_State* lua);
@@ -81,7 +81,7 @@ private:
 	static int DoEngineRead(lua_State* lua);
 	static int DoEngineWrite(lua_State* lua);
 	static int DoEnginePlugin(lua_State* lua);
-	//! GUI ½Ó¿Ú
+	//! GUI æ¥å£
 	static int DoGuiEnable(lua_State* lua);
 	static int DoGuiSize(lua_State* lua);
 	static int DoGuiScale(lua_State* lua);
@@ -89,7 +89,7 @@ private:
 	static int DoGuiModify(lua_State* lua);
 	static int DoGuiDelete(lua_State* lua);
 	static int DoGuiAttrib(lua_State* lua);
-	//! Ïà»ú½Ó¿Ú
+	//! ç›¸æœºæ¥å£
 	static int DoCameraType(lua_State* lua);
 	static int DoCameraControl(lua_State* lua);
 	static int DoCameraFov(lua_State* lua);
@@ -99,7 +99,7 @@ private:
 	static int DoCameraAngle(lua_State* lua);
 	static int DoCameraDirection(lua_State* lua);
 	static int DoCameraBind(lua_State* lua);
-	//! ³¡¾°½Úµã½Ó¿Ú
+	//! åœºæ™¯èŠ‚ç‚¹æ¥å£
 	static int DoSceneInsert(lua_State* lua);
 	static int DoSceneDelete(lua_State* lua);
 	static int DoSceneClear(lua_State* lua);
@@ -116,12 +116,12 @@ private:
 	static int DoSceneRenderMode(lua_State* lua);
 	static int DoSceneBoundingBox(lua_State* lua);
 	static int DoSceneHandle(lua_State* lua);
-	//! ºó´¦Àí½Ó¿Ú
+	//! åå¤„ç†æ¥å£
 	static int DoPostList(lua_State* lua);
 	static int DoPostEnable(lua_State* lua);
 	static int DoPostRegister(lua_State* lua);
 	static int DoPostParam(lua_State* lua);
-	//! Í¼ĞÎ½Ó¿Ú
+	//! å›¾å½¢æ¥å£
 	static int DoGraphicsScreenshot(lua_State* lua);
 	static int DoGraphicsStereo(lua_State* lua);
 	static int DoGraphicsWindowSize(lua_State* lua);
@@ -136,21 +136,21 @@ private:
 	static int DoGraphicsPickingRay(lua_State* lua);
 	static int DoGraphicsProject(lua_State* lua);
 	static int DoGraphicsRenderTarget(lua_State* lua);
-	//! ÎÆÀí½Ó¿Ú
+	//! çº¹ç†æ¥å£
 	static int DoTextureCreate(lua_State* lua);
 	static int DoTextureDelete(lua_State* lua);
 	static int DoTextureUpdate(lua_State* lua);
-	//! ×ÅÉ«Æ÷½Ó¿Ú
+	//! ç€è‰²å™¨æ¥å£
 	static int DoShaderCreate(lua_State* lua);
 	static int DoShaderDelete(lua_State* lua);
 	static int DoShaderUpdate(lua_State* lua);
 	static int DoShaderParam(lua_State* lua);
-	//! ×ÖÌå½Ó¿Ú
+	//! å­—ä½“æ¥å£
 	static int DoFontList(lua_State* lua);
 	static int DoFontLoad(lua_State* lua);
 	static int DoFontClear(lua_State* lua);
 	static int DoFontUse(lua_State* lua);
-	//! ÉùÒô½Ó¿Ú
+	//! å£°éŸ³æ¥å£
 	static int DoSoundCreate(lua_State* lua);
 	static int DoSoundDelete(lua_State* lua);
 	static int DoSoundPlay(lua_State* lua);
@@ -159,7 +159,7 @@ private:
 	static int DoSoundPosition(lua_State* lua);
 	static int DoSoundVolume(lua_State* lua);
 	static int DoSoundUpdate(lua_State* lua);
-	//! ÎïÀíÒıÇæ½Ó¿Ú
+	//! ç‰©ç†å¼•æ“æ¥å£
 	static int DoPhysicsBind(lua_State* lua);
 	static int DoPhysicsUnbind(lua_State* lua);
 	static int DoPhysicsCollide(lua_State* lua);
@@ -169,7 +169,7 @@ private:
 	static int DoPhysicsApplyImpulse(lua_State* lua);
 	static int DoPhysicsGravity(lua_State* lua);
 	static int DoPhysicsJoint(lua_State* lua);
-	//! ¶¯»­½Ó¿Ú
+	//! åŠ¨ç”»æ¥å£
 	static int DoAnimationParam(lua_State* lua);
 	static int DoAnimationScale(lua_State* lua);
 	static int DoAnimationRotation(lua_State* lua);
@@ -178,7 +178,7 @@ private:
 	static int DoAnimationStop(lua_State* lua);
 
 private:
-	//! GUIÊÂ¼ş¶¨Òå
+	//! GUIäº‹ä»¶å®šä¹‰
 	typedef struct _SGuiEvent {
 		int callback;
 		int event;
@@ -193,19 +193,19 @@ private:
 	} SGuiEvent;
 
 private:
-	//! Lua ĞéÄâ»ú
+	//! Lua è™šæ‹Ÿæœº
 	lua_State* m_pLuaState;
-	//! ½Å±¾½Ó¿ÚÉÏÏÂÎÄ
+	//! è„šæœ¬æ¥å£ä¸Šä¸‹æ–‡
 	CScriptContext* m_pContext;
-	//! ×Ô¶¨Òå·½·¨»Øµ÷
+	//! è‡ªå®šä¹‰æ–¹æ³•å›è°ƒ
 	map<string, void*> m_mapFunction;
-	//! GUI ½çÃæÊÂ¼ş°ó¶¨
+	//! GUI ç•Œé¢äº‹ä»¶ç»‘å®š
 	map<string, int> m_mapGuiEvent;
-	//! GUI ÊÂ¼ş¶ÓÁĞ
+	//! GUI äº‹ä»¶é˜Ÿåˆ—
 	vector<SGuiEvent> m_vecEventQueue;
-	//! ½Å±¾ÃüÁî¶ÓÁĞ
+	//! è„šæœ¬å‘½ä»¤é˜Ÿåˆ—
 	queue<string> m_queScriptQueue;
-	//! ½Å±¾¹ÜÀíÆ÷ÊµÀı
+	//! è„šæœ¬ç®¡ç†å™¨å®ä¾‹
 	static CScriptManager* m_pInstance;
 };
 

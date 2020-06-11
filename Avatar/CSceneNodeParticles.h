@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CSCENENODEPARTICLES_H_
@@ -9,32 +9,32 @@
 using std::vector;
 
 /**
-* @brief Á£×ÓÈº³¡¾°½Úµã
+* @brief ç²’å­ç¾¤åœºæ™¯èŠ‚ç‚¹
 */
 class AVATAR_EXPORT CSceneNodeParticles: public CSceneNode {
 public:
-	//! ¹¹Ôì·½·¨
+	//! æ„é€ æ–¹æ³•
 	CSceneNodeParticles(const string& name, const string& texture, float size, int count, bool dark,
 		const CColor& color, const float speed[3], float spread, float fade, bool loop);
 
-	//! ³õÊ¼»¯³¡¾°½Úµã
+	//! åˆå§‹åŒ–åœºæ™¯èŠ‚ç‚¹
 	virtual bool Init();
-	//! Ïú»Ù³¡¾°½Úµã
+	//! é”€æ¯åœºæ™¯èŠ‚ç‚¹
 	virtual void Destroy();
-	//! äÖÈ¾³¡¾°½Úµã
+	//! æ¸²æŸ“åœºæ™¯èŠ‚ç‚¹
 	virtual void Render();
-	//! ¸üĞÂ³¡¾°½Úµã
+	//! æ›´æ–°åœºæ™¯èŠ‚ç‚¹
 	virtual void Update(float dt);
 
-	//! ³õÊ¼»¯Á£×Ó
+	//! åˆå§‹åŒ–ç²’å­
 	void InitParticles(const CVector3& initSpeed, float spreadSpeed, float fadeSpeed);
 
 private:
-	//! Ëæ»úÊıÉú³Éº¯Êı
+	//! éšæœºæ•°ç”Ÿæˆå‡½æ•°
 	inline float Random();
 
 private:
-	//! Á£×Ó½á¹¹Ìå
+	//! ç²’å­ç»“æ„ä½“
 	typedef struct _SParticle {
 		bool active;
 		float fade;
@@ -45,27 +45,27 @@ private:
 	} SParticle;
 
 private:
-	//! ÊÇ·ñÑ­»·
+	//! æ˜¯å¦å¾ªç¯
 	bool m_bLoopParticles;
-	//! °µ»ìºÏÄ£Ê½
+	//! æš—æ··åˆæ¨¡å¼
 	bool m_bDarkBlendMode;
-	//! ÏûÊ§ËÙ¶È
+	//! æ¶ˆå¤±é€Ÿåº¦
 	float m_fFadeSpeed;
-	//! Á£×ÓÉä³öËÙ¶È
+	//! ç²’å­å°„å‡ºé€Ÿåº¦
 	float m_fSpreadSpeed;
-	//! Á£×Ó³õÊ¼ËÙ¶È
+	//! ç²’å­åˆå§‹é€Ÿåº¦
 	float m_fInitSpeed[3];
-	//! Á£×Ó´óĞ¡
+	//! ç²’å­å¤§å°
 	float m_fParticleSize;
-	//! Á£×Ó³õÊ¼ÑÕÉ«
+	//! ç²’å­åˆå§‹é¢œè‰²
 	float m_fParticleColor[4];
-	//! Á£×ÓÎÆÀí
+	//! ç²’å­çº¹ç†
 	string m_strTexture;
-	//! Á£×ÓÈºÍø¸ñ¶ÔÏó
+	//! ç²’å­ç¾¤ç½‘æ ¼å¯¹è±¡
 	CMesh* m_pMesh;
-	//! Á£×ÓÊı×é
+	//! ç²’å­æ•°ç»„
 	vector<SParticle> m_vecParticles;
-	//! Á£×ÓÅÅĞòË÷Òı
+	//! ç²’å­æ’åºç´¢å¼•
 	size_t* m_pSortIndex;
 };
 

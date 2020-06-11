@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÷‹» ∑Ê. All rights reserved.
+// Copyright (c) 2020 Âë®‰ªÅÈîã. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CMatrix4.h"
@@ -8,19 +8,19 @@
 #include <cmath>
 
 /**
-* æ≤Ã¨≥£¡ø
+* ÈùôÊÄÅÂ∏∏Èáè
 */
 const CMatrix4 CMatrix4::Identity;
 
 /**
-* ππ‘Ï∫Ø ˝
+* ÊûÑÈÄ†ÂáΩÊï∞
 */
 CMatrix4::CMatrix4() {
 	SetIdentity();
 }
 
 /**
-* ∏¥÷∆ππ‘Ï∫Ø ˝
+* Â§çÂà∂ÊûÑÈÄ†ÂáΩÊï∞
 */
 CMatrix4::CMatrix4(const CMatrix4& matrix) {
 	m_fValue[0] = matrix.m_fValue[0];
@@ -42,7 +42,7 @@ CMatrix4::CMatrix4(const CMatrix4& matrix) {
 }
 
 /**
-* ππ‘Ï∫Ø ˝£¨≤Œ ˝ matrix Œ™¡–”≈œ»≈≈¡–
+* ÊûÑÈÄ†ÂáΩÊï∞ÔºåÂèÇÊï∞ matrix ‰∏∫Âàó‰ºòÂÖàÊéíÂàó
 */
 CMatrix4::CMatrix4(const float matrix[16]) {
 	m_fValue[0] = matrix[0];
@@ -64,7 +64,7 @@ CMatrix4::CMatrix4(const float matrix[16]) {
 }
 
 /**
-* …Ë÷√æÿ’Û÷µ
+* ËÆæÁΩÆÁü©ÈòµÂÄº
 */
 void CMatrix4::SetValue(const CMatrix4& matrix) {
 	m_fValue[0] = matrix.m_fValue[0];
@@ -86,7 +86,7 @@ void CMatrix4::SetValue(const CMatrix4& matrix) {
 }
 
 /**
-* …Ë÷√æÿ’Û÷µ
+* ËÆæÁΩÆÁü©ÈòµÂÄº
 */
 void CMatrix4::SetValue(const float matrix[16]) {
 	m_fValue[0] = matrix[0];
@@ -108,7 +108,7 @@ void CMatrix4::SetValue(const float matrix[16]) {
 }
 
 /**
-* …Ë÷√Œ™µ•Œªæÿ’Û
+* ËÆæÁΩÆ‰∏∫Âçï‰ΩçÁü©Èòµ
 */
 CMatrix4& CMatrix4::SetIdentity() {
 	m_fValue[0] = 1.0f;
@@ -131,7 +131,7 @@ CMatrix4& CMatrix4::SetIdentity() {
 }
 
 /**
-* º∆À„ƒÊæÿ’Û
+* ËÆ°ÁÆóÈÄÜÁü©Èòµ
 */
 CMatrix4& CMatrix4::Invert() {
 	float r[16];
@@ -175,7 +175,7 @@ CMatrix4& CMatrix4::Invert() {
 }
 
 /**
-* º∆À„◊™÷√æÿ’Û
+* ËÆ°ÁÆóËΩ¨ÁΩÆÁü©Èòµ
 */
 CMatrix4& CMatrix4::Transpose() {
 	float temp;
@@ -189,8 +189,8 @@ CMatrix4& CMatrix4::Transpose() {
 }
 
 /**
-* º∆À„–±∂‘≥∆æÿ’Û
-* @note SkewSymmetric(a) * b µ»º€”⁄ a x b
+* ËÆ°ÁÆóÊñúÂØπÁß∞Áü©Èòµ
+* @note SkewSymmetric(a) * b Á≠â‰ª∑‰∫é a x b
 */
 CMatrix4& CMatrix4::SkewSymmetric(const CVector3& vector) {
 	m_fValue[0] = 0.0f;
@@ -213,8 +213,8 @@ CMatrix4& CMatrix4::SkewSymmetric(const CVector3& vector) {
 }
 
 /**
-* º∆À„±ªÀı∑≈µƒæÿ’Û
-* @param scale Àı∑≈œÚ¡ø£¨œÚ¡ø√ø∏ˆ‘™ÀÿÀı∑≈æÿ’Û√ø“ª¡–
+* ËÆ°ÁÆóË¢´Áº©ÊîæÁöÑÁü©Èòµ
+* @param scale Áº©ÊîæÂêëÈáèÔºåÂêëÈáèÊØè‰∏™ÂÖÉÁ¥†Áº©ÊîæÁü©ÈòµÊØè‰∏ÄÂàó
 */
 CMatrix4& CMatrix4::SetScaled(const CVector3& scale) {
 	m_fValue[0] *= scale.m_fValue[0];
@@ -233,7 +233,7 @@ CMatrix4& CMatrix4::SetScaled(const CVector3& scale) {
 }
 
 /**
-* Àı∑≈≤Ÿ◊˜
+* Áº©ÊîæÊìç‰Ωú
 */
 CMatrix4& CMatrix4::Scale(const CVector3& scale) {
 	m_fValue[0] *= scale.m_fValue[0];
@@ -252,7 +252,7 @@ CMatrix4& CMatrix4::Scale(const CVector3& scale) {
 }
 
 /**
-* Àı∑≈≤Ÿ◊˜
+* Áº©ÊîæÊìç‰Ωú
 */
 CMatrix4& CMatrix4::Scale(float sx, float sy, float sz) {
 	m_fValue[0] *= sx;
@@ -271,7 +271,7 @@ CMatrix4& CMatrix4::Scale(float sx, float sy, float sz) {
 }
 
 /**
-* »∆ X ÷·–˝◊™æÿ’Û
+* Áªï X ËΩ¥ÊóãËΩ¨Áü©Èòµ
 */
 CMatrix4& CMatrix4::RotateX(float angle) {
 	float sina = sinf(angle);
@@ -293,7 +293,7 @@ CMatrix4& CMatrix4::RotateX(float angle) {
 }
 
 /**
-* »∆ Y ÷·–˝◊™æÿ’Û
+* Áªï Y ËΩ¥ÊóãËΩ¨Áü©Èòµ
 */
 CMatrix4& CMatrix4::RotateY(float angle) {
 	float sina = sinf(angle);
@@ -315,7 +315,7 @@ CMatrix4& CMatrix4::RotateY(float angle) {
 }
 
 /**
-* »∆ Z ÷·–˝◊™æÿ’Û
+* Áªï Z ËΩ¥ÊóãËΩ¨Áü©Èòµ
 */
 CMatrix4& CMatrix4::RotateZ(float angle) {
 	float sina = sinf(angle);
@@ -337,7 +337,7 @@ CMatrix4& CMatrix4::RotateZ(float angle) {
 }
 
 /**
-* ∆Ω“∆≤Ÿ◊˜
+* Âπ≥ÁßªÊìç‰Ωú
 */
 CMatrix4& CMatrix4::Translate(const CVector3& pos) {
 	m_fValue[12] += pos.m_fValue[0];
@@ -347,7 +347,7 @@ CMatrix4& CMatrix4::Translate(const CVector3& pos) {
 }
 
 /**
-* ∆Ω“∆≤Ÿ◊˜
+* Âπ≥ÁßªÊìç‰Ωú
 */
 CMatrix4& CMatrix4::Translate(float dx, float dy, float dz) {
 	m_fValue[12] += dx;
@@ -357,8 +357,8 @@ CMatrix4& CMatrix4::Translate(float dx, float dy, float dz) {
 }
 
 /**
-* …˙≥…±‰ªªæÿ’Û.
-* @note ±‰ªªÀ≥–Ú 1. scale 2. rot 3. pos
+* ÁîüÊàêÂèòÊç¢Áü©Èòµ.
+* @note ÂèòÊç¢È°∫Â∫è 1. scale 2. rot 3. pos
 */
 void CMatrix4::MakeTransform(const CVector3& scale, const CMatrix4& rot, const CVector3& pos) {
 	m_fValue[0] = scale.m_fValue[0] * rot.m_fValue[0];
@@ -380,15 +380,15 @@ void CMatrix4::MakeTransform(const CVector3& scale, const CMatrix4& rot, const C
 }
 
 /**
-* …˙≥…±‰ªªæÿ’Û£¨–˝◊™”…Àƒ‘™ ˝±Ì æ.
-* @note ±‰ªªÀ≥–Ú 1. scale 2. rot 3. pos
+* ÁîüÊàêÂèòÊç¢Áü©ÈòµÔºåÊóãËΩ¨Áî±ÂõõÂÖÉÊï∞Ë°®Á§∫.
+* @note ÂèòÊç¢È°∫Â∫è 1. scale 2. rot 3. pos
 */
 void CMatrix4::MakeTransform(const CVector3& scale, const CQuaternion& rot, const CVector3& pos) {
 	MakeTransform(scale, rot.ToMatrix(), pos);
 }
 
 /**
-* º∆À„Ω¸–±∆Ω√Ê≤√ºÙÕ∂”∞æÿ’Û
+* ËÆ°ÁÆóËøëÊñúÂπ≥Èù¢Ë£ÅÂâ™ÊäïÂΩ±Áü©Èòµ
 */
 CMatrix4& CMatrix4::ObliqueNearPlaneClipping(const CMatrix4& proj, const CPlane& clip) {
 	float x = ((clip.m_fNormal[0] > 0? 1: (clip.m_fNormal[0] < 0? -1: 0)) + proj.m_fValue[8]) / proj.m_fValue[0];
@@ -397,7 +397,7 @@ CMatrix4& CMatrix4::ObliqueNearPlaneClipping(const CMatrix4& proj, const CPlane&
 	float w = (1.0f + proj.m_fValue[10]) / proj.m_fValue[14];
 	float scale = 2.0f / (clip.m_fNormal[0] * x + clip.m_fNormal[1] * y + clip.m_fNormal[2] * z + clip.m_fDistance * w);
 
-	// –ﬁ∏ƒÕ∂”∞æÿ’Ûµƒµ⁄»˝––
+	// ‰øÆÊîπÊäïÂΩ±Áü©ÈòµÁöÑÁ¨¨‰∏âË°å
 	m_fValue[0] = proj.m_fValue[0];
 	m_fValue[1] = proj.m_fValue[1];
 	m_fValue[2] = clip.m_fNormal[0] * scale;
@@ -418,7 +418,7 @@ CMatrix4& CMatrix4::ObliqueNearPlaneClipping(const CMatrix4& proj, const CPlane&
 }
 
 /**
-* º∆À„ ”Õºæÿ’Û
+* ËÆ°ÁÆóËßÜÂõæÁü©Èòµ
 */
 CMatrix4& CMatrix4::LookAt(const CVector3& pos, const CVector3& look, const CVector3& up) {
 	CVector3 right = look.CrossProduct(up);
@@ -442,7 +442,7 @@ CMatrix4& CMatrix4::LookAt(const CVector3& pos, const CVector3& look, const CVec
 }
 
 /**
-* º∆À„’˝ΩªÕ∂”∞æÿ’Û
+* ËÆ°ÁÆóÊ≠£‰∫§ÊäïÂΩ±Áü©Èòµ
 */
 CMatrix4& CMatrix4::Ortho(float width, float height, float zNear, float zFar) {
 	m_fValue[0] = 2.0f / width;
@@ -465,7 +465,7 @@ CMatrix4& CMatrix4::Ortho(float width, float height, float zNear, float zFar) {
 }
 
 /**
-* º∆À„Õ∏ ”Õ∂”∞æÿ’Û
+* ËÆ°ÁÆóÈÄèËßÜÊäïÂΩ±Áü©Èòµ
 */
 CMatrix4& CMatrix4::Perspective(float fov, float aspect, float zNear, float zFar) {
 	const float zRange = zNear - zFar;
@@ -490,21 +490,21 @@ CMatrix4& CMatrix4::Perspective(float fov, float aspect, float zNear, float zFar
 }
 
 /**
-* ÷ÿ‘ÿ‘ÀÀ„∑˚ []
+* ÈáçËΩΩËøêÁÆóÁ¨¶ []
 */
 float& CMatrix4::operator [] (int index) {
 	return m_fValue[index];
 }
 
 /**
-* ÷ÿ‘ÿ‘ÀÀ„∑˚ ()
+* ÈáçËΩΩËøêÁÆóÁ¨¶ ()
 */
 float& CMatrix4::operator () (int row, int col) {
 	return m_fValue[(col << 2) + row];
 }
 
 /**
-* ÷ÿ‘ÿ‘ÀÀ„∑˚ ==
+* ÈáçËΩΩËøêÁÆóÁ¨¶ ==
 */
 bool CMatrix4::operator == (const CMatrix4& matrix) const {
 	for (int i = 0; i < 16; i++) {
@@ -514,14 +514,14 @@ bool CMatrix4::operator == (const CMatrix4& matrix) const {
 }
 
 /**
-* ÷ÿ‘ÿ‘ÀÀ„∑˚ !=
+* ÈáçËΩΩËøêÁÆóÁ¨¶ !=
 */
 bool CMatrix4::operator != (const CMatrix4& matrix) const {
 	return !(*this == matrix);
 }
 
 /**
-* ÷ÿ‘ÿ‘ÀÀ„∑˚ +
+* ÈáçËΩΩËøêÁÆóÁ¨¶ +
 */
 CMatrix4 CMatrix4::operator + (const CMatrix4& matrix) const {
 	float mTemp[16];
@@ -532,7 +532,7 @@ CMatrix4 CMatrix4::operator + (const CMatrix4& matrix) const {
 }
 
 /**
-* ÷ÿ‘ÿ‘ÀÀ„∑˚ -
+* ÈáçËΩΩËøêÁÆóÁ¨¶ -
 */
 CMatrix4 CMatrix4::operator - (const CMatrix4& matrix) const {
 	float mTemp[16];
@@ -543,7 +543,7 @@ CMatrix4 CMatrix4::operator - (const CMatrix4& matrix) const {
 }
 
 /**
-* æÿ’Û≥À
+* Áü©Èòµ‰πò
 */
 CMatrix4 CMatrix4::operator * (const CMatrix4& matrix) const {
 	float mTemp[16];
@@ -560,7 +560,7 @@ CMatrix4 CMatrix4::operator * (const CMatrix4& matrix) const {
 }
 
 /**
-* æÿ’Û≥ÀœÚ¡ø
+* Áü©Èòµ‰πòÂêëÈáè
 */
 CVector3 CMatrix4::operator * (const CVector3& vector) const {
 	CVector3 vecOut;
@@ -575,14 +575,14 @@ CVector3 CMatrix4::operator * (const CVector3& vector) const {
 }
 
 /**
-* ≥ÀÀƒ‘™ ˝‘ÀÀ„
+* ‰πòÂõõÂÖÉÊï∞ËøêÁÆó
 */
 CQuaternion CMatrix4::operator * (const CQuaternion& rotation) const {
 	 return CQuaternion().FromMatrix(*this) * rotation;
 }
 
 /**
-* æÿ’Û≥À ˝÷µ
+* Áü©Èòµ‰πòÊï∞ÂÄº
 */
 CMatrix4 CMatrix4::operator * (float factor) const {
 	float mTemp[16];
@@ -593,7 +593,7 @@ CMatrix4 CMatrix4::operator * (float factor) const {
 }
 
 /**
-* ÷ÿ‘ÿ‘ÀÀ„∑˚ +=
+* ÈáçËΩΩËøêÁÆóÁ¨¶ +=
 */
 CMatrix4& CMatrix4::operator += (const CMatrix4& matrix) {
 	for (int i = 0; i < 16; i++) {
@@ -603,7 +603,7 @@ CMatrix4& CMatrix4::operator += (const CMatrix4& matrix) {
 }
 
 /**
-* ÷ÿ‘ÿ‘ÀÀ„∑˚ -=
+* ÈáçËΩΩËøêÁÆóÁ¨¶ -=
 */
 CMatrix4& CMatrix4::operator -= (const CMatrix4& matrix) {
 	for (int i = 0; i < 16; i++) {
@@ -613,7 +613,7 @@ CMatrix4& CMatrix4::operator -= (const CMatrix4& matrix) {
 }
 
 /**
-* æÿ’Û≥À
+* Áü©Èòµ‰πò
 */
 CMatrix4& CMatrix4::operator *= (const CMatrix4& matrix) {
 	float mTemp[16];
@@ -631,7 +631,7 @@ CMatrix4& CMatrix4::operator *= (const CMatrix4& matrix) {
 }
 
 /**
-* æÿ’Û≥À ˝÷µ
+* Áü©Èòµ‰πòÊï∞ÂÄº
 */
 CMatrix4& CMatrix4::operator *= (float factor) {
 	for (int i = 0; i < 16; i++) {

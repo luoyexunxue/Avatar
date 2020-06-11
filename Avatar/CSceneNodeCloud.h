@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CSCENENODECLOUD_H_
@@ -7,32 +7,32 @@
 #include "CSceneNode.h"
 
 /**
-* @brief ÔÆ²ã³¡¾°½Úµã
+* @brief äº‘å±‚åœºæ™¯èŠ‚ç‚¹
 */
 class AVATAR_EXPORT CSceneNodeCloud: public CSceneNode {
 public:
-	//! ¹¹Ôì·½·¨
+	//! æ„é€ æ–¹æ³•
 	CSceneNodeCloud(const string& name, const CColor& skyColor, const CColor& cloudColor, float cloudSize);
 
-	//! ³õÊ¼»¯³¡¾°½Úµã
+	//! åˆå§‹åŒ–åœºæ™¯èŠ‚ç‚¹
 	virtual bool Init();
-	//! Ïú»Ù³¡¾°½Úµã
+	//! é”€æ¯åœºæ™¯èŠ‚ç‚¹
 	virtual void Destroy();
-	//! äÖÈ¾³¡¾°½Úµã
+	//! æ¸²æŸ“åœºæ™¯èŠ‚ç‚¹
 	virtual void Render();
-	//! ¸üĞÂÂß¼­
+	//! æ›´æ–°é€»è¾‘
 	virtual void Update(float dt);
 
 private:
-	//! ÔÆ²ãÄ£ÄâÊ±¼ä
+	//! äº‘å±‚æ¨¡æ‹Ÿæ—¶é—´
 	float m_fTimeElapse;
-	//! Ìì¿ÕÑÕÉ«
+	//! å¤©ç©ºé¢œè‰²
 	CColor m_cSkyColor;
-	//! ÔÆ¶äÑÕÉ«
+	//! äº‘æœµé¢œè‰²
 	CColor m_cCloudColor;
-	//! ÔÆÍÅ´óĞ¡
+	//! äº‘å›¢å¤§å°
 	float m_fCloudSize;
-	//! ÔÆ²ãÍø¸ñ¶ÔÏó
+	//! äº‘å±‚ç½‘æ ¼å¯¹è±¡
 	CMesh* m_pMesh;
 };
 

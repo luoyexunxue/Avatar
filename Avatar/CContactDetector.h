@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CCONTACTDETECTOR_H_
@@ -8,88 +8,88 @@
 #include "CVector3.h"
 
 /**
-* @brief ½Ó´¥µã
+* @brief æ¥è§¦ç‚¹
 */
 struct SContact {
-	//! Åö×²µã
+	//! ç¢°æ’ç‚¹
 	CVector3 point;
-	//! Ö¸Ïò¸ÕÌå1µÄÅö×²·¨Ïò
+	//! æŒ‡å‘åˆšä½“1çš„ç¢°æ’æ³•å‘
 	CVector3 normal;
-	//! ÑØ¸ÕÌå2µÄÅö×²ÇĞÏò
+	//! æ²¿åˆšä½“2çš„ç¢°æ’åˆ‡å‘
 	CVector3 tangent;
-	//! ¸ÕÌå1µ½½Ó´¥µãÏòÁ¿
+	//! åˆšä½“1åˆ°æ¥è§¦ç‚¹å‘é‡
 	CVector3 rel1;
-	//! ¸ÕÌå2µ½½Ó´¥µãÏòÁ¿
+	//! åˆšä½“2åˆ°æ¥è§¦ç‚¹å‘é‡
 	CVector3 rel2;
-	//! ½Ó´¥Éî¶È(¸ºÖµ)
+	//! æ¥è§¦æ·±åº¦(è´Ÿå€¼)
 	float penetration;
 
-	//! ·¨Ïò·½ÏòÖÊÁ¿µ±Á¿
+	//! æ³•å‘æ–¹å‘è´¨é‡å½“é‡
 	float massNormal;
-	//! ÇĞÏò·½ÏòÖÊÁ¿µ±Á¿
+	//! åˆ‡å‘æ–¹å‘è´¨é‡å½“é‡
 	float massTangent;
-	//! ½Ó´¥Éî¶È²úÉúµÄËÙ¶È
+	//! æ¥è§¦æ·±åº¦äº§ç”Ÿçš„é€Ÿåº¦
 	float biasVelocity;
-	//! ·¨Ïò³åÁ¿ÀÛ»ı
+	//! æ³•å‘å†²é‡ç´¯ç§¯
 	float accumulatedNormalImpulse;
-	//! ÇĞÏò³åÁ¿ÀÛ»ı
+	//! åˆ‡å‘å†²é‡ç´¯ç§¯
 	float accumulatedTangentImpulse;
 };
 
 /**
-* @brief ¸ÕÌå½Ó´¥ĞÅÏ¢
+* @brief åˆšä½“æ¥è§¦ä¿¡æ¯
 */
 struct SArbiter {
-	//! ¸ÕÌå1
+	//! åˆšä½“1
 	CRigidBody* body1;
-	//! ¸ÕÌå2
+	//! åˆšä½“2
 	CRigidBody* body2;
-	//! »Ö¸´ÏµÊı
+	//! æ¢å¤ç³»æ•°
 	float restitution;
-	//! Ä¦²ÁÏµÊı
+	//! æ‘©æ“¦ç³»æ•°
 	float friction;
-	//! ½Ó´¥µãÊıÁ¿
+	//! æ¥è§¦ç‚¹æ•°é‡
 	int numContacts;
-	//! ½Ó´¥µãÁĞ±í
+	//! æ¥è§¦ç‚¹åˆ—è¡¨
 	SContact contact[8];
 };
 
 /**
-* @brief Åö×²½Ó´¥¼ì²âÆ÷
+* @brief ç¢°æ’æ¥è§¦æ£€æµ‹å™¨
 */
 class CContactDetector {
 public:
-	//! ¸ÕÌå½Ó´¥¼ì²â
+	//! åˆšä½“æ¥è§¦æ£€æµ‹
 	static bool Detect(const CRigidBody* body1, const CRigidBody* body2, SArbiter* arbiter);
 
 private:
-	//! ¼ÆËãºĞÌåÓëºĞÌå
+	//! è®¡ç®—ç›’ä½“ä¸ç›’ä½“
 	static int BoxBoxTest(const CRigidBody* body1, const CRigidBody* body2, SContact* contact);
-	//! ¼ÆËãºĞÌåÓëÇòÌå
+	//! è®¡ç®—ç›’ä½“ä¸çƒä½“
 	static int BoxSphereTest(const CRigidBody* body1, const CRigidBody* body2, SContact* contact);
-	//! ¼ÆËãºĞÌåÓëÆ½Ãæ
+	//! è®¡ç®—ç›’ä½“ä¸å¹³é¢
 	static int BoxPlaneTest(const CRigidBody* body1, const CRigidBody* body2, SContact* contact);
-	//! ¼ÆËãÇòÌåÓëÇòÌå
+	//! è®¡ç®—çƒä½“ä¸çƒä½“
 	static int SphereSphereTest(const CRigidBody* body1, const CRigidBody* body2, SContact* contact);
-	//! ¼ÆËãÇòÌåÓë½ºÄÒÌå
+	//! è®¡ç®—çƒä½“ä¸èƒ¶å›Šä½“
 	static int SphereCapsuleTest(const CRigidBody* body1, const CRigidBody* body2, SContact* contact);
-	//! ¼ÆËãÇòÌåÓëÔ²ÖùÌå
+	//! è®¡ç®—çƒä½“ä¸åœ†æŸ±ä½“
 	static int SphereCylinderTest(const CRigidBody* body1, const CRigidBody* body2, SContact* contact);
-	//! ¼ÆËãÇòÌåÓëÔ²»·
+	//! è®¡ç®—çƒä½“ä¸åœ†ç¯
 	static int SphereTorusTest(const CRigidBody* body1, const CRigidBody* body2, SContact* contact);
-	//! ¼ÆËãÇòÌåÓëÔ²×¶Ìå
+	//! è®¡ç®—çƒä½“ä¸åœ†é”¥ä½“
 	static int SphereConeTest(const CRigidBody* body1, const CRigidBody* body2, SContact* contact);
-	//! ¼ÆËãÇòÌåÓëÆ½Ãæ
+	//! è®¡ç®—çƒä½“ä¸å¹³é¢
 	static int SpherePlaneTest(const CRigidBody* body1, const CRigidBody* body2, SContact* contact);
-	//! ¼ÆËã½ºÄÒÌåÓë½ºÄÒÌå
+	//! è®¡ç®—èƒ¶å›Šä½“ä¸èƒ¶å›Šä½“
 	static int CapsuleCapsuleTest(const CRigidBody* body1, const CRigidBody* body2, SContact* contact);
-	//! ¼ÆËã½ºÄÒÌåÓëÆ½Ãæ
+	//! è®¡ç®—èƒ¶å›Šä½“ä¸å¹³é¢
 	static int CapsulePlaneTest(const CRigidBody* body1, const CRigidBody* body2, SContact* contact);
-	//! ¼ÆËãÔ²ÖùÌåÓëÆ½Ãæ
+	//! è®¡ç®—åœ†æŸ±ä½“ä¸å¹³é¢
 	static int CylinderPlaneTest(const CRigidBody* body1, const CRigidBody* body2, SContact* contact);
-	//! ¼ÆËãÔ²»·ÓëÆ½Ãæ
+	//! è®¡ç®—åœ†ç¯ä¸å¹³é¢
 	static int TorusPlaneTest(const CRigidBody* body1, const CRigidBody* body2, SContact* contact);
-	//! ¼ÆËãÔ²×¶ÌåÓëÆ½Ãæ
+	//! è®¡ç®—åœ†é”¥ä½“ä¸å¹³é¢
 	static int ConePlaneTest(const CRigidBody* body1, const CRigidBody* body2, SContact* contact);
 };
 

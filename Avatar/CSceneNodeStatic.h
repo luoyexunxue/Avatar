@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CSCENENODESTATIC_H_
@@ -8,26 +8,26 @@
 #include "CMeshData.h"
 
 /**
-* @brief ¾²Ì¬Ä£ĞÍ³¡¾°½Úµã
+* @brief é™æ€æ¨¡å‹åœºæ™¯èŠ‚ç‚¹
 */
 class AVATAR_EXPORT CSceneNodeStatic: public CSceneNode {
 public:
-	//! ¹¹Ôì·½·¨
+	//! æ„é€ æ–¹æ³•
 	CSceneNodeStatic(const string& name, const string& meshFile);
 
-	//! ³õÊ¼»¯³¡¾°½Úµã
+	//! åˆå§‹åŒ–åœºæ™¯èŠ‚ç‚¹
 	virtual bool Init();
-	//! Ïú»Ù³¡¾°½Úµã
+	//! é”€æ¯åœºæ™¯èŠ‚ç‚¹
 	virtual void Destroy();
-	//! äÖÈ¾³¡¾°½Úµã
+	//! æ¸²æŸ“åœºæ™¯èŠ‚ç‚¹
 	virtual void Render();
-	//! »ñÈ¡Íø¸ñÊı¾İ
+	//! è·å–ç½‘æ ¼æ•°æ®
 	virtual CMeshData* GetMeshData();
 
 private:
-	//! Ä£ĞÍÎÄ¼ş
+	//! æ¨¡å‹æ–‡ä»¶
 	string m_strFile;
-	//! Ä£ĞÍÊı¾İ
+	//! æ¨¡å‹æ•°æ®
 	CMeshData* m_pMeshData;
 };
 

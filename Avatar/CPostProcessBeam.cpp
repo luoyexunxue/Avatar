@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CPostProcessBeam.h"
@@ -7,10 +7,10 @@
 #include "CEngine.h"
 
 /**
-* ³õÊ¼»¯ºó´¦Àí¶ÔÏó
+* åˆå§‹åŒ–åŽå¤„ç†å¯¹è±¡
 */
 bool CPostProcessBeam::Init(int width, int height) {
-	// Ìå»ý¹âÉú³É×ÅÉ«Æ÷
+	// ä½“ç§¯å…‰ç”Ÿæˆç€è‰²å™¨
 	const char* fragShader = "\
 		uniform sampler2D uTexture;\
 		uniform float uDensity;\
@@ -39,7 +39,7 @@ bool CPostProcessBeam::Init(int width, int height) {
 			}\
 			fragColor = vec4(color.rgb * uExposure / total, 1.0);\
 		}";
-	// Ê¹ÓÃÌå»ý¹âÕÕÉú³É×îÖÕ³¡¾°
+	// ä½¿ç”¨ä½“ç§¯å…‰ç…§ç”Ÿæˆæœ€ç»ˆåœºæ™¯
 	const char* combineShader = "\
 		uniform sampler2D uTexture;\
 		uniform sampler2D uTextureLight;\
@@ -51,7 +51,7 @@ bool CPostProcessBeam::Init(int width, int height) {
 			vec4 sceneColor = texture(uTexture, vTexCoord);\
 			fragColor = lightColor + sceneColor;\
 		}";
-	// ´´½¨×ÅÉ«Æ÷ºÍÎÆÀí
+	// åˆ›å»ºç€è‰²å™¨å’Œçº¹ç†
 	CShaderManager* pShaderMgr = CEngine::GetShaderManager();
 	CTextureManager* pTextureMgr = CEngine::GetTextureManager();
 	m_pPostProcessShader = pShaderMgr->Create("postprocess_beam", GetVertexShader(), combineShader);
@@ -68,7 +68,7 @@ bool CPostProcessBeam::Init(int width, int height) {
 }
 
 /**
-* äÖÈ¾ÇøÓò´óÐ¡¸Ä±ä
+* æ¸²æŸ“åŒºåŸŸå¤§å°æ”¹å˜
 */
 void CPostProcessBeam::Resize(int width, int height) {
 	CEngine::GetTextureManager()->Resize(m_pRenderTexture, width, height);
@@ -76,7 +76,7 @@ void CPostProcessBeam::Resize(int width, int height) {
 }
 
 /**
-* Ïú»Ùºó´¦Àí¶ÔÏó
+* é”€æ¯åŽå¤„ç†å¯¹è±¡
 */
 void CPostProcessBeam::Destroy() {
 	CEngine::GetTextureManager()->Drop(m_pRenderTexture);
@@ -86,14 +86,14 @@ void CPostProcessBeam::Destroy() {
 }
 
 /**
-* Ó¦ÓÃµ±Ç°ºó´¦Àí
+* åº”ç”¨å½“å‰åŽå¤„ç†
 */
 void CPostProcessBeam::Apply(CTexture* target, CMesh* mesh) {
-	// »ñÈ¡¹âÔ´ÔÚÆÁÄ»ÉÏµÄÎ»ÖÃ
+	// èŽ·å–å…‰æºåœ¨å±å¹•ä¸Šçš„ä½ç½®
 	CGraphicsManager* pGraphicsMgr = CEngine::GetGraphicsManager();
 	CCamera* pCamera = pGraphicsMgr->GetCamera();
 	CVector3 lightPos = pGraphicsMgr->GetLight();
-	// ¶Ô·½Ïò¹â½øÐÐÌØÊâ´¦Àí
+	// å¯¹æ–¹å‘å…‰è¿›è¡Œç‰¹æ®Šå¤„ç†
 	if (lightPos[3] == 0.0f) lightPos.Scale(10000.0f);
 	CVector3 lightPosScreen;
 	pGraphicsMgr->PointToScreen(lightPos, lightPosScreen);
@@ -105,14 +105,14 @@ void CPostProcessBeam::Apply(CTexture* target, CMesh* mesh) {
 		screenX = 0.0f;
 		screenY = 0.0f;
 	}
-	// äÖÈ¾Ìå»ý¹â
+	// æ¸²æŸ“ä½“ç§¯å…‰
 	pGraphicsMgr->SetRenderTarget(m_pVolumeLightTexture, 0, true, true, true);
 	m_pVolumeLightShader->UseShader();
 	m_pVolumeLightShader->SetUniform("uLightPos", CVector2(screenX, screenY));
 	m_pVolumeLightShader->SetUniform("uExposure", exposure);
 	m_pRenderTexture->UseTexture();
 	mesh->Render(false);
-	// ºÏ³É×îÖÕ³¡¾°
+	// åˆæˆæœ€ç»ˆåœºæ™¯
 	pGraphicsMgr->SetRenderTarget(target, 0, true, false, false);
 	m_pPostProcessShader->UseShader();
 	m_pVolumeLightTexture->UseTexture(1);

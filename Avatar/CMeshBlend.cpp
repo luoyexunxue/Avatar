@@ -1,26 +1,26 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CMeshBlend.h"
 #include <cmath>
 
 /**
-* Ä¬ÈÏ¹¹Ôìº¯Êı
+* é»˜è®¤æ„é€ å‡½æ•°
 */
 CMeshBlend::CMeshBlend() {
 	m_pTargetMesh = 0;
 }
 
 /**
-* Ä¬ÈÏÎö¹¹º¯Êı
+* é»˜è®¤ææ„å‡½æ•°
 */
 CMeshBlend::~CMeshBlend() {
 	if (m_pTargetMesh) delete m_pTargetMesh;
 }
 
 /**
-* Ìí¼ÓÍø¸ñ
+* æ·»åŠ ç½‘æ ¼
 */
 void CMeshBlend::AddMesh(const CMesh* mesh) {
 	m_vecMeshes.push_back(const_cast<CMesh*>(mesh));
@@ -28,7 +28,7 @@ void CMeshBlend::AddMesh(const CMesh* mesh) {
 }
 
 /**
-* Ìí¼ÓÍø¸ñ²¢Ö¸¶¨È¨ÖØ
+* æ·»åŠ ç½‘æ ¼å¹¶æŒ‡å®šæƒé‡
 */
 void CMeshBlend::AddMesh(const CMesh* mesh, float weight) {
 	m_vecMeshes.push_back(const_cast<CMesh*>(mesh));
@@ -36,7 +36,7 @@ void CMeshBlend::AddMesh(const CMesh* mesh, float weight) {
 }
 
 /**
-* »ìºÏ
+* æ··åˆ
 */
 CMesh* CMeshBlend::Blend() {
 	float sum = 0.0f;
@@ -49,9 +49,9 @@ CMesh* CMeshBlend::Blend() {
 }
 
 /**
-* °´Ö¸¶¨È¨ÖØ»ìºÏ
-* @param weights È¨ÖØÁĞ±í£¬Îª¿Õ±íÊ¾ËùÓĞÍø¸ñÈ¨ÖØÏàÍ¬
-* @param count ²ÎÊı weights µÄ³¤¶È£¬Èç¹û³¤¶ÈĞ¡ÓÚÍø¸ñÊıÁ¿£¬ÔòÖ®ºóµÄÍø¸ñÈ¨ÖØ¶¼ÎªÁã
+* æŒ‰æŒ‡å®šæƒé‡æ··åˆ
+* @param weights æƒé‡åˆ—è¡¨ï¼Œä¸ºç©ºè¡¨ç¤ºæ‰€æœ‰ç½‘æ ¼æƒé‡ç›¸åŒ
+* @param count å‚æ•° weights çš„é•¿åº¦ï¼Œå¦‚æœé•¿åº¦å°äºç½‘æ ¼æ•°é‡ï¼Œåˆ™ä¹‹åçš„ç½‘æ ¼æƒé‡éƒ½ä¸ºé›¶
 */
 CMesh* CMeshBlend::Blend(float* weights, int count) {
 	if (m_vecMeshes.empty()) return 0;
@@ -66,7 +66,7 @@ CMesh* CMeshBlend::Blend(float* weights, int count) {
 }
 
 /**
-* ³õÊ¼»¯Ä¿±êÍø¸ñ
+* åˆå§‹åŒ–ç›®æ ‡ç½‘æ ¼
 */
 void CMeshBlend::SetupMesh() {
 	CMesh* temp = m_vecMeshes[0];
@@ -88,7 +88,7 @@ void CMeshBlend::SetupMesh() {
 }
 
 /**
-* ¶Ô¶¥µã²åÖµ
+* å¯¹é¡¶ç‚¹æ’å€¼
 */
 void CMeshBlend::Interpolate() {
 	int vertexCount = m_pTargetMesh->GetVertexCount();

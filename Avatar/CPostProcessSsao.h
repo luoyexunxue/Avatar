@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÷‹» ∑Ê. All rights reserved.
+// Copyright (c) 2020 Âë®‰ªÅÈîã. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CPOSTPROCESSSSAO_H_
@@ -7,7 +7,7 @@
 #include "CPostProcess.h"
 
 /**
-* @brief SSAO ∫Û¥¶¿Ì
+* @brief SSAO ÂêéÂ§ÑÁêÜ
 */
 class CPostProcessSsao: public CPostProcess {
 public:

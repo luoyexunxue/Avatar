@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CSceneNodeLensflare.h"
@@ -7,7 +7,7 @@
 #include "CEngine.h"
 
 /**
-* ¹¹Ôìº¯Êý
+* æž„é€ å‡½æ•°
 */
 CSceneNodeLensflare::CSceneNodeLensflare(const string& name): CSceneNode("lensflare", name) {
 	m_pMesh = 0;
@@ -16,24 +16,24 @@ CSceneNodeLensflare::CSceneNodeLensflare(const string& name): CSceneNode("lensfl
 }
 
 /**
-* ³õÊ¼»¯³¡¾°½Úµã
+* åˆå§‹åŒ–åœºæ™¯èŠ‚ç‚¹
 */
 bool CSceneNodeLensflare::Init() {
-	// ¼ÓÔØ¹âÔÎÎÆÀí
+	// åŠ è½½å…‰æ™•çº¹ç†
 	CTextureManager* pTextureMgr = CEngine::GetTextureManager();
 	m_pTextureFlare = pTextureMgr->Create("system/flare.jpg");
 	m_pTextureGlow = pTextureMgr->Create("system/glow.jpg");
 	m_pTextureHalo = pTextureMgr->Create("system/halo.jpg");
-	// Ì«Ñô
+	// å¤ªé˜³
 	m_sLensFlares[0].SetParameter(0, 0.5f, 0.6f, 0.6f, 0.8f, 1.0f, m_pTextureFlare);
-	// µ½¹âÔÎ½áÊøÎ»ÖÃµÄ¹âÔÎ
+	// åˆ°å…‰æ™•ç»“æŸä½ç½®çš„å…‰æ™•
 	m_sLensFlares[1].SetParameter(0.1f, 0.05f, 0.9f, 0.6f, 0.4f, 0.5f, m_pTextureGlow);
 	m_sLensFlares[2].SetParameter(0.5f, 0.15f, 0.7f, 0.6f, 0.5f, 0.5f, m_pTextureHalo);
 	m_sLensFlares[3].SetParameter(0.48f, 0.15f, 0.7f, 0.6f, 0.4f, 0.5f, m_pTextureGlow);
 	m_sLensFlares[4].SetParameter(0.8f, 0.08f, 0.7f, 0.6f, 0.5f, 0.5f, m_pTextureHalo);
 	m_sLensFlares[5].SetParameter(0.78f, 0.07f, 0.8f, 0.5f, 0.1f, 0.5f, m_pTextureGlow);
 
-	// ´´½¨µ¥Î»Íø¸ñ¶ÔÏó
+	// åˆ›å»ºå•ä½ç½‘æ ¼å¯¹è±¡
 	m_pMesh = CGeometryCreator::CreatePlane(1, 1, 3);
 	m_pMesh->GetMaterial()->SetRenderMode(true, false, true);
 	m_pMesh->GetMaterial()->SetShader("lensflare");
@@ -41,7 +41,7 @@ bool CSceneNodeLensflare::Init() {
 }
 
 /**
-* Ïú»Ù³¡¾°½Úµã
+* é”€æ¯åœºæ™¯èŠ‚ç‚¹
 */
 void CSceneNodeLensflare::Destroy() {
 	CTextureManager* pTextureMgr = CEngine::GetTextureManager();
@@ -52,32 +52,32 @@ void CSceneNodeLensflare::Destroy() {
 }
 
 /**
-* äÖÈ¾³¡¾°½Úµã
+* æ¸²æŸ“åœºæ™¯èŠ‚ç‚¹
 */
 void CSceneNodeLensflare::Render() {
 	CGraphicsManager* pGraphicsMgr = CEngine::GetGraphicsManager();
 	CCamera* pCamera = pGraphicsMgr->GetCamera();
-	// Èç¹ûÌ«ÑôÔÚÊÓ¾°·¶Î§ÄÚÔò¿É¼û
+	// å¦‚æžœå¤ªé˜³åœ¨è§†æ™¯èŒƒå›´å†…åˆ™å¯è§
 	if (pCamera->GetFrustum().IsContain(m_cSunPosition)) {
-		// ÕÚµ²¼ì²â
+		// é®æŒ¡æ£€æµ‹
 		CVector3 hitPoint;
 		CRay pickRay(pCamera->m_cPosition, m_cPosition);
 		if (CEngine::GetSceneManager()->GetNodeByRay(pickRay, hitPoint)) return;
 
-		// »ñÈ¡ÆÁÄ»ÖÐÐÄÎ»ÖÃ
+		// èŽ·å–å±å¹•ä¸­å¿ƒä½ç½®
 		int screen_w = pCamera->GetViewWidth();
 		int screen_h = pCamera->GetViewHeight();
 		m_cCenterPos[0] = static_cast<float>(screen_w >> 1);
 		m_cCenterPos[1] = static_cast<float>(screen_h >> 1);
 
-		// ÇóÌ«ÑôÏà¶ÔÓÚÆÁÄ»ÖÐÐÄµÄÎ»ÖÃ
+		// æ±‚å¤ªé˜³ç›¸å¯¹äºŽå±å¹•ä¸­å¿ƒçš„ä½ç½®
 		pGraphicsMgr->PointToScreen(m_cSunPosition, m_cScreenPos);
 		m_cScreenPos[0] -= m_cCenterPos[0];
 		m_cScreenPos[1] -= m_cCenterPos[1];
 		if (!pGraphicsMgr->IsLeftEyeRender()) m_cScreenPos[0] -= screen_w;
 		CVector2 screenPos(m_cScreenPos[0], m_cScreenPos[1]);
 
-		// äÖÈ¾¹âÔÎ
+		// æ¸²æŸ“å…‰æ™•
 		CMaterial* pMaterial = m_pMesh->GetMaterial();
 		pMaterial->PassUniform("uCenterPos", m_cCenterPos);
 		for (int i = 0; i < 6; i++) {
@@ -92,9 +92,9 @@ void CSceneNodeLensflare::Render() {
 }
 
 /**
-* ¸üÐÂ³¡¾°½Úµã
+* æ›´æ–°åœºæ™¯èŠ‚ç‚¹
 */
 void CSceneNodeLensflare::Update(float dt) {
-	// m_cPosition ÊÇÌ«ÑôÏà¶ÔÓÚÉãÏñ»úµÄÏòÁ¿
+	// m_cPosition æ˜¯å¤ªé˜³ç›¸å¯¹äºŽæ‘„åƒæœºçš„å‘é‡
 	m_cSunPosition = CEngine::GetGraphicsManager()->GetCamera()->m_cPosition + m_cPosition;
 }

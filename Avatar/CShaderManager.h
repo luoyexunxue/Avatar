@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CSHADERMANAGER_H_
@@ -14,57 +14,57 @@ using std::map;
 using std::vector;
 
 /**
-* @brief ×ÅÉ«Æ÷¹ÜÀíÆ÷
+* @brief ç€è‰²å™¨ç®¡ç†å™¨
 */
 class AVATAR_EXPORT CShaderManager {
 public:
-	//! »ñÈ¡¹ÜÀíÆ÷ÊµÀı
+	//! è·å–ç®¡ç†å™¨å®ä¾‹
 	static CShaderManager* GetInstance() {
 		if (m_pInstance) return m_pInstance;
 		m_pInstance = new CShaderManager();
 		return m_pInstance;
 	}
-	//! ÊµÀıÏú»Ù
+	//! å®ä¾‹é”€æ¯
 	void Destroy();
 
-	//! ´ÓÎÄ¼ş´´½¨×ÅÉ«Æ÷
+	//! ä»æ–‡ä»¶åˆ›å»ºç€è‰²å™¨
 	CShader* Create(const string& name, const string file[2]);
-	//! ´Ó×Ö·û´®´´½¨×ÅÉ«Æ÷
+	//! ä»å­—ç¬¦ä¸²åˆ›å»ºç€è‰²å™¨
 	CShader* Create(const string& name, const char* vert, const char* frag);
 
-	//! Ïú»ÙÖ¸¶¨µÄ×ÅÉ«Æ÷
+	//! é”€æ¯æŒ‡å®šçš„ç€è‰²å™¨
 	void Drop(CShader* shader);
-	//! ¸üĞÂ×ÅÉ«Æ÷ÌØĞÔ
+	//! æ›´æ–°ç€è‰²å™¨ç‰¹æ€§
 	void Update(CShader* shader, const string& append, const string& remove);
 
-	//! »ñÈ¡Ö¸¶¨Ãû³ÆµÄ×ÅÉ«Æ÷
+	//! è·å–æŒ‡å®šåç§°çš„ç€è‰²å™¨
 	CShader* GetShader(const string& name);
-	//! »ñÈ¡µ±Ç°ÔÚÓÃµÄ×ÅÉ«Æ÷
+	//! è·å–å½“å‰åœ¨ç”¨çš„ç€è‰²å™¨
 	CShader* GetCurrentShader();
-	//! »ñÈ¡¹ÜÀíµÄËùÓĞ×ÅÉ«Æ÷ÁĞ±í
+	//! è·å–ç®¡ç†çš„æ‰€æœ‰ç€è‰²å™¨åˆ—è¡¨
 	void GetShaderList(vector<CShader*>& shaderList);
 
 private:
 	CShaderManager();
 	~CShaderManager();
 
-	//! ¼ÓÔØ×ÅÉ«Æ÷
+	//! åŠ è½½ç€è‰²å™¨
 	void CreateShader(CShader* shader);
-	//! ±àÒë×ÅÉ«Æ÷
+	//! ç¼–è¯‘ç€è‰²å™¨
 	bool CompileShader(const char* source, unsigned int shader, bool isFragment);
-	//! ¸øÖ¸¶¨µÄ×ÅÉ«Æ÷°ó¶¨ Uniform ±äÁ¿
+	//! ç»™æŒ‡å®šçš„ç€è‰²å™¨ç»‘å®š Uniform å˜é‡
 	void AttachUniforms(CShader* shader);
-	//! ¶Ô×ÅÉ«Æ÷´úÂëºê¶¨Òå
+	//! å¯¹ç€è‰²å™¨ä»£ç å®å®šä¹‰
 	void ShaderSourceDefine(CShader* shader, const string& append, const string& remove);
 
 private:
-	//! µ±Ç°×ÅÉ«Æ÷
+	//! å½“å‰ç€è‰²å™¨
 	CShader* m_pCurrentShader;
-	//! ×ÅÉ«Æ÷¼¯ºÏ
+	//! ç€è‰²å™¨é›†åˆ
 	map<string, CShader*> m_mapShader;
-	//! ÊµÀı
+	//! å®ä¾‹
 	static CShaderManager* m_pInstance;
-	//! ÉèÖÃÓÑÔªÀà
+	//! è®¾ç½®å‹å…ƒç±»
 	friend class CShader;
 };
 

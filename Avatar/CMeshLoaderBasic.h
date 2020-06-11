@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CMESHLOADERBASIC_H_
@@ -7,27 +7,27 @@
 #include "CMeshLoader.h"
 
 /**
-* @brief »ù´¡Ä£ĞÍ¼ÓÔØÀà
+* @brief åŸºç¡€æ¨¡å‹åŠ è½½ç±»
 */
 class CMeshLoaderBasic: public CMeshLoader {
 protected:
-	//! ¼ÓÔØÄ£ĞÍ
+	//! åŠ è½½æ¨¡å‹
 	virtual CMeshData* LoadFile(const string& filename, const string& type);
 
 private:
-	//! ¼ÓÔØ STL ÎÄ¼ş
+	//! åŠ è½½ STL æ–‡ä»¶
 	CMeshData* LoadStlFile(const string& filename);
-	//! ¼ÓÔØ OBJ ÎÄ¼ş
+	//! åŠ è½½ OBJ æ–‡ä»¶
 	CMeshData* LoadObjFile(const string& filename);
-	//! ¼ÓÔØ MS3D ÎÄ¼ş
+	//! åŠ è½½ MS3D æ–‡ä»¶
 	CMeshData* LoadMs3dFile(const string& filename);
-	//! ¼ÓÔØ BVH ÎÄ¼ş
+	//! åŠ è½½ BVH æ–‡ä»¶
 	CMeshData* LoadBvhFile(const string& filename);
 
 private:
-	//! ¼ÓÔØ OBJ ²ÄÖÊÎÄ¼ş
+	//! åŠ è½½ OBJ æè´¨æ–‡ä»¶
 	void LoadObjMaterial(const string& filename, CMeshData* meshData);
-	//! ½âÎö OBJ ÎÄ¼şÃæ¶¨Òå
+	//! è§£æ OBJ æ–‡ä»¶é¢å®šä¹‰
 	int ParseObjFace(const string& face, int index[3]);
 };
 

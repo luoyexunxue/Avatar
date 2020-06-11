@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #include "CLog.h"
@@ -15,7 +15,7 @@
 #endif
 
 /**
-* ¹¹Ôìº¯Êý
+* æž„é€ å‡½æ•°
 */
 CLog::CLog() {
 	m_pLogParam = new SLogParam();
@@ -25,7 +25,7 @@ CLog::CLog() {
 }
 
 /**
-* Îö¹¹º¯Êý
+* æžæž„å‡½æ•°
 */
 CLog::~CLog() {
 	if (m_pLogParam->console) ConsoleClose();
@@ -34,12 +34,12 @@ CLog::~CLog() {
 }
 
 /**
-* µ¥ÀýÊµÀý
+* å•ä¾‹å®žä¾‹
 */
 CLog* CLog::m_pInstance = 0;
 
 /**
-* ´´½¨ÈÕÖ¾Êä³ö
+* åˆ›å»ºæ—¥å¿—è¾“å‡º
 */
 void CLog::Create(bool console, bool file, bool time, const string& title) {
 	if (m_pInstance) {
@@ -53,7 +53,7 @@ void CLog::Create(bool console, bool file, bool time, const string& title) {
 }
 
 /**
-* Ïú»ÙÈÕÖ¾ÏµÍ³
+* é”€æ¯æ—¥å¿—ç³»ç»Ÿ
 */
 void CLog::Destroy() {
 	if (m_pInstance) {
@@ -63,7 +63,7 @@ void CLog::Destroy() {
 }
 
 /**
-* ÉèÖÃÈÕÖ¾Êä³ö¼¶±ð
+* è®¾ç½®æ—¥å¿—è¾“å‡ºçº§åˆ«
 */
 void CLog::SetLevel(CLog::Level level) {
 	if (m_pInstance) {
@@ -72,7 +72,7 @@ void CLog::SetLevel(CLog::Level level) {
 }
 
 /**
-* Êä³öÒ»°ãÐÅÏ¢
+* è¾“å‡ºä¸€èˆ¬ä¿¡æ¯
 */
 void CLog::Info(const char* msg, ...) {
 	if (m_pInstance && m_pInstance->m_pLogParam->logLevel <= CLog::LEVEL_INFO) {
@@ -84,7 +84,7 @@ void CLog::Info(const char* msg, ...) {
 }
 
 /**
-* Êä³öµ÷ÊÔÐÅÏ¢
+* è¾“å‡ºè°ƒè¯•ä¿¡æ¯
 */
 void CLog::Debug(const char* msg, ...) {
 	if (m_pInstance && m_pInstance->m_pLogParam->logLevel <= CLog::LEVEL_DEBUG) {
@@ -96,7 +96,7 @@ void CLog::Debug(const char* msg, ...) {
 }
 
 /**
-* Êä³ö¾¯¸æÐÅÏ¢
+* è¾“å‡ºè­¦å‘Šä¿¡æ¯
 */
 void CLog::Warn(const char* msg, ...) {
 	if (m_pInstance && m_pInstance->m_pLogParam->logLevel <= CLog::LEVEL_WARN) {
@@ -108,7 +108,7 @@ void CLog::Warn(const char* msg, ...) {
 }
 
 /**
-* Êä³ö´íÎóÐÅÏ¢
+* è¾“å‡ºé”™è¯¯ä¿¡æ¯
 */
 void CLog::Error(const char* msg, ...) {
 	if (m_pInstance && m_pInstance->m_pLogParam->logLevel <= CLog::LEVEL_ERROR) {
@@ -120,7 +120,7 @@ void CLog::Error(const char* msg, ...) {
 }
 
 /**
-* Êä³ö×Ö·û´®ÐÅÏ¢
+* è¾“å‡ºå­—ç¬¦ä¸²ä¿¡æ¯
 */
 void CLog::Message(const string& msg) {
 	if (m_pInstance) {
@@ -129,24 +129,23 @@ void CLog::Message(const string& msg) {
 }
 
 /**
-* ÈÕÖ¾Êä³ö·½·¨
+* æ—¥å¿—è¾“å‡ºæ–¹æ³•
 */
 void CLog::Log(CLog::Level level, const char* msg, va_list args) {
-	char buff[2048];
-	int header = 0;
+	string header = "";
 	if (m_pLogParam->printTime) {
-		CTimer::GetTimeString("[%Y-%m-%d %H:%M:%S] ", buff);
+		header = CTimer::GetTimeString("[%Y-%m-%d %H:%M:%S] ");
 		switch (level) {
-		case CLog::LEVEL_INFO: strcat(buff, "I "); break;
-		case CLog::LEVEL_DEBUG: strcat(buff, "D "); break;
-		case CLog::LEVEL_WARN: strcat(buff, "W "); break;
-		case CLog::LEVEL_ERROR: strcat(buff, "E "); break;
-		default: strcat(buff, "- "); break;
+		case CLog::LEVEL_INFO: header.append("I "); break;
+		case CLog::LEVEL_DEBUG: header.append("D "); break;
+		case CLog::LEVEL_WARN: header.append("W "); break;
+		case CLog::LEVEL_ERROR: header.append("E "); break;
+		default: header.append("- "); break;
 		}
-		header = strlen(buff);
 	}
-	vsnprintf(buff + header, 2047 - header, msg, args);
-	strcat(buff, "\n");
+	char content[2048];
+	vsnprintf(content, 2048, msg, args);
+	content[2047] = '\0';
 
 	while (m_pLogParam->locked) CTimer::Sleep(1);
 	m_pLogParam->locked = true;
@@ -156,10 +155,9 @@ void CLog::Log(CLog::Level level, const char* msg, va_list args) {
 	if (level == CLog::LEVEL_WARN || level == CLog::LEVEL_ERROR) color = FOREGROUND_RED;
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
 #endif
-	std::cout << buff;
+	std::cout << header << content << std::endl;
 	if (m_pLogParam->file) {
-		m_pLogParam->filestream << buff;
-		m_pLogParam->filestream.flush();
+		m_pLogParam->filestream << header << content << std::endl;
 	}
 #ifdef AVATAR_ANDROID
 	int priority;
@@ -170,13 +168,13 @@ void CLog::Log(CLog::Level level, const char* msg, va_list args) {
 	case CLog::LEVEL_ERROR: priority = ANDROID_LOG_ERROR; break;
 	default: priority = ANDROID_LOG_SILENT; break;
 	}
-	__android_log_write(priority, "AVATAR", buff);
+	__android_log_write(priority, "AVATAR", content);
 #endif
 	m_pLogParam->locked = false;
 }
 
 /**
-* ÏûÏ¢Êä³ö·½·¨
+* æ¶ˆæ¯è¾“å‡ºæ–¹æ³•
 */
 void CLog::Log(const string& msg) {
 	while (m_pLogParam->locked) CTimer::Sleep(1);
@@ -185,7 +183,6 @@ void CLog::Log(const string& msg) {
 	std::cout << msg << std::endl;
 	if (m_pLogParam->file) {
 		m_pLogParam->filestream << msg << std::endl;
-		m_pLogParam->filestream.flush();
 	}
 #ifdef AVATAR_ANDROID
 	__android_log_write(ANDROID_LOG_INFO, "AVATAR", msg.c_str());
@@ -194,7 +191,7 @@ void CLog::Log(const string& msg) {
 }
 
 /**
-* ´ò¿ªÊä³ö¿ØÖÆÌ¨
+* æ‰“å¼€è¾“å‡ºæŽ§åˆ¶å°
 */
 void CLog::ConsoleOpen(const string& name) {
 #ifdef AVATAR_WINDOWS
@@ -211,7 +208,7 @@ void CLog::ConsoleOpen(const string& name) {
 }
 
 /**
-* ¹Ø±ÕÊä³ö¿ØÖÆÌ¨
+* å…³é—­è¾“å‡ºæŽ§åˆ¶å°
 */
 void CLog::ConsoleClose() {
 	if (m_pLogParam->console) {
@@ -225,7 +222,7 @@ void CLog::ConsoleClose() {
 }
 
 /**
-* ´ò¿ªÊä³öÎÄ¼þ
+* æ‰“å¼€è¾“å‡ºæ–‡ä»¶
 */
 void CLog::FileOpen(const string& name) {
 	m_pLogParam->filestream.open(name.c_str(), std::ios::out | std::ios::app);
@@ -233,7 +230,7 @@ void CLog::FileOpen(const string& name) {
 }
 
 /**
-* ¹Ø±ÕÊä³öÎÄ¼þ
+* å…³é—­è¾“å‡ºæ–‡ä»¶
 */
 void CLog::FileClose() {
 	if (m_pLogParam->file) {

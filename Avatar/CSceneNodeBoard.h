@@ -1,5 +1,5 @@
 //================================================
-// Copyright (c) 2016 ÖÜÈÊ·æ. All rights reserved.
+// Copyright (c) 2020 å‘¨ä»é”‹. All rights reserved.
 // ye_luo@qq.com
 //================================================
 #ifndef _CSCENENODEBOARD_H_
@@ -7,62 +7,64 @@
 #include "CSceneNode.h"
 
 /**
-* @brief ÌùÍ¼Æ½Ãæ³¡¾°½Úµã
-* @attention Èç¹û¸Ã½ÚµãÎª¹ã¸æÅÆÀàĞÍÇÒÓĞ×Ó½Úµã£¬Ôò½öäÖÈ¾×Ó½Úµã
+* @brief è´´å›¾å¹³é¢åœºæ™¯èŠ‚ç‚¹
+* @attention å¦‚æœè¯¥èŠ‚ç‚¹ä¸ºå¹¿å‘Šç‰Œç±»å‹ä¸”æœ‰å­èŠ‚ç‚¹ï¼Œåˆ™ä»…æ¸²æŸ“å­èŠ‚ç‚¹
 */
 class AVATAR_EXPORT CSceneNodeBoard: public CSceneNode {
 public:
-	//! ¹¹Ôì·½·¨
+	//! æ„é€ æ–¹æ³•
 	CSceneNodeBoard(const string& name, const string& texture, float width, float height, int billboard);
 
-	//! ³õÊ¼»¯³¡¾°½Úµã
+	//! åˆå§‹åŒ–åœºæ™¯èŠ‚ç‚¹
 	virtual bool Init();
-	//! Ïú»Ù³¡¾°½Úµã
+	//! é”€æ¯åœºæ™¯èŠ‚ç‚¹
 	virtual void Destroy();
-	//! äÖÈ¾³¡¾°½Úµã
+	//! æ¸²æŸ“åœºæ™¯èŠ‚ç‚¹
 	virtual void Render();
-	//! ¸üĞÂ³¡¾°½Úµã
+	//! æ›´æ–°åœºæ™¯èŠ‚ç‚¹
 	virtual void Update(float dt);
-	//! »ñÈ¡Íø¸ñÊı¾İ
+	//! æ›´æ–°å˜æ¢çŸ©é˜µ
+	virtual void Transform();
+	//! è·å–ç½‘æ ¼æ•°æ®
 	virtual CMeshData* GetMeshData();
 
-	//! Ã½ÌåĞÅÏ¢
+	//! åª’ä½“ä¿¡æ¯
 	void MediaInfo(int* width, int* height, float* length);
-	//! ÉèÖÃĞı×ªÖá
+	//! è®¾ç½®æ—‹è½¬è½´
 	void SetAxis(const CVector3& axis);
 
 private:
-	//! ´ò¿ªÍ¼ÏñÎÆÀí»òÊÓÆµÎÆÀí
+	//! æ‰“å¼€å›¾åƒçº¹ç†æˆ–è§†é¢‘çº¹ç†
 	CTexture* CreateTexture(const string& texture);
 
 private:
-	//! Íø¸ñÎÆÀí
+	//! ç½‘æ ¼çº¹ç†
 	string m_strTexture;
-	//! Æ½Ãæ¿í¶È
+	//! å¹³é¢å®½åº¦
 	float m_fWidth;
-	//! Æ½Ãæ¸ß¶È
+	//! å¹³é¢é«˜åº¦
 	float m_fHeight;
-	//! ¹ã¸æÅÆÀàĞÍ
+	//! å¹¿å‘Šç‰Œç±»å‹
 	int m_iBillboardType;
-	//! Ğı×ªÖá
+	//! æ—‹è½¬è½´
 	CVector3 m_cAxis;
-	//! ÉãÏñ»úID
+	//! æ‘„åƒæœºID
 	int m_iCameraId;
-	//! ÊÓÆµÉÏÏÂÎÄ
+	//! è§†é¢‘ä¸Šä¸‹æ–‡
 	void* m_pVideoContext;
-	//! ÒôÆµÁ÷ID
+	//! éŸ³é¢‘æµID
 	int m_iSoundId;
-	//! ÒôÆµ»º³å´óĞ¡
+	//! éŸ³é¢‘ç¼“å†²å¤§å°
 	int m_iSoundBufferSize;
-	//! ÒôÆµ»º³åÇø
+	//! éŸ³é¢‘ç¼“å†²åŒº
 	unsigned char m_pSoundBuffer[8192];
-	//! ÄÚ´æÎÄ¼ş
+	//! å†…å­˜æ–‡ä»¶
 	unsigned char* m_pFileBuffer;
-	//! Ê±¼ä¼ÇÂ¼
+	//! æ—¶é—´è®°å½•
 	float m_fTimeElapse;
-	//! Íø¸ñ¶ÔÏó
+	//! ç½‘æ ¼å¯¹è±¡
 	CMeshData* m_pMeshData;
-	//! ÎÆÀí¶ÔÏó
+	//! çº¹ç†å¯¹è±¡
 	CTexture* m_pTexture;
 };
 
