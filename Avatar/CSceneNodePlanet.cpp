@@ -1,4 +1,4 @@
-//================================================
+﻿//================================================
 // Copyright (c) 2020 周仁锋. All rights reserved.
 // ye_luo@qq.com
 //================================================
@@ -42,7 +42,7 @@ bool CSceneNodePlanet::Init() {
 	CShader* pShader = m_pMeshSky->GetMaterial()->GetShader();
 	pShader->UseShader();
 	pShader->SetUniform("uCameraPos", cameraPos);
-	pShader->SetUniform("uLightPos", lightPos);
+	pShader->SetUniform("uLightPos", lightPos.m_fValue, 4, 1);
 	pShader->SetUniform("uInvWavelength", invWavelength);
 	pShader->SetUniform("uCameraHeight", cameraHeight);
 	pShader->SetUniform("uCameraHeight2", cameraHeight * cameraHeight);
@@ -68,7 +68,7 @@ bool CSceneNodePlanet::Init() {
 	pShader->SetUniform("uTexture[0]", 0);
 	pShader->SetUniform("uTexture[1]", 1);
 	pShader->SetUniform("uCameraPos", cameraPos);
-	pShader->SetUniform("uLightPos", lightPos);
+	pShader->SetUniform("uLightPos", lightPos.m_fValue, 4, 1);
 	pShader->SetUniform("uInvWavelength", invWavelength);
 	pShader->SetUniform("uCameraHeight2", cameraHeight * cameraHeight);
 	pShader->SetUniform("uOuterRadius", outerRadius);

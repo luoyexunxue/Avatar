@@ -1,4 +1,4 @@
-/**
+﻿/**
 * 引擎 LOGO 图像数据，分辨率 64 x 64
 */
 static const unsigned char LOGO_IMAGE_DATA[] = {
