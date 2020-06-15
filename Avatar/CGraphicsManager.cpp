@@ -865,15 +865,10 @@ void CGraphicsManager::Draw() {
 	CGuiEnvironment::GetInstance()->Render(screenWidth, screenHeight);
 	// 始终渲染到窗口
 	if (pRenderTarget) {
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
-		glViewport(0, 0, m_iWindowSize[0], m_iWindowSize[1]);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		CShader* pShader = CEngine::GetShaderManager()->GetShader("screen");
-		pShader->UseShader();
-		pShader->SetUniform("uOffset", CVector2::Zero);
-		pShader->SetUniform("uModelMatrix", CMatrix4().Scale(0.5f * m_iWindowSize[0], 0.5f * m_iWindowSize[1], 1.0f));
-		pRenderTarget->UseTexture();
-		DrawQuadrilateral(CColor::White, false);
+		glBindFramebuffer(GL_READ_FRAMEBUFFER, pRenderTarget->GetFramebuffer());
+		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+		glBlitFramebuffer(0, 0, viewWidth, viewHeight, 0, 0, m_iWindowSize[0], m_iWindowSize[1], GL_COLOR_BUFFER_BIT, GL_NEAREST);
+		glBindFramebuffer(GL_FRAMEBUFFER, pRenderTarget->GetFramebuffer());
 	}
 }
 

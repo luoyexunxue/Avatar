@@ -26,6 +26,7 @@ CMeshData* CMeshLoaderGltf::LoadFile(const string& filename, const string& type)
 	m_mapJoints.clear();
 	m_mapLocalInv.clear();
 	m_mapBindInv.clear();
+	m_strFilename = filename;
 	m_strBaseDir = CFileManager::GetDirectory(filename);
 	// 二进制 glb 文件
 	if (isBinary) {
@@ -291,7 +292,9 @@ void CMeshLoaderGltf::ReadTexture(CJsonParser& texture, CMaterial* material) {
 	if (image.IsContain("uri")) {
 		pTexture = CEngine::GetTextureManager()->Create(m_strBaseDir + image["uri"].ToString());
 	} else if (image.IsContain("bufferView")) {
-		string name = image.IsContain("name") ? image["name"].ToString() : "";
+		string name = m_strFilename + "#";
+		if (image.IsContain("name")) name += image["name"].ToString();
+		else if (texture.IsContain("name")) name += texture["name"].ToString();
 		string mime = image["mimeType"].ToString();
 		CJsonParser& bufferView = m_cJsonParser["bufferViews"][image["bufferView"].ToInt()];
 		unsigned char* buffer = m_vecBuffer[bufferView["buffer"].ToInt()].data;

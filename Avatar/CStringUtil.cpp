@@ -16,13 +16,13 @@
 * 格式化字符串
 */
 string CStringUtil::Format(const char* format, ...) {
-	char msg[1024];
+	vector<char> buffer;
 	va_list args;
 	va_start(args, format);
-	vsnprintf(msg, 1024, format, args);
+	buffer.resize(vsnprintf(0, 0, format, args) + 1);
+	vsnprintf(&buffer[0], buffer.size(), format, args);
 	va_end(args);
-	msg[1023] = '\0';
-	return msg;
+	return string(&buffer[0], buffer.size() - 1);
 }
 
 /**

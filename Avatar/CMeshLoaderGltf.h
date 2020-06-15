@@ -66,6 +66,8 @@ private:
 		unsigned int size;
 	} SBufferBin;
 
+	//! 文件名称
+	string m_strFilename;
 	//! 文件目录
 	string m_strBaseDir;
 	//! 网格对象指针
