@@ -104,7 +104,7 @@ void CTimer::Sleep(unsigned long ms) {
 * 按指定格式获取当前时间字符串
 * 若 format 为空则默认为 %Y-%m-%d %H:%M:%S
 */
-void CTimer::GetTimeString(const char* format, char* buffer) {
+void CTimer::GetTimeString(const char* format, char* buffer, int size) {
 	time_t _time;
 	time(&_time);
 
@@ -116,7 +116,7 @@ void CTimer::GetTimeString(const char* format, char* buffer) {
 	tm* pTm = localtime(&_time);
 #endif
 	if (!format) format = "%Y-%m-%d %H:%M:%S";
-	strftime(buffer, 63, format, pTm);
+	strftime(buffer, size, format, pTm);
 }
 
 /**
@@ -125,6 +125,6 @@ void CTimer::GetTimeString(const char* format, char* buffer) {
 */
 string CTimer::GetTimeString(const char* format) {
 	char buff[64];
-	CTimer::GetTimeString(format, buff);
+	CTimer::GetTimeString(format, buff, 64);
 	return buff;
 }

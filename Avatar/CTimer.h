@@ -23,7 +23,7 @@ public:
 	//! 毫秒延时
 	static void Sleep(unsigned long ms);
 	//! 按指定格式获取当前时间字符串
-	static void GetTimeString(const char* format, char* buffer);
+	static void GetTimeString(const char* format, char* buffer, int size);
 	//! 按指定格式获取当前时间字符串
 	static string GetTimeString(const char* format);
 };

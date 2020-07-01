@@ -125,14 +125,14 @@ int CUrlConnection::Request(const string& url, vector<unsigned char>& response) 
 		curl_easy_setopt(m_pCachedUrl, CURLOPT_COOKIEFILE, "");
 		curl_easy_setopt(m_pCachedUrl, CURLOPT_CONNECTTIMEOUT, 30);
 		curl_easy_setopt(m_pCachedUrl, CURLOPT_TIMEOUT, m_iTimeout);
-		int responseCode = -1;
+		long responseCode = -1;
 		if (CURLE_OK == curl_easy_perform(m_pCachedUrl)) {
 			responseCode = 200;
 			if (scheme == 1 || scheme == 2) {
 				curl_easy_getinfo(m_pCachedUrl, CURLINFO_RESPONSE_CODE, &responseCode);
 			}
 		}
-		return responseCode;
+		return (int)responseCode;
 	} else {
 		CLog::Warn("Url scheme '%s' is not supported", url.c_str());
 		return 0;
@@ -175,11 +175,11 @@ int CUrlConnection::Request(const string& url, const string& param, vector<unsig
 		curl_easy_setopt(m_pCachedUrl, CURLOPT_COOKIEFILE, "");
 		curl_easy_setopt(m_pCachedUrl, CURLOPT_CONNECTTIMEOUT, 30);
 		curl_easy_setopt(m_pCachedUrl, CURLOPT_TIMEOUT, m_iTimeout);
-		int responseCode = -1;
+		long responseCode = -1;
 		if (CURLE_OK == curl_easy_perform(m_pCachedUrl)) {
 			curl_easy_getinfo(m_pCachedUrl, CURLINFO_RESPONSE_CODE, &responseCode);
 		}
-		return responseCode;
+		return (int)responseCode;
 	} else {
 		CLog::Warn("Url scheme '%s' is not supported", url.c_str());
 		return 0;
@@ -217,12 +217,12 @@ int CUrlConnection::HttpGet(const string& url, vector<unsigned char>& response) 
 	curl_easy_setopt(curl, CURLOPT_NOSIGNAL, 1);
 	curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT, 30);
 	curl_easy_setopt(curl, CURLOPT_TIMEOUT, m_iTimeout);
-	int responseCode = -1;
+	long responseCode = -1;
 	if (CURLE_OK == curl_easy_perform(curl)) {
 		curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &responseCode);
 	}
 	curl_easy_cleanup(curl);
-	return responseCode;
+	return (int)responseCode;
 }
 
 /**
@@ -258,12 +258,12 @@ int CUrlConnection::HttpPost(const string& url, const string& param, vector<unsi
 	curl_easy_setopt(curl, CURLOPT_NOSIGNAL, 1);
 	curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT, 30);
 	curl_easy_setopt(curl, CURLOPT_TIMEOUT, m_iTimeout);
-	int responseCode = -1;
+	long responseCode = -1;
 	if (CURLE_OK == curl_easy_perform(curl)) {
 		curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &responseCode);
 	}
 	curl_easy_cleanup(curl);
-	return responseCode;
+	return (int)responseCode;
 }
 
 /**
@@ -307,10 +307,11 @@ int CUrlConnection::HttpPost(const string& url, const string& param, const map<s
 	curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT, 30);
 	curl_easy_setopt(curl, CURLOPT_TIMEOUT, m_iTimeout);
 	if (header_list) curl_easy_setopt(curl, CURLOPT_HTTPHEADER, header_list);
-	int responseCode = -1;
+	long responseCode = -1;
 	if (CURLE_OK == curl_easy_perform(curl)) {
 		curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &responseCode);
 	}
+	curl_slist_free_all(header_list);
 	curl_easy_cleanup(curl);
-	return responseCode;
+	return (int)responseCode;
 }

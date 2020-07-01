@@ -20,6 +20,7 @@ string CStringUtil::Format(const char* format, ...) {
 	va_list args;
 	va_start(args, format);
 	buffer.resize(vsnprintf(0, 0, format, args) + 1);
+	va_start(args, format);
 	vsnprintf(&buffer[0], buffer.size(), format, args);
 	va_end(args);
 	return string(&buffer[0], buffer.size() - 1);
@@ -330,9 +331,8 @@ string CStringUtil::Guid() {
 	time(&_time);
 	timespec current;
 	clock_gettime(CLOCK_MONOTONIC, &current);
-	strftime(buffer, 32, "%Y%m%d%H%M%S", localtime(&_time));
-	sprintf(buffer + 14, "%06ld", current.tv_nsec / 1000);
-	sprintf(buffer + 20, "%08X", rand());
+	strftime(buffer, 33, "%Y%m%d%H%M%S", localtime(&_time));
+	sprintf(buffer + 14, "%06ld%08X%04X", current.tv_nsec / 1000, rand(), rand() % 0x10000);
 #endif
 	return buffer;
 }
