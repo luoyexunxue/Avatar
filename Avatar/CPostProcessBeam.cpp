@@ -92,7 +92,9 @@ void CPostProcessBeam::Apply(CTexture* target, CMesh* mesh) {
 	// 获取光源在屏幕上的位置
 	CGraphicsManager* pGraphicsMgr = CEngine::GetGraphicsManager();
 	CCamera* pCamera = pGraphicsMgr->GetCamera();
-	CVector3 lightPos = pGraphicsMgr->GetLight();
+	CVector3 lightPos;
+	CVector3 lightDir;
+	pGraphicsMgr->GetLight(lightPos, lightDir);
 	// 对方向光进行特殊处理
 	if (lightPos[3] == 0.0f) lightPos.Scale(10000.0f);
 	CVector3 lightPosScreen;

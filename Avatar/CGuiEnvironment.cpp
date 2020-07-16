@@ -109,18 +109,10 @@ void CGuiEnvironment::Destroy() {
 /**
 * 渲染 GUI 界面
 */
-void CGuiEnvironment::Render(int width, int height) {
+void CGuiEnvironment::Render() {
 	if (!m_bEnabled || m_lstElements.empty()) return;
 	if (m_pFocusElement && m_pFocusElement->Redraw()) {
 		m_vecInvalidateRect.push_back(m_pFocusElement->m_cRegionScreen);
-	}
-	if (m_iScreenSize[0] != width || m_iScreenSize[1] != height) {
-		m_iScreenSize[0] = width;
-		m_iScreenSize[1] = height;
-		m_cDrawRegion.Resize(m_iScreenSize[0], m_iScreenSize[1]);
-		m_cDrawRegion.Scale(m_fScaleFactor, false);
-		m_vecInvalidateRect.clear();
-		m_vecInvalidateRect.push_back(m_cDrawRegion);
 	}
 	if (!m_vecInvalidateRect.empty()) {
 		DrawInvalidateRegion();
@@ -198,14 +190,6 @@ void CGuiEnvironment::SetEnable(bool enable) {
 }
 
 /**
-* 获取 GUI 画布大小
-*/
-void CGuiEnvironment::GetSize(int* width, int* height) {
-	*width = m_cDrawRegion.GetWidth();
-	*height = m_cDrawRegion.GetHeight();
-}
-
-/**
 * 设置 GUI 分辨率
 */
 void CGuiEnvironment::SetScale(float scale) {
@@ -214,6 +198,28 @@ void CGuiEnvironment::SetScale(float scale) {
 	m_cDrawRegion.Scale(m_fScaleFactor, false);
 	m_vecInvalidateRect.clear();
 	m_vecInvalidateRect.push_back(m_cDrawRegion);
+}
+
+/**
+* 设置 GUI 画布大小
+*/
+void CGuiEnvironment::SetSize(int width, int height) {
+	if (m_iScreenSize[0] != width || m_iScreenSize[1] != height) {
+		m_iScreenSize[0] = width;
+		m_iScreenSize[1] = height;
+		m_cDrawRegion.Resize(m_iScreenSize[0], m_iScreenSize[1]);
+		m_cDrawRegion.Scale(m_fScaleFactor, false);
+		m_vecInvalidateRect.clear();
+		m_vecInvalidateRect.push_back(m_cDrawRegion);
+	}
+}
+
+/**
+* 获取 GUI 画布大小
+*/
+void CGuiEnvironment::GetSize(int* width, int* height) {
+	*width = m_cDrawRegion.GetWidth();
+	*height = m_cDrawRegion.GetHeight();
 }
 
 /**

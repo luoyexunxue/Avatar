@@ -128,6 +128,14 @@ CCamera* CGraphicsManager::GetCamera() {
 void CGraphicsManager::SetWindowSize(int width, int height) {
 	m_iWindowSize[0] = width;
 	m_iWindowSize[1] = height;
+	// 获取屏幕渲染大小
+	int screenWidth = m_iWindowSize[0];
+	int screenHeight = m_iWindowSize[1];
+	if (m_pRenderTarget) {
+		screenWidth = m_pRenderTarget->GetWidth();
+		screenHeight = m_pRenderTarget->GetHeight();
+	}
+	CGuiEnvironment::GetInstance()->SetSize(screenWidth, screenHeight);
 }
 
 /**
@@ -142,28 +150,27 @@ void CGraphicsManager::GetWindowSize(int* width, int* height) {
 
 /**
 * 设置光源
-* @param pos 光源位置，当 pos.w 为 0 时，为方向光，否则为点光源或聚光灯
-* @param dir 光照方向，当 dir.w 大于 0 时，为聚光灯且 dir.w 为聚光角度范围
+* @param position 光源位置，当 position.w 为 0 时，为方向光，否则为点光源或聚光灯
+* @param direction 光照方向，当 direction.w 大于 0 时，为聚光灯且 direction.w 为聚光角度范围
 * @param color 光照颜色，当为点光源或聚光灯光源时，color.a 为光照范围
-* @note 系统通过参数 pos 和 dir 自动判断光源类型，支持平行光光源、点光源、聚光灯光源三种
+* @note 系统通过参数 position 和 direction 自动判断光源类型，支持平行光光源、点光源、聚光灯光源三种
 */
-void CGraphicsManager::SetLight(const CVector3& pos, const CVector3& dir, const CVector3& color) {
+void CGraphicsManager::SetLight(const CVector3& position, const CVector3& direction, const CVector3& color) {
 	// 单位化相关参数
-	CVector3 normPos(pos.m_fValue, 0.0f);
-	CVector3 normDir(dir.m_fValue, 0.0f);
+	CVector3 normPos(position.m_fValue, 0.0f);
+	CVector3 normDir(direction.m_fValue, 0.0f);
 	normPos.Normalize();
 	normDir.Normalize();
 	// 根据光源类型对参数进行修正
-	if (pos.m_fValue[3] == 0.0f) {
+	if (position.m_fValue[3] == 0.0f) {
 		m_cLightPos.SetValue(normPos);
 		m_cLightDir.SetValue(normPos);
 		normDir.SetValue(normPos);
 	} else {
-		m_cLightPos.SetValue(pos);
-		m_cLightDir.SetValue(normDir.m_fValue, dir.m_fValue[3]);
-		if (dir.m_fValue[3] > 0.0f) {
-			normDir[3] = cosf(dir.m_fValue[3]);
-			if (normDir[3] < 0.0872f) normDir[3] = 0.0872f;
+		m_cLightPos.SetValue(position);
+		m_cLightDir.SetValue(normDir.m_fValue, direction.m_fValue[3]);
+		if (direction.m_fValue[3] > 0.0f) {
+			normDir[3] = std::max(cosf(direction.m_fValue[3] * 0.5f), 0.0f);
 		}
 	}
 	// 对每个含有 uLightPos 的着色器进行统一变量赋值
@@ -188,10 +195,13 @@ void CGraphicsManager::SetLight(const CVector3& pos, const CVector3& dir, const 
 
 /**
 * 获取光源位置
-* @return 光源位置
+* @param position 输出光源位置
+* @param direction 输出光源方向
+* @see SetLight
 */
-CVector3 CGraphicsManager::GetLight() {
-	return m_cLightPos;
+void CGraphicsManager::GetLight(CVector3& position, CVector3& direction) {
+	position.SetValue(m_cLightPos);
+	direction.SetValue(m_cLightDir);
 }
 
 /**
@@ -810,7 +820,7 @@ void CGraphicsManager::Draw() {
 		if (m_pRenderTarget->IsCubeMap()) {
 			DrawCubeMap();
 			pPostProcessMgr->ApplyFrame();
-			CGuiEnvironment::GetInstance()->Render(screenWidth, screenHeight);
+			CGuiEnvironment::GetInstance()->Render();
 			return;
 		}
 		viewWidth = m_pRenderTarget->GetWidth();
@@ -862,7 +872,7 @@ void CGraphicsManager::Draw() {
 	// 进行后处理
 	pPostProcessMgr->ApplyFrame();
 	// 绘制 GUI 元素
-	CGuiEnvironment::GetInstance()->Render(screenWidth, screenHeight);
+	CGuiEnvironment::GetInstance()->Render();
 	// 始终渲染到窗口
 	if (pRenderTarget) {
 		glBindFramebuffer(GL_READ_FRAMEBUFFER, pRenderTarget->GetFramebuffer());

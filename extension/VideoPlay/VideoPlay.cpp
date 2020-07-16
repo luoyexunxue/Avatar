@@ -354,8 +354,8 @@ void* ThreadWorking(void* pParam) {
 	while (!ctx->videoClosed) {
 		// 从头开始
 		if (ctx->resetPlay) {
-			if (ctx->videoStream) av_seek_frame(ctx->inputContext, ctx->videoStream->index, ctx->videoStream->start_time, 0);
-			else if (ctx->audioStream) av_seek_frame(ctx->inputContext, ctx->audioStream->index, ctx->audioStream->start_time, 0);
+			if (ctx->videoStream) av_seek_frame(ctx->inputContext, ctx->videoStream->index, ctx->videoStream->start_time, AVSEEK_FLAG_BACKWARD);
+			else if (ctx->audioStream) av_seek_frame(ctx->inputContext, ctx->audioStream->index, ctx->audioStream->start_time, AVSEEK_FLAG_BACKWARD);
 			if (ctx->videoDecoder) avcodec_flush_buffers(ctx->videoDecoder);
 			if (ctx->audioDecoder) avcodec_flush_buffers(ctx->audioDecoder);
 			ctx->resetPlay = false;

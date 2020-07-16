@@ -289,7 +289,7 @@ int main(int argc, char **argv)
 | graphics.screenshot | 屏幕截图 | file, &lt;redraw&gt; | - |
 | graphics.stereo | 获取或设置立体显示 | &lt;enable&gt; | &lt;enable&gt; |
 | graphics.windowSize | 获取窗口大小 | - | width, height |
-| graphics.lightPosition | 获取光源位置 | - | x, y, z, w |
+| graphics.lightPosition | 获取光源位置 | - | x, y, z, w, dx, dy, dz, dw |
 | graphics.directionLight | 设置方向光光源 | dx, dy, dz, &lt;r, g, b&gt; | - |
 | graphics.pointLight | 设置点光源 | x, y, z, &lt;range, r, g, b&gt; | - |
 | graphics.spotLight | 设置聚光灯光源 | x, y, z, &lt;dx, dy, dz, angle, range, r, g, b&gt; | - |

@@ -42,9 +42,9 @@ public:
 	//! 获取窗口大小
 	void GetWindowSize(int* width, int* height);
 	//! 设置光源
-	void SetLight(const CVector3& pos, const CVector3& dir, const CVector3& color);
+	void SetLight(const CVector3& position, const CVector3& direction, const CVector3& color);
 	//! 获取光源位置
-	CVector3 GetLight();
+	void GetLight(CVector3& position, CVector3& direction);
 	//! 设置是否立体显示
 	void SetStereoMode(bool stereo);
 	//! 获取是否立体显示
@@ -158,7 +158,7 @@ private:
 	bool m_bRenderDepth;
 	//! 反射图渲染
 	bool m_bRenderReflect;
-	//! 焦距
+	//! 立体渲染焦距
 	float m_fFocusDistance;
 	//! 帧率
 	float m_fFrameRate;

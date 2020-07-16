@@ -29,18 +29,20 @@ public:
 	void Destroy();
 
 	//! 渲染 GUI 界面
-	void Render(int width, int height);
+	void Render();
 	//! 鼠标事件
 	bool MouseEvent(int x, int y, int button, int delta);
 	//! 键盘事件
 	bool KeyboardEvent(int key);
-
 	//! 使能或禁用 GUI
 	void SetEnable(bool enable);
-	//! 获取 GUI 画布大小
-	void GetSize(int* width, int* height);
 	//! 设置 GUI 缩放
 	void SetScale(float scale);
+	//! 设置 GUI 画布大小
+	void SetSize(int width, int height);
+	//! 获取 GUI 画布大小
+	void GetSize(int* width, int* height);
+
 	//! 创建 GUI 元素
 	bool GuiCreate(const string& name, const string& type, const string& desc);
 	//! 修改 GUI 元素

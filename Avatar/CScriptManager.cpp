@@ -1828,12 +1828,18 @@ int CScriptManager::DoGraphicsWindowSize(lua_State* lua) {
 * 获取光源位置
 */
 int CScriptManager::DoGraphicsLightPosition(lua_State* lua) {
-	CVector3 lightPos = CEngine::GetGraphicsManager()->GetLight();
+	CVector3 lightPos;
+	CVector3 lightDir;
+	CEngine::GetGraphicsManager()->GetLight(lightPos, lightDir);
 	lua_pushnumber(lua, lightPos[0]);
 	lua_pushnumber(lua, lightPos[1]);
 	lua_pushnumber(lua, lightPos[2]);
 	lua_pushnumber(lua, lightPos[3]);
-	return 4;
+	lua_pushnumber(lua, lightDir[0]);
+	lua_pushnumber(lua, lightDir[1]);
+	lua_pushnumber(lua, lightDir[2]);
+	lua_pushnumber(lua, lightDir[3]);
+	return 8;
 }
 
 /**
