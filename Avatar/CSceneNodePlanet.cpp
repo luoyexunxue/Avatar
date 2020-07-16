@@ -33,8 +33,10 @@ bool CSceneNodePlanet::Init() {
 	const CVector3 invWavelength(1.0f / powf(0.65f, 4), 1.0f / powf(0.57f, 4), 1.0f / powf(0.475f, 4));
 	const float scaleDepth = 0.25f;
 	const CVector3 cameraPos = m_cPosition - CVector3(0.0f, m_fRadius, 0.0f);
-	const CVector3 lightPos = CVector3(1.0f, -1.0f, 1.0f).Normalize();
 	const float cameraHeight = (cameraPos - m_cPosition).Length();
+	CVector3 lightPos;
+	CVector3 lightDir;
+	CEngine::GetGraphicsManager()->GetLight(lightPos, lightDir);
 
 	m_pMeshSky = CGeometryCreator::CreateSphere(outerRadius, m_iTessellation, m_iTessellation, true);
 	m_pMeshSky->GetMaterial()->SetShader("planetsky");
@@ -42,7 +44,7 @@ bool CSceneNodePlanet::Init() {
 	CShader* pShader = m_pMeshSky->GetMaterial()->GetShader();
 	pShader->UseShader();
 	pShader->SetUniform("uCameraPos", cameraPos);
-	pShader->SetUniform("uLightPos", lightPos.m_fValue, 4, 1);
+	pShader->SetUniform("uLightPos", lightDir.m_fValue, 4, 1);
 	pShader->SetUniform("uInvWavelength", invWavelength);
 	pShader->SetUniform("uCameraHeight", cameraHeight);
 	pShader->SetUniform("uCameraHeight2", cameraHeight * cameraHeight);
@@ -68,7 +70,7 @@ bool CSceneNodePlanet::Init() {
 	pShader->SetUniform("uTexture[0]", 0);
 	pShader->SetUniform("uTexture[1]", 1);
 	pShader->SetUniform("uCameraPos", cameraPos);
-	pShader->SetUniform("uLightPos", lightPos.m_fValue, 4, 1);
+	pShader->SetUniform("uLightPos", lightDir.m_fValue, 4, 1);
 	pShader->SetUniform("uInvWavelength", invWavelength);
 	pShader->SetUniform("uCameraHeight2", cameraHeight * cameraHeight);
 	pShader->SetUniform("uOuterRadius", outerRadius);
