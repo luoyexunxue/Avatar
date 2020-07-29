@@ -129,21 +129,21 @@ void CPostProcessHdr::Destroy() {
 void CPostProcessHdr::Apply(CTexture* target, CMesh* mesh) {
 	// 绘制当前 HDR 图像
 	CGraphicsManager* pGraphicsMgr = CEngine::GetGraphicsManager();
-	pGraphicsMgr->SetRenderTarget(target, 0, true, true, true);
+	pGraphicsMgr->SetRenderTarget(target, 0, true, true);
 	m_pPostProcessShader->UseShader();
 	m_pToneMapTexture[0]->UseTexture(1);
 	m_pRenderTexture->UseTexture(0);
 	mesh->Render(false);
 
 	// 计算图像的平均亮度，将场景渲染到 64 x 64 的纹理上，得到灰度图
-	pGraphicsMgr->SetRenderTarget(m_pToneMapTexture[4], 0, true, true, false);
+	pGraphicsMgr->SetRenderTarget(m_pToneMapTexture[4], 0, true, false);
 	m_pPassShader->UseShader();
 	m_pRenderTexture->UseTexture(0);
 	mesh->Render(false);
 	// 进行下采样
 	const static float sizeArray[4] = { 1.0f, 4.0f, 16.0f, 64.0f };
 	for (int i = 3; i > 0; i--) {
-		pGraphicsMgr->SetRenderTarget(m_pToneMapTexture[i], 0, true, true, false);
+		pGraphicsMgr->SetRenderTarget(m_pToneMapTexture[i], 0, true, false);
 		m_pDownScaleShader->UseShader();
 		m_pDownScaleShader->SetUniform("uTextureSize", CVector2(sizeArray[i], sizeArray[i]));
 		m_pToneMapTexture[i + 1]->UseTexture();
@@ -152,12 +152,12 @@ void CPostProcessHdr::Apply(CTexture* target, CMesh* mesh) {
 	// 亮度渐调（线性调整）
 	float elapsedTime = CTimer::Reset("postprocess_hdr");
 	if (elapsedTime > 1.0f) elapsedTime = 1.0f;
-	pGraphicsMgr->SetRenderTarget(m_pToneMapTexture[0], 0, true, false, false);
+	pGraphicsMgr->SetRenderTarget(m_pToneMapTexture[0], 0, false, false);
 	m_pAdaptLumShader->UseShader();
 	m_pAdaptLumShader->SetUniform("uElapsedTime", elapsedTime);
 	m_pToneMapTexture[0]->UseTexture(1);
 	m_pToneMapTexture[1]->UseTexture(0);
 	mesh->Render(false);
 	// 恢复渲染目标
-	pGraphicsMgr->SetRenderTarget(target, 0, true, false, false);
+	pGraphicsMgr->SetRenderTarget(target, 0, false, false);
 }

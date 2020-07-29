@@ -80,7 +80,7 @@ void CPostProcessRain::Destroy() {
 * 应用当前后处理
 */
 void CPostProcessRain::Apply(CTexture* target, CMesh* mesh) {
-	CEngine::GetGraphicsManager()->SetRenderTarget(target, 0, true, true, true);
+	CEngine::GetGraphicsManager()->SetRenderTarget(target, 0, true, true);
 	m_pPostProcessShader->UseShader();
 	m_pPostProcessShader->SetUniform("uElapsedTime", CTimer::Reset("postprocess_rain", false));
 	m_pNoiseTexture->UseTexture(1);

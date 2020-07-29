@@ -103,7 +103,7 @@ public:
 	void DrawCube(const CColor& color);
 
 	//! 设置当前渲染目标
-	void SetRenderTarget(CTexture* texture, int level, bool fullView, bool clearColor, bool clearDepth);
+	void SetRenderTarget(CTexture* texture, int level, bool clearColor, bool clearDepth);
 	//! 获取当前渲染目标
 	CTexture* GetRenderTarget();
 

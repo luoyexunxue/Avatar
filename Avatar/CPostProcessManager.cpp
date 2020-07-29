@@ -167,7 +167,7 @@ bool CPostProcessManager::PrepareFrame(CTexture* renderTarget, int width, int he
 	// 将第一个后处理设置为渲染目标
 	m_pSavedRenderTarget = renderTarget;
 	renderTarget = m_lstEnabledPostProcess.front()->m_pRenderTexture;
-	CEngine::GetGraphicsManager()->SetRenderTarget(renderTarget, 0, true, true, true);
+	CEngine::GetGraphicsManager()->SetRenderTarget(renderTarget, 0, true, true);
 	return true;
 }
 

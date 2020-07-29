@@ -307,22 +307,24 @@ void CGraphicsManager::SetEnvironmentMapEnable(bool enable, const string& cubema
 		CTexture* pBRDFIntegrationMap = pTextureMgr->GetTexture("__integrationmap__");
 		if (!pTexture || !pTexture->IsValid() || !pTexture->IsCubeMap()) enable = false;
 		if (enable) {
+			CTexture* pRenderTarget = m_pRenderTarget;
 			if (!pIrradianceMap) pIrradianceMap = pTextureMgr->Create("__irradiancemap__", 32, false, false, false);
 			if (!pEnvironmentMap) pEnvironmentMap = pTextureMgr->Create("__environmentmap__", 128, false, false, true);
-			if (!pBRDFIntegrationMap) pBRDFIntegrationMap = pTextureMgr->Create("__integrationmap__", 512, 512, false, false, false);
-			CTexture* pRenderTarget = m_pRenderTarget;
-			SetRenderTarget(pIrradianceMap, 0, true, false, false);
+			if (!pBRDFIntegrationMap) {
+				pBRDFIntegrationMap = pTextureMgr->Create("__integrationmap__", 512, 512, false, false, false);
+				SetRenderTarget(pBRDFIntegrationMap, 0, false, false);
+				pTextureMgr->Update(pBRDFIntegrationMap, "", "ibl_integrationmap", 0);
+			}
+			SetRenderTarget(pIrradianceMap, 0, false, false);
 			pTextureMgr->Update(pIrradianceMap, cubemap, "ibl_irradiancemap", 0);
-			SetRenderTarget(pEnvironmentMap, 0, true, false, false);
+			SetRenderTarget(pEnvironmentMap, 0, false, false);
 			CShader* pShader = pShaderMgr->GetShader("ibl_environmentmap");
 			pShader->UseShader();
 			for (int i = 0; i < 5; i++) {
 				pShader->SetUniform("uRoughness", (float)i / 4.0f);
 				pTextureMgr->Update(pEnvironmentMap, cubemap, pShader->GetName(), i);
 			}
-			SetRenderTarget(pBRDFIntegrationMap, 0, true, false, false);
-			pTextureMgr->Update(pBRDFIntegrationMap, "", "ibl_integrationmap", 0);
-			SetRenderTarget(pRenderTarget, 0, true, false, false);
+			SetRenderTarget(pRenderTarget, 0, false, false);
 		}
 		const char* shaderName[] = { "texturelight", "light" };
 		const int shaderCount = sizeof(shaderName) / sizeof(char*);
@@ -699,11 +701,10 @@ void CGraphicsManager::DrawCube(const CColor& color) {
 * 设置当前渲染目标
 * @param texture 渲染目标纹理，为 0 表示屏幕
 * @param level 纹理 mipmap level
-* @param fullView 指示在立体显示模式下不分左右视口
 * @param clearColor 清空 texture 的颜色
 * @param clearDepth 清空 texture 的深度信息
 */
-void CGraphicsManager::SetRenderTarget(CTexture* texture, int level, bool fullView, bool clearColor, bool clearDepth) {
+void CGraphicsManager::SetRenderTarget(CTexture* texture, int level, bool clearColor, bool clearDepth) {
 	int viewWidth = m_iWindowSize[0];
 	int viewHeight = m_iWindowSize[1];
 	CEngine::GetTextureManager()->Drop(m_pRenderTarget);
@@ -722,13 +723,7 @@ void CGraphicsManager::SetRenderTarget(CTexture* texture, int level, bool fullVi
 		m_pRenderTarget = 0;
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	}
-	// 设置视口
-	if (m_bStereoMode && !fullView) {
-		viewWidth >>= 1;
-		glViewport(m_bRenderLeftEye ? 0 : viewWidth, 0, viewWidth, viewHeight);
-	} else {
-		glViewport(0, 0, viewWidth, viewHeight);
-	}
+	glViewport(0, 0, viewWidth, viewHeight);
 	// 如果是渲染深度图，需要将深度值设置为1.0
 	if (clearColor) {
 		const float* color = m_bRenderDepth ? CColor::Red.m_fValue : m_cBackground.m_fValue;
@@ -811,7 +806,7 @@ void CGraphicsManager::Draw() {
 	// 准备后处理过程
 	CPostProcessManager* pPostProcessMgr = CEngine::GetPostProcessManager();
 	if (!pPostProcessMgr->PrepareFrame(pRenderTarget, screenWidth, screenHeight)) {
-		SetRenderTarget(pRenderTarget, 0, false, false, false);
+		SetRenderTarget(pRenderTarget, 0, false, false);
 	}
 	// 获取渲染目标宽高
 	int viewWidth = screenWidth;
@@ -949,11 +944,11 @@ void CGraphicsManager::DrawShadowMap() {
 	glDisable(GL_BLEND);
 	m_bRenderDepth = true;
 	CMatrix4 viewProj = projMat * viewMat;
-	SetRenderTarget(pShadowMap, 0, true, true, true);
+	SetRenderTarget(pShadowMap, 0, true, true);
 	CEngine::GetSceneManager()->RenderDepth(viewProj, "shadowmap");
 	m_bRenderDepth = false;
 	// 对阴影贴图进行模糊
-	SetRenderTarget(pShadowMapBlur, 0, true, false, false);
+	SetRenderTarget(pShadowMapBlur, 0, false, false);
 	pShadowMap->UseTexture();
 	pShaderBlur->UseShader();
 	DrawQuadrilateral(CColor::White, false);
@@ -1054,7 +1049,7 @@ void CGraphicsManager::DrawReflectMap() {
 		m_pCamera->UpdateFrustum();
 		// 渲染场景到纹理
 		CTexture* reflectTexture = CEngine::GetTextureManager()->GetTexture(node->GetName() + "_reflect");
-		SetRenderTarget(reflectTexture, 0, true, true, true);
+		SetRenderTarget(reflectTexture, 0, true, true);
 		CEngine::GetSceneManager()->RenderScene(m_pCamera->GetViewMatrix(), m_pCamera->GetProjMatrix());
 	}
 	// 恢复摄像机参数

@@ -19,7 +19,7 @@ CPostProcess::CPostProcess() {
 * 应用当前后处理
 */
 void CPostProcess::Apply(CTexture* target, CMesh* mesh) {
-	CEngine::GetGraphicsManager()->SetRenderTarget(target, 0, true, true, true);
+	CEngine::GetGraphicsManager()->SetRenderTarget(target, 0, true, true);
 	m_pPostProcessShader->UseShader();
 	m_pRenderTexture->UseTexture();
 	mesh->Render(false);

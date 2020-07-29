@@ -108,14 +108,14 @@ void CPostProcessBeam::Apply(CTexture* target, CMesh* mesh) {
 		screenY = 0.0f;
 	}
 	// 渲染体积光
-	pGraphicsMgr->SetRenderTarget(m_pVolumeLightTexture, 0, true, true, true);
+	pGraphicsMgr->SetRenderTarget(m_pVolumeLightTexture, 0, true, true);
 	m_pVolumeLightShader->UseShader();
 	m_pVolumeLightShader->SetUniform("uLightPos", CVector2(screenX, screenY));
 	m_pVolumeLightShader->SetUniform("uExposure", exposure);
 	m_pRenderTexture->UseTexture();
 	mesh->Render(false);
 	// 合成最终场景
-	pGraphicsMgr->SetRenderTarget(target, 0, true, false, false);
+	pGraphicsMgr->SetRenderTarget(target, 0, false, false);
 	m_pPostProcessShader->UseShader();
 	m_pVolumeLightTexture->UseTexture(1);
 	m_pRenderTexture->UseTexture(0);

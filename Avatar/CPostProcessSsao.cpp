@@ -202,30 +202,30 @@ void CPostProcessSsao::Apply(CTexture* target, CMesh* mesh) {
 	CGraphicsManager* pGraphicsMgr = CEngine::GetGraphicsManager();
 	CCamera* pCamera = pGraphicsMgr->GetCamera();
 	CMatrix4 viewProj = pCamera->GetProjMatrix() * pCamera->GetViewMatrix();
-	pGraphicsMgr->SetRenderTarget(m_pDepthTexture, 0, true, true, true);
+	pGraphicsMgr->SetRenderTarget(m_pDepthTexture, 0, true, true);
 	pGraphicsMgr->SetColorBlendEnable(false);
 	CEngine::GetSceneManager()->RenderDepth(viewProj, "postprocess_ssao_depth");
 	pGraphicsMgr->SetColorBlendEnable(true);
 	// 渲染 AO 图
-	pGraphicsMgr->SetRenderTarget(m_pSsaoTexture, 0, true, false, false);
+	pGraphicsMgr->SetRenderTarget(m_pSsaoTexture, 0, false, false);
 	m_pSsaoShader->UseShader();
 	m_pRandomTexture->UseTexture(1);
 	m_pDepthTexture->UseTexture(0);
 	mesh->Render(false);
 	// AO 水平模糊
-	pGraphicsMgr->SetRenderTarget(m_pBlurTexture, 0, true, false, false);
+	pGraphicsMgr->SetRenderTarget(m_pBlurTexture, 0, false, false);
 	m_pBlurShader->UseShader();
 	m_pBlurShader->SetUniform("uDirection", CVector2(2.5f, 0.0f));
 	m_pSsaoTexture->UseTexture();
 	mesh->Render(false);
 	// AO 垂直模糊
-	pGraphicsMgr->SetRenderTarget(m_pSsaoTexture, 0, true, false, false);
+	pGraphicsMgr->SetRenderTarget(m_pSsaoTexture, 0, false, false);
 	m_pBlurShader->UseShader();
 	m_pBlurShader->SetUniform("uDirection", CVector2(0.0f, 2.5f));
 	m_pBlurTexture->UseTexture();
 	mesh->Render(false);
 	// 渲染最终场景
-	pGraphicsMgr->SetRenderTarget(target, 0, true, false, false);
+	pGraphicsMgr->SetRenderTarget(target, 0, false, false);
 	m_pPostProcessShader->UseShader();
 	m_pSsaoTexture->UseTexture(1);
 	m_pRenderTexture->UseTexture(0);

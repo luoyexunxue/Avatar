@@ -2025,7 +2025,7 @@ int CScriptManager::DoGraphicsRenderTarget(lua_State* lua) {
 		CTexture* pTexture = CEngine::GetTextureManager()->GetTexture(name);
 		CGraphicsManager* pGraphicsMgr = CEngine::GetGraphicsManager();
 		CTexture* pRenderTarget = pGraphicsMgr->GetRenderTarget();
-		pGraphicsMgr->SetRenderTarget(pTexture, 0, true, clear, clear);
+		pGraphicsMgr->SetRenderTarget(pTexture, 0, clear, clear);
 		lua_pushstring(lua, pRenderTarget ? pRenderTarget->GetFilePath().c_str() : "null");
 		return 1;
 	}

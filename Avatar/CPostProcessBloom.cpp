@@ -91,19 +91,19 @@ void CPostProcessBloom::Destroy() {
 void CPostProcessBloom::Apply(CTexture* target, CMesh* mesh) {
 	CGraphicsManager* pGraphicsMgr = CEngine::GetGraphicsManager();
 	// 水平模糊
-	pGraphicsMgr->SetRenderTarget(m_pHBlurTexture, 0, true, false, false);
+	pGraphicsMgr->SetRenderTarget(m_pHBlurTexture, 0, false, false);
 	m_pBlurShader->UseShader();
 	m_pBlurShader->SetUniform("uDirection", CVector2(3.5f, 0.0f));
 	m_pRenderTexture->UseTexture();
 	mesh->Render(false);
 	// 垂直模糊
-	pGraphicsMgr->SetRenderTarget(m_pVBlurTexture, 0, true, false, false);
+	pGraphicsMgr->SetRenderTarget(m_pVBlurTexture, 0, false, false);
 	m_pBlurShader->UseShader();
 	m_pBlurShader->SetUniform("uDirection", CVector2(0.0f, 3.5f));
 	m_pHBlurTexture->UseTexture();
 	mesh->Render(false);
 	// 合成最终场景
-	pGraphicsMgr->SetRenderTarget(target, 0, true, false, false);
+	pGraphicsMgr->SetRenderTarget(target, 0, false, false);
 	m_pPostProcessShader->UseShader();
 	m_pVBlurTexture->UseTexture(1);
 	m_pRenderTexture->UseTexture(0);

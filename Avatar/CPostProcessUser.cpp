@@ -68,7 +68,7 @@ void CPostProcessUser::Destroy() {
 * 应用当前后处理
 */
 void CPostProcessUser::Apply(CTexture* target, CMesh* mesh) {
-	CEngine::GetGraphicsManager()->SetRenderTarget(target, 0, true, true, true);
+	CEngine::GetGraphicsManager()->SetRenderTarget(target, 0, true, true);
 	m_pPostProcessShader->UseShader();
 	m_pPostProcessShader->SetUniform("uElapsedTime", CTimer::Reset(m_strIdentifier, false));
 	if (!m_vecTextures.empty()) {

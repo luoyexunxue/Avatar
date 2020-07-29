@@ -404,7 +404,7 @@ bool CTextureManager::Update() {
 	while (iter != m_mapProceduralTexture.end()) {
 		if (iter->second.update) {
 			iter->second.update = iter->second.dynamic;
-			pGraphicsMgr->SetRenderTarget(iter->second.texture, 0, true, true, false);
+			pGraphicsMgr->SetRenderTarget(iter->second.texture, 0, true, false);
 			iter->second.shader->UseShader();
 			iter->second.shader->SetUniform("uElapsedTime", proceduralTime);
 			pGraphicsMgr->DrawTriangles(&m_vecProceduralVertices[0], 4, true);
@@ -517,7 +517,7 @@ bool CTextureManager::Update(CTexture* texture, const string& input, const strin
 	CShader* pShader = pShaderMgr->GetShader(shader);
 	if (!pShader) return false;
 	CTexture* renderTarget = pGraphicsMgr->GetRenderTarget();
-	if (texture != renderTarget) pGraphicsMgr->SetRenderTarget(texture, 0, true, false, false);
+	if (texture != renderTarget) pGraphicsMgr->SetRenderTarget(texture, 0, false, false);
 	pShader->UseShader();
 	map<string, CTexture*>::iterator iter = m_mapTexture.find(input);
 	if (iter != m_mapTexture.end()) iter->second->UseTexture();
@@ -544,7 +544,7 @@ bool CTextureManager::Update(CTexture* texture, const string& input, const strin
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		pGraphicsMgr->DrawQuadrilateral(CColor::White, false);
 	}
-	if (texture != renderTarget) pGraphicsMgr->SetRenderTarget(renderTarget, 0, false, false, false);
+	if (texture != renderTarget) pGraphicsMgr->SetRenderTarget(renderTarget, 0, false, false);
 	return true;
 }
 
