@@ -17,7 +17,7 @@ end
 -- 引擎初始化完成
 --------------------------------------------------
 OnReady = function()
-	if engine.info().PLATFORM == "android" then
+	if engine.info().platform == "android" then
 		gui.scale(2);
 	end
 	graphics.background(0.16, 0.153, 0.16, 1.0)

@@ -14,7 +14,7 @@ OnReady = function()
    camera.type('geographic')
    camera.position(-1.290999,-9.161304,4.545068)
    camera.angle(-0.1399968,-0.4049998,0)
-   if engine.info().PLATFORM == "android" then
+   if engine.info().platform == "android" then
       gui.scale(2);
    end
    dofile('load.lua')

@@ -228,112 +228,112 @@ int main(int argc, char **argv)
 <hr>
 | 接口名称 | 描述 | 参数 | 备注 |
 | :------- | :--- | :--- | :--- |
-| OnReady | 初始化完成 | - | - |
-| OnUpdate | 逻辑更新 | dt | - |
-| OnExit | 引擎退出 | - | - |
-| OnSize | 窗口大小改变 | width, height | - |
-| OnInput | 输入事件 | name, value, arg1, arg2, arg3 | name 为 'function' \| 'key' \| 'fire' \| 'move' \| 'turn' |
+| OnReady | 初始化完成 | - | 初始化完成时调用一次 |
+| OnUpdate | 逻辑更新 | dt:*float* | - |
+| OnExit | 引擎退出 | - | 引擎结束运行时调用一次 |
+| OnSize | 窗口大小改变 | width:*integer*, height:*integer* | - |
+| OnInput | 输入事件 | name:*string*, value:*integer*, arg1:*number*, arg2:*number*, arg3:*number* | name 为 'function/key/fire/move/turn' |
 
 ##接口一览表##
 <hr>
 | 接口名称 | 描述 | 参数 | 返回值 |
 | :------- | :--- | :--- | :----- |
-| engine.info | 获取引擎信息 | - | {VERSION, PLATFORM} |
-| engine.fps | 获取当前帧率 | - | fps |
-| engine.log | 使能日志或输出日志 | enable, &lt;level&gt; \| msg | - |
-| engine.speed | 设置引擎时间快慢 | speed, &lt;fixed&gt; | - |
-| engine.timer | 获取定时器定时 | name, &lt;reset&gt; | elapse |
-| engine.directory | 获取或设置数据目录 | &lt;dir&gt; | &lt;dir&gt; |
-| engine.input | 输入消息 | method, [params] | - |
-| engine.script | 执行 LUA 脚本 | file | success |
-| engine.execute | 执行回调方法 | function, &lt;argument&gt; | result |
-| engine.read | 读取指定文件数据 | file | data |
-| engine.write | 写入数据至指定文件 | file, data | - |
-| engine.plugin | 加载引擎插件 | path | desc |
-| gui.enable | 使能或禁止 GUI | enable | - |
-| gui.size | 获取 GUI 画布大小 | - | width, height |
-| gui.scale | 设置 GUI 缩放 | scale | - |
-| gui.create | 创建 GUI 元素 | name, type, desc, &lt;event&gt; | - |
-| gui.modify | 修改 GUI 元素 | name, desc | - |
-| gui.delete | 删除 GUI 元素 | name | - |
-| gui.attrib | 获取 GUI 元素属性 | name, attrib | value |
-| camera.type | 获取或设置相机类型 | &lt;type, {param}&gt; | &lt;type&gt; |
-| camera.control | 绑定用户控制输入 | enable | - |
-| camera.fov | 获取或设置相机视角 | &lt;fov&gt; | &lt;fov&gt; |
-| camera.clip | 获取或设置相机裁剪面 | &lt;near, far&gt; | &lt;near, far&gt; |
-| camera.position | 获取或设置相机位置 | &lt;x, y, z&gt; | &lt;x, y, z&gt; |
-| camera.target | 获取或设置相机目标点 | &lt;x, y, z&gt; | &lt;x, y, z&gt; |
-| camera.angle | 获取或设置相机角度 | &lt;x, y, z&gt; | &lt;x, y, z&gt; |
-| camera.direction | 获取相机方向正交向量组 | - | lx, ly, lz, rx, ry, rz, ux, uy, uz |
-| camera.bind | 绑定指定场景节点或解除绑定 | &lt;name, x, y, z, ax, ay, az&gt; | - |
-| scene.insert | 插入场景节点 | parent, type, name, {attrib} | success |
-| scene.delete | 删除场景节点 | name | - |
+| engine.info | 获取引擎信息 | - | {version:*string*, platform:*string*} |
+| engine.fps | 获取当前帧率 | - | fps:*float* |
+| engine.log | 使能日志或输出日志 | enable:*boolean*, &lt;level:*integer*&gt; / msg:*string* | - |
+| engine.speed | 设置引擎时间快慢 | speed:*float*, &lt;fixed:*boolean*&gt; | - |
+| engine.timer | 获取定时器定时 | name:*string*, &lt;reset:*boolean*&gt; | elapse:*float* |
+| engine.directory | 获取或设置数据目录 | &lt;dir:*string*&gt; | &lt;dir:*string*&gt; |
+| engine.input | 输入消息 | method:*string*, [params] | - |
+| engine.script | 执行 LUA 脚本 | file:*string* | success:*boolean* |
+| engine.execute | 执行回调方法 | function:*string*, &lt;argument:*string*&gt; | result:*integer* |
+| engine.read | 读取指定文件数据 | file:*string* | data:*string* |
+| engine.write | 写入数据至指定文件 | file:*string*, data:*string* | - |
+| engine.plugin | 加载引擎插件 | path:*string* | desc:*string* |
+| gui.enable | 使能或禁止 GUI | enable:*boolean* | - |
+| gui.size | 获取 GUI 画布大小 | - | width:*integer*, height:*integer* |
+| gui.scale | 设置 GUI 缩放 | scale:*float* | - |
+| gui.create | 创建 GUI 元素 | name:*string*, type:*string*, desc:*string*, &lt;event:*function(evt:integer, arg1:integer, arg2:integer)*&gt; | - |
+| gui.modify | 修改 GUI 元素 | name:*string*, desc:*string* | - |
+| gui.delete | 删除 GUI 元素 | name:*string* | - |
+| gui.attrib | 获取 GUI 元素属性 | name:*string*, attrib:*string* | value:*string* |
+| camera.type | 获取或设置相机类型 | &lt;type:*string*, {param}&gt; | &lt;type:*string*&gt; |
+| camera.control | 绑定用户控制输入 | enable:*boolean* | - |
+| camera.fov | 获取或设置相机视角 | &lt;fov:*float*&gt; | &lt;fov:*float*&gt; |
+| camera.clip | 获取或设置相机裁剪面 | &lt;near:*float*, far:*float*&gt; | &lt;near:*float*, far:*float*&gt; |
+| camera.position | 获取或设置相机位置 | &lt;x:*float*, y:*float*, z:*float*&gt; | &lt;x:*float*, y:*float*, z:*float*&gt; |
+| camera.target | 获取或设置相机目标点 | &lt;x:*float*, y:*float*, z:*float*&gt; | &lt;x:*float*, y:*float*, z:*float*&gt; |
+| camera.angle | 获取或设置相机角度 | &lt;x:*float*, y:*float*, z:*float*&gt; | &lt;x:*float*, y:*float*, z:*float*&gt; |
+| camera.direction | 获取相机方向正交向量组 | - | lx:*float*, ly:*float*, lz:*float*, rx:*float*, ry:*float*, rz:*float*, ux:*float*, uy:*float*, uz:*float* |
+| camera.bind | 绑定场景节点或解除绑定 | &lt;name:*string*, x:*float*, y:*float*, z:*float*, ax:*float*, ay:*float*, az:*float*&gt; | - |
+| scene.insert | 插入场景节点 | parent:*string*, type:*string*, name:*string*, {attrib} | success:*boolean* |
+| scene.delete | 删除场景节点 | name:*string* | - |
 | scene.clear | 清除所有场景节点 | - | - |
-| scene.list | 获取场景节点列表 | - | {name} |
-| scene.pick | 射线选择场景节点 | x, y, z, dx, dy, dz | name, x, y, z, mesh, face / empty |
-| scene.scale | 获取或设置场景节点缩放 | name, &lt;x, y, z&gt; | &lt;x, y, z&gt; |
-| scene.angle | 获取或设置场景节点角度 | name, &lt;x, y, z&gt; | &lt;x, y, z&gt; |
-| scene.orientation | 获取或设置场景节点方位 | name, &lt;x, y, z, w&gt; | &lt;x, y, z, w&gt; |
-| scene.position | 获取或设置场景节点位置 | name, &lt;x, y, z&gt; | &lt;x, y, z&gt; |
-| scene.visible | 获取或设置场景节点可见性 | name, &lt;visible&gt; | &lt;visible&gt; |
-| scene.update | 更新场景节点网格 | name, mesh, {data} | - |
-| scene.vertex | 获取场景节点网格顶点信息 | name, mesh, face, vert | &lt;px, py, pz, s, t, nx, ny, nz, r, g, b, a&gt; |
-| scene.material | 获取或设置场景节点网格材质 | name, mesh, &lt;{param}&gt; | &lt;{param}&gt; |
-| scene.renderMode | 设置场景节点渲染模式 | name, cullFace, useDepth, addColor | - |
-| scene.boundingBox | 获取场景节点包围盒 | name | &lt;minx, miny, minz, maxx, maxy, maxz&gt; |
-| scene.handle | 调用场景节点方法 | name, function, &lt;{param}&gt; | [ret] |
-| post.list | 获取已注册的后处理列表 | - | {name} |
-| post.enable | 获取或设置指定后处理 | name, &lt;enable&gt; | &lt;enable&gt; |
-| post.register | 注册用户自定义后处理 | name, shader, &lt;texture, cube&gt; | success |
-| post.param | 设置后处理参数 | name, key, [values] | - |
-| graphics.screenshot | 屏幕截图 | file, &lt;redraw&gt; | - |
-| graphics.stereo | 获取或设置立体显示 | &lt;enable&gt; | &lt;enable&gt; |
-| graphics.windowSize | 获取窗口大小 | - | width, height |
-| graphics.lightPosition | 获取光源位置 | - | x, y, z, w, dx, dy, dz, dw |
-| graphics.directionLight | 设置方向光光源 | dx, dy, dz, &lt;r, g, b&gt; | - |
-| graphics.pointLight | 设置点光源 | x, y, z, &lt;range, r, g, b&gt; | - |
-| graphics.spotLight | 设置聚光灯光源 | x, y, z, &lt;dx, dy, dz, angle, range, r, g, b&gt; | - |
-| graphics.shadow | 获取或设置阴影是否显示 | &lt;enable&gt; | &lt;enable&gt; |
-| graphics.fog | 获取或设置雾是否显示 | &lt;enable, r, g, b, start, end&gt; | &lt;enable&gt; |
-| graphics.environmentMap | 获取或设置环境贴图 | &lt;enable, cubemap&gt; | &lt;enable&gt; |
-| graphics.background | 设置绘图背景颜色 | r, g, b, a | - |
-| graphics.pickingRay | 从屏幕上的点获取空间射线 | x, y | x, y, z, dx, dy, dz |
-| graphics.project | 获取空间点投影到屏幕上的位置 | x, y, z | x, y, z |
-| graphics.renderTarget | 设置离线渲染目标 | texture, &lt;clear&gt; | last |
-| texture.create | 创建或载入纹理 | name, &lt;width, height, shader \| depth&gt; | &lt;texture&gt; |
-| texture.delete | 删除纹理资源 | name | - |
-| texture.update | 更新纹理数据 | name, file | success |
-| shader.create | 创建着色器 | name, vert, frag | &lt;shader&gt; |
-| shader.delete | 删除着色器资源 | name | - |
-| shader.update | 更新着色器程序 | name, define, undef | success |
-| shader.param | 设置着色器参数 | name, key, [values] | - |
-| font.list | 获取已加载的字体列表 | - | {name} |
-| font.load | 加载字体 | name, file | success |
+| scene.list | 获取场景节点列表 | - | {name:*string*} |
+| scene.pick | 射线选择场景节点 | x:*float*, y:*float*, z:*float*, dx:*float*, dy:*float*, dz:*float* | name:*string*, &lt;x:*float*, y:*float*, z:*float*, mesh:*integer*, face:*integer*&gt; |
+| scene.scale | 获取或设置场景节点缩放 | name:*string*, &lt;x:*float*, y:*float*, z:*float*&gt; | &lt;x:*float*, y:*float*, z:*float*&gt; |
+| scene.angle | 获取或设置场景节点角度 | name:*string*, &lt;x:*float*, y:*float*, z:*float*&gt; | &lt;x:*float*, y:*float*, z:*float*&gt; |
+| scene.orientation | 获取或设置场景节点方位 | name:*string*, &lt;x:*float*, y:*float*, z:*float*, w:*float*&gt; | &lt;x:*float*, y:*float*, z:*float*, w:*float*&gt; |
+| scene.position | 获取或设置场景节点位置 | name:*string*, &lt;x:*float*, y:*float*, z:*float*&gt; | &lt;x:*float*, y:*float*, z:*float*&gt; |
+| scene.visible | 获取或设置场景节点可见性 | name:*string*, &lt;visible:*boolean*&gt; | &lt;visible:*boolean*&gt; |
+| scene.update | 更新场景节点网格 | name:*string*, mesh:*integer*, {data} | - |
+| scene.vertex | 获取场景节点网格顶点信息 | name:*string*, mesh:*integer*, face:*integer*, vert:*integer* | &lt;px:*float*, py:*float*, pz:*float*, s:*float*, t:*float*, nx:*float*, ny:*float*, nz:*float*, r:*float*, g:*float*, b:*float*, a:*float*&gt; |
+| scene.material | 获取或设置节点网格材质 | name:*string*, mesh:*integer*, &lt;{param}&gt; | &lt;{param}&gt; |
+| scene.renderMode | 设置场景节点渲染模式 | name:*string*, cullFace:*boolean*, useDepth:*boolean*, addColor:*boolean* | - |
+| scene.boundingBox | 获取场景节点包围盒 | name:*string* | &lt;minx:*float*, miny:*float*, minz:*float*, maxx:*float*, maxy:*float*, maxz:*float*&gt; |
+| scene.handle | 调用场景节点方法 | name:*string*, function:*string*, &lt;{param}&gt; | [ret] |
+| post.list | 获取已注册的后处理列表 | - | {name:*string*} |
+| post.enable | 获取或设置指定后处理 | name:*string*, &lt;enable:*boolean*&gt; | &lt;enable:*boolean*&gt; |
+| post.register | 注册用户自定义后处理 | name:*string*, shader:*string*, &lt;texture:*string*, cube:*boolean*&gt; | success:*boolean* |
+| post.param | 设置后处理参数 | name:*string*, key:*string*, [value] | - |
+| graphics.screenshot | 屏幕截图 | file:*string*, &lt;redraw:*boolean*&gt; | - |
+| graphics.stereo | 获取或设置立体显示 | &lt;enable:*boolean*&gt; | &lt;enable:*boolean*&gt; |
+| graphics.windowSize | 获取窗口大小 | - | width:*integer*, height:*integer* |
+| graphics.lightPosition | 获取光源位置 | - | x:*float*, y:*float*, z:*float*, w:*float*, dx:*float*, dy:*float*, dz:*float*, dw:*float* |
+| graphics.directionLight | 设置方向光光源 | dx:*float*, dy:*float*, dz:*float*, &lt;r:*float*, g:*float*, b:*float*&gt; | - |
+| graphics.pointLight | 设置点光源 | x:*float*, y:*float*, z:*float*, &lt;range:*float*, r:*float*, g:*float*, b:*float*&gt; | - |
+| graphics.spotLight | 设置聚光灯光源 | x:*float*, y:*float*, z:*float*, &lt;dx:*float*, dy:*float*, dz:*float*, angle:*float*, range:*float*, r:*float*, g:*float*, b:*float*&gt; | - |
+| graphics.shadow | 获取或设置阴影是否显示 | &lt;enable:*boolean*&gt; | &lt;enable:*boolean*&gt; |
+| graphics.fog | 获取或设置雾是否显示 | &lt;enable:*boolean*, r:*float*, g:*float*, b:*float*, start:*float*, end:*float*&gt; | &lt;enable:*boolean*&gt; |
+| graphics.environmentMap | 获取或设置环境贴图 | &lt;enable:*boolean*, cubemap:*string*&gt; | &lt;enable:*boolean*&gt; |
+| graphics.background | 设置绘图背景颜色 | r:*float*, g:*float*, b:*float*, a:*float* | - |
+| graphics.pickingRay | 从屏幕上的点获取空间射线 | x:*integer*, y:*integer* | x:*float*, y:*float*, z:*float*, dx:*float*, dy:*float*, dz:*float* |
+| graphics.project | 获取空间点在屏幕上的位置 | x:*float*, y:*float*, z:*float* | x:*float*, y:*float*, z:*float* |
+| graphics.renderTarget | 设置离线渲染目标 | texture:*string*, &lt;clear:*boolean*&gt; | last:*string* |
+| texture.create | 创建或载入纹理 | name:*string*, &lt;width:*integer*, height:*integer*, shader:*string* / depth:*boolean*&gt; | &lt;texture:*string*&gt; |
+| texture.delete | 删除纹理资源 | name:*string* | - |
+| texture.update | 更新纹理数据 | name:*string*, file:*string* | success:*boolean* |
+| shader.create | 创建着色器 | name:*string*, vert:*string*, frag:*string* | &lt;shader:*string*&gt; |
+| shader.delete | 删除着色器资源 | name:*string* | - |
+| shader.update | 更新着色器程序 | name:*string*, define:*string*, undef:*string* | success:*boolean* |
+| shader.param | 设置着色器参数 | name:*string*, key:*string*, [value] | - |
+| font.list | 获取已加载的字体列表 | - | {name:*string*} |
+| font.load | 加载字体 | name:*string*, file:*string* | success:*boolean* |
 | font.clear | 清空全部已加载的字体 | - | - |
-| font.use | 设置当前字体 | name | - |
-| sound.create | 创建音源 | file, &lt;background, loop, gain, pitch&gt; | id |
-| sound.delete | 删除音源 | id | - |
-| sound.play | 开始播放声音 | id | - |
-| sound.pause | 暂停播放声音 | id | - |
-| sound.stop | 停止播放声音 | id | - |
-| sound.position | 设置音源位置 | id, x, y, z | - |
-| sound.volume | 获取或设置音量 | &lt;volume&gt; | &lt;volume&gt; |
-| sound.update | 更新音频数据 | original, file | success |
-| physics.bind | 绑定场景节点到刚体对象 | name, {attrib} | - |
-| physics.unbind | 取消场景节点的物理模拟 | name | - |
-| physics.collide | 设置碰撞事件回调 | name, event | - |
-| physics.reset | 将刚体线速度和角速度设为零 | name | - |
-| physics.velocity | 设置刚体线速度和角速度 | name, lx, ly, lz, &lt;ax, ay, az&gt; | - |
-| physics.applyForce | 向刚体施加力 | name, x, y, z, &lt;px, py, pz&gt; | - |
-| physics.applyImpulse | 向刚体施加冲量 | name, x, y, z, &lt;px, py, pz&gt; | - |
-| physics.gravity | 设置物理引擎重力 | x, y, z | - |
-| physics.joint | 为关节设置物理模拟 | name, joint, &lt;mass, hk, vk, damping&gt; | - |
-| animation.param | 设置动画参数 | name, type, duration, &lt;repeat, swing&gt; | - |
-| animation.scale | 设置缩放动画 | name, x1, y1, z1, x2, y2, z2 | - |
-| animation.rotation | 设置旋转动画 | name, x1, y1, z1, x2, y2, z2 | - |
-| animation.translation | 设置位移动画 | name, x1, y1, z1, x2, y2, z2 | - |
-| animation.start | 开始执行动画 | name, &lt;delay&gt; | - |
-| animation.stop | 停止执行动画 | name | - |
+| font.use | 设置当前字体 | name:*string* | - |
+| sound.create | 创建音源 | file:*string*, &lt;background:*boolean*, loop:*boolean*, gain:*float*, pitch:*float*&gt; | id:*integer* |
+| sound.delete | 删除音源 | id:*integer* | - |
+| sound.play | 开始播放声音 | id:*integer* | - |
+| sound.pause | 暂停播放声音 | id:*integer* / pause:*boolean* | - |
+| sound.stop | 停止播放声音 | id:*integer* | - |
+| sound.position | 设置音源位置 | id:*integer*, x:*float*, y:*float*, z:*float* | - |
+| sound.volume | 获取或设置音量 | &lt;volume:*integer*&gt; | &lt;volume:*integer*&gt; |
+| sound.update | 更新音频数据 | original:*string*, file:*string* | success:*boolean* |
+| physics.bind | 绑定场景节点到刚体 | name:*string*, {attrib} | - |
+| physics.unbind | 取消场景节点刚体绑定 | name:*string* | - |
+| physics.collide | 设置碰撞事件回调 | name:*string*, event:*function(enter:boolean, name:string, &lt;x:float, y:float, z:float&gt;)* | - |
+| physics.reset | 将刚体速度设为零 | name:*string* | - |
+| physics.velocity | 设置刚体速度 | name:*string*, lx:*float*, ly:*float*, lz:*float*, &lt;ax:*float*, ay:*float*, az:*float*&gt; | - |
+| physics.applyForce | 向刚体施加力 | name:*string*, x:*float*, y:*float*, z:*float*, &lt;px:*float*, py:*float*, pz:*float*&gt; | - |
+| physics.applyImpulse | 向刚体施加冲量 | name:*string*, x:*float*, y:*float*, z:*float*, &lt;px:*float*, py:*float*, pz:*float*&gt; | - |
+| physics.gravity | 设置物理引擎重力 | x:*float*, y:*float*, z:*float* | - |
+| physics.joint | 为关节设置物理模拟 | name:*string*, joint:*string*, &lt;mass:*float*, hk:*float*, vk:*float*, damping:*float*&gt; | - |
+| animation.param | 设置动画参数(首先调用) | name:*string*, type:*string*, duration:*float*, &lt;repeat:*integer*, swing:*boolean*&gt; | - |
+| animation.scale | 设置缩放动画 | name:*string*, x1:*float*, y1:*float*, z1:*float*, x2:*float*, y2:*float*, z2:*float* | - |
+| animation.rotation | 设置旋转动画 | name:*string*, x1:*float*, y1:*float*, z1:*float*, x2:*float*, y2:*float*, z2:*float* | - |
+| animation.translation | 设置位移动画 | name:*string*, x1:*float*, y1:*float*, z1:*float*, x2:*float*, y2:*float*, z2:*float* | - |
+| animation.start | 开始执行动画 | name:*string*, &lt;delay:*float*&gt; | - |
+| animation.stop | 停止执行动画 | name:*string* | - |
 
 @remarks <> 内部参数为可选参数，[] 内部参数为可变个数参数.
 */

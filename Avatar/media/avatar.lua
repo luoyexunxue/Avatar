@@ -25,10 +25,10 @@ dofile("tips.lua")
 --------------------------------------------------
 OnReady = function()
 	local info = engine.info()
-	print("引擎版本 "..info.VERSION)
+	print("引擎版本 "..info.version)
 	print("脚本版本 ".._VERSION)
-	print("运行平台 "..info.PLATFORM)
-	gPlatform = info.PLATFORM
+	print("运行平台 "..info.platform)
+	gPlatform = info.platform
 	engine.input("disable", false, false, true)
 	if gPlatform == "android" then
 		gui.scale(2);

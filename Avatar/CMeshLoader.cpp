@@ -79,8 +79,8 @@ void CMeshLoader::Destroy() {
 * @param filename 模型文件
 * @param cache 是否缓存
 * @return 网格模型对象指针
-* @attention 当使用缓存时，必须使用 CMeshLoader::Remove() 释放资源，并且应该避免修改网格对象内部数据
-*	若没有使用缓存，则直接 delete 即可
+* @attention 当使用缓存时，必须使用 CMeshLoader::Remove() 释放资源，并且应该避免修改网格对象内部数据。
+*	使用模型缓存避免重复加载相同模型，以优化内存使用率
 */
 CMeshData* CMeshLoader::Load(const string& filename, bool cache) {
 	if (!m_mapMeshLoader.size()) {
@@ -127,7 +127,7 @@ bool CMeshLoader::Save(const string& filename, CMeshData* meshData) {
 /**
 * 移除已缓存的模型
 * @param meshData 需要移除的网格对象
-* @attention 当使用 CMeshLoader::Load() 且参数 cache 为 true 时才可使用此方法
+* @attention 当使用 CMeshLoader::Load() 且参数 cache 为 true 时必须使用此方法释放模型对象
 */
 void CMeshLoader::Remove(CMeshData* meshData) {
 	map<CMeshData*, int>::iterator iter = m_mapCacheRefCount.find(meshData);
@@ -145,7 +145,23 @@ void CMeshLoader::Remove(CMeshData* meshData) {
 				++it;
 			}
 		}
-	}
+	} else delete meshData;
+}
+
+/**
+* 注册内置加载器
+*/
+void CMeshLoader::RegisterLoader() {
+	CMeshLoader* basicLoader = new CMeshLoaderBasic();
+	CMeshLoader* gltfLoader = new CMeshLoaderGltf();
+	m_mapMeshLoader.insert(std::pair<string, CMeshLoader*>("STL", basicLoader));
+	m_mapMeshLoader.insert(std::pair<string, CMeshLoader*>("OBJ", basicLoader));
+	m_mapMeshLoader.insert(std::pair<string, CMeshLoader*>("MS3D", basicLoader));
+	m_mapMeshLoader.insert(std::pair<string, CMeshLoader*>("BVH", basicLoader));
+	m_mapMeshLoader.insert(std::pair<string, CMeshLoader*>("3DS", new CMeshLoader3ds()));
+	m_mapMeshLoader.insert(std::pair<string, CMeshLoader*>("DAE", new CMeshLoaderCollada()));
+	m_mapMeshLoader.insert(std::pair<string, CMeshLoader*>("GLB", gltfLoader));
+	m_mapMeshLoader.insert(std::pair<string, CMeshLoader*>("GLTF", gltfLoader));
 }
 
 /**
@@ -499,20 +515,4 @@ bool CMeshLoader::SaveAvatar(const string& filename, CMeshData* meshData) {
 	map<string, CFileManager::CBinaryFile*>::iterator it = textureBuffer.begin();
 	while (it != textureBuffer.end()) { delete it->second; ++it; }
 	return CEngine::GetFileManager()->WriteFile(&file, filename) > 0;
-}
-
-/**
-* 注册内置加载器
-*/
-void CMeshLoader::RegisterLoader() {
-	CMeshLoader* basicLoader = new CMeshLoaderBasic();
-	CMeshLoader* gltfLoader = new CMeshLoaderGltf();
-	m_mapMeshLoader.insert(std::pair<string, CMeshLoader*>("STL", basicLoader));
-	m_mapMeshLoader.insert(std::pair<string, CMeshLoader*>("OBJ", basicLoader));
-	m_mapMeshLoader.insert(std::pair<string, CMeshLoader*>("MS3D", basicLoader));
-	m_mapMeshLoader.insert(std::pair<string, CMeshLoader*>("BVH", basicLoader));
-	m_mapMeshLoader.insert(std::pair<string, CMeshLoader*>("3DS", new CMeshLoader3ds()));
-	m_mapMeshLoader.insert(std::pair<string, CMeshLoader*>("DAE", new CMeshLoaderCollada()));
-	m_mapMeshLoader.insert(std::pair<string, CMeshLoader*>("GLB", gltfLoader));
-	m_mapMeshLoader.insert(std::pair<string, CMeshLoader*>("GLTF", gltfLoader));
 }

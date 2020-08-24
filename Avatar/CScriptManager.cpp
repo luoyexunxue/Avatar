@@ -237,11 +237,12 @@ void CScriptManager::GuiEvent(const string& name, int evt, int arg1, int arg2) {
 */
 void CScriptManager::CollideEnter(int callback, const string& name, const CVector3& pos) {
 	lua_rawgeti(m_pLuaState, LUA_REGISTRYINDEX, callback);
+	lua_pushboolean(m_pLuaState, 1);
 	lua_pushstring(m_pLuaState, name.c_str());
 	lua_pushnumber(m_pLuaState, pos.m_fValue[0]);
 	lua_pushnumber(m_pLuaState, pos.m_fValue[1]);
 	lua_pushnumber(m_pLuaState, pos.m_fValue[2]);
-	lua_pcall(m_pLuaState, 4, 0, 0);
+	lua_pcall(m_pLuaState, 5, 0, 0);
 }
 
 /**
@@ -249,8 +250,9 @@ void CScriptManager::CollideEnter(int callback, const string& name, const CVecto
 */
 void CScriptManager::CollideLeave(int callback, const string& name) {
 	lua_rawgeti(m_pLuaState, LUA_REGISTRYINDEX, callback);
+	lua_pushboolean(m_pLuaState, 0);
 	lua_pushstring(m_pLuaState, name.c_str());
-	lua_pcall(m_pLuaState, 1, 0, 0);
+	lua_pcall(m_pLuaState, 2, 0, 0);
 }
 
 /**
@@ -420,10 +422,10 @@ int CScriptManager::DoEngineInfo(lua_State* lua) {
 	#error "No platform defined."
 #endif
 	lua_newtable(lua);
-	lua_pushstring(lua, "VERSION");
+	lua_pushstring(lua, "version");
 	lua_pushstring(lua, AVATAR_VERSION);
 	lua_settable(lua, -3);
-	lua_pushstring(lua, "PLATFORM");
+	lua_pushstring(lua, "platform");
 	lua_pushstring(lua, platform);
 	lua_settable(lua, -3);
 	return 1;
@@ -1819,8 +1821,8 @@ int CScriptManager::DoGraphicsWindowSize(lua_State* lua) {
 	int width;
 	int height;
 	CEngine::GetGraphicsManager()->GetWindowSize(&width, &height);
-	lua_pushnumber(lua, width);
-	lua_pushnumber(lua, height);
+	lua_pushinteger(lua, width);
+	lua_pushinteger(lua, height);
 	return 2;
 }
 

@@ -20,7 +20,7 @@ OnReady = function()
 	engine.input("scale", 1, -1)
 	soundSwap = sound.create("swap.mp3")
 	soundWin = sound.create("mission_done.wav")
-	if engine.info().PLATFORM == "android" then
+	if engine.info().platform == "android" then
 		gui.scale(2);
 	end
 	local saveLevel = engine.read("puzzle.conf")
