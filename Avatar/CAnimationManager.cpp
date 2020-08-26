@@ -101,6 +101,7 @@ void CAnimationManager::Update(float dt) {
 * @param duration 一次动画的时长
 * @param repeat 重复次数，为负数表示无限重复
 * @param swing 是否往复运动
+* @attention 首先调用此方法建立动画信息，再调用其它接口设置动画数据和启动动画
 */
 void CAnimationManager::SetAnimation(CSceneNode* node, Interpolator intepolator, float duration, int repeat, bool swing) {
 	// 检查场景节点的动画是否已存在
@@ -140,8 +141,8 @@ void CAnimationManager::SetAnimation(CSceneNode* node, Interpolator intepolator,
 /**
 * 设置缩放动画
 * @param node 关联的场景节点
-* @param from 动画开始时的缩放
-* @param to 动画结束时的缩放
+* @param from 动画开始时的缩放值
+* @param to 动画结束时的缩放值
 * @return 成功返回 true
 */
 bool CAnimationManager::AnimateScale(CSceneNode* node, const CVector3& from, const CVector3& to) {
@@ -162,8 +163,8 @@ bool CAnimationManager::AnimateScale(CSceneNode* node, const CVector3& from, con
 /**
 * 设置旋转动画
 * @param node 关联的场景节点
-* @param from 动画开始时的旋转
-* @param to 动画结束时的旋转
+* @param from 动画开始时的旋转值
+* @param to 动画结束时的旋转值
 * @return 成功返回 true
 */
 bool CAnimationManager::AnimateRotation(CSceneNode* node, const CQuaternion& from, const CQuaternion& to) {

@@ -55,85 +55,84 @@ public:
 	//! 支持的文件类型
 	enum FileType { BIN, TXT, BMP, TGA, PNG, JPG, WAV, MP3 };
 
-	//! 文件类
-	class CFile {
+	//! 文件数据类
+	class CFileData {
 	public:
 		FileType type;
 		unsigned int size;
 		unsigned char* contents;
-
-		CFile(FileType type): type(type), size(0), contents(0) {}
-		CFile(unsigned int size, FileType type): type(type), size(size) { contents = new unsigned char[size]; }
-		virtual ~CFile() { if (contents) delete[] contents; }
+		CFileData(FileType type) : type(type), size(0), contents(0) {}
+		CFileData(FileType type, unsigned int size) : type(type), size(size) { contents = new unsigned char[size]; }
+		virtual ~CFileData() { if (contents) delete[] contents; }
 	};
 
 	//! 二进制文件
-	class CBinaryFile: public CFile {
+	class CBinaryFile : public CFileData {
 	public:
-		CBinaryFile(): CFile(BIN) {}
-		CBinaryFile(unsigned int size): CFile(size, BIN) {}
+		CBinaryFile() : CFileData(BIN) {}
+		CBinaryFile(unsigned int size) : CFileData(BIN, size) {}
 	};
 
 	//! 文本文件
-	class CTextFile: public CFile {
+	class CTextFile : public CFileData {
 	public:
-		CTextFile(): CFile(TXT) {}
-		CTextFile(unsigned int size): CFile(size + 1, TXT) {}
+		CTextFile() : CFileData(TXT) {}
+		CTextFile(unsigned int size) : CFileData(TXT, size + 1) {}
 	};
 
 	//! 图片文件
-	class CImageFile: public CFile {
+	class CImageFile : public CFileData {
 	public:
 		int channels;
 		int width;
 		int height;
-		CImageFile(FileType type): CFile(type), channels(0), width(0), height(0) {}
-		CImageFile(unsigned int size, FileType type): CFile(size, type), channels(0), width(0), height(0) {}
+		CImageFile(FileType type) : CFileData(type), channels(0), width(0), height(0) {}
+		CImageFile(FileType type, unsigned int size) : CFileData(type, size), channels(0), width(0), height(0) {}
 	};
 
 	//! 音频文件
-	class CAudioFile: public CFile {
+	class CAudioFile : public CFileData {
 	public:
 		int channels;
 		int sampleRate;
 		int sampleBits;
-		CAudioFile(FileType type): CFile(type), channels(0), sampleRate(0), sampleBits(0) {}
-		CAudioFile(unsigned int size, FileType type): CFile(size, type), channels(0), sampleRate(0), sampleBits(0) {}
+		CAudioFile(FileType type) : CFileData(type), channels(0), sampleRate(0), sampleBits(0) {}
+		CAudioFile(FileType type, unsigned int size) : CFileData(type, size), channels(0), sampleRate(0), sampleBits(0) {}
 	};
 
 public:
 	//! 文件读操作
-	bool ReadFile(const string& filename, CFile* file);
+	bool ReadFile(const string& filename, CFileData* file);
 	//! 文件读操作
-	bool ReadFile(unsigned char* buffer, unsigned int size, CFile* file);
+	bool ReadFile(unsigned char* buffer, unsigned int size, CFileData* file);
 	//! 文件写操作
-	int WriteFile(CFile* file, const string& filename);
+	int WriteFile(CFileData* file, const string& filename);
 	//! 文件写操作
-	int WriteFile(CFile* file, unsigned char* buffer, unsigned int size);
+	int WriteFile(CFileData* file, unsigned char* buffer, unsigned int size);
 
 private:
 	CFileManager();
 	~CFileManager();
 
 	//! 解析各种文件方法
-	bool ParseBinFile(CFile* file, unsigned char* data, unsigned int size);
-	bool ParseTxtFile(CFile* file, unsigned char* data, unsigned int size);
-	bool ParseBmpFile(CFile* file, unsigned char* data, unsigned int size);
-	bool ParseTgaFile(CFile* file, unsigned char* data, unsigned int size);
-	bool ParsePngFile(CFile* file, unsigned char* data, unsigned int size);
-	bool ParseJpgFile(CFile* file, unsigned char* data, unsigned int size);
-	bool ParseWavFile(CFile* file, unsigned char* data, unsigned int size);
-	bool ParseMp3File(CFile* file, unsigned char* data, unsigned int size);
+	bool ParseBinFile(unsigned char* data, unsigned int size, CFileData* file);
+	bool ParseTxtFile(unsigned char* data, unsigned int size, CFileData* file);
+	bool ParseBmpFile(unsigned char* data, unsigned int size, CFileData* file);
+	bool ParseTgaFile(unsigned char* data, unsigned int size, CFileData* file);
+	bool ParsePngFile(unsigned char* data, unsigned int size, CFileData* file);
+	bool ParseJpgFile(unsigned char* data, unsigned int size, CFileData* file);
+	bool ParseWavFile(unsigned char* data, unsigned int size, CFileData* file);
+	bool ParseMp3File(unsigned char* data, unsigned int size, CFileData* file);
 
 	//! 各种文档的序列化
-	bool SerializeBinFile(CFile* file, unsigned char** data, unsigned int* size);
-	bool SerializeTxtFile(CFile* file, unsigned char** data, unsigned int* size);
-	bool SerializeBmpFile(CFile* file, unsigned char** data, unsigned int* size);
-	bool SerializeTgaFile(CFile* file, unsigned char** data, unsigned int* size);
-	bool SerializePngFile(CFile* file, unsigned char** data, unsigned int* size);
-	bool SerializeJpgFile(CFile* file, unsigned char** data, unsigned int* size);
-	bool SerializeWavFile(CFile* file, unsigned char** data, unsigned int* size);
-	bool SerializeMp3File(CFile* file, unsigned char** data, unsigned int* size);
+	bool SerializeBinFile(CFileData* file, unsigned char** data, unsigned int* size);
+	bool SerializeTxtFile(CFileData* file, unsigned char** data, unsigned int* size);
+	bool SerializeBmpFile(CFileData* file, unsigned char** data, unsigned int* size);
+	bool SerializeTgaFile(CFileData* file, unsigned char** data, unsigned int* size);
+	bool SerializePngFile(CFileData* file, unsigned char** data, unsigned int* size);
+	bool SerializeJpgFile(CFileData* file, unsigned char** data, unsigned int* size);
+	bool SerializeWavFile(CFileData* file, unsigned char** data, unsigned int* size);
+	bool SerializeMp3File(CFileData* file, unsigned char** data, unsigned int* size);
 
 private:
 	//! 数据目录定义
