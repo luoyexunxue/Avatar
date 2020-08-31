@@ -36,7 +36,6 @@ CSceneNodeBoard::CSceneNodeBoard(const string& name, const string& texture, floa
 	m_pVideoContext = 0;
 	m_iSoundId = 0;
 	m_iSoundBufferSize = 0;
-	m_fTimeElapse = 0.0f;
 	m_pFileBuffer = 0;
 	m_strTexture = texture;
 	m_fWidth = width;
@@ -121,11 +120,8 @@ void CSceneNodeBoard::Update(float dt) {
 #endif
 #ifdef AVATAR_ENABLE_VIDEOPLAY
 	if (m_pVideoContext) {
-		m_fTimeElapse += dt;
-		VideoPlayTime(m_pVideoContext, m_fTimeElapse);
 		if (VideoPlayVideo(m_pVideoContext, (unsigned char*)m_pTexture->MapBuffer(false)) > 0) {
-			VideoPlayTime(m_pVideoContext, -1.0f);
-			m_fTimeElapse = 0.0f;
+			VideoPlayTime(m_pVideoContext, 0.0f);
 		}
 		m_pTexture->UnmapBuffer();
 		if (m_iSoundId > 0) {
@@ -187,6 +183,17 @@ void CSceneNodeBoard::MediaInfo(int* width, int* height, float* length) {
 */
 void CSceneNodeBoard::SetAxis(const CVector3& axis) {
 	m_cAxis.SetValue(axis);
+}
+
+/**
+* 设置播放时间
+*/
+void CSceneNodeBoard::SetPlayTime(float time) {
+#ifdef AVATAR_ENABLE_VIDEOPLAY
+	if (m_pVideoContext) {
+		VideoPlayTime(m_pVideoContext, time);
+	}
+#endif
 }
 
 /**

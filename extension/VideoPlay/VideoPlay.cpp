@@ -5,6 +5,7 @@
 #include <unistd.h>
 #include <pthread.h>
 #endif
+#include <ctime>
 #include <map>
 using namespace std;
 extern "C" {
@@ -48,7 +49,8 @@ struct SPlayContext {
 	float playClock;
 	float setPlayTime;
 	float streamLength;
-	bool resetPlay;
+	clock_t lastPlayTime;
+	bool seekPosition;
 	bool isRealtime;
 	bool videoClosed;
 	unsigned char* inputMemoryBuffer;
@@ -176,7 +178,8 @@ DLL_EXPORT int VideoPlayOpen(const char* file, int size, void** context) {
 	ctx->outputAudio = 0;
 	ctx->playClock = 0.0f;
 	ctx->setPlayTime = 0.0f;
-	ctx->resetPlay = false;
+	ctx->lastPlayTime = 0;
+	ctx->seekPosition = false;
 	ctx->videoClosed = false;
 	ctx->streamLength = (float)(ctx->videoStream->duration * av_q2d(ctx->videoStream->time_base));
 	*context = ctx;
@@ -217,11 +220,12 @@ DLL_EXPORT int VideoPlayInfo(void* context, int* width, int* height, float* leng
 DLL_EXPORT int VideoPlayTime(void* context, float time) {
 	SPlayContext* ctx = (SPlayContext*)context;
 	if (time < 0.0f) {
-		ctx->resetPlay = true;
 		ctx->setPlayTime = 0.0f;
+		ctx->seekPosition = true;
 	} else if (!ctx->isRealtime) {
 		ctx->setPlayTime = time;
-	}
+		ctx->seekPosition = true;
+	} else return -1;
 	return 0;
 }
 
@@ -351,20 +355,28 @@ DWORD WINAPI ThreadWorking(LPVOID pParam) {
 void* ThreadWorking(void* pParam) {
 #endif
 	SPlayContext* ctx = static_cast<SPlayContext*>(pParam);
+	ctx->lastPlayTime = clock();
 	while (!ctx->videoClosed) {
 		// 从头开始
-		if (ctx->resetPlay) {
-			if (ctx->videoStream) av_seek_frame(ctx->inputContext, ctx->videoStream->index, ctx->videoStream->start_time, AVSEEK_FLAG_BACKWARD);
-			else if (ctx->audioStream) av_seek_frame(ctx->inputContext, ctx->audioStream->index, ctx->audioStream->start_time, AVSEEK_FLAG_BACKWARD);
+		if (ctx->seekPosition) {
+			if (ctx->videoStream) {
+				int64_t timestamp = (int64_t)(ctx->setPlayTime * ctx->videoStream->time_base.den) / ctx->videoStream->time_base.num;
+				av_seek_frame(ctx->inputContext, ctx->videoStream->index, ctx->videoStream->start_time + timestamp, AVSEEK_FLAG_BACKWARD);
+			} else if (ctx->audioStream) {
+				int64_t timestamp = (int64_t)(ctx->setPlayTime * ctx->audioStream->time_base.den) / ctx->audioStream->time_base.num;
+				av_seek_frame(ctx->inputContext, ctx->audioStream->index, ctx->audioStream->start_time + timestamp, AVSEEK_FLAG_BACKWARD);
+			}
 			if (ctx->videoDecoder) avcodec_flush_buffers(ctx->videoDecoder);
 			if (ctx->audioDecoder) avcodec_flush_buffers(ctx->audioDecoder);
-			ctx->resetPlay = false;
-			ctx->playClock = 0.0f;
-			ctx->setPlayTime = 0.0f;
+			ctx->seekPosition = false;
+			ctx->playClock = ctx->setPlayTime;
 			ctx->inputMemoryBufferOffset = 0;
 		}
 		// 防止播放过快
 		AVPacket packet;
+		clock_t currentTime = clock();
+		ctx->setPlayTime += 0.001f * (currentTime - ctx->lastPlayTime);
+		ctx->lastPlayTime = currentTime;
 		if ((!ctx->isRealtime && ctx->playClock > ctx->setPlayTime) || av_read_frame(ctx->inputContext, &packet) < 0) {
 #ifdef _WIN32
 			::Sleep(5);

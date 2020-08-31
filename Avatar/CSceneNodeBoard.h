@@ -32,6 +32,8 @@ public:
 	void MediaInfo(int* width, int* height, float* length);
 	//! 设置旋转轴
 	void SetAxis(const CVector3& axis);
+	//! 设置播放时间
+	void SetPlayTime(float time);
 
 private:
 	//! 打开图像纹理或视频纹理
@@ -60,8 +62,6 @@ private:
 	unsigned char m_pSoundBuffer[8192];
 	//! 内存文件
 	unsigned char* m_pFileBuffer;
-	//! 时间记录
-	float m_fTimeElapse;
 	//! 网格对象
 	CMeshData* m_pMeshData;
 	//! 纹理对象

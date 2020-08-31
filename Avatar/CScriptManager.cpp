@@ -1619,6 +1619,10 @@ int CScriptManager::DoSceneHandle(lua_State* lua) {
 				float y = LuaTableFieldValue(lua, 3, "y", 0.0f);
 				float z = LuaTableFieldValue(lua, 3, "z", 1.0f);
 				that->SetAxis(CVector3(x, y, z));
+			} else if (!strcmp(function, "SetPlayTime")) {
+				if (!lua_istable(lua, 3)) return 0;
+				float time = LuaTableFieldValue(lua, 3, "time", 0.0f);
+				that->SetPlayTime(time);
 			}
 		} else if (type == "line") {
 			CSceneNodeLine* that = static_cast<CSceneNodeLine*>(pNode);
