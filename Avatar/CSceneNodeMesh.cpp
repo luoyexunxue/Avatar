@@ -9,21 +9,16 @@
 * 构造函数
 */
 CSceneNodeMesh::CSceneNodeMesh(const string& name, CMesh* mesh) : CSceneNode("mesh", name) {
-	m_pMesh = mesh;
-	m_pMeshData = 0;
+	m_pMeshData = new CMeshData();
+	m_pMeshData->AddMesh(mesh);
+	m_cLocalBoundingBox = mesh->GetBoundingBox();
 }
 
 /**
 * 初始化场景节点
 */
 bool CSceneNodeMesh::Init() {
-	if (m_pMesh) {
-		m_pMeshData = new CMeshData();
-		m_pMeshData->AddMesh(m_pMesh);
-		m_cLocalBoundingBox = m_pMesh->GetBoundingBox();
-		return true;
-	}
-	return false;
+	return true;
 }
 
 /**
@@ -37,18 +32,24 @@ void CSceneNodeMesh::Destroy() {
 * 渲染场景节点
 */
 void CSceneNodeMesh::Render() {
+	int meshCount = m_pMeshData->GetMeshCount();
 	if (CEngine::GetGraphicsManager()->IsDepthRender()) {
-		m_pMesh->GetMaterial()->GetTexture()->UseTexture();
-		m_pMesh->Render(false);
-	} else {
-		if (m_pMesh->GetMaterial()->GetShader()) {
-			CCamera* pCamera = CEngine::GetGraphicsManager()->GetCamera();
-			m_pMesh->GetMaterial()->PassUniform("uProjMatrix", pCamera->GetProjMatrix());
-			m_pMesh->GetMaterial()->PassUniform("uViewMatrix", pCamera->GetViewMatrix());
-			m_pMesh->GetMaterial()->PassUniform("uCameraPos", pCamera->m_cPosition);
-			m_pMesh->GetMaterial()->PassUniform("uModelMatrix", m_cWorldMatrix);
+		for (int i = 0; i < meshCount; i++) {
+			m_pMeshData->GetMesh(i)->GetMaterial()->GetTexture()->UseTexture();
+			m_pMeshData->GetMesh(i)->Render(false);
 		}
-		m_pMesh->Render();
+	} else {
+		for (int i = 0; i < meshCount; i++) {
+			CMesh* mesh = m_pMeshData->GetMesh(i);
+			if (mesh->GetMaterial()->GetShader()) {
+				CCamera* pCamera = CEngine::GetGraphicsManager()->GetCamera();
+				mesh->GetMaterial()->PassUniform("uProjMatrix", pCamera->GetProjMatrix());
+				mesh->GetMaterial()->PassUniform("uViewMatrix", pCamera->GetViewMatrix());
+				mesh->GetMaterial()->PassUniform("uCameraPos", pCamera->m_cPosition);
+				mesh->GetMaterial()->PassUniform("uModelMatrix", m_cWorldMatrix);
+			}
+			mesh->Render();
+		}
 	}
 }
 
@@ -57,4 +58,13 @@ void CSceneNodeMesh::Render() {
 */
 CMeshData* CSceneNodeMesh::GetMeshData() {
 	return m_pMeshData;
+}
+
+/**
+* 添加网格对象
+*/
+void CSceneNodeMesh::AddMesh(CMesh* mesh, bool replace) {
+	if (replace) m_pMeshData->ClearMesh(true);
+	m_pMeshData->AddMesh(mesh);
+	m_cLocalBoundingBox = m_pMeshData->GetBoundingBox();
 }

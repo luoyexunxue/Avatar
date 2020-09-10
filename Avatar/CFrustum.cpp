@@ -115,7 +115,26 @@ bool CFrustum::IsContain(const CVector3& point) const {
 * @param radius 球体半径
 * @return 若球在视景体中，则返回 true
 */
-bool CFrustum::IsSphereInside(const CVector3& center, float radius) const {
+bool CFrustum::IsContainSphere(const CVector3& center, float radius) const {
+	for (int i = 0; i < 6; i++) {
+		float result = m_fPlane[i][0] * center.m_fValue[0];
+		result += m_fPlane[i][1] * center.m_fValue[1];
+		result += m_fPlane[i][2] * center.m_fValue[2];
+		result += m_fPlane[i][3];
+		if (result < radius) {
+			return false;
+		}
+	}
+	return true;
+}
+
+/**
+* 判断球是否与视景体相交
+* @param center 球体中心位置
+* @param radius 球体半径
+* @return 若球与视景体相交，则返回 true
+*/
+bool CFrustum::IsOverlapSphere(const CVector3& center, float radius) const {
 	for (int i = 0; i < 6; i++) {
 		float result = m_fPlane[i][0] * center.m_fValue[0];
 		result += m_fPlane[i][1] * center.m_fValue[1];
@@ -129,11 +148,11 @@ bool CFrustum::IsSphereInside(const CVector3& center, float radius) const {
 }
 
 /**
-* 判断包围盒是否在视景体内
+* 判断包围盒是否与视景体相交
 * @param aabb 测试的 AABB 包围盒
-* @return 若包围盒在视景体中，则返回 true
+* @return 若包围盒与视景体相交，则返回 true
 */
-bool CFrustum::IsAABBInside(const CBoundingBox& aabb) const {
+bool CFrustum::IsOverlapAABB(const CBoundingBox& aabb) const {
 	// 无效包围盒直接返回
 	if (!aabb.IsValid()) return false;
 	for (int i = 0; i < 6; i++) {

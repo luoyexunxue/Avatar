@@ -12,15 +12,10 @@
 /**
 * 加载 GLTF 模型
 */
-CMeshData* CMeshLoaderGltf::LoadFile(const string& filename, const string& type) {
-	CFileManager::CBinaryFile file;
-	if (!CEngine::GetFileManager()->ReadFile(filename, &file)) {
-		return 0;
-	}
-	unsigned char* data = file.contents;
+CMeshData* CMeshLoaderGltf::LoadFile(const string& filename, uint8_t* data, uint32_t size) {
 	const char* json = reinterpret_cast<char*>(data);
-	unsigned int size = file.size;
 	bool isBinary = strncmp(json, "glTF", 4) == 0;
+	int jsonLength = size;
 	m_vecBuffer.clear();
 	m_setJoints.clear();
 	m_mapJoints.clear();
@@ -34,9 +29,9 @@ CMeshData* CMeshLoaderGltf::LoadFile(const string& filename, const string& type)
 		uint32_t chunkType = *(uint32_t*)(data + 16);
 		if (chunkType != 0x4E4F534A) return 0;
 		json = reinterpret_cast<char*>(data + 20);
-		size = chunkLength;
+		jsonLength = chunkLength;
 		unsigned int offset = 20 + chunkLength;
-		if (offset < file.size) {
+		if (offset < size) {
 			chunkLength = *(uint32_t*)(data + offset);
 			chunkType = *(uint32_t*)(data + offset + 4);
 			if (chunkType == 0x004E4942) {
@@ -49,16 +44,16 @@ CMeshData* CMeshLoaderGltf::LoadFile(const string& filename, const string& type)
 		}
 	}
 	// 解析 Json 对象
-	if (!m_cJsonParser.Parse(json, size)) return 0;
-	if (m_cJsonParser["asset"]["version"].ToString() != "2.0") return 0;
-	if (!m_cJsonParser.IsContain("scenes")) return 0;
+	if (!m_cJsonObject.Parse(json, jsonLength)) return 0;
+	if (m_cJsonObject["asset"]["version"].ToString() != "2.0") return 0;
+	if (!m_cJsonObject.IsContain("scenes")) return 0;
 	// 解析 GLTF 数据
 	if (!isBinary) ReadBuffers();
 	CMatrix4 transform;
 	transform.RotateX(1.570796f);
 	m_pMeshData = new CMeshData();
 	ReadSkin();
-	CJsonParser& nodes = m_cJsonParser["scenes"][0]["nodes"];
+	CJsonObject& nodes = m_cJsonObject["scenes"][0]["nodes"];
 	for (int i = 0; i < nodes.GetCount(); i++) ReadJointNode(nodes[i].ToInt(), transform, 0);
 	for (int i = 0; i < nodes.GetCount(); i++) ReadMeshNode(nodes[i].ToInt(), transform);
 	ReadAnimation();
@@ -72,13 +67,13 @@ CMeshData* CMeshLoaderGltf::LoadFile(const string& filename, const string& type)
 * 读取二进制缓冲区
 */
 void CMeshLoaderGltf::ReadBuffers() {
-	int count = m_cJsonParser["buffers"].GetCount();
+	int count = m_cJsonObject["buffers"].GetCount();
 	for (int i = 0; i < count; i++) {
 		SBufferBin bin;
 		bin.allocated = false;
 		bin.data = 0;
 		bin.size = 0;
-		string uri = m_cJsonParser["buffers"][i]["uri"].ToString();
+		string uri = m_cJsonObject["buffers"][i]["uri"].ToString();
 		if (uri.find("data:") == 0) {
 			size_t pos = uri.find(";base64,");
 			if (pos != string::npos) {
@@ -105,16 +100,16 @@ void CMeshLoaderGltf::ReadBuffers() {
 * 读取骨骼蒙皮数据
 */
 void CMeshLoaderGltf::ReadSkin() {
-	if (!m_cJsonParser.IsContain("skins")) return;
-	for (int i = 0; i < m_cJsonParser["skins"].GetCount(); i++) {
-		CJsonParser& skin = m_cJsonParser["skins"][i];
-		CJsonParser& joints = skin["joints"];
+	if (!m_cJsonObject.IsContain("skins")) return;
+	for (int i = 0; i < m_cJsonObject["skins"].GetCount(); i++) {
+		CJsonObject& skin = m_cJsonObject["skins"][i];
+		CJsonObject& joints = skin["joints"];
 		if (skin.IsContain("skeleton")) m_setJoints.insert(std::pair<int, bool>(skin["skeleton"].ToInt(), false));
 		for (int j = 0; j < joints.GetCount(); j++) m_setJoints.insert(std::pair<int, bool>(joints[j].ToInt(), false));
 		// 获取关节的逆绑定矩阵
 		if (skin.IsContain("inverseBindMatrices")) {
-			CJsonParser& accessor = m_cJsonParser["accessors"][skin["inverseBindMatrices"].ToInt()];
-			CJsonParser& bufferView = m_cJsonParser["bufferViews"][accessor["bufferView"].ToInt()];
+			CJsonObject& accessor = m_cJsonObject["accessors"][skin["inverseBindMatrices"].ToInt()];
+			CJsonObject& bufferView = m_cJsonObject["bufferViews"][accessor["bufferView"].ToInt()];
 			unsigned char* buffer = m_vecBuffer[bufferView["buffer"].ToInt()].data;
 			if (!buffer) continue;
 			if (accessor["type"].ToString() != "MAT4") continue;
@@ -139,7 +134,7 @@ void CMeshLoaderGltf::ReadSkin() {
 */
 void CMeshLoaderGltf::ReadJointNode(int index, const CMatrix4& matrix, SJoint* parent) {
 	CMatrix4 local;
-	CJsonParser& node = m_cJsonParser["nodes"][index];
+	CJsonObject& node = m_cJsonObject["nodes"][index];
 	if (node.IsContain("matrix")) for (int i = 0; i < 16; i++) local[i] = node["matrix"][i].ToFloat();
 	else if (node.IsContain("translation") || node.IsContain("rotation") || node.IsContain("scale")) {
 		CVector3 translation;
@@ -178,7 +173,7 @@ void CMeshLoaderGltf::ReadMeshNode(int index, const CMatrix4& matrix) {
 	int mesh_index = -1;
 	int skin_index = -1;
 	CMatrix4 local;
-	CJsonParser& node = m_cJsonParser["nodes"][index];
+	CJsonObject& node = m_cJsonObject["nodes"][index];
 	if (node.IsContain("mesh")) mesh_index = node["mesh"].ToInt();
 	if (node.IsContain("skin")) skin_index = node["skin"].ToInt();
 	if (node.IsContain("matrix")) for (int i = 0; i < 16; i++) local[i] = node["matrix"][i].ToFloat();
@@ -202,7 +197,7 @@ void CMeshLoaderGltf::ReadMeshNode(int index, const CMatrix4& matrix) {
 		map<int, int> skinMapper;
 		if (skin_index >= 0) {
 			CMatrix4 globalTransformInv = CMatrix4(transform).Invert();
-			CJsonParser& joints = m_cJsonParser["skins"][skin_index]["joints"];
+			CJsonObject& joints = m_cJsonObject["skins"][skin_index]["joints"];
 			for (int i = 0; i < joints.GetCount(); i++) {
 				int node_index = joints[i].ToInt();
 				skinMapper.insert(std::pair<int, int>(i, node_index));
@@ -212,18 +207,18 @@ void CMeshLoaderGltf::ReadMeshNode(int index, const CMatrix4& matrix) {
 				}
 			}
 		}
-		ReadMesh(m_cJsonParser["meshes"][mesh_index], transform, skinMapper);
+		ReadMesh(m_cJsonObject["meshes"][mesh_index], transform, skinMapper);
 	}
 }
 
 /**
 * 读取网格
 */
-void CMeshLoaderGltf::ReadMesh(CJsonParser& mesh, const CMatrix4& matrix, map<int, int>& skinMapper) {
+void CMeshLoaderGltf::ReadMesh(CJsonObject& mesh, const CMatrix4& matrix, map<int, int>& skinMapper) {
 	int primitive_count = mesh["primitives"].GetCount();
 	for (int i = 0; i < primitive_count; i++) {
-		CJsonParser& primitive = mesh["primitives"][i];
-		CJsonParser& attributes = primitive["attributes"];
+		CJsonObject& primitive = mesh["primitives"][i];
+		CJsonObject& attributes = primitive["attributes"];
 		int material_index = primitive.IsContain("material") ? primitive["material"].ToInt() : -1;
 		int mesh_indices = primitive["indices"].ToInt();
 		int mesh_position = attributes["POSITION"].ToInt();
@@ -256,29 +251,34 @@ void CMeshLoaderGltf::ReadMesh(CJsonParser& mesh, const CMatrix4& matrix, map<in
 * 读取材质信息
 */
 void CMeshLoaderGltf::ReadMaterial(int index, CMaterial* material, int* texcoord) {
-	CJsonParser& node = m_cJsonParser["materials"][index];
+	CJsonObject& node = m_cJsonObject["materials"][index];
 	material->GetName() = node["name"].ToString();
 	if (node.IsContain("doubleSided")) material->SetRenderMode(!node["doubleSided"].ToBool(), true, false);
 	if (node.IsContain("pbrMetallicRoughness")) {
-		CJsonParser& pbr = node["pbrMetallicRoughness"];
+		CJsonObject& pbr = node["pbrMetallicRoughness"];
 		if (pbr.IsContain("metallicFactor")) material->m_fMetalness = pbr["metallicFactor"].ToFloat();
 		if (pbr.IsContain("roughnessFactor")) material->m_fRoughness = pbr["roughnessFactor"].ToFloat();
 		if (pbr.IsContain("baseColorFactor")) for (int i = 0; i < 4; i++) material->m_fColor[i] = pbr["baseColorFactor"][i].ToFloat();
 		if (pbr.IsContain("baseColorTexture")) {
-			CJsonParser& texture = m_cJsonParser["textures"][pbr["baseColorTexture"]["index"].ToInt()];
+			CJsonObject& texture = m_cJsonObject["textures"][pbr["baseColorTexture"]["index"].ToInt()];
 			*texcoord = pbr["baseColorTexture"]["texCoord"].ToInt();
 			ReadTexture(texture, material);
 		}
 	}
 	if (material->GetTextureCount() == 0 && node.IsContain("extensions")) {
 		if (node["extensions"].IsContain("KHR_materials_pbrSpecularGlossiness")) {
-			CJsonParser& pbr = node["extensions"]["KHR_materials_pbrSpecularGlossiness"];
+			CJsonObject& pbr = node["extensions"]["KHR_materials_pbrSpecularGlossiness"];
 			if (pbr.IsContain("diffuseFactor")) for (int i = 0; i < 4; i++) material->m_fColor[i] = pbr["diffuseFactor"][i].ToFloat();
 			if (pbr.IsContain("diffuseTexture")) {
-				CJsonParser& texture = m_cJsonParser["textures"][pbr["diffuseTexture"]["index"].ToInt()];
+				CJsonObject& texture = m_cJsonObject["textures"][pbr["diffuseTexture"]["index"].ToInt()];
 				*texcoord = pbr["diffuseTexture"]["texCoord"].ToInt();
 				ReadTexture(texture, material);
 			}
+		} else if (node["extensions"].IsContain("KHR_techniques_webgl")) {
+			CJsonObject& webgl = node["extensions"]["KHR_techniques_webgl"];
+			CJsonObject& texture = m_cJsonObject["textures"][webgl["values"][0]["index"].ToInt()];
+			*texcoord = webgl["values"][0]["texCoord"].ToInt();
+			ReadTexture(texture, material);
 		}
 	}
 }
@@ -286,8 +286,8 @@ void CMeshLoaderGltf::ReadMaterial(int index, CMaterial* material, int* texcoord
 /**
 * 读取纹理数据
 */
-void CMeshLoaderGltf::ReadTexture(CJsonParser& texture, CMaterial* material) {
-	CJsonParser& image = m_cJsonParser["images"][texture["source"].ToInt()];
+void CMeshLoaderGltf::ReadTexture(CJsonObject& texture, CMaterial* material) {
+	CJsonObject& image = m_cJsonObject["images"][texture["source"].ToInt()];
 	CTexture* pTexture = 0;
 	if (image.IsContain("uri")) {
 		pTexture = CEngine::GetTextureManager()->Create(m_strBaseDir + image["uri"].ToString());
@@ -296,7 +296,7 @@ void CMeshLoaderGltf::ReadTexture(CJsonParser& texture, CMaterial* material) {
 		if (image.IsContain("name")) name += image["name"].ToString();
 		else if (texture.IsContain("name")) name += texture["name"].ToString();
 		string mime = image["mimeType"].ToString();
-		CJsonParser& bufferView = m_cJsonParser["bufferViews"][image["bufferView"].ToInt()];
+		CJsonObject& bufferView = m_cJsonObject["bufferViews"][image["bufferView"].ToInt()];
 		unsigned char* buffer = m_vecBuffer[bufferView["buffer"].ToInt()].data;
 		if (!buffer) {
 			material->SetTexture("");
@@ -308,7 +308,7 @@ void CMeshLoaderGltf::ReadTexture(CJsonParser& texture, CMaterial* material) {
 		if (mime == "image/bmp") fileType = CFileManager::BMP;
 		else if (mime == "image/tga") fileType = CFileManager::TGA;
 		else if (mime == "image/png") fileType = CFileManager::PNG;
-		else if (mime == "image/jpeg") fileType = CFileManager::JPG;
+		else if (mime == "image/jpeg" || mime == "image/jpg") fileType = CFileManager::JPG;
 		else {
 			material->SetTexture("");
 			return;
@@ -318,7 +318,7 @@ void CMeshLoaderGltf::ReadTexture(CJsonParser& texture, CMaterial* material) {
 		pTexture = CEngine::GetTextureManager()->Create(name, image.width, image.height, image.channels, image.contents, true);
 	} else return;
 	if (texture.IsContain("sampler")) {
-		CJsonParser& sampler = m_cJsonParser["samplers"][texture["sampler"].ToInt()];
+		CJsonObject& sampler = m_cJsonObject["samplers"][texture["sampler"].ToInt()];
 		int wrapModeS = sampler.IsContain("wrapS") ? sampler["wrapS"].ToInt() : 10497;
 		int wrapModeT = sampler.IsContain("wrapT") ? sampler["wrapT"].ToInt() : 10497;
 		pTexture->SetWrapModeClampToEdge(wrapModeS == 33071, wrapModeT == 33071);
@@ -333,25 +333,25 @@ void CMeshLoaderGltf::ReadTexture(CJsonParser& texture, CMaterial* material) {
 * 读取动画数据
 */
 void CMeshLoaderGltf::ReadAnimation() {
-	if (!m_cJsonParser.IsContain("animations")) return;
-	int count = m_cJsonParser["animations"].GetCount();
+	if (!m_cJsonObject.IsContain("animations")) return;
+	int count = m_cJsonObject["animations"].GetCount();
 	float time_begin = 0.0f;
 	float time_end = 0.0f;
 	for (int i = 0; i < count; i++) {
-		CJsonParser& animation = m_cJsonParser["animations"][i];
-		CJsonParser& channels = animation["channels"];
+		CJsonObject& animation = m_cJsonObject["animations"][i];
+		CJsonObject& channels = animation["channels"];
 		string name = animation.IsContain("name") ? animation["name"].ToString() : std::to_string(i);
 		for (int j = 0; j < channels.GetCount(); j++) {
 			int target_joint = channels[j]["target"]["node"].ToInt();
 			map<int, SJoint*>::iterator iter = m_mapJoints.find(target_joint);
 			if (iter == m_mapJoints.end()) continue;
 			SJoint* pJoint = iter->second;
-			CJsonParser& sampler = animation["samplers"][channels[j]["sampler"].ToInt()];
+			CJsonObject& sampler = animation["samplers"][channels[j]["sampler"].ToInt()];
 			string path = channels[j]["target"]["path"].ToString();
-			CJsonParser& accessor_input = m_cJsonParser["accessors"][sampler["input"].ToInt()];
-			CJsonParser& accessor_output = m_cJsonParser["accessors"][sampler["output"].ToInt()];
-			CJsonParser& bufferView_input = m_cJsonParser["bufferViews"][accessor_input["bufferView"].ToInt()];
-			CJsonParser& bufferView_output = m_cJsonParser["bufferViews"][accessor_output["bufferView"].ToInt()];
+			CJsonObject& accessor_input = m_cJsonObject["accessors"][sampler["input"].ToInt()];
+			CJsonObject& accessor_output = m_cJsonObject["accessors"][sampler["output"].ToInt()];
+			CJsonObject& bufferView_input = m_cJsonObject["bufferViews"][accessor_input["bufferView"].ToInt()];
+			CJsonObject& bufferView_output = m_cJsonObject["bufferViews"][accessor_output["bufferView"].ToInt()];
 			unsigned char* buffer_input = m_vecBuffer[bufferView_input["buffer"].ToInt()].data;
 			unsigned char* buffer_output = m_vecBuffer[bufferView_output["buffer"].ToInt()].data;
 			if (!buffer_input || !buffer_output) continue;
@@ -397,8 +397,8 @@ void CMeshLoaderGltf::ReadAnimation() {
 * 添加网格三角形
 */
 void CMeshLoaderGltf::AddTriangles(CMesh* mesh, int accessoIndex) {
-	CJsonParser& accessor = m_cJsonParser["accessors"][accessoIndex];
-	CJsonParser& bufferView = m_cJsonParser["bufferViews"][accessor["bufferView"].ToInt()];
+	CJsonObject& accessor = m_cJsonObject["accessors"][accessoIndex];
+	CJsonObject& bufferView = m_cJsonObject["bufferViews"][accessor["bufferView"].ToInt()];
 	unsigned char* buffer = m_vecBuffer[bufferView["buffer"].ToInt()].data;
 	if (!buffer) return;
 	if (accessor["type"].ToString() != "SCALAR") return;
@@ -422,8 +422,8 @@ void CMeshLoaderGltf::AddTriangles(CMesh* mesh, int accessoIndex) {
 * 添加网格顶点
 */
 void CMeshLoaderGltf::AddVertices(CMesh* mesh, int position, int joints, int weights, map<int, int>& skinMapper) {
-	CJsonParser& accessor_pos = m_cJsonParser["accessors"][position];
-	CJsonParser& bufferView_pos = m_cJsonParser["bufferViews"][accessor_pos["bufferView"].ToInt()];
+	CJsonObject& accessor_pos = m_cJsonObject["accessors"][position];
+	CJsonObject& bufferView_pos = m_cJsonObject["bufferViews"][accessor_pos["bufferView"].ToInt()];
 	unsigned char* buffer_pos = m_vecBuffer[bufferView_pos["buffer"].ToInt()].data;
 	if (!buffer_pos) return;
 	if (accessor_pos["type"].ToString() != "VEC3") return;
@@ -435,10 +435,10 @@ void CMeshLoaderGltf::AddVertices(CMesh* mesh, int position, int joints, int wei
 	int byteStride_pos = bufferView_pos.IsContain("byteStride") ? bufferView_pos["byteStride"].ToInt() : 3 * sizeof(float);
 	mesh->SetVertexUsage(count);
 	if (joints >= 0 && weights >= 0) {
-		CJsonParser& accessor_joint = m_cJsonParser["accessors"][joints];
-		CJsonParser& accessor_weight = m_cJsonParser["accessors"][weights];
-		CJsonParser& bufferView_joint = m_cJsonParser["bufferViews"][accessor_joint["bufferView"].ToInt()];
-		CJsonParser& bufferView_weight = m_cJsonParser["bufferViews"][accessor_weight["bufferView"].ToInt()];
+		CJsonObject& accessor_joint = m_cJsonObject["accessors"][joints];
+		CJsonObject& accessor_weight = m_cJsonObject["accessors"][weights];
+		CJsonObject& bufferView_joint = m_cJsonObject["bufferViews"][accessor_joint["bufferView"].ToInt()];
+		CJsonObject& bufferView_weight = m_cJsonObject["bufferViews"][accessor_weight["bufferView"].ToInt()];
 		unsigned char* buffer_joint = m_vecBuffer[bufferView_joint["buffer"].ToInt()].data;
 		unsigned char* buffer_weight = m_vecBuffer[bufferView_weight["buffer"].ToInt()].data;
 		if (!buffer_joint || !buffer_weight) return;
@@ -492,8 +492,8 @@ void CMeshLoaderGltf::AddVertices(CMesh* mesh, int position, int joints, int wei
 * 设置顶点法相
 */
 void CMeshLoaderGltf::SetupVerticesNormal(CMesh* mesh, int accessorIndex) {
-	CJsonParser& accessor = m_cJsonParser["accessors"][accessorIndex];
-	CJsonParser& bufferView = m_cJsonParser["bufferViews"][accessor["bufferView"].ToInt()];
+	CJsonObject& accessor = m_cJsonObject["accessors"][accessorIndex];
+	CJsonObject& bufferView = m_cJsonObject["bufferViews"][accessor["bufferView"].ToInt()];
 	unsigned char* buffer = m_vecBuffer[bufferView["buffer"].ToInt()].data;
 	if (!buffer) return;
 	if (accessor["type"].ToString() != "VEC3") return;
@@ -515,8 +515,8 @@ void CMeshLoaderGltf::SetupVerticesNormal(CMesh* mesh, int accessorIndex) {
 * 设置顶点纹理坐标
 */
 void CMeshLoaderGltf::SetupVerticesTexCoord(CMesh* mesh, int accessorIndex) {
-	CJsonParser& accessor = m_cJsonParser["accessors"][accessorIndex];
-	CJsonParser& bufferView = m_cJsonParser["bufferViews"][accessor["bufferView"].ToInt()];
+	CJsonObject& accessor = m_cJsonObject["accessors"][accessorIndex];
+	CJsonObject& bufferView = m_cJsonObject["bufferViews"][accessor["bufferView"].ToInt()];
 	unsigned char* buffer = m_vecBuffer[bufferView["buffer"].ToInt()].data;
 	if (!buffer) return;
 	if (accessor["type"].ToString() != "VEC2") return;
@@ -552,8 +552,8 @@ void CMeshLoaderGltf::SetupVerticesTexCoord(CMesh* mesh, int accessorIndex) {
 * 设置顶点颜色
 */
 void CMeshLoaderGltf::SetupVerticesColor(CMesh* mesh, int accessorIndex) {
-	CJsonParser& accessor = m_cJsonParser["accessors"][accessorIndex];
-	CJsonParser& bufferView = m_cJsonParser["bufferViews"][accessor["bufferView"].ToInt()];
+	CJsonObject& accessor = m_cJsonObject["accessors"][accessorIndex];
+	CJsonObject& bufferView = m_cJsonObject["bufferViews"][accessor["bufferView"].ToInt()];
 	unsigned char* buffer = m_vecBuffer[bufferView["buffer"].ToInt()].data;
 	if (!buffer) return;
 	string type = accessor["type"].ToString();

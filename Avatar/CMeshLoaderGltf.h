@@ -5,7 +5,7 @@
 #ifndef _CMESHLOADERGLTF_H_
 #define _CMESHLOADERGLTF_H_
 #include "CMeshLoader.h"
-#include "CJsonParser.h"
+#include "CJsonObject.h"
 #include <vector>
 #include <map>
 using std::vector;
@@ -14,10 +14,10 @@ using std::map;
 /**
 * @brief gltf 模型加载类
 */
-class CMeshLoaderGltf: public CMeshLoader {
-protected:
+class AVATAR_EXPORT CMeshLoaderGltf : public CMeshLoader {
+public:
 	//! 加载模型
-	virtual CMeshData* LoadFile(const string& filename, const string& type);
+	virtual CMeshData* LoadFile(const string& filename, uint8_t* data, uint32_t size);
 
 private:
 	//! 读取二进制缓冲区
@@ -29,11 +29,11 @@ private:
 	//! 读取节点
 	void ReadMeshNode(int index, const CMatrix4& matrix);
 	//! 读取网格
-	void ReadMesh(CJsonParser& mesh, const CMatrix4& matrix, map<int, int>& skinMapper);
+	void ReadMesh(CJsonObject& mesh, const CMatrix4& matrix, map<int, int>& skinMapper);
 	//! 读取材质信息
 	void ReadMaterial(int index, CMaterial* material, int* texcoord);
 	//! 读取纹理数据
-	void ReadTexture(CJsonParser& texture, CMaterial* material);
+	void ReadTexture(CJsonObject& texture, CMaterial* material);
 	//! 读取动画数据
 	void ReadAnimation();
 
@@ -73,7 +73,7 @@ private:
 	//! 网格对象指针
 	CMeshData* m_pMeshData;
 	//! JSON 对象
-	CJsonParser m_cJsonParser;
+	CJsonObject m_cJsonObject;
 	//! 骨骼节点集合
 	map<int, bool> m_setJoints;
 	//! 骨骼下标映射

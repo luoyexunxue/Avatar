@@ -305,6 +305,7 @@ void CScriptManager::RegisterInterface(lua_State* lua) {
 	SET_TABLE_FUNCTION("control", DoCameraControl);
 	SET_TABLE_FUNCTION("fov", DoCameraFov);
 	SET_TABLE_FUNCTION("clip", DoCameraClip);
+	SET_TABLE_FUNCTION("projection", DoCameraProjection);
 	SET_TABLE_FUNCTION("position", DoCameraPosition);
 	SET_TABLE_FUNCTION("target", DoCameraTarget);
 	SET_TABLE_FUNCTION("angle", DoCameraAngle);
@@ -859,6 +860,25 @@ int CScriptManager::DoCameraClip(lua_State* lua) {
 }
 
 /**
+* 获取或设置相机投影方式
+*/
+int CScriptManager::DoCameraProjection(lua_State* lua) {
+	CCamera* pCamera = CEngine::GetGraphicsManager()->GetCamera();
+	if (lua_isboolean(lua, 1)) {
+		bool ortho = lua_toboolean(lua, 1) != 0;
+		pCamera->SetOrthoProjection(ortho);
+		if (lua_isnumber(lua, 2) && lua_isnumber(lua, 3)) {
+			float width = (float)lua_tonumber(lua, 2);
+			float height = (float)lua_tonumber(lua, 3);
+			pCamera->SetViewSize(width, height, true);
+		}
+		return 0;
+	}
+	lua_pushboolean(lua, pCamera->IsOrthoProjection());
+	return 1;
+}
+
+/**
 * 获取或设置相机位置
 */
 int CScriptManager::DoCameraPosition(lua_State* lua) {
@@ -909,7 +929,7 @@ int CScriptManager::DoCameraAngle(lua_State* lua) {
 	float yaw = 0.0f;
 	float pitch = 0.0f;
 	float roll = 0.0f;
-	pCamera->GetYawPitchRoll(pCamera->m_cLookVector, pCamera->m_cUpVector, &yaw, &pitch, &roll);
+	CCamera::FromVectorToAngle(pCamera->m_cLookVector, pCamera->m_cUpVector, &yaw, &pitch, &roll);
 	lua_pushnumber(lua, yaw);
 	lua_pushnumber(lua, pitch);
 	lua_pushnumber(lua, roll);

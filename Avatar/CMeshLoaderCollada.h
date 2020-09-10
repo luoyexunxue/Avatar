@@ -18,10 +18,10 @@ using namespace rapidxml;
 /**
 * @brief Collada(DAE) 模型加载类
 */
-class CMeshLoaderCollada: public CMeshLoader {
-protected:
+class AVATAR_EXPORT CMeshLoaderCollada : public CMeshLoader {
+public:
 	//! 加载模型
-	virtual CMeshData* LoadFile(const string& filename, const string& type);
+	virtual CMeshData* LoadFile(const string& filename, uint8_t* data, uint32_t size);
 
 private:
 	//! 读取图片节点

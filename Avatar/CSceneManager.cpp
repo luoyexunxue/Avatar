@@ -155,7 +155,10 @@ bool CSceneManager::InsertNode(CSceneNode* node, CSceneNode* parent) {
 		m_lstScreenNode.push_back(node);
 	} else {
 		// 按半透明关系进行分组，并对场景节点按材质进行排序，减少 OpenGL 状态切换
-		SRenderType& renderType = m_mapRenderType.at(node->GetType());
+		SRenderType renderType = SRenderType(0, -1, false);
+		if (m_mapRenderType.count(node->GetType()) > 0) {
+			renderType = m_mapRenderType.at(node->GetType());
+		}
 		SRenderGroup& renderGroup = m_vecRenderGroup[renderType.groupIndex];
 		list<SRenderNode>::iterator iter = renderGroup.nodeList.begin();
 		while (iter != renderGroup.nodeList.end()) {
@@ -194,7 +197,10 @@ bool CSceneManager::DeleteNode(CSceneNode* node) {
 	if (node->GetType() == "screen") {
 		m_lstScreenNode.remove(node);
 	} else {
-		SRenderType& renderType = m_mapRenderType.at(node->GetType());
+		SRenderType renderType = SRenderType(0, -1, false);
+		if (m_mapRenderType.count(node->GetType()) > 0) {
+			renderType = m_mapRenderType.at(node->GetType());
+		}
 		SRenderGroup& renderGroup = m_vecRenderGroup[renderType.groupIndex];
 		list<SRenderNode>::iterator itera = renderGroup.nodeList.begin();
 		while (itera != renderGroup.nodeList.end()) {

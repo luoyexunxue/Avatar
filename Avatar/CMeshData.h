@@ -157,9 +157,9 @@ public:
 	bool SetFacing(const string& name, const CVector3& front, const CVector3& point, float angle, float damping);
 
 	//! 清空所有网格
-	void ClearMesh();
+	void ClearMesh(bool release);
 	//! 清空所有关节
-	void ClearJoint();
+	void ClearJoint(bool release);
 	//! 清空所有动画
 	void ClearAnimation();
 

@@ -31,9 +31,11 @@ public:
 	//! 判断点是否在视景体内
 	bool IsContain(const CVector3& point) const;
 	//! 判断球是否在视景体内
-	bool IsSphereInside(const CVector3& center, float radius) const;
-	//! 判断包围盒是否在视景体内
-	bool IsAABBInside(const CBoundingBox& aabb) const;
+	bool IsContainSphere(const CVector3& center, float radius) const;
+	//! 判断球是否与视景体相交
+	bool IsOverlapSphere(const CVector3& center, float radius) const;
+	//! 判断包围盒是否与视景体相交
+	bool IsOverlapAABB(const CBoundingBox& aabb) const;
 
 public:
 	//! 重载运算符 ==
@@ -44,7 +46,8 @@ public:
 public:
 	/**
 	* 视景体 6 个平面一般方程参数，
-	* 依次为 右，左，上，下，远，近
+	* 依次为 右，左，上，下，远，近，
+	* 且平面法向指向内部
 	*/
 	float m_fPlane[6][4];
 };

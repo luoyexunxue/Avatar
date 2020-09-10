@@ -13,17 +13,16 @@ using std::istringstream;
 /**
 * 加载 DAE 模型
 */
-CMeshData* CMeshLoaderCollada::LoadFile(const string& filename, const string& type) {
-	CFileManager::CTextFile file;
-	if (!CEngine::GetFileManager()->ReadFile(filename, &file)) {
-		return 0;
-	}
+CMeshData* CMeshLoaderCollada::LoadFile(const string& filename, uint8_t* data, uint32_t size) {
+	char* xml = new char[size + 1];
+	memcpy(xml, data, size);
+	xml[size] = '\0';
 	xml_document<> doc;
-	try { doc.parse<0>((char*)file.contents); } catch(...) { return 0; }
+	try { doc.parse<0>(xml); } catch(...) { delete[] xml; return 0; }
 	xml_node<>* root = doc.first_node("COLLADA");
-	if (!root) return 0;
+	if (!root) { delete[] xml; return 0; }
 	const char* version = root->first_attribute("version")->value();
-	if (strncmp(version, "1.4", 3) && strncmp(version, "1.5", 3)) return 0;
+	if (strncmp(version, "1.4", 3) && strncmp(version, "1.5", 3)) { delete[] xml; return 0; }
 	xml_node<>* up_axis = root->first_node("asset")->first_node("up_axis");
 	const char* axis = up_axis? up_axis->value(): "Y_UP";
 	// 读取数据节点
@@ -65,6 +64,7 @@ CMeshData* CMeshLoaderCollada::LoadFile(const string& filename, const string& ty
 	for (int i = 0; i < pMeshData->GetMeshCount(); i++) {
 		pMeshData->GetMesh(i)->Create(library_animations != 0);
 	}
+	delete[] xml;
 	return pMeshData;
 }
 

@@ -23,9 +23,11 @@ public:
 	//! 获取网格数据
 	virtual CMeshData* GetMeshData();
 
+public:
+	//! 添加网格对象
+	void AddMesh(CMesh* mesh, bool replace);
+
 private:
-	//! 网格对象
-	CMesh* m_pMesh;
 	//! 网格对象数据
 	CMeshData* m_pMeshData;
 };

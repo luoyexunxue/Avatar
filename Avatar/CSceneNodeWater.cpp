@@ -112,23 +112,23 @@ void CSceneNodeWater::UpdateUnderwaterMask() {
 	CPlane clipPlane(nearClipCenter, cameraLookVec);
 	// 得到相机近裁剪面和水面的交线
 	if (clipPlane.IntersectPlane(CPlane(CVector3::Z, m_cPosition[2]), intersectPoint, intersectNormal)) {
-		int screen_w = pCamera->GetViewWidth();
-		int screen_h = pCamera->GetViewHeight();
+		float screen_w = pCamera->GetViewWidth();
+		float screen_h = pCamera->GetViewHeight();
 		intersectNormal.Normalize();
 		CVector3 centerPos = intersectPoint + intersectNormal * intersectNormal.DotProduct(nearClipCenter - intersectPoint);
 		CVector3 screenPos;
 		pGraphicsMgr->PointToScreen(centerPos, screenPos);
 		if (!pGraphicsMgr->IsLeftEyeRender()) screenPos[0] -= screen_w;
-		int halfVW = screen_w >> 1;
-		int halfVH = screen_h >> 1;
-		float viewDistance = static_cast<float>(halfVW + halfVH);
+		float halfVW = screen_w * 0.5f;
+		float halfVH = screen_h * 0.5f;
+		float viewDistance = halfVW + halfVH;
 		float distance = fabs(screenPos[0] - halfVW) + fabs(screenPos[1] - halfVH);
 		if (nearClipCenter[2] < m_cPosition[2] || distance < viewDistance) {
 			m_pUnderwaterNode->m_bVisible = true;
 			m_pUnderwaterNode->m_cWorldMatrix.SetIdentity().Scale(viewDistance * 2.0f, viewDistance * 2.0f, 1.0f);
 			// 完全在水下的情况
 			if (nearClipCenter[2] < m_cPosition[2] && distance > viewDistance) {
-				m_pUnderwaterNode->m_cWorldMatrix.Translate(static_cast<float>(halfVW), static_cast<float>(halfVH), 0);
+				m_pUnderwaterNode->m_cWorldMatrix.Translate(halfVW, halfVH, 0);
 			} else {
 				float cosa = intersectNormal.DotProduct(cameraUpVec);
 				if (cosa < -1.0f) cosa = -1.0f;

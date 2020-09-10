@@ -6,6 +6,7 @@
 #define _CMESHLOADER_H_
 #include "AvatarConfig.h"
 #include "CMeshData.h"
+#include <cstdint>
 #include <map>
 using std::map;
 
@@ -25,13 +26,13 @@ public:
 	//! 移除已缓存的模型
 	static void Remove(CMeshData* meshData);
 
-protected:
+public:
 	//! 默认构造函数
 	CMeshLoader() {}
 	//! 虚析构函数
 	virtual ~CMeshLoader() {}
 	//! 加载模型文件
-	virtual CMeshData* LoadFile(const string& filename, const string& type) = 0;
+	virtual CMeshData* LoadFile(const string& filename, uint8_t* data, uint32_t size) = 0;
 
 private:
 	//! 注册内置加载器

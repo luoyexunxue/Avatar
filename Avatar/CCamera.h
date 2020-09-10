@@ -41,9 +41,9 @@ public:
 
 public:
 	//! 获取视口宽度
-	int GetViewWidth() const;
+	float GetViewWidth() const;
 	//! 获取视口高度
-	int GetViewHeight() const;
+	float GetViewHeight() const;
 	//! 获取相机视角
 	float GetFieldOfView() const;
 	//! 获取视口宽高比
@@ -52,14 +52,20 @@ public:
 	float GetNearClipDistance() const;
 	//! 获取远裁剪面距离
 	float GetFarClipDistance() const;
+	//! 是否是正交投影模式
+	bool IsOrthoProjection() const;
 
 	//! 设置相机视口大小
-	void SetViewSize(int width, int height);
+	void SetViewSize(float width, float height, bool ignoreOrtho);
 	//! 设置相机视角
 	void SetFieldOfView(float fov);
 	//! 设置裁剪面距离
 	void SetClipDistance(float zNear, float zFar);
+	//! 设置投影方式
+	void SetOrthoProjection(bool ortho);
 
+	//! 更新投影矩阵
+	void UpdateProjMatrix();
 	//! 更新投影矩阵
 	void UpdateProjMatrix(bool ortho);
 	//! 更新视图矩阵
@@ -79,10 +85,10 @@ public:
 	//! 绑定至指定场景节点
 	void Bind(CSceneNode* sceneNode, const CVector3& pos, const CQuaternion& orient);
 
-	//! 获取相机方位角，俯仰角，旋转角
-	static void GetYawPitchRoll(const CVector3& lookVec, const CVector3& upVec, float* yaw, float* pitch, float* roll);
-	//! 计算相机视线向量和上向量
-	static void GetLookVecUpVec(float yaw, float pitch, float roll, CVector3& lookVec, CVector3& upVec);
+	//! 获取相机角度
+	static void FromVectorToAngle(const CVector3& look, const CVector3& up, float* yaw, float* pitch, float* roll);
+	//! 计算相机正交向量
+	static void FromAngleToVector(float yaw, float pitch, float roll, CVector3& look, CVector3& up);
 
 public:
 	//! 相机位置
@@ -103,15 +109,17 @@ protected:
 	//! 用户控制绑定
 	bool m_bControlAttached;
 	//! 视口宽度
-	int m_iViewWidth;
+	float m_fViewWidth;
 	//! 视口高度
-	int m_iViewHeight;
+	float m_fViewHeight;
 	//! 水平视角 (单位度)
 	float m_fFieldOfView;
 	//! 近裁剪面距离
 	float m_fClipNear;
 	//! 远裁剪面距离
 	float m_fClipFar;
+	//! 是否正交投影
+	bool m_bOrthoProject;
 	//! 投影矩阵
 	CMatrix4 m_cProjMatrix;
 	//! 视图矩阵

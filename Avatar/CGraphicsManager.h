@@ -115,20 +115,20 @@ private:
 	~CGraphicsManager();
 
 	//! 世界坐标系到屏幕坐标系的变换
-	void Project(const int viewport[4], const float objCoord[3], float winPos[3]);
+	void Project(const float viewport[4], const float objCoord[3], float winPos[3]);
 	//! 屏幕坐标系到世界坐标系的变换
-	void UnProject(const int viewport[4], const float winPos[3], float objCoord[3]);
+	void UnProject(const float viewport[4], const float winPos[3], float objCoord[3]);
 
 	//! 绘制场景
 	void Draw();
-	//! 绘制屏幕元素
-	void DrawScreen();
 	//! 绘制阴影贴图
 	void DrawShadowMap();
 	//! 绘制全景图
 	void DrawCubeMap();
 	//! 渲染反射贴图
 	void DrawReflectMap();
+	//! 绘制屏幕元素
+	void DrawScreen(float width, float height);
 
 private:
 	//! 窗口宽高

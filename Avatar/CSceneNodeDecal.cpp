@@ -26,6 +26,7 @@ bool CSceneNodeDecal::Init() {
 		m_pMesh = new CMesh();
 		m_pMesh->GetMaterial()->SetTexture(m_strTexture);
 		m_pMesh->GetMaterial()->GetTexture()->SetWrapModeClampToEdge(true, true);
+		m_pMesh->Create(false);
 		return true;
 	}
 	return false;
@@ -108,7 +109,7 @@ void CSceneNodeDecal::UpdateMesh() {
 			boundingBox.Update(pos);
 		}
 		// 对不在投影视景体内的网格跳过
-		if (!m_cDecalFrustum.IsAABBInside(boundingBox)) continue;
+		if (!m_cDecalFrustum.IsOverlapAABB(boundingBox)) continue;
 		// 对所有三角形进行裁剪
 		for (int i = 0; i < mesh->GetTriangleCount(); i++) {
 			unsigned int vertexIndices[3];
@@ -143,7 +144,7 @@ void CSceneNodeDecal::UpdateMesh() {
 			}
 		}
 	}
-	m_pMesh->Create(false);
+	m_pMesh->Update(0);
 }
 
 /**
@@ -167,7 +168,7 @@ int CSceneNodeDecal::IntersectWithFrustum(const CVector3& p1, const CVector3& p2
 	aabb.Update(p1);
 	aabb.Update(p2);
 	aabb.Update(p3);
-	if (!m_cDecalFrustum.IsAABBInside(aabb)) return 0;
+	if (!m_cDecalFrustum.IsOverlapAABB(aabb)) return 0;
 	CVector3 vt = (p2 - p1).CrossProduct(p3 - p1);
 	// 检查三角形是否面向投影点
 	if (vt.DotProduct(m_cPosition - p1) <= 0.0f) return 0;

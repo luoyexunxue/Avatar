@@ -21,6 +21,13 @@ CScriptContext* CScriptContext::GetCurrent(struct lua_State* lua) {
 }
 
 /**
+* 执行脚本
+*/
+bool CScriptContext::Execute(const char* script) {
+	return luaL_dostring(m_pLuaState, script) == LUA_OK;
+}
+
+/**
 * 绑定脚本方法
 */
 void CScriptContext::BindFunction(const string& name, void* function) {
@@ -76,6 +83,13 @@ bool CScriptContext::IsString(int index) {
 }
 
 /**
+* 判断是否 table 类型
+*/
+bool CScriptContext::IsTable(int index) {
+	return lua_istable(m_pLuaState, index) != 0;
+}
+
+/**
 * 判断是否 function 类型
 */
 bool CScriptContext::IsFunction(int index) {
@@ -108,6 +122,38 @@ float CScriptContext::ToNumber(int index) {
 */
 const char* CScriptContext::ToString(int index) {
 	return lua_tostring(m_pLuaState, index);
+}
+
+/**
+* 获取表 bool 字段值
+*/
+bool CScriptContext::TableValue(int index, const char* name, bool def) {
+	lua_getfield(m_pLuaState, index, name);
+	return lua_isboolean(m_pLuaState, -1) ? lua_toboolean(m_pLuaState, -1) != 0 : def;
+}
+
+/**
+* 获取表 int 字段值
+*/
+int CScriptContext::TableValue(int index, const char* name, int def) {
+	lua_getfield(m_pLuaState, index, name);
+	return lua_isinteger(m_pLuaState, -1) ? (int)lua_tointeger(m_pLuaState, -1) : def;
+}
+
+/**
+* 获取表 float 字段值
+*/
+float CScriptContext::TableValue(int index, const char* name, float def) {
+	lua_getfield(m_pLuaState, index, name);
+	return lua_isnumber(m_pLuaState, -1) ? (float)lua_tonumber(m_pLuaState, -1) : def;
+}
+
+/**
+* 获取表 string 字段值
+*/
+const char* CScriptContext::TableValue(int index, const char* name, const char* def) {
+	lua_getfield(m_pLuaState, index, name);
+	return lua_isstring(m_pLuaState, -1) ? (const char*)lua_tostring(m_pLuaState, -1) : def;
 }
 
 /**
@@ -158,6 +204,7 @@ void CScriptContext::UnrefCallback(int callback) {
 
 /**
 * 开始调用回调方法
+* @remark 调用 PushValue 提供参数, 再 InvokeEnd 提交
 */
 void CScriptContext::InvokeBegin(int callback) {
 	lua_rawgeti(m_pLuaState, LUA_REGISTRYINDEX, callback);
@@ -165,6 +212,7 @@ void CScriptContext::InvokeBegin(int callback) {
 
 /**
 * 开始调用回调方法
+* @remark 调用 PushValue 提供参数, 再 InvokeEnd 提交
 */
 void CScriptContext::InvokeBegin(const string& function) {
 	lua_getglobal(m_pLuaState, function.c_str());
@@ -172,7 +220,12 @@ void CScriptContext::InvokeBegin(const string& function) {
 
 /**
 * 结束调用回调方法
+* @param params 调用 InvokeBegin 之后 PushValue 的个数
 */
 void CScriptContext::InvokeEnd(int params) {
+	if (params < 0) {
+		lua_insert(m_pLuaState, lua_gettop(m_pLuaState) + params);
+		params = -params;
+	}
 	lua_pcall(m_pLuaState, params, 0, 0);
 }

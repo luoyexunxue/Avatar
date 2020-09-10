@@ -85,8 +85,11 @@ CTexture* CTextureManager::Create(const string& file) {
 	if (!pFile) return pTexture;
 	// 纹理信息
 	pTexture->m_iChannel = pFile->channels;
-	pTexture->m_iWidth = pFile->width & 0xFFFFFFFE;
-	pTexture->m_iHeight = pFile->height & 0xFFFFFFFE;
+	pTexture->m_iWidth = pFile->width;
+	pTexture->m_iHeight = pFile->height;
+	// 部分 OpenGL 实现不支持奇数纹理大小
+	if (pTexture->m_iWidth > 2 && (pTexture->m_iWidth & 0x01)) pTexture->m_iWidth -= 1;
+	if (pTexture->m_iHeight > 2 && (pTexture->m_iHeight & 0x01)) pTexture->m_iHeight -= 1;
 	// 支持1,2,3,4通道八位深度图片
 	if (pTexture->m_iChannel >= 1 && pTexture->m_iChannel <= 4) {
 		glGenTextures(1, &pTexture->m_iTexture);
@@ -198,8 +201,11 @@ CTexture* CTextureManager::Create(const string& name, int width, int height, int
 	pTexture->m_iTextureType = GL_TEXTURE_2D;
 	pTexture->m_strFilePath = file;
 	pTexture->m_iChannel = channel;
-	pTexture->m_iWidth = width & 0xFFFFFFFE;
-	pTexture->m_iHeight = height & 0xFFFFFFFE;
+	pTexture->m_iWidth = width;
+	pTexture->m_iHeight = height;
+	// 部分 OpenGL 实现不支持奇数纹理大小
+	if (pTexture->m_iWidth > 2 && (pTexture->m_iWidth & 0x01)) pTexture->m_iWidth -= 1;
+	if (pTexture->m_iHeight > 2 && (pTexture->m_iHeight & 0x01)) pTexture->m_iHeight -= 1;
 	m_mapTexture.insert(std::pair<string, CTexture*>(file, pTexture));
 	// 生成 OpenGL 纹理，最多支持四个通道
 	if (channel >= 1 && channel <= 4) {

@@ -67,8 +67,8 @@ void CSceneNodeLine::Render() {
 void CSceneNodeLine::Update(float dt) {
 	if (m_bScreenSpace) {
 		CCamera* pCamera = CEngine::GetGraphicsManager()->GetCamera();
-		float screen_w = static_cast<float>(pCamera->GetViewWidth());
-		float screen_h = static_cast<float>(pCamera->GetViewHeight());
+		float screen_w = pCamera->GetViewWidth();
+		float screen_h = pCamera->GetViewHeight();
 		// MVP = Proj * View * (View-1 * Proj-1 * OrthoProj * OffsetAndScale)
 		CMatrix4 mvp;
 		mvp.Ortho(screen_w, screen_h, -1.0f, 1.0f);

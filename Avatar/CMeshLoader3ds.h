@@ -11,10 +11,10 @@ using std::vector;
 /**
 * @brief 3DS 模型加载类
 */
-class CMeshLoader3ds: public CMeshLoader {
-protected:
+class AVATAR_EXPORT CMeshLoader3ds : public CMeshLoader {
+public:
 	//! 加载模型
-	virtual CMeshData* LoadFile(const string& filename, const string& type);
+	virtual CMeshData* LoadFile(const string& filename, uint8_t* data, uint32_t size);
 
 private:
 	//! 递归读取块

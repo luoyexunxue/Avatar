@@ -327,7 +327,7 @@ void CSceneNodeTerrain::DeleteQuadTree(SQuadTree* node) {
 void CSceneNodeTerrain::CheckVisibility(SQuadTree* node, const CFrustum& frustum, const CVector3& eye) {
 	// 分辨率调节因子
 	const float resolution = 0.05f;
-	node->visible = frustum.IsAABBInside(node->volume);
+	node->visible = frustum.IsOverlapAABB(node->volume);
 	if (node->visible) {
 		bool endRetrieval = node->IsLeaf();
 		if (!endRetrieval) {

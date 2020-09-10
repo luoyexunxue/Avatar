@@ -35,8 +35,8 @@ CMesh::CMesh() {
 	m_pMaterial = new CMaterial();
 	m_bDynamic = false;
 	m_bCreated = false;
-	glGenBuffers(1, &m_iVertexBuffer);
-	glGenBuffers(1, &m_iIndexBuffer);
+	m_iVertexBuffer = 0;
+	m_iIndexBuffer = 0;
 }
 
 /**
@@ -44,8 +44,10 @@ CMesh::CMesh() {
 */
 CMesh::~CMesh() {
 	delete m_pMaterial;
-	glDeleteBuffers(1, &m_iVertexBuffer);
-	glDeleteBuffers(1, &m_iIndexBuffer);
+	if (m_bCreated) {
+		glDeleteBuffers(1, &m_iVertexBuffer);
+		glDeleteBuffers(1, &m_iIndexBuffer);
+	}
 }
 
 /**
@@ -331,6 +333,10 @@ CVertexJoint* CMesh::GetBind(unsigned int index) {
 */
 void CMesh::Create(bool dynamic) {
 	if (m_bCreated) return;
+	glGenBuffers(1, &m_iVertexBuffer);
+	glGenBuffers(1, &m_iIndexBuffer);
+	m_bDynamic = dynamic;
+	m_bCreated = true;
 	if (m_vecVertexArray.empty() || m_vecIndexArray.empty()) return;
 	GLenum usage = dynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW;
 	// 创建顶点缓冲
@@ -351,8 +357,6 @@ void CMesh::Create(bool dynamic) {
 	}
 	m_iVertexArraySize = m_vecVertexArray.size();
 	m_iIndexArraySize = m_vecIndexArray.size();
-	m_bDynamic = dynamic;
-	m_bCreated = true;
 }
 
 /**
@@ -362,6 +366,7 @@ void CMesh::Create(bool dynamic) {
 */
 void CMesh::Update(int bufferType) {
 	if (!m_bCreated) return;
+	if (m_vecVertexArray.empty() || m_vecIndexArray.empty()) return;
 	GLenum usage = m_bDynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW;
 	// 更新顶点缓冲
 	if (m_iVertexArraySize != m_vecVertexArray.size()) {

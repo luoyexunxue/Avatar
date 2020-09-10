@@ -60,11 +60,12 @@ void CCameraGaze::Input(CInputManager::SInput* input) {
 		m_fRollInAdvance += input->fRoll;
 		// 限制 Yaw 范围
 		RestrictYawRange(false);
-		// 俯仰角旋转角限制在 -89° 到 89°之间
+		// 旋转角限制在 -89° 到 89°之间
+		const float rollMax = 1.553343f;
 		if (m_fPitchInAdvance < m_fPitchRange[0]) m_fPitchInAdvance = m_fPitchRange[0];
 		else if (m_fPitchInAdvance > m_fPitchRange[1]) m_fPitchInAdvance = m_fPitchRange[1];
-		if (m_fRollInAdvance < -1.553343f) m_fRollInAdvance = -1.553343f;
-		else if (m_fRollInAdvance > 1.553343f) m_fRollInAdvance = 1.553343f;
+		if (m_fRollInAdvance < -rollMax) m_fRollInAdvance = -rollMax;
+		else if (m_fRollInAdvance > rollMax) m_fRollInAdvance = rollMax;
 		// 重新定位相机位置
 		float distance = (m_cPosInAdvance - m_cTargetPos).Length();
 		float sina = sinf(m_fYawInAdvance);
@@ -95,13 +96,14 @@ void CCameraGaze::SetPosition(const CVector3& pos) {
 	else if (length > m_fMaxDistance) m_cPosInAdvance = m_cTargetPos - distance * m_fMaxDistance;
 	else m_cPosInAdvance = pos;
 	// 更新相机方位角
-	GetYawPitchRoll(distance, m_cUpVector, &m_fYawInAdvance, &m_fPitchInAdvance, 0);
+	FromVectorToAngle(distance, m_cUpVector, &m_fYawInAdvance, &m_fPitchInAdvance, 0);
 	RestrictYawRange(true);
 	// 俯仰角旋转角限制
+	const float rollMax = 1.553343f;
 	if (m_fPitchInAdvance < m_fPitchRange[0]) m_fPitchInAdvance = m_fPitchRange[0];
 	else if (m_fPitchInAdvance > m_fPitchRange[1]) m_fPitchInAdvance = m_fPitchRange[1];
-	if (m_fRollInAdvance < -1.553343f) m_fRollInAdvance = -1.553343f;
-	else if (m_fRollInAdvance > 1.553343f) m_fRollInAdvance = 1.553343f;
+	if (m_fRollInAdvance < -rollMax) m_fRollInAdvance = -rollMax;
+	else if (m_fRollInAdvance > rollMax) m_fRollInAdvance = rollMax;
 }
 
 /**
@@ -113,11 +115,12 @@ void CCameraGaze::SetAngle(float yaw, float pitch, float roll) {
 	m_fRollInAdvance = roll;
 	// 限制 Yaw 范围
 	RestrictYawRange(true);
-	// 俯仰角旋转角限制在 -89° 到 89°之间
+	// 旋转角限制在 -89° 到 89°之间
+	const float rollMax = 1.553343f;
 	if (m_fPitchInAdvance < m_fPitchRange[0]) m_fPitchInAdvance = m_fPitchRange[0];
 	else if (m_fPitchInAdvance > m_fPitchRange[1]) m_fPitchInAdvance = m_fPitchRange[1];
-	if (m_fRollInAdvance < -1.553343f) m_fRollInAdvance = -1.553343f;
-	else if (m_fRollInAdvance > 1.553343f) m_fRollInAdvance = 1.553343f;
+	if (m_fRollInAdvance < -rollMax) m_fRollInAdvance = -rollMax;
+	else if (m_fRollInAdvance > rollMax) m_fRollInAdvance = rollMax;
 	// 重新定位相机位置
 	float distance = (m_cPosInAdvance - m_cTargetPos).Length();
 	float sina = sinf(m_fYawInAdvance);
@@ -139,13 +142,14 @@ void CCameraGaze::SetTarget(const CVector3& pos) {
 	m_cTargetPos = pos;
 	m_cPosInAdvance = pos - distance;
 	// 更新相机方位角
-	GetYawPitchRoll(distance.Normalize(), m_cUpVector, &m_fYawInAdvance, &m_fPitchInAdvance, 0);
+	FromVectorToAngle(distance.Normalize(), m_cUpVector, &m_fYawInAdvance, &m_fPitchInAdvance, 0);
 	RestrictYawRange(true);
 	// 俯仰角旋转角限制
+	const float rollMax = 1.553343f;
 	if (m_fPitchInAdvance < m_fPitchRange[0]) m_fPitchInAdvance = m_fPitchRange[0];
 	else if (m_fPitchInAdvance > m_fPitchRange[1]) m_fPitchInAdvance = m_fPitchRange[1];
-	if (m_fRollInAdvance < -1.553343f) m_fRollInAdvance = -1.553343f;
-	else if (m_fRollInAdvance > 1.553343f) m_fRollInAdvance = 1.553343f;
+	if (m_fRollInAdvance < -rollMax) m_fRollInAdvance = -rollMax;
+	else if (m_fRollInAdvance > rollMax) m_fRollInAdvance = rollMax;
 }
 
 /**
@@ -159,7 +163,7 @@ void CCameraGaze::Update(float dt) {
 	m_fPitch += (m_fPitchInAdvance - m_fPitch) * dt;
 	m_fRoll += (m_fRollInAdvance - m_fRoll) * dt;
 	// 计算相机参数
-	GetLookVecUpVec(m_fYaw, m_fPitch, m_fRoll, m_cLookVector, m_cUpVector);
+	FromAngleToVector(m_fYaw, m_fPitch, m_fRoll, m_cLookVector, m_cUpVector);
 	// 距离目标的平移
 	float from = (m_cPosition - m_cTargetPos).Length();
 	float to = (m_cPosInAdvance - m_cTargetPos).Length();
@@ -195,10 +199,11 @@ void CCameraGaze::SetMaxDistance(float distance) {
 * @param max 最大俯仰角（弧度）
 */
 void CCameraGaze::SetPitchRange(float min, float max) {
-	if (min < -1.553343f) min  = -1.553343f;
-	else if (min > 1.553343f) min  = 1.553343f;
-	if (max < -1.553343f) max  = -1.553343f;
-	else if (max > 1.553343f) max  = 1.553343f;
+	const float pitchMax = 1.553343f;
+	if (min < -pitchMax) min = -pitchMax;
+	else if (min > pitchMax) min = pitchMax;
+	if (max < -pitchMax) max = -pitchMax;
+	else if (max > pitchMax) max = pitchMax;
 	m_fPitchRange[0] = min;
 	m_fPitchRange[1] = max;
 	if (m_fPitchInAdvance < m_fPitchRange[0]) m_fPitchInAdvance = m_fPitchRange[0];

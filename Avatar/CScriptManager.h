@@ -94,6 +94,7 @@ private:
 	static int DoCameraControl(lua_State* lua);
 	static int DoCameraFov(lua_State* lua);
 	static int DoCameraClip(lua_State* lua);
+	static int DoCameraProjection(lua_State* lua);
 	static int DoCameraPosition(lua_State* lua);
 	static int DoCameraTarget(lua_State* lua);
 	static int DoCameraAngle(lua_State* lua);

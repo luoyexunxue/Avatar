@@ -203,7 +203,7 @@
     <ClCompile Include="CGuiPanel.cpp" />
     <ClCompile Include="CGuiTrackBar.cpp" />
     <ClCompile Include="CInputManager.cpp" />
-    <ClCompile Include="CJsonParser.cpp" />
+    <ClCompile Include="CJsonObject.cpp" />
     <ClCompile Include="CLog.cpp" />
     <ClCompile Include="CMaterial.cpp" />
     <ClCompile Include="CMatrix4.cpp" />
@@ -319,7 +319,7 @@
     <ClInclude Include="CGuiPanel.h" />
     <ClInclude Include="CGuiTrackBar.h" />
     <ClInclude Include="CInputManager.h" />
-    <ClInclude Include="CJsonParser.h" />
+    <ClInclude Include="CJsonObject.h" />
     <ClInclude Include="CLog.h" />
     <ClInclude Include="CMaterial.h" />
     <ClInclude Include="CMatrix4.h" />

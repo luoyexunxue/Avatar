@@ -65,10 +65,10 @@ void CSceneNodeLensflare::Render() {
 		if (CEngine::GetSceneManager()->GetNodeByRay(pickRay, hitPoint)) return;
 
 		// 获取屏幕中心位置
-		int screen_w = pCamera->GetViewWidth();
-		int screen_h = pCamera->GetViewHeight();
-		m_cCenterPos[0] = static_cast<float>(screen_w >> 1);
-		m_cCenterPos[1] = static_cast<float>(screen_h >> 1);
+		float screen_w = pCamera->GetViewWidth();
+		float screen_h = pCamera->GetViewHeight();
+		m_cCenterPos[0] = screen_w * 0.5f;
+		m_cCenterPos[1] = screen_h * 0.5f;
 
 		// 求太阳相对于屏幕中心的位置
 		pGraphicsMgr->PointToScreen(m_cSunPosition, m_cScreenPos);

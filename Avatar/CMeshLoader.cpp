@@ -100,8 +100,10 @@ CMeshData* CMeshLoader::Load(const string& filename, bool cache) {
 	string ext = CStringUtil::UpperCase(CFileManager::GetExtension(filename));
 	if (ext == "AVT") meshData = LoadAvatar(filename);
 	else {
+		CFileManager::CBinaryFile file;
+		CEngine::GetFileManager()->ReadFile(filename, &file);
 		map<string, CMeshLoader*>::iterator iter = m_mapMeshLoader.find(ext);
-		if (iter != m_mapMeshLoader.end()) meshData = iter->second->LoadFile(filename, ext);
+		if (iter != m_mapMeshLoader.end()) meshData = iter->second->LoadFile(filename, file.contents, file.size);
 		else CLog::Warn("Could not find a mesh loader for type '%s'", ext.c_str());
 	}
 	if (meshData && cache) {
@@ -160,6 +162,8 @@ void CMeshLoader::RegisterLoader() {
 	m_mapMeshLoader.insert(std::pair<string, CMeshLoader*>("OBJ", basicLoader));
 	m_mapMeshLoader.insert(std::pair<string, CMeshLoader*>("MS3D", basicLoader));
 	m_mapMeshLoader.insert(std::pair<string, CMeshLoader*>("BVH", basicLoader));
+	m_mapMeshLoader.insert(std::pair<string, CMeshLoader*>("B3DM", basicLoader));
+	m_mapMeshLoader.insert(std::pair<string, CMeshLoader*>("I3DM", basicLoader));
 	m_mapMeshLoader.insert(std::pair<string, CMeshLoader*>("3DS", new CMeshLoader3ds()));
 	m_mapMeshLoader.insert(std::pair<string, CMeshLoader*>("DAE", new CMeshLoaderCollada()));
 	m_mapMeshLoader.insert(std::pair<string, CMeshLoader*>("GLB", gltfLoader));

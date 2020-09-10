@@ -34,6 +34,7 @@ CSceneNodeBoard::CSceneNodeBoard(const string& name, const string& texture, floa
 	m_pTexture = 0;
 	m_iCameraId = -1;
 	m_pVideoContext = 0;
+	m_fPlayTime = 0.0f;
 	m_iSoundId = 0;
 	m_iSoundBufferSize = 0;
 	m_pFileBuffer = 0;
@@ -120,8 +121,11 @@ void CSceneNodeBoard::Update(float dt) {
 #endif
 #ifdef AVATAR_ENABLE_VIDEOPLAY
 	if (m_pVideoContext) {
+		m_fPlayTime += dt;
+		VideoPlayTime(m_pVideoContext, m_fPlayTime);
 		if (VideoPlayVideo(m_pVideoContext, (unsigned char*)m_pTexture->MapBuffer(false)) > 0) {
-			VideoPlayTime(m_pVideoContext, 0.0f);
+			m_fPlayTime = 0.0f;
+			VideoPlayTime(m_pVideoContext, -1.0f);
 		}
 		m_pTexture->UnmapBuffer();
 		if (m_iSoundId > 0) {
@@ -191,7 +195,7 @@ void CSceneNodeBoard::SetAxis(const CVector3& axis) {
 void CSceneNodeBoard::SetPlayTime(float time) {
 #ifdef AVATAR_ENABLE_VIDEOPLAY
 	if (m_pVideoContext) {
-		VideoPlayTime(m_pVideoContext, time);
+		VideoPlaySeek(m_pVideoContext, time);
 	}
 #endif
 }

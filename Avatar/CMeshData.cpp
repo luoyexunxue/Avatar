@@ -288,18 +288,26 @@ bool CMeshData::SetFacing(const string& name, const CVector3& front, const CVect
 /**
 * 清空所有网格
 */
-void CMeshData::ClearMesh() {
-	size_t count = m_pMeshData->meshes.size();
-	for (size_t i = 0; i < count; i++) delete m_pMeshData->meshes[i];
+void CMeshData::ClearMesh(bool release) {
+	if (release) {
+		size_t count = m_pMeshData->meshes.size();
+		for (size_t i = 0; i < count; i++) {
+			delete m_pMeshData->meshes[i];
+		}
+	}
 	m_pMeshData->meshes.clear();
 }
 
 /**
 * 清空所有关节
 */
-void CMeshData::ClearJoint() {
-	size_t count = m_pMeshData->joints.size();
-	for (size_t i = 0; i < count; i++) delete m_pMeshData->joints[i];
+void CMeshData::ClearJoint(bool release) {
+	if (release) {
+		size_t count = m_pMeshData->joints.size();
+		for (size_t i = 0; i < count; i++) {
+			delete m_pMeshData->joints[i];
+		}
+	}
 	m_pMeshData->joints.clear();
 }
 

@@ -54,7 +54,7 @@
     <ClCompile Include="CEngine.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="CJsonParser.cpp">
+    <ClCompile Include="CJsonObject.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="CPhysicsManager.cpp">
@@ -398,7 +398,7 @@
     <ClInclude Include="CEngine.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="CJsonParser.h">
+    <ClInclude Include="CJsonObject.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="CPhysicsManager.h">

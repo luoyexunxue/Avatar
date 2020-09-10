@@ -77,6 +77,7 @@ void CEngine::Destroy() {
 	m_bRunning = false;
 	UnRegisterEvent("update", 0, true);
 	UnRegisterEvent("render", 0, true);
+	GetSceneManager()->ClearNode();
 	CPluginLoader::Destroy();
 	GetScriptManager()->OnExit();
 	GetScriptManager()->Destroy();
@@ -142,6 +143,8 @@ void CEngine::Update() {
 	if (pInput->bFire) pScriptMgr->OnInput("fire", 1, pInput->iInputX, pInput->iInputY, 0);
 	if (pInput->bMove) pScriptMgr->OnInput("move", 1, pInput->fRightLeft, pInput->fForthBack, pInput->fUpDown);
 	if (pInput->bTurn) pScriptMgr->OnInput("turn", 1, pInput->fYaw, pInput->fPitch, pInput->fRoll);
+	// 在更新其它组件之前执行，保证脚本执行正确
+	pScriptMgr->OnUpdate(m_fTimeSpan);
 	// 更新相机状态
 	CCamera* pCamera = GetGraphicsManager()->GetCamera();
 	pCamera->Input(pInput);
@@ -156,7 +159,6 @@ void CEngine::Update() {
 	GetPhysicsManager()->Update(m_fTimeSpan);
 	GetAnimationManager()->Update(m_fTimeSpan);
 	GetSceneManager()->Update(m_fTimeSpan);
-	pScriptMgr->OnUpdate(m_fTimeSpan);
 	// 更新听众位置，即摄像机位置
 	pSoundMgr->ListenerPos(pCamera->m_cPosition);
 	pSoundMgr->ListenerOri(pCamera->m_cLookVector, pCamera->m_cUpVector);

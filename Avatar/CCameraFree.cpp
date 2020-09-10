@@ -85,7 +85,7 @@ void CCameraFree::SetTarget(const CVector3& pos) {
 		float yaw;
 		float pitch;
 		float roll;
-		GetYawPitchRoll(lookVec, m_cUpVector, &yaw, &pitch, &roll);
+		FromVectorToAngle(lookVec, m_cUpVector, &yaw, &pitch, &roll);
 		SetAngle(yaw, pitch, roll);
 	}
 }

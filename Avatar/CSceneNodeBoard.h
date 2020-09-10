@@ -54,6 +54,8 @@ private:
 	int m_iCameraId;
 	//! 视频上下文
 	void* m_pVideoContext;
+	//! 视频播放时间
+	float m_fPlayTime;
 	//! 音频流ID
 	int m_iSoundId;
 	//! 音频缓冲大小

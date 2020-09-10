@@ -10,19 +10,13 @@
 /**
 * 加载 3DS 模型
 */
-CMeshData* CMeshLoader3ds::LoadFile(const string& filename, const string& type) {
-	CFileManager::CBinaryFile file;
-	if (!CEngine::GetFileManager()->ReadFile(filename, &file)) {
-		return 0;
-	}
+CMeshData* CMeshLoader3ds::LoadFile(const string& filename, uint8_t* data, uint32_t size) {
 	// 不是有效的 3DS 文件
-	if (file.size < 16 || file.contents[0] != 0x4D || file.contents[1] != 0x4D) {
-		return 0;
-	}
+	if (size < 16 || data[0] != 0x4D || data[1] != 0x4D) return 0;
 	m_strBaseDir = CFileManager::GetDirectory(filename);
 	m_vecMeshes.clear();
 	m_vecMaterials.clear();
-	ReadChunk(file.contents, file.size);
+	ReadChunk(data, size);
 	// 将材质绑定至指定网格对象
 	for (size_t i = 0; i < m_vecMaterials.size(); i++) {
 		for (size_t j = 0; j < m_vecMeshes.size(); j++) {

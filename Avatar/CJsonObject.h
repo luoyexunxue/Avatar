@@ -2,8 +2,8 @@
 // Copyright (c) 2020 周仁锋. All rights reserved.
 // ye_luo@qq.com
 //================================================
-#ifndef _CJSONPARSER_H_
-#define _CJSONPARSER_H_
+#ifndef _CJSONOBJECT_H_
+#define _CJSONOBJECT_H_
 #include "AvatarConfig.h"
 #include <string>
 #include <map>
@@ -15,14 +15,16 @@ using std::vector;
 /**
 * @brief JSON 解析器
 */
-class AVATAR_EXPORT CJsonParser {
+class AVATAR_EXPORT CJsonObject {
 public:
 	//! 默认构造函数
-	CJsonParser();
+	CJsonObject();
+	//! 移动构造函数
+	CJsonObject(CJsonObject&& json);
 	//! 指定字符串构造
-	CJsonParser(const char* content);
+	CJsonObject(const char* content);
 	//! 使用指定长度的字符串构造
-	CJsonParser(const char* content, int length);
+	CJsonObject(const char* content, int length);
 
 	//! 解析指定字符串
 	bool Parse(const char* content, int length);
@@ -32,17 +34,17 @@ public:
 	int GetCount() const;
 
 	//! 获取节点内指定名称的值
-	CJsonParser& GetValue(const char* name);
+	CJsonObject& GetValue(const char* name);
 	//! 获取节点内指定名称的值
-	CJsonParser& GetValue(const string& name);
+	CJsonObject& GetValue(const string& name);
 	//! 获取数组节点内指定的值
-	CJsonParser& GetValue(int index);
+	CJsonObject& GetValue(int index);
 	//! 同 GetValue(const char* name)
-	CJsonParser& operator [] (const char* name);
+	CJsonObject& operator [] (const char* name);
 	//! 同 GetValue(const string& name)
-	CJsonParser& operator [] (const string& name);
+	CJsonObject& operator [] (const string& name);
 	//! 同 GetValue(int index)
-	CJsonParser& operator [] (int index);
+	CJsonObject& operator [] (int index);
 
 public:
 	//! 是否为空节点
@@ -83,25 +85,25 @@ private:
 	} SValue;
 
 	//! 解析对象值
-	int ParseObject(const char* data, int length, CJsonParser& parser);
+	int ParseObject(const char* data, int length, CJsonObject& value);
 	//! 解析数组值
-	int ParseArray(const char* data, int length, CJsonParser& parser);
+	int ParseArray(const char* data, int length, CJsonObject& value);
 	//! 解析普通字符串
-	int ParseString(const char* data, int length, CJsonParser& parser);
+	int ParseString(const char* data, int length, CJsonObject& value);
 	//! 解析空值
-	int ParseNull(const char* data, int length, CJsonParser& parser);
+	int ParseNull(const char* data, int length, CJsonObject& value);
 	//! 解析布尔字符串
-	int ParseBool(const char* data, int length, CJsonParser& parser);
+	int ParseBool(const char* data, int length, CJsonObject& value);
 	//! 解析数字字符串
-	int ParseNumber(const char* data, int length, CJsonParser& parser);
+	int ParseNumber(const char* data, int length, CJsonObject& value);
 
 private:
 	//! JSON 值
 	SValue m_sValue;
 	//! JSON 内部子元素
-	map<string, CJsonParser> m_mapValues;
+	map<string, CJsonObject> m_mapValues;
 	//! JSON 内部数组
-	vector<CJsonParser> m_vecValues;
+	vector<CJsonObject> m_vecValues;
 };
 
 #endif

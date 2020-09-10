@@ -14,7 +14,7 @@ LOCAL_SRC_FILES := CAnimationManager.cpp CBase64.cpp CBoundingBox.cpp CCamera.cp
 	CContactDetector.cpp CDelaunay.cpp CDeviceAndroid.cpp CDynamicBvt.cpp CEngine.cpp CFFT.cpp \
 	CFileManager.cpp CFontManager.cpp CFrustum.cpp CGeometryCreator.cpp CGraphicsManager.cpp \
 	CGuiButton.cpp CGuiEditBox.cpp CGuiEnvironment.cpp CGuiLabel.cpp CGuiPanel.cpp CGuiTrackBar.cpp \
-	CInputManager.cpp CJsonParser.cpp CLog.cpp CMaterial.cpp CMatrix4.cpp CMesh.cpp CMeshBlend.cpp \
+	CInputManager.cpp CJsonObject.cpp CLog.cpp CMaterial.cpp CMatrix4.cpp CMesh.cpp CMeshBlend.cpp \
 	CMeshData.cpp CMeshLoader.cpp CMeshLoader3ds.cpp CMeshLoaderBasic.cpp CMeshLoaderCollada.cpp \
 	CMeshLoaderGltf.cpp CMeshSlicer.cpp CPhysicsManager.cpp CPlane.cpp CPluginLoader.cpp \
 	CPostProcess.cpp CPostProcessAnaglyph.cpp CPostProcessBeam.cpp CPostProcessBloom.cpp \

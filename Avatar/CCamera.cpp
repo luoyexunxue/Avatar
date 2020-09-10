@@ -18,11 +18,12 @@ CCamera::CCamera() {
 	m_fPitch = 0.0f;
 	m_fRoll = 0.0f;
 	m_bControlAttached = true;
-	m_iViewWidth = 240;
-	m_iViewHeight = 320;
+	m_fViewWidth = 256.0f;
+	m_fViewHeight = 256.0f;
 	m_fFieldOfView = 60.0f;
 	m_fClipNear = 0.2f;
 	m_fClipFar = 2000.0f;
+	m_bOrthoProject = false;
 	m_pBindNode = 0;
 }
 
@@ -88,8 +89,7 @@ void CCamera::SetAngle(float yaw, float pitch, float roll) {
 	else if (m_fPitch > maxAngle) m_fPitch  = maxAngle;
 	if (m_fRoll < -maxAngle) m_fRoll  = -maxAngle;
 	else if (m_fRoll > maxAngle) m_fRoll  = maxAngle;
-	// 更新 LookVector UpVector 向量
-	GetLookVecUpVec(m_fYaw, m_fPitch, m_fRoll, m_cLookVector, m_cUpVector);
+	FromAngleToVector(m_fYaw, m_fPitch, m_fRoll, m_cLookVector, m_cUpVector);
 }
 
 /**
@@ -98,10 +98,12 @@ void CCamera::SetAngle(float yaw, float pitch, float roll) {
 void CCamera::SetTarget(const CVector3& pos) {
 	CVector3 lookVec = pos - m_cPosition;
 	if (lookVec.Length() == 0) return;
-	lookVec.Normalize();
-	m_cLookVector = lookVec;
-	// 更新 Yaw、Pitch、Roll 值
-	GetYawPitchRoll(m_cLookVector, m_cUpVector, &m_fYaw, &m_fPitch, &m_fRoll);
+	m_cLookVector = lookVec.Normalize();
+	CVector3 rightVec = m_cLookVector.CrossProduct(CVector3::Z);
+	if (rightVec.Length() < 1E-6) m_cUpVector = lookVec.Tangent();
+	else m_cUpVector = rightVec.CrossProduct(m_cLookVector).Normalize();
+	// 更新 yaw、pitch、roll 值
+	FromVectorToAngle(m_cLookVector, m_cUpVector, &m_fYaw, &m_fPitch, &m_fRoll);
 }
 
 /**
@@ -116,21 +118,22 @@ void CCamera::Update(float dt) {
 		m_cUpVector.Normalize();
 	}
 	UpdateViewMatrix();
+	UpdateProjMatrix();
 	UpdateFrustum();
 }
 
 /**
 * 获取视口宽度
 */
-int CCamera::GetViewWidth() const {
-	return m_iViewWidth;
+float CCamera::GetViewWidth() const {
+	return m_fViewWidth;
 }
 
 /**
 * 获取视口高度
 */
-int CCamera::GetViewHeight() const {
-	return m_iViewHeight;
+float CCamera::GetViewHeight() const {
+	return m_fViewHeight;
 }
 
 /**
@@ -144,9 +147,7 @@ float CCamera::GetFieldOfView() const {
 * 获取视口宽高比
 */
 float CCamera::GetAspectRatio() const {
-	const float vw = static_cast<float>(m_iViewWidth);
-	const float vh = static_cast<float>(m_iViewHeight);
-	return vw / vh;
+	return m_fViewWidth / m_fViewHeight;
 }
 
 /**
@@ -164,11 +165,23 @@ float CCamera::GetFarClipDistance() const {
 }
 
 /**
-* 设置相机视口大小
+* 是否是正交投影模式
 */
-void CCamera::SetViewSize(int width, int height) {
-	m_iViewWidth = width;
-	m_iViewHeight = height;
+bool CCamera::IsOrthoProjection() const {
+	return m_bOrthoProject;
+}
+
+/**
+* 设置相机视口大小
+* @param width 视口宽度
+* @param height 视口高度
+* @param ignoreOrtho 忽略正交投影的情形
+*/
+void CCamera::SetViewSize(float width, float height, bool ignoreOrtho) {
+	if (ignoreOrtho || !m_bOrthoProject) {
+		m_fViewWidth = width;
+		m_fViewHeight = height;
+	}
 }
 
 /**
@@ -188,17 +201,27 @@ void CCamera::SetClipDistance(float zNear, float zFar) {
 }
 
 /**
+* 设置投影方式
+* @param ortho 是否为正交投影
+*/
+void CCamera::SetOrthoProjection(bool ortho) {
+	m_bOrthoProject = ortho;
+}
+
+/**
+* 更新投影矩阵
+*/
+void CCamera::UpdateProjMatrix() {
+	UpdateProjMatrix(m_bOrthoProject);
+}
+
+/**
 * 更新投影矩阵
 * @param ortho 是否为正交投影
 */
 void CCamera::UpdateProjMatrix(bool ortho) {
-	const float w = static_cast<float>(m_iViewWidth);
-	const float h = static_cast<float>(m_iViewHeight);
-	if (ortho) {
-		m_cProjMatrix.Ortho(w, h, 0.0f, m_fClipFar);
-	} else {
-		m_cProjMatrix.Perspective(m_fFieldOfView, w / h, m_fClipNear, m_fClipFar);
-	}
+	if (ortho) m_cProjMatrix.Ortho(m_fViewWidth, m_fViewHeight, 0.0f, m_fClipFar);
+	else m_cProjMatrix.Perspective(m_fFieldOfView, GetAspectRatio(), m_fClipNear, m_fClipFar);
 }
 
 /**
@@ -259,28 +282,28 @@ void CCamera::Bind(CSceneNode* sceneNode, const CVector3& pos, const CQuaternion
 
 /**
 * 计算相机方位角，俯仰角，旋转角
-* @param lookVec 相机视线向量
-* @param upVec 相机上向量
+* @param look 相机视线向量
+* @param up 相机上向量
 * @param yaw 计算得到的水平角
 * @param pitch 计算得到的俯仰角
 * @param roll 计算得到的翻滚角
 */
-void CCamera::GetYawPitchRoll(const CVector3& lookVec, const CVector3& upVec, float* yaw, float* pitch, float* roll) {
-	float y = -atan2f(lookVec.m_fValue[0], lookVec.m_fValue[1]);
-	float p = asinf(lookVec.m_fValue[2]);
+void CCamera::FromVectorToAngle(const CVector3& look, const CVector3& up, float* yaw, float* pitch, float* roll) {
+	float y = -atan2f(look.m_fValue[0], look.m_fValue[1]);
+	float p = asinf(look.m_fValue[2]);
 	// Roll 角度计算较复杂（-90 ~ 90）
 	float siny = sinf(y);
 	float cosy = cosf(y);
 	float sinp = sinf(p);
 	float cosp = cosf(p);
 	// 未 Roll 旋转的 Up 向量
-	CVector3 upVecOrg(sinp * siny, -sinp * cosy, cosp);
-	float cosr = upVecOrg.DotProduct(upVec);
+	CVector3 upVec(sinp * siny, -sinp * cosy, cosp);
+	float cosr = upVec.DotProduct(up);
 	if (cosr < -1.0f) cosr = -1.0f;
 	else if (cosr > 1.0f) cosr = 1.0f;
 	float r = acosf(cosr);
 	// Roll 方向
-	if (upVecOrg.CrossProduct(upVec).DotProduct(lookVec) < 0) r = -r;
+	if (upVec.CrossProduct(up).DotProduct(look) < 0) r = -r;
 	if (yaw) *yaw = y;
 	if (pitch) *pitch = p;
 	if (roll) *roll = r;
@@ -291,10 +314,10 @@ void CCamera::GetYawPitchRoll(const CVector3& lookVec, const CVector3& upVec, fl
 * @param yaw 相机水平角
 * @param pitch 相机俯仰角
 * @param roll 相机翻滚角
-* @param lookVec 计算得到的相机视线向量
-* @param upVec 计算得到的相机上向量
+* @param look 计算得到的相机视线向量
+* @param up 计算得到的相机上向量
 */
-void CCamera::GetLookVecUpVec(float yaw, float pitch, float roll, CVector3& lookVec, CVector3& upVec) {
+void CCamera::FromAngleToVector(float yaw, float pitch, float roll, CVector3& look, CVector3& up) {
 	// 转动顺序 1-roll，2-pitch，3-yaw
 	CMatrix4 matrix;
 	float cr = cosf(roll);
@@ -313,6 +336,6 @@ void CCamera::GetLookVecUpVec(float yaw, float pitch, float roll, CVector3& look
 	matrix(1, 2) = sy * sr - cy * sp * cr;
 	matrix(2, 2) = cp * cr;
 	// 计算 LookVector，UpVector 的值
-	lookVec = matrix * CVector3::Y;
-	upVec = matrix * CVector3::Z;
+	look = matrix * CVector3::Y;
+	up = matrix * CVector3::Z;
 }

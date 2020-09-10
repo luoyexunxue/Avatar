@@ -42,10 +42,11 @@ void CCameraChase::Input(CInputManager::SInput* input) {
 		m_fRollInAdvance += input->fRoll;
 		RestrictYawRange(false);
 		// 俯仰角旋转角限制在 -89° 到 89°之间
-		if (m_fPitchInAdvance < -1.553343f) m_fPitchInAdvance = -1.553343f;
-		else if (m_fPitchInAdvance > 1.553343f) m_fPitchInAdvance = 1.553343f;
-		if (m_fRollInAdvance < -1.553343f) m_fRollInAdvance = -1.553343f;
-		else if (m_fRollInAdvance > 1.553343f) m_fRollInAdvance = 1.553343f;
+		const float maxAngle = 1.553343f;
+		if (m_fPitchInAdvance < -maxAngle) m_fPitchInAdvance = -maxAngle;
+		else if (m_fPitchInAdvance > maxAngle) m_fPitchInAdvance = maxAngle;
+		if (m_fRollInAdvance < -maxAngle) m_fRollInAdvance = -maxAngle;
+		else if (m_fRollInAdvance > maxAngle) m_fRollInAdvance = maxAngle;
 	}
 }
 
@@ -73,10 +74,11 @@ void CCameraChase::SetAngle(float yaw, float pitch, float roll) {
 	m_fRollInAdvance = roll;
 	RestrictYawRange(true);
 	// 俯仰角旋转角限制在 -89° 到 89°之间
-	if (m_fPitchInAdvance < -1.553343f) m_fPitchInAdvance  = -1.553343f;
-	else if (m_fPitchInAdvance > 1.553343f) m_fPitchInAdvance  = 1.553343f;
-	if (m_fRollInAdvance < -1.553343f) m_fRollInAdvance  = -1.553343f;
-	else if (m_fRollInAdvance > 1.553343f) m_fRollInAdvance  = 1.553343f;
+	const float maxAngle = 1.553343f;
+	if (m_fPitchInAdvance < -maxAngle) m_fPitchInAdvance = -maxAngle;
+	else if (m_fPitchInAdvance > maxAngle) m_fPitchInAdvance = maxAngle;
+	if (m_fRollInAdvance < -maxAngle) m_fRollInAdvance = -maxAngle;
+	else if (m_fRollInAdvance > maxAngle) m_fRollInAdvance = maxAngle;
 }
 
 /**
@@ -87,7 +89,7 @@ void CCameraChase::SetTarget(const CVector3& pos) {
 	if (lookVec.Length() == 0) return;
 	// 更新相机方位角
 	lookVec.Normalize();
-	GetYawPitchRoll(lookVec, m_cUpVector, &m_fYawInAdvance, &m_fPitchInAdvance, 0);
+	FromVectorToAngle(lookVec, m_cUpVector, &m_fYawInAdvance, &m_fPitchInAdvance, 0);
 	// 限制 Yaw 范围
 	RestrictYawRange(true);
 }
@@ -104,7 +106,7 @@ void CCameraChase::Update(float dt) {
 	m_fRoll += (m_fRollInAdvance - m_fRoll) * dt;
 	m_cPosition += (m_cPosInAdvance - m_cPosition) * dt;
 	// 更新 Look 和 Up 向量
-	GetLookVecUpVec(m_fYaw, m_fPitch, m_fRoll, m_cLookVector, m_cUpVector);
+	FromAngleToVector(m_fYaw, m_fPitch, m_fRoll, m_cLookVector, m_cUpVector);
 	CCamera::Update(dt);
 }
 

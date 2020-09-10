@@ -503,11 +503,11 @@ void CGraphicsManager::Screenshot(const string& fileName, bool redraw) {
 */
 void CGraphicsManager::PointToScreen(const CVector3& point, CVector3& screen) {
 	// 获取视口参数
-	int viewport[4];
+	float viewport[4];
 	viewport[1] = 0;
 	viewport[2] = m_pCamera->GetViewWidth();
 	viewport[3] = m_pCamera->GetViewHeight();
-	viewport[0] = m_bRenderLeftEye ? 0 : viewport[2];
+	viewport[0] = m_bRenderLeftEye ? 0.0f : viewport[2];
 	Project(viewport, point.m_fValue, screen.m_fValue);
 }
 
@@ -519,7 +519,7 @@ void CGraphicsManager::PointToScreen(const CVector3& point, CVector3& screen) {
 * @note 屏幕原点为左上角
 */
 void CGraphicsManager::PickingRay(int x, int y, CRay& ray) {
-	int viewport[4];
+	float viewport[4];
 	float screen[3];
 	float posStart[3];
 	float posEnd[3];
@@ -527,7 +527,7 @@ void CGraphicsManager::PickingRay(int x, int y, CRay& ray) {
 	viewport[1] = 0;
 	viewport[2] = m_pCamera->GetViewWidth();
 	viewport[3] = m_pCamera->GetViewHeight();
-	viewport[0] = m_bStereoMode && x > viewport[2] ? viewport[2] : 0;
+	viewport[0] = m_bStereoMode && x > viewport[2] ? viewport[2] : 0.0f;
 	// 反投影计算
 	screen[0] = static_cast<float>(x);
 	screen[1] = static_cast<float>(viewport[3] - y);
@@ -552,13 +552,13 @@ void CGraphicsManager::PickingRay(int x, int y, CRay& ray) {
 * @attention 屏幕原点为左上角，该方法不支持 OpenGL ES
 */
 void CGraphicsManager::PickingPosition(int x, int y, CVector3& position) {
-	int viewport[4];
+	float viewport[4];
 	float screen[3];
 	// 获取视口参数
 	viewport[1] = 0;
 	viewport[2] = m_pCamera->GetViewWidth();
 	viewport[3] = m_pCamera->GetViewHeight();
-	viewport[0] = m_bStereoMode && x > viewport[2] ? viewport[2] : 0;
+	viewport[0] = m_bStereoMode && x > viewport[2] ? viewport[2] : 0.0f;
 	screen[0] = static_cast<float>(x);
 	screen[1] = static_cast<float>(viewport[3] - y);
 	// 读取深度值
@@ -757,7 +757,7 @@ float CGraphicsManager::GetFrameRate() {
 * @param objCoord 空间坐标
 * @param winPos 屏幕坐标
 */
-void CGraphicsManager::Project(const int viewport[4], const float objCoord[3], float winPos[3]) {
+void CGraphicsManager::Project(const float viewport[4], const float objCoord[3], float winPos[3]) {
 	// 计算视图投影矩阵
 	CMatrix4 matrix = m_pCamera->GetProjMatrix() * m_pCamera->GetViewMatrix();
 	// 变换得到屏幕坐标系坐标
@@ -774,11 +774,11 @@ void CGraphicsManager::Project(const int viewport[4], const float objCoord[3], f
 * @param winPos 屏幕坐标
 * @param objCoord 空间坐标
 */
-void CGraphicsManager::UnProject(const int viewport[4], const float winPos[3], float objCoord[3]) {
+void CGraphicsManager::UnProject(const float viewport[4], const float winPos[3], float objCoord[3]) {
 	// 将屏幕坐标转换为 OpenGL 表示
 	CVector3 vec3d;
-	vec3d[0] = (winPos[0] - viewport[0]) / static_cast<float>(viewport[2]) * 2.0f - 1.0f;
-	vec3d[1] = (winPos[1] - viewport[1]) / static_cast<float>(viewport[3]) * 2.0f - 1.0f;
+	vec3d[0] = (winPos[0] - viewport[0]) / viewport[2] * 2.0f - 1.0f;
+	vec3d[1] = (winPos[1] - viewport[1]) / viewport[3] * 2.0f - 1.0f;
 	vec3d[2] = 2.0f * winPos[2] - 1.0f;
 	// 计算视图投影矩阵逆矩阵
 	CMatrix4 matrix = m_pCamera->GetProjMatrix() * m_pCamera->GetViewMatrix();
@@ -824,8 +824,10 @@ void CGraphicsManager::Draw() {
 	// 左右立体显示模式
 	if (m_bStereoMode) {
 		viewWidth >>= 1;
-		m_pCamera->SetViewSize(viewWidth, viewHeight);
-		m_pCamera->UpdateProjMatrix(false);
+		const float render_width = static_cast<float>(viewWidth);
+		const float render_height = static_cast<float>(viewHeight);
+		m_pCamera->SetViewSize(render_width, render_height, false);
+		m_pCamera->UpdateProjMatrix();
 
 		// 设置眼间距 63.6 mm
 		CMatrix4& viewMat = m_pCamera->GetViewMatrix();
@@ -841,7 +843,7 @@ void CGraphicsManager::Draw() {
 		m_pCamera->UpdateFrustum();
 		glViewport(0, 0, viewWidth, viewHeight);
 		CEngine::GetSceneManager()->RenderScene(m_pCamera->GetViewMatrix(), m_pCamera->GetProjMatrix());
-		DrawScreen();
+		DrawScreen(render_width, render_height);
 
 		// 渲染右眼场景
 		m_bRenderLeftEye = false;
@@ -851,18 +853,20 @@ void CGraphicsManager::Draw() {
 		m_pCamera->UpdateFrustum();
 		glViewport(viewWidth, 0, viewWidth, viewHeight);
 		CEngine::GetSceneManager()->RenderScene(m_pCamera->GetViewMatrix(), m_pCamera->GetProjMatrix());
-		DrawScreen();
+		DrawScreen(render_width, render_height);
 
 		// 恢复相机位置
 		m_pCamera->m_cPosition = eyePos;
 		m_pCamera->m_cLookVector = eyeDir;
 		glViewport(0, 0, viewWidth << 1, viewHeight);
 	} else {
-		m_pCamera->SetViewSize(viewWidth, viewHeight);
-		m_pCamera->UpdateProjMatrix(false);
+		const float render_width = static_cast<float>(viewWidth);
+		const float render_height = static_cast<float>(viewHeight);
+		m_pCamera->SetViewSize(render_width, render_height, false);
+		m_pCamera->UpdateProjMatrix();
 		glViewport(0, 0, viewWidth, viewHeight);
 		CEngine::GetSceneManager()->RenderScene(m_pCamera->GetViewMatrix(), m_pCamera->GetProjMatrix());
-		DrawScreen();
+		DrawScreen(render_width, render_height);
 	}
 	// 进行后处理
 	pPostProcessMgr->ApplyFrame();
@@ -875,31 +879,6 @@ void CGraphicsManager::Draw() {
 		glBlitFramebuffer(0, 0, viewWidth, viewHeight, 0, 0, m_iWindowSize[0], m_iWindowSize[1], GL_COLOR_BUFFER_BIT, GL_NEAREST);
 		glBindFramebuffer(GL_FRAMEBUFFER, pRenderTarget->GetFramebuffer());
 	}
-}
-
-/**
-* 绘制屏幕元素
-*/
-void CGraphicsManager::DrawScreen() {
-	// 设置屏幕原点偏移
-	float offsetx = -0.5f * m_pCamera->GetViewWidth();
-	float offsety = -0.5f * m_pCamera->GetViewHeight();
-	CVector2 offset(offsetx, offsety);
-	// 设置正交投影
-	m_pCamera->UpdateProjMatrix(true);
-	glDisable(GL_DEPTH_TEST);
-	CEngine::GetSceneManager()->RenderScreen(m_pCamera->GetProjMatrix(), offset);
-	// 绘制 LOGO
-#ifdef AVATAR_ENABLE_LOGO
-	CEngine::GetTextureManager()->GetTexture("logo")->UseTexture(0);
-	CShader* pShader = CEngine::GetShaderManager()->GetCurrentShader();
-	pShader->SetUniform("uOffset", offset.Add(32.0f).Scale(-1.0f));
-	pShader->SetUniform("uModelMatrix", CMatrix4().Scale(32.0f, 32.0f, 1.0f));
-	DrawQuadrilateral(CColor::White, true);
-#endif
-	// 设置透视投影
-	m_pCamera->UpdateProjMatrix(false);
-	glEnable(GL_DEPTH_TEST);
 }
 
 /**
@@ -984,7 +963,7 @@ void CGraphicsManager::DrawCubeMap() {
 	int viewWidth = m_pRenderTarget->GetWidth();
 	int viewHeight = m_pRenderTarget->GetHeight();
 	m_pCamera->SetFieldOfView(90.0f);
-	m_pCamera->SetViewSize(viewWidth, viewHeight);
+	m_pCamera->SetViewSize((float)viewWidth, (float)viewHeight, true);
 	m_pCamera->UpdateProjMatrix(false);
 	glViewport(0, 0, viewWidth, viewHeight);
 	CMatrix4& mat = m_pCamera->GetViewMatrix();
@@ -1060,4 +1039,38 @@ void CGraphicsManager::DrawReflectMap() {
 	m_pCamera->GetProjMatrix().SetValue(projMat);
 	m_pCamera->GetViewMatrix().SetValue(viewMat);
 	m_pCamera->UpdateFrustum();
+}
+
+/**
+* 绘制屏幕元素
+* @param width 屏幕宽度
+* @param height 屏幕高度
+*/
+void CGraphicsManager::DrawScreen(float width, float height) {
+	// 设置正交投影
+	const float vieww = m_pCamera->GetViewWidth();
+	const float viewh = m_pCamera->GetViewHeight();
+	m_pCamera->SetViewSize(width, height, true);
+	m_pCamera->UpdateProjMatrix(true);
+	// 设置屏幕原点偏移
+	float offsetx = -0.5f * width;
+	float offsety = -0.5f * height;
+	CVector2 offset(offsetx, offsety);
+	glDisable(GL_DEPTH_TEST);
+	CEngine::GetSceneManager()->RenderScreen(m_pCamera->GetProjMatrix(), offset);
+	// 绘制 LOGO
+#ifdef AVATAR_ENABLE_LOGO
+	CTexture* logo = CEngine::GetTextureManager()->GetTexture("logo");
+	offsetx = logo->GetWidth() * 0.5f;
+	offsety = logo->GetHeight() * 0.5f;
+	CShader* pShader = CEngine::GetShaderManager()->GetCurrentShader();
+	pShader->SetUniform("uOffset", offset.Add(offsetx, offsety).Scale(-1.0f));
+	pShader->SetUniform("uModelMatrix", CMatrix4().Scale(offsetx, offsety, 1.0f));
+	logo->UseTexture(0);
+	DrawQuadrilateral(CColor::White, true);
+#endif
+	// 设置回之前的投影
+	m_pCamera->SetViewSize(vieww, viewh, true);
+	m_pCamera->UpdateProjMatrix();
+	glEnable(GL_DEPTH_TEST);
 }

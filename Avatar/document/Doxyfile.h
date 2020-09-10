@@ -261,6 +261,7 @@ int main(int argc, char **argv)
 | camera.control | 绑定用户控制输入 | enable:*boolean* | - |
 | camera.fov | 获取或设置相机视角 | &lt;fov:*float*&gt; | &lt;fov:*float*&gt; |
 | camera.clip | 获取或设置相机裁剪面 | &lt;near:*float*, far:*float*&gt; | &lt;near:*float*, far:*float*&gt; |
+| camera.projection | 获取或设置投影方式 | &lt;ortho:*boolean*, width:*float*, height:*float*&gt; | &lt;ortho:*boolean*&gt; |
 | camera.position | 获取或设置相机位置 | &lt;x:*float*, y:*float*, z:*float*&gt; | &lt;x:*float*, y:*float*, z:*float*&gt; |
 | camera.target | 获取或设置相机目标点 | &lt;x:*float*, y:*float*, z:*float*&gt; | &lt;x:*float*, y:*float*, z:*float*&gt; |
 | camera.angle | 获取或设置相机角度 | &lt;x:*float*, y:*float*, z:*float*&gt; | &lt;x:*float*, y:*float*, z:*float*&gt; |

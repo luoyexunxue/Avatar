@@ -16,7 +16,7 @@
 */
 #ifdef AVATAR_CONTROL_NETWORK
 #include "CUdpSocket.h"
-#include "CJsonParser.h"
+#include "CJsonObject.h"
 #endif
 
 #include "CEngine.h"
@@ -371,23 +371,23 @@ void* ThreadRecv(void* pParam) {
 		int ret = sock.RecvData(buffer, 1024);
 		if (ret > 0) {
 			buffer[ret] = 0;
-			CJsonParser parser(buffer);
-			if (parser.IsContain("dx")) pInputMgr->RightLeft(parser["dx"].ToFloat());
-			if (parser.IsContain("dy")) pInputMgr->ForthBack(parser["dy"].ToFloat());
-			if (parser.IsContain("dz")) pInputMgr->UpDown(parser["dz"].ToFloat());
-			if (parser.IsContain("yaw")) pInputMgr->Yaw(parser["yaw"].ToFloat());
-			if (parser.IsContain("pitch")) pInputMgr->Pitch(parser["pitch"].ToFloat());
-			if (parser.IsContain("roll")) pInputMgr->Roll(parser["roll"].ToFloat());
-			if (parser.IsContain("fire") && parser["fire"].ToBool()) pInputMgr->Fire();
-			if (parser.IsContain("jump") && parser["jump"].ToBool()) pInputMgr->Jump();
-			if (parser.IsContain("angle")) {
+			CJsonObject json(buffer);
+			if (json.IsContain("dx")) pInputMgr->RightLeft(json["dx"].ToFloat());
+			if (json.IsContain("dy")) pInputMgr->ForthBack(json["dy"].ToFloat());
+			if (json.IsContain("dz")) pInputMgr->UpDown(json["dz"].ToFloat());
+			if (json.IsContain("yaw")) pInputMgr->Yaw(json["yaw"].ToFloat());
+			if (json.IsContain("pitch")) pInputMgr->Pitch(json["pitch"].ToFloat());
+			if (json.IsContain("roll")) pInputMgr->Roll(json["roll"].ToFloat());
+			if (json.IsContain("fire") && json["fire"].ToBool()) pInputMgr->Fire();
+			if (json.IsContain("jump") && json["jump"].ToBool()) pInputMgr->Jump();
+			if (json.IsContain("angle")) {
 				CQuaternion orient;
-				CJsonParser& ori = parser["angle"];
+				CJsonObject& ori = json["angle"];
 				orient.FromEulerAngles(ori[0].ToFloat(), ori[1].ToFloat(), ori[2].ToFloat());
 				pInputMgr->Orientation(orient[0], orient[1], orient[2], orient[3]);
 			}
-			if (parser.IsContain("command")) {
-				string strValue = parser["command"].ToString();
+			if (json.IsContain("command")) {
+				string strValue = json["command"].ToString();
 				CLog::Debug("Execute script %s", strValue.c_str());
 				CEngine::GetScriptManager()->Script(strValue.c_str());
 			}

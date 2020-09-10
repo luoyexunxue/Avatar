@@ -16,6 +16,9 @@ public:
 	//! 获取当前实例
 	CScriptContext* GetCurrent(struct lua_State* lua);
 
+	//! 执行脚本
+	bool Execute(const char* script);
+
 	//! 绑定脚本方法
 	void BindFunction(const string& name, void* function);
 	//! 绑定脚本方法
@@ -29,6 +32,8 @@ public:
 	bool IsNumber(int index);
 	//! 判断是否 string 类型
 	bool IsString(int index);
+	//! 判断是否 table 类型
+	bool IsTable(int index);
 	//! 判断是否 function 类型
 	bool IsFunction(int index);
 
@@ -40,6 +45,15 @@ public:
 	float ToNumber(int index);
 	//! 获取 string 值
 	const char* ToString(int index);
+
+	//! 获取表 bool 字段值
+	bool TableValue(int index, const char* name, bool def);
+	//! 获取表 int 字段值
+	int TableValue(int index, const char* name, int def);
+	//! 获取表 float 字段值
+	float TableValue(int index, const char* name, float def);
+	//! 获取表 string 字段值
+	const char* TableValue(int index, const char* name, const char* def);
 
 	//! 将 bool 值压栈
 	void PushValue(bool value);

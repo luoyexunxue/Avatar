@@ -48,7 +48,7 @@ void CCameraGeographic::Input(CInputManager::SInput* input) {
 		float scale_move = 0.0f;
 		float scale_turn = 0.0f;
 		CEngine::GetInputManager()->MouseSensitivity(false, scale_move, scale_turn);
-		float scale = 2.0f * targetDistance / (m_iViewHeight * scale_move);
+		float scale = 2.0f * targetDistance / (m_fViewHeight * scale_move);
 		CVector3 right = m_cLookVector.CrossProduct(m_cUpVector);
 		CVector3 forward = CVector3::Z.CrossProduct(right);
 		movement.Scale(scale, scale, -0.01f / scale_move);
@@ -87,7 +87,7 @@ void CCameraGeographic::SetPosition(const CVector3& pos) {
 		CVector3 right = direction.Scale(1.0f / m_fDistanceInAdvance).CrossProduct(CVector3::Z);
 		if (right.DotProduct(right) < 0.001f) right = direction.Tangent();
 		CVector3 up = right.Normalize().CrossProduct(direction);
-		GetYawPitchRoll(direction, up, &m_fYawInAdvance, &m_fPitchInAdvance, 0);
+		FromVectorToAngle(direction, up, &m_fYawInAdvance, &m_fPitchInAdvance, 0);
 		// 俯仰角旋转角限制在 -89° 到 0°之间
 		const float pitchMin = -1.553343f;
 		if (m_fPitchInAdvance < pitchMin) m_fPitchInAdvance = pitchMin;
@@ -132,7 +132,7 @@ void CCameraGeographic::Update(float dt) {
 	m_fDistance += (m_fDistanceInAdvance - m_fDistance) * dt;
 	m_cTargetPos += (m_cTargetInAdvance - m_cTargetPos) * dt;
 	// 计算相机参数
-	GetLookVecUpVec(m_fYaw, m_fPitch, m_fRoll, m_cLookVector, m_cUpVector);
+	FromAngleToVector(m_fYaw, m_fPitch, m_fRoll, m_cLookVector, m_cUpVector);
 	m_cPosition = m_cTargetPos - m_cLookVector * m_fDistance;
 	CCamera::Update(dt);
 }
