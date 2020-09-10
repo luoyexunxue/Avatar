@@ -16,6 +16,9 @@ DLL_EXPORT int VideoPlayInfo(void* context, int* width, int* height, float* leng
 //! 设置播放时间
 DLL_EXPORT int VideoPlayTime(void* context, float time);
 
+//! 跳至指定播放时间
+DLL_EXPORT int VideoPlaySeek(void* context, float time);
+
 //! 获取视频帧
 DLL_EXPORT int VideoPlayVideo(void* context, unsigned char* data);
 

@@ -5,7 +5,6 @@
 #include <unistd.h>
 #include <pthread.h>
 #endif
-#include <ctime>
 #include <map>
 using namespace std;
 extern "C" {
@@ -49,7 +48,6 @@ struct SPlayContext {
 	float playClock;
 	float setPlayTime;
 	float streamLength;
-	clock_t lastPlayTime;
 	bool seekPosition;
 	bool isRealtime;
 	bool videoClosed;
@@ -178,7 +176,6 @@ DLL_EXPORT int VideoPlayOpen(const char* file, int size, void** context) {
 	ctx->outputAudio = 0;
 	ctx->playClock = 0.0f;
 	ctx->setPlayTime = 0.0f;
-	ctx->lastPlayTime = 0;
 	ctx->seekPosition = false;
 	ctx->videoClosed = false;
 	ctx->streamLength = (float)(ctx->videoStream->duration * av_q2d(ctx->videoStream->time_base));
@@ -218,6 +215,20 @@ DLL_EXPORT int VideoPlayInfo(void* context, int* width, int* height, float* leng
 * 设置播放时间
 */
 DLL_EXPORT int VideoPlayTime(void* context, float time) {
+	SPlayContext* ctx = (SPlayContext*)context;
+	if (time < 0.0f) {
+		ctx->setPlayTime = 0.0f;
+		ctx->seekPosition = true;
+	} else if (!ctx->isRealtime) {
+		ctx->setPlayTime = time;
+	} else return -1;
+	return 0;
+}
+
+/**
+* 跳至指定播放时间
+*/
+DLL_EXPORT int VideoPlaySeek(void* context, float time) {
 	SPlayContext* ctx = (SPlayContext*)context;
 	if (time < 0.0f) {
 		ctx->setPlayTime = 0.0f;
@@ -355,7 +366,6 @@ DWORD WINAPI ThreadWorking(LPVOID pParam) {
 void* ThreadWorking(void* pParam) {
 #endif
 	SPlayContext* ctx = static_cast<SPlayContext*>(pParam);
-	ctx->lastPlayTime = clock();
 	while (!ctx->videoClosed) {
 		// 从头开始
 		if (ctx->seekPosition) {
@@ -374,9 +384,6 @@ void* ThreadWorking(void* pParam) {
 		}
 		// 防止播放过快
 		AVPacket packet;
-		clock_t currentTime = clock();
-		ctx->setPlayTime += 0.001f * (currentTime - ctx->lastPlayTime);
-		ctx->lastPlayTime = currentTime;
 		if ((!ctx->isRealtime && ctx->playClock > ctx->setPlayTime) || av_read_frame(ctx->inputContext, &packet) < 0) {
 #ifdef _WIN32
 			::Sleep(5);
