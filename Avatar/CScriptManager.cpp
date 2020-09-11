@@ -400,7 +400,6 @@ void CScriptManager::RegisterInterface(lua_State* lua) {
 	lua_setglobal(lua, "physics");
 	// 动画接口
 	lua_newtable(lua);
-	SET_TABLE_FUNCTION("param", DoAnimationParam);
 	SET_TABLE_FUNCTION("scale", DoAnimationScale);
 	SET_TABLE_FUNCTION("rotation", DoAnimationRotation);
 	SET_TABLE_FUNCTION("translation", DoAnimationTranslation);
@@ -2555,92 +2554,76 @@ int CScriptManager::DoPhysicsJoint(lua_State* lua) {
 }
 
 /**
-* 设置动画参数
+* 添加缩放动画
 */
-int CScriptManager::DoAnimationParam(lua_State* lua) {
-	if (lua_isstring(lua, 1) && lua_isstring(lua, 2) && lua_isnumber(lua, 3)) {
+int CScriptManager::DoAnimationScale(lua_State* lua) {
+	if (lua_isstring(lua, 1)) {
 		CSceneNode* pNode = CEngine::GetSceneManager()->GetNodeByName(lua_tostring(lua, 1));
-		if (pNode) {
-			const char* interpolator = lua_tostring(lua, 2);
-			float duration = (float)lua_tonumber(lua, 3);
-			int repeat = lua_isinteger(lua, 4) ? (int)lua_tointeger(lua, 4) : 1;
-			bool swing = lua_isboolean(lua, 5) ? lua_toboolean(lua, 5) != 0 : false;
+		if (pNode &&
+			lua_isnumber(lua, 2) && lua_isnumber(lua, 3) && lua_isnumber(lua, 4) &&
+			lua_isstring(lua, 5) && lua_isnumber(lua, 6)) {
+			float x = (float)lua_tonumber(lua, 2);
+			float y = (float)lua_tonumber(lua, 3);
+			float z = (float)lua_tonumber(lua, 4);
+			const char* interpolator = lua_tostring(lua, 5);
+			float duration = (float)lua_tonumber(lua, 6);
 			CAnimationManager::Interpolator type = CAnimationManager::LINEAR;
 			if (!strcmp(interpolator, "linear")) type = CAnimationManager::LINEAR;
 			else if (!strcmp(interpolator, "accelerate")) type = CAnimationManager::ACCELERATE;
 			else if (!strcmp(interpolator, "decelerate")) type = CAnimationManager::DECELERATE;
 			else if (!strcmp(interpolator, "acceleratedecelerate")) type = CAnimationManager::ACCELERATEDECELERATE;
-			CEngine::GetAnimationManager()->SetAnimation(pNode, type, duration, repeat, swing);
+			CEngine::GetAnimationManager()->AddScale(pNode, CVector3(x, y, z), type, duration);
 		}
 	}
 	return 0;
 }
 
 /**
-* 设置缩放动画
-*/
-int CScriptManager::DoAnimationScale(lua_State* lua) {
-	if (lua_isstring(lua, 1)) {
-		CSceneNode* pNode = CEngine::GetSceneManager()->GetNodeByName(lua_tostring(lua, 1));
-		if (pNode) {
-			if (lua_isnumber(lua, 2) && lua_isnumber(lua, 3) && lua_isnumber(lua, 4) &&
-				lua_isnumber(lua, 5) && lua_isnumber(lua, 6) && lua_isnumber(lua, 7)) {
-				float x1 = (float)lua_tonumber(lua, 2);
-				float y1 = (float)lua_tonumber(lua, 3);
-				float z1 = (float)lua_tonumber(lua, 4);
-				float x2 = (float)lua_tonumber(lua, 5);
-				float y2 = (float)lua_tonumber(lua, 6);
-				float z2 = (float)lua_tonumber(lua, 7);
-				CEngine::GetAnimationManager()->AnimateScale(pNode, CVector3(x1, y1, z1), CVector3(x2, y2, z2));
-			}
-		}
-	}
-	return 0;
-}
-
-/**
-* 设置旋转动画
+* 添加旋转动画
 */
 int CScriptManager::DoAnimationRotation(lua_State* lua) {
 	if (lua_isstring(lua, 1)) {
 		CSceneNode* pNode = CEngine::GetSceneManager()->GetNodeByName(lua_tostring(lua, 1));
-		if (pNode) {
-			if (lua_isnumber(lua, 2) && lua_isnumber(lua, 3) && lua_isnumber(lua, 4) &&
-				lua_isnumber(lua, 5) && lua_isnumber(lua, 6) && lua_isnumber(lua, 7)) {
-				CQuaternion a;
-				CQuaternion b;
-				float x1 = (float)lua_tonumber(lua, 2);
-				float y1 = (float)lua_tonumber(lua, 3);
-				float z1 = (float)lua_tonumber(lua, 4);
-				float x2 = (float)lua_tonumber(lua, 5);
-				float y2 = (float)lua_tonumber(lua, 6);
-				float z2 = (float)lua_tonumber(lua, 7);
-				a.FromEulerAngles(x1, y1, z1);
-				b.FromEulerAngles(x2, y2, z2);
-				CEngine::GetAnimationManager()->AnimateRotation(pNode, a, b);
-			}
+		if (pNode &&
+			lua_isnumber(lua, 2) && lua_isnumber(lua, 3) && lua_isnumber(lua, 4) &&
+			lua_isstring(lua, 5) && lua_isnumber(lua, 6)) {
+			float x = (float)lua_tonumber(lua, 2);
+			float y = (float)lua_tonumber(lua, 3);
+			float z = (float)lua_tonumber(lua, 4);
+			const char* interpolator = lua_tostring(lua, 5);
+			float duration = (float)lua_tonumber(lua, 6);
+			CQuaternion rot;
+			CAnimationManager::Interpolator type = CAnimationManager::LINEAR;
+			if (!strcmp(interpolator, "linear")) type = CAnimationManager::LINEAR;
+			else if (!strcmp(interpolator, "accelerate")) type = CAnimationManager::ACCELERATE;
+			else if (!strcmp(interpolator, "decelerate")) type = CAnimationManager::DECELERATE;
+			else if (!strcmp(interpolator, "acceleratedecelerate")) type = CAnimationManager::ACCELERATEDECELERATE;
+			CEngine::GetAnimationManager()->AddRotation(pNode, rot.FromEulerAngles(x, y, z), type, duration);
 		}
 	}
 	return 0;
 }
 
 /**
-* 设置位移动画
+* 添加位移动画
 */
 int CScriptManager::DoAnimationTranslation(lua_State* lua) {
 	if (lua_isstring(lua, 1)) {
 		CSceneNode* pNode = CEngine::GetSceneManager()->GetNodeByName(lua_tostring(lua, 1));
-		if (pNode) {
-			if (lua_isnumber(lua, 2) && lua_isnumber(lua, 3) && lua_isnumber(lua, 4) &&
-				lua_isnumber(lua, 5) && lua_isnumber(lua, 6) && lua_isnumber(lua, 7)) {
-				float x1 = (float)lua_tonumber(lua, 2);
-				float y1 = (float)lua_tonumber(lua, 3);
-				float z1 = (float)lua_tonumber(lua, 4);
-				float x2 = (float)lua_tonumber(lua, 5);
-				float y2 = (float)lua_tonumber(lua, 6);
-				float z2 = (float)lua_tonumber(lua, 7);
-				CEngine::GetAnimationManager()->AnimateTranslation(pNode, CVector3(x1, y1, z1), CVector3(x2, y2, z2));
-			}
+		if (pNode &&
+			lua_isnumber(lua, 2) && lua_isnumber(lua, 3) && lua_isnumber(lua, 4) &&
+			lua_isstring(lua, 5) && lua_isnumber(lua, 6)) {
+			float x = (float)lua_tonumber(lua, 2);
+			float y = (float)lua_tonumber(lua, 3);
+			float z = (float)lua_tonumber(lua, 4);
+			const char* interpolator = lua_tostring(lua, 5);
+			float duration = (float)lua_tonumber(lua, 6);
+			CAnimationManager::Interpolator type = CAnimationManager::LINEAR;
+			if (!strcmp(interpolator, "linear")) type = CAnimationManager::LINEAR;
+			else if (!strcmp(interpolator, "accelerate")) type = CAnimationManager::ACCELERATE;
+			else if (!strcmp(interpolator, "decelerate")) type = CAnimationManager::DECELERATE;
+			else if (!strcmp(interpolator, "acceleratedecelerate")) type = CAnimationManager::ACCELERATEDECELERATE;
+			CEngine::GetAnimationManager()->AddTranslation(pNode, CVector3(x, y, z), type, duration);
 		}
 	}
 	return 0;
@@ -2653,8 +2636,10 @@ int CScriptManager::DoAnimationStart(lua_State* lua) {
 	if (lua_isstring(lua, 1)) {
 		CSceneNode* pNode = CEngine::GetSceneManager()->GetNodeByName(lua_tostring(lua, 1));
 		if (pNode) {
-			if (!lua_isnumber(lua, 2)) CEngine::GetAnimationManager()->Start(pNode);
-			else CEngine::GetAnimationManager()->Start(pNode, (float)lua_tonumber(lua, 2));
+			int repeat = lua_isinteger(lua, 2) ? (int)lua_tointeger(lua, 2) : 1;
+			bool swing = lua_isboolean(lua, 3) ? lua_toboolean(lua, 3) != 0 : false;
+			float delay = lua_isnumber(lua, 4) ? (float)lua_tonumber(lua, 4) : 0.0f;
+			CEngine::GetAnimationManager()->Start(pNode, repeat, swing, delay);
 		}
 	}
 	return 0;

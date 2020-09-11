@@ -35,17 +35,8 @@ public:
 	enum Interpolator { LINEAR, ACCELERATE, DECELERATE, ACCELERATEDECELERATE };
 
 public:
-	//! 设置动画参数
-	void SetAnimation(CSceneNode* node, Interpolator intepolator, float duration, int repeat, bool swing);
-	//! 设置缩放动画
-	bool AnimateScale(CSceneNode* node, const CVector3& from, const CVector3& to);
-	//! 设置旋转动画
-	bool AnimateRotation(CSceneNode* node, const CQuaternion& from, const CQuaternion& to);
-	//! 设置平移动画
-	bool AnimateTranslation(CSceneNode* node, const CVector3& from, const CVector3& to);
-
 	//! 开始动画
-	bool Start(CSceneNode* node, float delay = 0.0f);
+	bool Start(CSceneNode* node, int repeat, bool swing, float delay = 0.0f);
 	//! 暂停动画
 	bool Pause(CSceneNode* node);
 	//! 停止动画
@@ -53,36 +44,53 @@ public:
 	//! 清除所有动画
 	void Clear();
 
+	//! 添加缩放动画
+	void AddScale(CSceneNode* node, const CVector3& value, Interpolator interpolator, float duration);
+	//! 添加旋转动画
+	void AddRotation(CSceneNode* node, const CQuaternion& value, Interpolator interpolator, float duration);
+	//! 添加平移动画
+	void AddTranslation(CSceneNode* node, const CVector3& value, Interpolator interpolator, float duration);
+
 	//! 获取执行的所有动画节点列表
 	void GetAnimationList(vector<CSceneNode*>& animationList);
 
 private:
-	CAnimationManager();
-	~CAnimationManager();
-
-private:
+	//! 缩放动画关键点
+	typedef struct _SScaleKey {
+		float time;
+		Interpolator interpolator;
+		CVector3 value;
+	} SScaleKey;
+	//! 旋转动画关键点
+	typedef struct _SRotationKey {
+		float time;
+		Interpolator interpolator;
+		CQuaternion value;
+	} SRotationKey;
+	//! 平移动画关键点
+	typedef struct _STranslationKey {
+		float time;
+		Interpolator interpolator;
+		CVector3 value;
+	} STranslationKey;
 	//! 动画数据定义
 	typedef struct _SAnimationData {
 		CSceneNode* sceneNode;
-		Interpolator intepolator;
-		float duration;
+		vector<SScaleKey> scale;
+		vector<SRotationKey> rotation;
+		vector<STranslationKey> translation;
 		int numberRepeat;
 		bool reciprocating;
-		CVector3 fromScale;
-		CVector3 toScale;
-		CQuaternion fromOrientation;
-		CQuaternion toOrientation;
-		CVector3 fromPosition;
-		CVector3 toPosition;
-		//! 内部变量
-		bool useScale;
-		bool useOrientation;
-		bool usePosition;
+		float duration;
+		//! 内部计算变量
+		int repeatCount;
 		bool reversing;
 		bool animationStart;
-		float animationTime;
 		float animationDelay;
-		int animationCount;
+		float animationTime;
+		size_t scaleIndex;
+		size_t rotationIndex;
+		size_t translationIndex;
 		//! 比较运算符重载
 		bool operator == (const _SAnimationData& other) const {
 			return this->sceneNode == other.sceneNode;
@@ -90,8 +98,17 @@ private:
 	} SAnimationData;
 
 private:
+	CAnimationManager();
+	~CAnimationManager();
+
+	//! 获取关联场景节点的动画数据
+	SAnimationData* GetAnimationData(CSceneNode* node, bool create);
+	//! 根据插值方式计算正确插值
+	float Interpolate(float t, float t1, float t2, Interpolator intepolator);
+
+private:
 	//! 动画列表
-	list<SAnimationData> m_lstAnimation;
+	list<SAnimationData*> m_lstAnimation;
 	//! 实例
 	static CAnimationManager* m_pInstance;
 };

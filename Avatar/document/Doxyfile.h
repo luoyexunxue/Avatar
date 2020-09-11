@@ -329,11 +329,10 @@ int main(int argc, char **argv)
 | physics.applyImpulse | 向刚体施加冲量 | name:*string*, x:*float*, y:*float*, z:*float*, &lt;px:*float*, py:*float*, pz:*float*&gt; | - |
 | physics.gravity | 设置物理引擎重力 | x:*float*, y:*float*, z:*float* | - |
 | physics.joint | 为关节设置物理模拟 | name:*string*, joint:*string*, &lt;mass:*float*, hk:*float*, vk:*float*, damping:*float*&gt; | - |
-| animation.param | 设置动画参数(首先调用) | name:*string*, type:*string*, duration:*float*, &lt;repeat:*integer*, swing:*boolean*&gt; | - |
-| animation.scale | 设置缩放动画 | name:*string*, x1:*float*, y1:*float*, z1:*float*, x2:*float*, y2:*float*, z2:*float* | - |
-| animation.rotation | 设置旋转动画 | name:*string*, x1:*float*, y1:*float*, z1:*float*, x2:*float*, y2:*float*, z2:*float* | - |
-| animation.translation | 设置位移动画 | name:*string*, x1:*float*, y1:*float*, z1:*float*, x2:*float*, y2:*float*, z2:*float* | - |
-| animation.start | 开始执行动画 | name:*string*, &lt;delay:*float*&gt; | - |
+| animation.scale | 添加缩放动画 | name:*string*, x:*float*, y:*float*, z:*float*, interpolator:*string*, duration:*float* | - |
+| animation.rotation | 添加旋转动画 | name:*string*, x:*float*, y:*float*, z:*float*, interpolator:*string*, duration:*float* | - |
+| animation.translation | 添加位移动画 | name:*string*, x:*float*, y:*float*, z:*float*, interpolator:*string*, duration:*float* | - |
+| animation.start | 开始执行动画 | name:*string*, &lt;repeat:*integer*, swing:*boolean*, delay:*float*&gt; | - |
 | animation.stop | 停止执行动画 | name:*string* | - |
 
 @remarks <> 内部参数为可选参数，[] 内部参数为可变个数参数.

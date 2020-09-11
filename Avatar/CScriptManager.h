@@ -171,7 +171,6 @@ private:
 	static int DoPhysicsGravity(lua_State* lua);
 	static int DoPhysicsJoint(lua_State* lua);
 	//! 动画接口
-	static int DoAnimationParam(lua_State* lua);
 	static int DoAnimationScale(lua_State* lua);
 	static int DoAnimationRotation(lua_State* lua);
 	static int DoAnimationTranslation(lua_State* lua);

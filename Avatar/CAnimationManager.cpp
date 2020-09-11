@@ -4,6 +4,7 @@
 //================================================
 #include "CAnimationManager.h"
 #include <cmath>
+#include <algorithm>
 
 /**
 * 构造函数
@@ -27,6 +28,7 @@ CAnimationManager* CAnimationManager::m_pInstance = 0;
 * 销毁动画管理器
 */
 void CAnimationManager::Destroy() {
+	Clear();
 	delete this;
 }
 
@@ -38,190 +40,93 @@ void CAnimationManager::Update(float dt) {
 	if (m_lstAnimation.empty()) return;
 
 	// 遍历动画，对每个动画进行更新
-	list<SAnimationData>::iterator iter = m_lstAnimation.begin();
+	list<SAnimationData*>::iterator iter = m_lstAnimation.begin();
 	while (iter != m_lstAnimation.end()) {
-		SAnimationData* anim = &*iter;
-		++iter;
+		SAnimationData* anim = *iter++;
 		// 动画未启动
 		if (!anim->animationStart) continue;
-		bool animationFinish = false;
 		// 计算动画时间
 		if (anim->animationDelay > 0.0f) {
 			anim->animationDelay -= dt;
 			if (anim->animationDelay > 0.0f) continue;
 			else anim->animationTime += anim->animationDelay;
 		}
+		bool animationFinish = false;
 		anim->animationTime += dt;
 		while (anim->animationTime > anim->duration) {
 			anim->animationTime -= anim->duration;
-			anim->animationCount++;
-			if (anim->reciprocating) {
-				anim->reversing = !anim->reversing;
-				anim->animationCount -= anim->reversing ? 1 : 0;
-			}
-			if (anim->numberRepeat >= 0 && anim->animationCount >= anim->numberRepeat) {
+			anim->repeatCount++;
+			if (anim->numberRepeat >= 0 && anim->repeatCount >= anim->numberRepeat) {
 				anim->animationTime = anim->duration;
 				animationFinish = true;
 				break;
+			} else {
+				anim->scaleIndex = 0;
+				anim->rotationIndex = 0;
+				anim->translationIndex = 0;
 			}
 		}
-		// 通过 animationTime 和 duration 以及插值方法计算当前插值
-		float t = anim->animationTime / anim->duration;
-		switch (anim->intepolator) {
-		case LINEAR: break;
-		case ACCELERATE: t = t * t; break;
-		case DECELERATE: t = 1.0f - (1.0f - t) * (1.0f - t); break;
-		case ACCELERATEDECELERATE: t = cosf((t + 1) * 3.141593f) * 0.5f + 0.5f; break;
+		// 针对往复运动计算正确时间
+		float time = anim->animationTime;
+		if (anim->reciprocating) {
+			anim->reversing = time > anim->duration * 0.5f;
+			if (anim->reversing) time = anim->duration - time;
 		}
-		// 插值计算 缩放 旋转 平移
+		// 计算寻找当前动画关键帧
+		if (anim->reversing) {
+			while (anim->scaleIndex > 0 && time < anim->scale[anim->scaleIndex - 1].time) anim->scaleIndex--;
+			while (anim->rotationIndex > 0 && time < anim->rotation[anim->rotationIndex - 1].time) anim->rotationIndex--;
+			while (anim->translationIndex > 0 && time < anim->translation[anim->translationIndex - 1].time) anim->translationIndex--;
+		} else {
+			while (anim->scaleIndex < anim->scale.size() - 1 && time > anim->scale[anim->scaleIndex].time) anim->scaleIndex++;
+			while (anim->rotationIndex < anim->rotation.size() - 1 && time > anim->rotation[anim->rotationIndex].time) anim->rotationIndex++;
+			while (anim->translationIndex < anim->translation.size() - 1 && time > anim->translation[anim->translationIndex].time) anim->translationIndex++;
+		}
+		SScaleKey* s1 = &anim->scale[anim->scaleIndex];
+		SScaleKey* s2 = &anim->scale[anim->scaleIndex > 0 ? anim->scaleIndex - 1 : 0];
+		SRotationKey* r1 = &anim->rotation[anim->rotationIndex];
+		SRotationKey* r2 = &anim->rotation[anim->rotationIndex > 0 ? anim->rotationIndex - 1 : 0];
+		STranslationKey* t1 = &anim->translation[anim->translationIndex];
+		STranslationKey* t2 = &anim->translation[anim->translationIndex > 0 ? anim->translationIndex - 1 : 0];
+		// 通过 animationTime 以及插值方法计算当前插值
 		CSceneNode* node = anim->sceneNode;
-		if (anim->useScale) {
-			if (anim->reversing) node->m_cScale = anim->toScale.Lerp(anim->fromScale, t);
-			else node->m_cScale = anim->fromScale.Lerp(anim->toScale, t);
-		}
-		if (anim->useOrientation) {
-			if (anim->reversing) node->m_cOrientation = anim->toOrientation.Slerp(anim->fromOrientation, t);
-			else node->m_cOrientation = anim->fromOrientation.Slerp(anim->toOrientation, t);
-		}
-		if (anim->usePosition) {
-			if (anim->reversing) node->m_cPosition = anim->toPosition.Lerp(anim->fromPosition, t);
-			else node->m_cPosition = anim->fromPosition.Lerp(anim->toPosition, t);
-		}
+		node->m_cScale = s2->value.Lerp(s1->value, Interpolate(time, s2->time, s1->time, s1->interpolator));
+		node->m_cOrientation = r2->value.Slerp(r1->value, Interpolate(time, r2->time, r1->time, r1->interpolator));
+		node->m_cPosition = t2->value.Lerp(t1->value, Interpolate(time, t2->time, t1->time, t1->interpolator));
 		node->Transform();
 		if (animationFinish) {
-			m_lstAnimation.remove(*anim);
+			m_lstAnimation.remove(anim);
+			delete anim;
 		}
 	}
-}
-
-/**
-* 设置动画参数
-* @param node 关联的场景节点
-* @param intepolator 动画插值方式
-* @param duration 一次动画的时长
-* @param repeat 重复次数，为负数表示无限重复
-* @param swing 是否往复运动
-* @attention 首先调用此方法建立动画信息，再调用其它接口设置动画数据和启动动画
-*/
-void CAnimationManager::SetAnimation(CSceneNode* node, Interpolator intepolator, float duration, int repeat, bool swing) {
-	// 检查场景节点的动画是否已存在
-	list<SAnimationData>::iterator iter = m_lstAnimation.begin();
-	while (iter != m_lstAnimation.end()) {
-		SAnimationData* anim = &*iter;
-		if (anim->sceneNode == node) {
-			anim->intepolator = intepolator;
-			anim->duration = duration;
-			anim->numberRepeat = repeat;
-			anim->reciprocating = swing;
-			anim->reversing = false;
-			anim->animationStart = false;
-			anim->animationTime = 0.0f;
-			anim->animationCount = 0;
-			return;
-		}
-		++iter;
-	}
-	// 若不存在，则初始化动画数据，并加入动画列表
-	SAnimationData anim;
-	anim.sceneNode = node;
-	anim.intepolator = intepolator;
-	anim.duration = duration;
-	anim.numberRepeat = repeat;
-	anim.reciprocating = swing;
-	anim.useScale = false;
-	anim.useOrientation = false;
-	anim.usePosition = false;
-	anim.reversing = false;
-	anim.animationStart = false;
-	anim.animationTime = 0.0f;
-	anim.animationCount = 0;
-	m_lstAnimation.push_back(anim);
-}
-
-/**
-* 设置缩放动画
-* @param node 关联的场景节点
-* @param from 动画开始时的缩放值
-* @param to 动画结束时的缩放值
-* @return 成功返回 true
-*/
-bool CAnimationManager::AnimateScale(CSceneNode* node, const CVector3& from, const CVector3& to) {
-	list<SAnimationData>::iterator iter = m_lstAnimation.begin();
-	while (iter != m_lstAnimation.end()) {
-		SAnimationData* anim = &*iter;
-		if (anim->sceneNode == node) {
-			anim->fromScale = from;
-			anim->toScale = to;
-			anim->useScale = true;
-			return true;
-		}
-		++iter;
-	}
-	return false;
-}
-
-/**
-* 设置旋转动画
-* @param node 关联的场景节点
-* @param from 动画开始时的旋转值
-* @param to 动画结束时的旋转值
-* @return 成功返回 true
-*/
-bool CAnimationManager::AnimateRotation(CSceneNode* node, const CQuaternion& from, const CQuaternion& to) {
-	list<SAnimationData>::iterator iter = m_lstAnimation.begin();
-	while (iter != m_lstAnimation.end()) {
-		SAnimationData* anim = &*iter;
-		if (anim->sceneNode == node) {
-			anim->fromOrientation = from;
-			anim->toOrientation = to;
-			anim->useOrientation = true;
-			return true;
-		}
-		++iter;
-	}
-	return false;
-}
-
-/**
-* 设置平移动画
-* @param node 关联的场景节点
-* @param from 动画开始时的位置
-* @param to 动画结束时的位置
-* @return 成功返回 true
-*/
-bool CAnimationManager::AnimateTranslation(CSceneNode* node, const CVector3& from, const CVector3& to) {
-	list<SAnimationData>::iterator iter = m_lstAnimation.begin();
-	while (iter != m_lstAnimation.end()) {
-		SAnimationData* anim = &*iter;
-		if (anim->sceneNode == node) {
-			anim->fromPosition = from;
-			anim->toPosition = to;
-			anim->usePosition = true;
-			return true;
-		}
-		++iter;
-	}
-	return false;
 }
 
 /**
 * 开始动画
 * @param node 关联的场景节点
+* @param repeat 重复次数，为负数表示无限重复
+* @param swing 是否往复运动
 * @param delay 延时 delay 秒后开始动画
 * @return 成功返回 true
 */
-bool CAnimationManager::Start(CSceneNode* node, float delay) {
-	list<SAnimationData>::iterator iter = m_lstAnimation.begin();
-	while (iter != m_lstAnimation.end()) {
-		SAnimationData* anim = &*iter;
-		if (anim->sceneNode == node) {
-			anim->animationStart = true;
-			anim->animationDelay = delay;
-			return true;
-		}
-		++iter;
-	}
-	return false;
+bool CAnimationManager::Start(CSceneNode* node, int repeat, bool swing, float delay) {
+	SAnimationData* anim = GetAnimationData(node, false);
+	if (!anim) return false;
+	const float ts = anim->scale.back().time;
+	const float tr = anim->rotation.back().time;
+	const float tt = anim->translation.back().time;
+	anim->duration = std::max(ts, std::max(tr, tt));
+	if (swing) anim->duration *= 2.0f;
+	anim->numberRepeat = repeat;
+	anim->reciprocating = swing;
+	anim->animationDelay = delay;
+	anim->scaleIndex = 0;
+	anim->rotationIndex = 0;
+	anim->translationIndex = 0;
+	anim->animationTime = 0.0f;
+	anim->repeatCount = 0;
+	anim->animationStart = true;
+	return true;
 }
 
 /**
@@ -230,16 +135,10 @@ bool CAnimationManager::Start(CSceneNode* node, float delay) {
 * @return 成功返回 true
 */
 bool CAnimationManager::Pause(CSceneNode* node) {
-	list<SAnimationData>::iterator iter = m_lstAnimation.begin();
-	while (iter != m_lstAnimation.end()) {
-		SAnimationData* anim = &*iter;
-		if (anim->sceneNode == node) {
-			anim->animationStart = false;
-			return true;
-		}
-		++iter;
-	}
-	return false;
+	SAnimationData* anim = GetAnimationData(node, false);
+	if (!anim) return false;
+	anim->animationStart = false;
+	return true;
 }
 
 /**
@@ -248,28 +147,75 @@ bool CAnimationManager::Pause(CSceneNode* node) {
 * @return 成功返回 true
 */
 bool CAnimationManager::Stop(CSceneNode* node) {
-	list<SAnimationData>::iterator iter = m_lstAnimation.begin();
-	while (iter != m_lstAnimation.end()) {
-		SAnimationData* anim = &*iter;
-		if (anim->sceneNode == node) {
-			// 对场景节点变换到最终状态后停止
-			if (anim->useScale) anim->sceneNode->m_cScale = anim->toScale;
-			if (anim->useOrientation) anim->sceneNode->m_cOrientation = anim->toOrientation;
-			if (anim->usePosition) anim->sceneNode->m_cPosition = anim->toPosition;
-			anim->sceneNode->Transform();
-			m_lstAnimation.erase(iter);
-			return true;
-		}
-		++iter;
-	}
-	return false;
+	SAnimationData* anim = GetAnimationData(node, false);
+	if (!anim) return false;
+	// 对场景节点变换到最终状态后停止
+	anim->sceneNode->m_cScale = anim->scale.back().value;
+	anim->sceneNode->m_cOrientation = anim->rotation.back().value;
+	anim->sceneNode->m_cPosition = anim->translation.back().value;
+	anim->sceneNode->Transform();
+	m_lstAnimation.remove(anim);
+	delete anim;
+	return true;
 }
 
 /**
 * 清除所有动画
 */
 void CAnimationManager::Clear() {
+	list<SAnimationData*>::iterator iter = m_lstAnimation.begin();
+	while (iter != m_lstAnimation.end()) {
+		delete *iter++;
+	}
 	m_lstAnimation.clear();
+}
+
+/**
+* 设置缩放动画
+* @param node 关联的场景节点
+* @param value 动画目标缩放值
+* @param interpolator 动画插值方式
+* @param duration 动画持续时间
+*/
+void CAnimationManager::AddScale(CSceneNode* node, const CVector3& value, Interpolator interpolator, float duration) {
+	SAnimationData* anim = GetAnimationData(node, true);
+	SScaleKey key;
+	key.time = anim->scale.back().time + duration;
+	key.interpolator = interpolator;
+	key.value = value;
+	anim->scale.push_back(key);
+}
+
+/**
+* 设置旋转动画
+* @param node 关联的场景节点
+* @param value 动画目标旋转值
+* @param interpolator 动画插值方式
+* @param duration 动画持续时间
+*/
+void CAnimationManager::AddRotation(CSceneNode* node, const CQuaternion& value, Interpolator interpolator, float duration) {
+	SAnimationData* anim = GetAnimationData(node, true);
+	SRotationKey key;
+	key.time = anim->rotation.back().time + duration;
+	key.interpolator = interpolator;
+	key.value = value;
+	anim->rotation.push_back(key);
+}
+
+/**
+* 设置平移动画
+* @param node 关联的场景节点
+* @param value 动画目标位置
+* @param interpolator 动画插值方式
+* @param duration 动画持续时间
+*/
+void CAnimationManager::AddTranslation(CSceneNode* node, const CVector3& value, Interpolator interpolator, float duration) {
+	SAnimationData* anim = GetAnimationData(node, true);
+	STranslationKey key;
+	key.time = anim->translation.back().time + duration;
+	key.interpolator = interpolator;
+	key.value = value;
+	anim->translation.push_back(key);
 }
 
 /**
@@ -278,10 +224,78 @@ void CAnimationManager::Clear() {
 */
 void CAnimationManager::GetAnimationList(vector<CSceneNode*>& animationList) {
 	animationList.resize(m_lstAnimation.size());
-	list<SAnimationData>::iterator iter = m_lstAnimation.begin();
+	list<SAnimationData*>::iterator iter = m_lstAnimation.begin();
 	int index = 0;
 	while (iter != m_lstAnimation.end()) {
-		animationList[index++] = iter->sceneNode;
+		animationList[index++] = (*iter)->sceneNode;
 		++iter;
 	}
+}
+
+/**
+* 获取关联场景节点的动画数据
+* @param node 关联的场景节点
+* @param create 如果不存在是否创建
+* @return 动画数据
+*/
+CAnimationManager::SAnimationData* CAnimationManager::GetAnimationData(CSceneNode* node, bool create) {
+	list<SAnimationData*>::iterator iter = m_lstAnimation.begin();
+	while (iter != m_lstAnimation.end()) {
+		SAnimationData* anim = *iter++;
+		if (anim->sceneNode == node) {
+			return anim;
+		}
+	}
+	if (!create) return 0;
+	SScaleKey initScale;
+	initScale.time = 0.0f;
+	initScale.interpolator = LINEAR;
+	initScale.value = node->m_cScale;
+	SRotationKey initRotation;
+	initRotation.time = 0.0f;
+	initRotation.interpolator = LINEAR;
+	initRotation.value = node->m_cOrientation;
+	STranslationKey initTranslation;
+	initTranslation.time = 0.0f;
+	initTranslation.interpolator = LINEAR;
+	initTranslation.value = node->m_cPosition;
+	SAnimationData* anim = new SAnimationData();
+	anim->sceneNode = node;
+	anim->scale.push_back(initScale);
+	anim->rotation.push_back(initRotation);
+	anim->translation.push_back(initTranslation);
+	anim->numberRepeat = 1;
+	anim->reciprocating = false;
+	anim->duration = 0.0f;
+	anim->reversing = false;
+	anim->repeatCount = 0;
+	anim->animationStart = false;
+	anim->animationDelay = 0.0f;
+	anim->animationTime = 0.0f;
+	anim->scaleIndex = 0;
+	anim->rotationIndex = 0;
+	anim->translationIndex = 0;
+	m_lstAnimation.push_back(anim);
+	return anim;
+}
+
+/**
+* 根据插值方式计算正确插值
+* @param t 当前值
+* @param t1 起始值
+* @param t2 结束值
+* @param intepolator 插值方式
+* @return 插值结果(0~1)
+*/
+float CAnimationManager::Interpolate(float t, float t1, float t2, Interpolator intepolator) {
+	const float den = t2 - t1;
+	if (den < 1E-6) return 1.0f;
+	float k = std::max(std::min((t - t1) / den, 1.0f), 0.0f);
+	switch (intepolator) {
+	case LINEAR: break;
+	case ACCELERATE: k = k * k; break;
+	case DECELERATE: k = 1.0f - (1.0f - k) * (1.0f - k); break;
+	case ACCELERATEDECELERATE: k = cosf((k + 1) * 3.141593f) * 0.5f + 0.5f; break;
+	}
+	return k;
 }
