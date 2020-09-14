@@ -71,7 +71,7 @@ void CSceneNodeLine::Update(float dt) {
 		float screen_h = pCamera->GetViewHeight();
 		// MVP = Proj * View * (View-1 * Proj-1 * OrthoProj * OffsetAndScale)
 		CMatrix4 mvp;
-		mvp.Ortho(screen_w, screen_h, -1.0f, 1.0f);
+		mvp.Orthographic(screen_w, screen_h, -1.0f, 1.0f);
 		mvp(0, 3) = mvp(0, 0) * (m_cPosition[0] - 0.5f * screen_w);
 		mvp(1, 3) = mvp(1, 1) * (m_cPosition[1] - 0.5f * screen_h);
 		mvp(0, 0) = m_cScale[0] * mvp(0, 0);

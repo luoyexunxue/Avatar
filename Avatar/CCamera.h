@@ -55,8 +55,8 @@ public:
 	//! 是否是正交投影模式
 	bool IsOrthoProjection() const;
 
-	//! 设置相机视口大小
-	void SetViewSize(float width, float height, bool ignoreOrtho);
+	//! 设置视口大小
+	void SetViewSize(float width, float height, bool ortho);
 	//! 设置相机视角
 	void SetFieldOfView(float fov);
 	//! 设置裁剪面距离
@@ -66,8 +66,6 @@ public:
 
 	//! 更新投影矩阵
 	void UpdateProjMatrix();
-	//! 更新投影矩阵
-	void UpdateProjMatrix(bool ortho);
 	//! 更新视图矩阵
 	void UpdateViewMatrix();
 	//! 更新视锥体
@@ -106,20 +104,20 @@ protected:
 	//! 旋转角
 	float m_fRoll;
 
+	//! 是否正交投影
+	bool m_bOrthoProject;
 	//! 用户控制绑定
 	bool m_bControlAttached;
-	//! 视口宽度
-	float m_fViewWidth;
-	//! 视口高度
-	float m_fViewHeight;
+	//! 透视视口宽高
+	float m_fPerspectSize[2];
+	//! 正交视口宽高
+	float m_fOrthoSize[2];
 	//! 水平视角 (单位度)
 	float m_fFieldOfView;
 	//! 近裁剪面距离
 	float m_fClipNear;
 	//! 远裁剪面距离
 	float m_fClipFar;
-	//! 是否正交投影
-	bool m_bOrthoProject;
 	//! 投影矩阵
 	CMatrix4 m_cProjMatrix;
 	//! 视图矩阵

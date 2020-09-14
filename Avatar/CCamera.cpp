@@ -17,13 +17,15 @@ CCamera::CCamera() {
 	m_fYaw = 0.0f;
 	m_fPitch = 0.0f;
 	m_fRoll = 0.0f;
+	m_bOrthoProject = false;
 	m_bControlAttached = true;
-	m_fViewWidth = 256.0f;
-	m_fViewHeight = 256.0f;
+	m_fPerspectSize[0] = 900.0f;
+	m_fPerspectSize[1] = 600.0f;
+	m_fOrthoSize[0] = 256.0f;
+	m_fOrthoSize[1] = 256.0f;
 	m_fFieldOfView = 60.0f;
 	m_fClipNear = 0.2f;
 	m_fClipFar = 2000.0f;
-	m_bOrthoProject = false;
 	m_pBindNode = 0;
 }
 
@@ -126,14 +128,14 @@ void CCamera::Update(float dt) {
 * 获取视口宽度
 */
 float CCamera::GetViewWidth() const {
-	return m_fViewWidth;
+	return m_bOrthoProject ? m_fOrthoSize[0] : m_fPerspectSize[0];
 }
 
 /**
 * 获取视口高度
 */
 float CCamera::GetViewHeight() const {
-	return m_fViewHeight;
+	return m_bOrthoProject ? m_fOrthoSize[1] : m_fPerspectSize[1];
 }
 
 /**
@@ -147,7 +149,7 @@ float CCamera::GetFieldOfView() const {
 * 获取视口宽高比
 */
 float CCamera::GetAspectRatio() const {
-	return m_fViewWidth / m_fViewHeight;
+	return m_fPerspectSize[0] / m_fPerspectSize[1];
 }
 
 /**
@@ -172,15 +174,18 @@ bool CCamera::IsOrthoProjection() const {
 }
 
 /**
-* 设置相机视口大小
-* @param width 视口宽度
-* @param height 视口高度
-* @param ignoreOrtho 忽略正交投影的情形
+* 设置视口大小
+* @param width 正交宽度
+* @param height 正交高度
+* @param ortho 是否为正交投影
 */
-void CCamera::SetViewSize(float width, float height, bool ignoreOrtho) {
-	if (ignoreOrtho || !m_bOrthoProject) {
-		m_fViewWidth = width;
-		m_fViewHeight = height;
+void CCamera::SetViewSize(float width, float height, bool ortho) {
+	if (ortho) {
+		m_fOrthoSize[0] = width;
+		m_fOrthoSize[1] = height;
+	} else {
+		m_fPerspectSize[0] = width;
+		m_fPerspectSize[1] = height;
 	}
 }
 
@@ -212,15 +217,7 @@ void CCamera::SetOrthoProjection(bool ortho) {
 * 更新投影矩阵
 */
 void CCamera::UpdateProjMatrix() {
-	UpdateProjMatrix(m_bOrthoProject);
-}
-
-/**
-* 更新投影矩阵
-* @param ortho 是否为正交投影
-*/
-void CCamera::UpdateProjMatrix(bool ortho) {
-	if (ortho) m_cProjMatrix.Ortho(m_fViewWidth, m_fViewHeight, 0.0f, m_fClipFar);
+	if (m_bOrthoProject) m_cProjMatrix.Orthographic(m_fOrthoSize[0], m_fOrthoSize[1], 0.0f, m_fClipFar);
 	else m_cProjMatrix.Perspective(m_fFieldOfView, GetAspectRatio(), m_fClipNear, m_fClipFar);
 }
 

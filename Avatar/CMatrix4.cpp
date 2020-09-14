@@ -444,7 +444,7 @@ CMatrix4& CMatrix4::LookAt(const CVector3& pos, const CVector3& look, const CVec
 /**
 * 计算正交投影矩阵
 */
-CMatrix4& CMatrix4::Ortho(float width, float height, float zNear, float zFar) {
+CMatrix4& CMatrix4::Orthographic(float width, float height, float zNear, float zFar) {
 	m_fValue[0] = 2.0f / width;
 	m_fValue[1] = 0.0f;
 	m_fValue[2] = 0.0f;

@@ -869,7 +869,7 @@ int CScriptManager::DoCameraProjection(lua_State* lua) {
 		if (lua_isnumber(lua, 2) && lua_isnumber(lua, 3)) {
 			float width = (float)lua_tonumber(lua, 2);
 			float height = (float)lua_tonumber(lua, 3);
-			pCamera->SetViewSize(width, height, true);
+			pCamera->SetViewSize(width, height, ortho);
 		}
 		return 0;
 	}

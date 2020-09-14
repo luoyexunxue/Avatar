@@ -64,7 +64,7 @@ public:
 	//! 计算视图矩阵
 	CMatrix4& LookAt(const CVector3& pos, const CVector3& look, const CVector3& up);
 	//! 计算正交投影矩阵
-	CMatrix4& Ortho(float width, float height, float zNear, float zFar);
+	CMatrix4& Orthographic(float width, float height, float zNear, float zFar);
 	//! 计算透视投影矩阵
 	CMatrix4& Perspective(float fov, float aspect, float zNear, float zFar);
 

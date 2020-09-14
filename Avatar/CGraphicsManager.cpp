@@ -907,7 +907,7 @@ void CGraphicsManager::DrawShadowMap() {
 		CVector3 pos = m_cLightPos * -50.0f;
 		CVector3 dir = m_cLightPos;
 		viewMat.LookAt(pos, dir, dir.Tangent().Normalize());
-		projMat.Ortho(30.0f, 30.0f, 0, 100.0f);
+		projMat.Orthographic(30.0f, 30.0f, 0, 100.0f);
 	} else if (m_cLightDir.m_fValue[3] > 0.0f) {
 		CVector3 pos = m_cLightPos;
 		CVector3 dir = m_cLightDir;
@@ -959,12 +959,13 @@ void CGraphicsManager::DrawShadowMap() {
 * 绘制全景图
 */
 void CGraphicsManager::DrawCubeMap() {
-	float saved_fov = m_pCamera->GetFieldOfView();
 	int viewWidth = m_pRenderTarget->GetWidth();
 	int viewHeight = m_pRenderTarget->GetHeight();
+	float saved_fov = m_pCamera->GetFieldOfView();
 	m_pCamera->SetFieldOfView(90.0f);
-	m_pCamera->SetViewSize((float)viewWidth, (float)viewHeight, true);
-	m_pCamera->UpdateProjMatrix(false);
+	m_pCamera->SetOrthoProjection(false);
+	m_pCamera->SetViewSize((float)viewWidth, (float)viewHeight, false);
+	m_pCamera->UpdateProjMatrix();
 	glViewport(0, 0, viewWidth, viewHeight);
 	CMatrix4& mat = m_pCamera->GetViewMatrix();
 	// 取相对于当前相机方位的6个方向
@@ -1048,10 +1049,12 @@ void CGraphicsManager::DrawReflectMap() {
 */
 void CGraphicsManager::DrawScreen(float width, float height) {
 	// 设置正交投影
+	const bool ortho = m_pCamera->IsOrthoProjection();
 	const float vieww = m_pCamera->GetViewWidth();
 	const float viewh = m_pCamera->GetViewHeight();
+	m_pCamera->SetOrthoProjection(true);
 	m_pCamera->SetViewSize(width, height, true);
-	m_pCamera->UpdateProjMatrix(true);
+	m_pCamera->UpdateProjMatrix();
 	// 设置屏幕原点偏移
 	float offsetx = -0.5f * width;
 	float offsety = -0.5f * height;
@@ -1070,7 +1073,8 @@ void CGraphicsManager::DrawScreen(float width, float height) {
 	DrawQuadrilateral(CColor::White, true);
 #endif
 	// 设置回之前的投影
-	m_pCamera->SetViewSize(vieww, viewh, true);
+	m_pCamera->SetOrthoProjection(ortho);
+	m_pCamera->SetViewSize(vieww, viewh, ortho);
 	m_pCamera->UpdateProjMatrix();
 	glEnable(GL_DEPTH_TEST);
 }

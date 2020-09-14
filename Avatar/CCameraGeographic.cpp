@@ -48,7 +48,7 @@ void CCameraGeographic::Input(CInputManager::SInput* input) {
 		float scale_move = 0.0f;
 		float scale_turn = 0.0f;
 		CEngine::GetInputManager()->MouseSensitivity(false, scale_move, scale_turn);
-		float scale = 2.0f * targetDistance / (m_fViewHeight * scale_move);
+		float scale = 2.0f * targetDistance / (m_fPerspectSize[1] * scale_move);
 		CVector3 right = m_cLookVector.CrossProduct(m_cUpVector);
 		CVector3 forward = CVector3::Z.CrossProduct(right);
 		movement.Scale(scale, scale, -0.01f / scale_move);
