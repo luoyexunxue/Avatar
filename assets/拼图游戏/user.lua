@@ -61,8 +61,8 @@ function loadLevel(level)
 					scene.position(cube, x, y, z)
 					scene.update(cube, 0, uv)
 					swapTable[cube] = (i - 1) * currentLevel * currentLevel + (j - 1) * currentLevel + k
-					animation.param(cube, "accelerate", 1.0)
-					animation.scale(cube, 0,0,0, 1,1,1)
+					animation.scale(cube, 0,0,0, "accelerate", 0.0)
+					animation.scale(cube, 1,1,1, "accelerate", 1.0)
 					animation.start(cube)
 				end
 			end
