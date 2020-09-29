@@ -38,14 +38,14 @@ void CScriptContext::BindFunction(const string& name, void* function) {
 /**
 * 绑定脚本方法
 */
-void CScriptContext::BindFunction(const string& group, const string& name, void* function) {
-	if (lua_getglobal(m_pLuaState, group.c_str()) != LUA_TTABLE) {
+void CScriptContext::BindFunction(const string& table, const string& name, void* function) {
+	if (lua_getglobal(m_pLuaState, table.c_str()) != LUA_TTABLE) {
 		lua_pop(m_pLuaState, 1);
 		lua_newtable(m_pLuaState);
 		lua_pushstring(m_pLuaState, name.c_str());
 		lua_pushcfunction(m_pLuaState, (lua_CFunction)function);
 		lua_rawset(m_pLuaState, -3);
-		lua_setglobal(m_pLuaState, group.c_str());
+		lua_setglobal(m_pLuaState, table.c_str());
 	} else {
 		lua_pushstring(m_pLuaState, name.c_str());
 		lua_pushcfunction(m_pLuaState, (lua_CFunction)function);
@@ -72,14 +72,14 @@ bool CScriptContext::IsInteger(int index) {
 * 判断是否 float 类型
 */
 bool CScriptContext::IsNumber(int index) {
-	return lua_isnumber(m_pLuaState, index) != 0;
+	return lua_type(m_pLuaState, index) == LUA_TNUMBER;
 }
 
 /**
 * 判断是否 string 类型
 */
 bool CScriptContext::IsString(int index) {
-	return lua_isstring(m_pLuaState, index) != 0;
+	return lua_type(m_pLuaState, index) == LUA_TSTRING;
 }
 
 /**
@@ -122,6 +122,38 @@ float CScriptContext::ToNumber(int index) {
 */
 const char* CScriptContext::ToString(int index) {
 	return lua_tostring(m_pLuaState, index);
+}
+
+/**
+* 获取 string 值
+*/
+const char* CScriptContext::ToString(int index, size_t* length) {
+	return lua_tolstring(m_pLuaState, index, length);
+}
+
+/**
+* 获取表元素个数
+*/
+int CScriptContext::TableSize(int index) {
+	lua_len(m_pLuaState, index);
+	int count = (int)lua_tointeger(m_pLuaState, -1);
+	lua_pop(m_pLuaState, 1);
+	return count;
+}
+
+/**
+* 获取表元素到栈顶
+*/
+void CScriptContext::TableField(int index, int key) {
+	lua_pushinteger(m_pLuaState, key);
+	lua_gettable(m_pLuaState, index);
+}
+
+/**
+* 获取表元素到栈顶
+*/
+void CScriptContext::TableField(int index, const char* key) {
+	lua_getfield(m_pLuaState, index, key);
 }
 
 /**
@@ -185,6 +217,49 @@ void CScriptContext::PushValue(const char* value) {
 }
 
 /**
+* 将 string 值压栈
+*/
+void CScriptContext::PushValue(const char* value, size_t length) {
+	lua_pushlstring(m_pLuaState, value, length);
+}
+
+/**
+* 将空 table 压栈
+*/
+void CScriptContext::PushTable() {
+	lua_newtable(m_pLuaState);
+}
+
+/**
+* 将栈顶元素作为 table 值压栈
+*/
+void CScriptContext::PushTable(int index) {
+	if (lua_istable(m_pLuaState, -2)) {
+		lua_pushinteger(m_pLuaState, index);
+		lua_insert(m_pLuaState, -2);
+		lua_settable(m_pLuaState, -3);
+	}
+}
+
+/**
+* 将栈顶元素作为 table 值压栈
+*/
+void CScriptContext::PushTable(const char* key) {
+	if (lua_istable(m_pLuaState, -2)) {
+		lua_pushstring(m_pLuaState, key);
+		lua_insert(m_pLuaState, -2);
+		lua_settable(m_pLuaState, -3);
+	}
+}
+
+/**
+* 将栈顶元素出栈
+*/
+void CScriptContext::PopValue(int count) {
+	lua_pop(m_pLuaState, count);
+}
+
+/**
 * 引用回调方法
 */
 int CScriptContext::RefCallback() {
@@ -221,11 +296,13 @@ void CScriptContext::InvokeBegin(const string& function) {
 /**
 * 结束调用回调方法
 * @param params 调用 InvokeBegin 之后 PushValue 的个数
+* @return 返回回调返回值个数
 */
-void CScriptContext::InvokeEnd(int params) {
+int CScriptContext::InvokeEnd(int params) {
 	if (params < 0) {
 		lua_insert(m_pLuaState, lua_gettop(m_pLuaState) + params);
 		params = -params;
 	}
-	lua_pcall(m_pLuaState, params, 0, 0);
+	lua_pcall(m_pLuaState, params, LUA_MULTRET, 0);
+	return lua_gettop(m_pLuaState);
 }

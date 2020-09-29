@@ -93,7 +93,9 @@ private:
 	//! 解析空值
 	int ParseNull(const char* data, int length, CJsonObject& value);
 	//! 解析布尔字符串
-	int ParseBool(const char* data, int length, CJsonObject& value);
+	int ParseTrue(const char* data, int length, CJsonObject& value);
+	//! 解析布尔字符串
+	int ParseFalse(const char* data, int length, CJsonObject& value);
 	//! 解析数字字符串
 	int ParseNumber(const char* data, int length, CJsonObject& value);
 

@@ -222,11 +222,13 @@ CDelaunay::STriangle& CDelaunay::Circumcircle(STriangle& triangle) {
 	float t1 = x1 * x1 + y1 * y1;
 	float t2 = x2 * x2 + y2 * y2;
 	float t3 = x3 * x3 + y3 * y3;
-	float dt = 2.0f * (x1 * y2 + x2 * y3 + x3 * y1 - y1 * x2 - y2 * x3 - y3 * x1);
+	float dt = 0.5f / (x1 * y2 + x2 * y3 + x3 * y1 - y1 * x2 - y2 * x3 - y3 * x1);
 
-	triangle.cx = ((y3 - y1) * (t2 - t1) - (y2 - y1) * (t3 - t1)) / dt;
-	triangle.cy = ((x2 - x1) * (t3 - t1) - (x3 - x1) * (t2 - t1)) / dt;
-	triangle.radius2 = (x1 - triangle.cx) * (x1 - triangle.cx) + (y1 - triangle.cy) * (y1 - triangle.cy);
+	// 计算外接圆圆心坐标及半径的平方
+	// 注意使用第三个顶点计算半径可以避免精度损失带来的错误
+	triangle.cx = ((y3 - y1) * (t2 - t1) - (y2 - y1) * (t3 - t1)) * dt;
+	triangle.cy = ((x2 - x1) * (t3 - t1) - (x3 - x1) * (t2 - t1)) * dt;
+	triangle.radius2 = (x3 - triangle.cx) * (x3 - triangle.cx) + (y3 - triangle.cy) * (y3 - triangle.cy);
 	return triangle;
 }
 

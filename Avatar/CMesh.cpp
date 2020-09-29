@@ -565,9 +565,9 @@ CBoundingBox CMesh::GetBoundingBox() const {
 /**
 * 射线拾取，返回距离，并获取相交三角形索引和质心坐标
 * @param ray 拾取射线
-* @param face 相交的三角形索引
-* @param bu 质心坐标 u 分量
-* @param bv 质心坐标 v 分量
+* @param face 相交的三角形索引(可为NULL)
+* @param bu 质心坐标 u 分量(可为NULL)
+* @param bv 质心坐标 v 分量(可为NULL)
 * @return 交点距离射线起点的距离，负数表示不相交
 * @note 交点坐标 = (1 - u - v)V0 + uV1 + vV2 其中 V0 V1 V2 为三角形三个顶点坐标
 */
@@ -597,9 +597,9 @@ float CMesh::Intersects(const CRay& ray, int* face, float* bu, float* bv) const 
 		float d = e2.DotProduct(q) * det;
 		// 记录相交距离最小的参数
 		if (d < distance || distance < 0) {
-			*face = i / 3;
-			*bu = u * det;
-			*bv = v * det;
+			if (face) *face = i / 3;
+			if (bu) *bu = u * det;
+			if (bv) *bv = v * det;
 			distance = d;
 		}
 	}

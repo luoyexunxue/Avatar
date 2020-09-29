@@ -90,9 +90,9 @@ void CAnimationManager::Update(float dt) {
 		STranslationKey* t2 = &anim->translation[anim->translationIndex > 0 ? anim->translationIndex - 1 : 0];
 		// 通过 animationTime 以及插值方法计算当前插值
 		CSceneNode* node = anim->sceneNode;
-		node->m_cScale = s2->value.Lerp(s1->value, Interpolate(time, s2->time, s1->time, s1->interpolator));
-		node->m_cOrientation = r2->value.Slerp(r1->value, Interpolate(time, r2->time, r1->time, r1->interpolator));
-		node->m_cPosition = t2->value.Lerp(t1->value, Interpolate(time, t2->time, t1->time, t1->interpolator));
+		if (anim->scale.size() > 1) node->m_cScale = s2->value.Lerp(s1->value, Interpolate(time, s2->time, s1->time, s1->interpolator));
+		if (anim->rotation.size() > 1) node->m_cOrientation = r2->value.Slerp(r1->value, Interpolate(time, r2->time, r1->time, r1->interpolator));
+		if (anim->translation.size() > 1) node->m_cPosition = t2->value.Lerp(t1->value, Interpolate(time, t2->time, t1->time, t1->interpolator));
 		node->Transform();
 		if (animationFinish) {
 			m_lstAnimation.remove(anim);

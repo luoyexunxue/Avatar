@@ -57,7 +57,7 @@ struct SEngineConfig {
 		log.level = 0;
 		log.console = false;
 		log.file = false;
-		log.time = false;
+		log.time = true;
 	}
 };
 

@@ -19,9 +19,10 @@
 */
 CLog::CLog() {
 	m_pLogParam = new SLogParam();
-	m_pLogParam->locked = false;
 	m_pLogParam->console = false;
 	m_pLogParam->file = false;
+	m_pLogParam->printTime = false;
+	m_pLogParam->logLevel = CLog::LEVEL_INFO;
 }
 
 /**
@@ -47,7 +48,6 @@ void CLog::Create(bool console, bool file, bool time, const string& title) {
 	}
 	m_pInstance = new CLog();
 	m_pInstance->m_pLogParam->printTime = time;
-	m_pInstance->m_pLogParam->logLevel = CLog::LEVEL_INFO;
 	if (console) m_pInstance->ConsoleOpen(title.empty() ? CTimer::GetTimeString("LOG-%Y-%m-%d") : title);
 	if (file) m_pInstance->FileOpen(title.empty() ? CTimer::GetTimeString("LOG-%Y-%m-%d.txt") : title);
 }
@@ -74,11 +74,11 @@ void CLog::SetLevel(CLog::Level level) {
 /**
 * 输出一般信息
 */
-void CLog::Info(const char* msg, ...) {
+void CLog::Info(const char* format, ...) {
 	if (m_pInstance && m_pInstance->m_pLogParam->logLevel <= CLog::LEVEL_INFO) {
 		va_list args;
-		va_start(args, msg);
-		m_pInstance->Log(CLog::LEVEL_INFO, msg, args);
+		va_start(args, format);
+		m_pInstance->Log(CLog::LEVEL_INFO, format, args);
 		va_end(args);
 	}
 }
@@ -86,11 +86,11 @@ void CLog::Info(const char* msg, ...) {
 /**
 * 输出调试信息
 */
-void CLog::Debug(const char* msg, ...) {
+void CLog::Debug(const char* format, ...) {
 	if (m_pInstance && m_pInstance->m_pLogParam->logLevel <= CLog::LEVEL_DEBUG) {
 		va_list args;
-		va_start(args, msg);
-		m_pInstance->Log(CLog::LEVEL_DEBUG, msg, args);
+		va_start(args, format);
+		m_pInstance->Log(CLog::LEVEL_DEBUG, format, args);
 		va_end(args);
 	}
 }
@@ -98,11 +98,11 @@ void CLog::Debug(const char* msg, ...) {
 /**
 * 输出警告信息
 */
-void CLog::Warn(const char* msg, ...) {
+void CLog::Warn(const char* format, ...) {
 	if (m_pInstance && m_pInstance->m_pLogParam->logLevel <= CLog::LEVEL_WARN) {
 		va_list args;
-		va_start(args, msg);
-		m_pInstance->Log(CLog::LEVEL_WARN, msg, args);
+		va_start(args, format);
+		m_pInstance->Log(CLog::LEVEL_WARN, format, args);
 		va_end(args);
 	}
 }
@@ -110,11 +110,11 @@ void CLog::Warn(const char* msg, ...) {
 /**
 * 输出错误信息
 */
-void CLog::Error(const char* msg, ...) {
+void CLog::Error(const char* format, ...) {
 	if (m_pInstance && m_pInstance->m_pLogParam->logLevel <= CLog::LEVEL_ERROR) {
 		va_list args;
-		va_start(args, msg);
-		m_pInstance->Log(CLog::LEVEL_ERROR, msg, args);
+		va_start(args, format);
+		m_pInstance->Log(CLog::LEVEL_ERROR, format, args);
 		va_end(args);
 	}
 }
@@ -131,33 +131,35 @@ void CLog::Message(const string& msg) {
 /**
 * 日志输出方法
 */
-void CLog::Log(CLog::Level level, const char* msg, va_list args) {
-	string header = "";
+void CLog::Log(CLog::Level level, const char* format, va_list args) {
+	char header[64] = { 0 };
 	if (m_pLogParam->printTime) {
-		header = CTimer::GetTimeString("[%Y-%m-%d %H:%M:%S] ");
+		CTimer::GetTimeString("[%Y-%m-%d %H:%M:%S] ", header, 60);
 		switch (level) {
-		case CLog::LEVEL_INFO: header.append("I "); break;
-		case CLog::LEVEL_DEBUG: header.append("D "); break;
-		case CLog::LEVEL_WARN: header.append("W "); break;
-		case CLog::LEVEL_ERROR: header.append("E "); break;
-		default: header.append("- "); break;
+		case CLog::LEVEL_INFO: strncat(header, "I ", 2); break;
+		case CLog::LEVEL_DEBUG: strncat(header, "D ", 2); break;
+		case CLog::LEVEL_WARN: strncat(header, "W ", 2); break;
+		case CLog::LEVEL_ERROR: strncat(header, "E ", 2); break;
+		default: strncat(header, "- ", 2); break;
 		}
 	}
-	char content[2048];
-	vsnprintf(content, 2048, msg, args);
-	content[2047] = '\0';
-
-	while (m_pLogParam->locked) CTimer::Sleep(1);
-	m_pLogParam->locked = true;
-
+	m_pLogParam->lock.lock();
 #ifdef AVATAR_WINDOWS
 	WORD color = FOREGROUND_GREEN;
 	if (level == CLog::LEVEL_WARN || level == CLog::LEVEL_ERROR) color = FOREGROUND_RED;
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
 #endif
-	std::cout << header << content << std::endl;
+	if (m_pLogParam->console) {
+		printf("%s", header);
+		vprintf(format, args);
+		printf("\n");
+	}
 	if (m_pLogParam->file) {
+		int length = vsnprintf(0, 0, format, args) + 1;
+		char* content = new char[length];
+		vsnprintf(content, length, format, args);
 		m_pLogParam->filestream << header << content << std::endl;
+		delete[] content;
 	}
 #ifdef AVATAR_ANDROID
 	int priority;
@@ -168,26 +170,22 @@ void CLog::Log(CLog::Level level, const char* msg, va_list args) {
 	case CLog::LEVEL_ERROR: priority = ANDROID_LOG_ERROR; break;
 	default: priority = ANDROID_LOG_SILENT; break;
 	}
-	__android_log_write(priority, "AVATAR", content);
+	__android_log_vprint(priority, "AVATAR", format, args);
 #endif
-	m_pLogParam->locked = false;
+	m_pLogParam->lock.unlock();
 }
 
 /**
 * 消息输出方法
 */
 void CLog::Log(const string& msg) {
-	while (m_pLogParam->locked) CTimer::Sleep(1);
-	m_pLogParam->locked = true;
-
-	std::cout << msg << std::endl;
-	if (m_pLogParam->file) {
-		m_pLogParam->filestream << msg << std::endl;
-	}
+	m_pLogParam->lock.lock();
+	if (m_pLogParam->console) printf("%s\n", msg.c_str());
+	if (m_pLogParam->file) m_pLogParam->filestream << msg << std::endl;
 #ifdef AVATAR_ANDROID
 	__android_log_write(ANDROID_LOG_INFO, "AVATAR", msg.c_str());
 #endif
-	m_pLogParam->locked = false;
+	m_pLogParam->lock.unlock();
 }
 
 /**
@@ -202,9 +200,9 @@ void CLog::ConsoleOpen(const string& name) {
 	freopen("CONOUT$", "w+t", stdout);
 #endif
 	m_pLogParam->console = true;
-	std::cout << "  ____ __  __ ____  _____  ____  _____" << std::endl;
-	std::cout << " / () \\\\ \\/ // () \\|_   _|/ () \\ | () )" << std::endl;
-	std::cout << "/__/\\__\\\\__//__/\\__\\ |_| /__/\\__\\|_|\\_\\" << std::endl;
+	printf("  ____ __  __ ____  _____  ____  _____\n");
+	printf(" / () \\\\ \\/ // () \\|_   _|/ () \\ | () )\n");
+	printf("/__/\\__\\\\__//__/\\__\\ |_| /__/\\__\\|_|\\_\\\n");
 }
 
 /**

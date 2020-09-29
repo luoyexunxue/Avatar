@@ -240,7 +240,7 @@ int main(int argc, char **argv)
 | :------- | :--- | :--- | :----- |
 | engine.info | 获取引擎信息 | - | {version:*string*, platform:*string*} |
 | engine.fps | 获取当前帧率 | - | fps:*float* |
-| engine.log | 使能日志或输出日志 | enable:*boolean*, &lt;level:*integer*&gt; / msg:*string* | - |
+| engine.log | 使能日志或输出日志 | enable:*boolean*, &lt;level:*integer*&gt; / msg:*any* | - |
 | engine.speed | 设置引擎时间快慢 | speed:*float*, &lt;fixed:*boolean*&gt; | - |
 | engine.timer | 获取定时器定时 | name:*string*, &lt;reset:*boolean*&gt; | elapse:*float* |
 | engine.directory | 获取或设置数据目录 | &lt;dir:*string*&gt; | &lt;dir:*string*&gt; |
@@ -287,7 +287,7 @@ int main(int argc, char **argv)
 | post.enable | 获取或设置指定后处理 | name:*string*, &lt;enable:*boolean*&gt; | &lt;enable:*boolean*&gt; |
 | post.register | 注册用户自定义后处理 | name:*string*, shader:*string*, &lt;texture:*string*, cube:*boolean*&gt; | success:*boolean* |
 | post.param | 设置后处理参数 | name:*string*, key:*string*, [value] | - |
-| graphics.screenshot | 屏幕截图 | file:*string*, &lt;redraw:*boolean*&gt; | - |
+| graphics.screenshot | 屏幕截图 | file:*string* / *nil*, &lt;redraw:*boolean*&gt; | &lt;data:*string*&gt; |
 | graphics.stereo | 获取或设置立体显示 | &lt;enable:*boolean*&gt; | &lt;enable:*boolean*&gt; |
 | graphics.windowSize | 获取窗口大小 | - | width:*integer*, height:*integer* |
 | graphics.lightPosition | 获取光源位置 | - | x:*float*, y:*float*, z:*float*, w:*float*, dx:*float*, dy:*float*, dz:*float*, dw:*float* |
@@ -303,7 +303,7 @@ int main(int argc, char **argv)
 | graphics.renderTarget | 设置离线渲染目标 | texture:*string*, &lt;clear:*boolean*&gt; | last:*string* |
 | texture.create | 创建或载入纹理 | name:*string*, &lt;width:*integer*, height:*integer*, shader:*string* / depth:*boolean*&gt; | &lt;texture:*string*&gt; |
 | texture.delete | 删除纹理资源 | name:*string* | - |
-| texture.update | 更新纹理数据 | name:*string*, file:*string* | success:*boolean* |
+| texture.update | 更新纹理数据 | name:*string*, file:*string* / color:*string* | success:*boolean* |
 | shader.create | 创建着色器 | name:*string*, vert:*string*, frag:*string* | &lt;shader:*string*&gt; |
 | shader.delete | 删除着色器资源 | name:*string* | - |
 | shader.update | 更新着色器程序 | name:*string*, define:*string*, undef:*string* | success:*boolean* |

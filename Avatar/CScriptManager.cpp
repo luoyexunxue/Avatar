@@ -45,29 +45,28 @@
 #endif
 
 /**
-* 向表中添加函数
+* 定义表操作
 */
-#define SET_TABLE_FUNCTION(NAME, FUNC) \
-	lua_pushstring(lua, NAME); \
-	lua_pushcfunction(lua, FUNC); \
-	lua_rawset(lua, -3)
+#define TABLE_BEGIN() lua_newtable(lua)
+#define TABLE_FUNCTION(NAME, FUNC) lua_pushstring(lua, NAME);lua_pushcfunction(lua, FUNC);lua_rawset(lua, -3)
+#define TABLE_END(NAME) lua_setglobal(lua, NAME)
 
 /**
 * 获取表中字段值
 */
-inline bool LuaTableFieldValue(lua_State* lua, int table, const char* name, bool def) {
+inline bool TableValue(lua_State* lua, int table, const char* name, bool def) {
 	lua_getfield(lua, table, name);
 	return lua_isboolean(lua, -1)? lua_toboolean(lua, -1) != 0: def;
 }
-inline int LuaTableFieldValue(lua_State* lua, int table, const char* name, int def) {
+inline int TableValue(lua_State* lua, int table, const char* name, int def) {
 	lua_getfield(lua, table, name);
 	return lua_isinteger(lua, -1)? (int)lua_tointeger(lua, -1): def;
 }
-inline float LuaTableFieldValue(lua_State* lua, int table, const char* name, float def) {
+inline float TableValue(lua_State* lua, int table, const char* name, float def) {
 	lua_getfield(lua, table, name);
 	return lua_isnumber(lua, -1)? (float)lua_tonumber(lua, -1): def;
 }
-inline const char* LuaTableFieldValue(lua_State* lua, int table, const char* name, const char* def) {
+inline const char* TableValue(lua_State* lua, int table, const char* name, const char* def) {
 	lua_getfield(lua, table, name);
 	return lua_isstring(lua, -1)? (const char*)lua_tostring(lua, -1): def;
 }
@@ -275,137 +274,137 @@ void CScriptManager::HandleEvent() {
 */
 void CScriptManager::RegisterInterface(lua_State* lua) {
 	// 系统接口
-	lua_newtable(lua);
-	SET_TABLE_FUNCTION("info", DoEngineInfo);
-	SET_TABLE_FUNCTION("fps", DoEngineFps);
-	SET_TABLE_FUNCTION("log", DoEngineLog);
-	SET_TABLE_FUNCTION("speed", DoEngineSpeed);
-	SET_TABLE_FUNCTION("timer", DoEngineTimer);
-	SET_TABLE_FUNCTION("directory", DoEngineDirectory);
-	SET_TABLE_FUNCTION("input", DoEngineInput);
-	SET_TABLE_FUNCTION("script", DoEngineScript);
-	SET_TABLE_FUNCTION("execute", DoEngineExecute);
-	SET_TABLE_FUNCTION("read", DoEngineRead);
-	SET_TABLE_FUNCTION("write", DoEngineWrite);
-	SET_TABLE_FUNCTION("plugin", DoEnginePlugin);
-	lua_setglobal(lua, "engine");
+	TABLE_BEGIN();
+	TABLE_FUNCTION("info", DoEngineInfo);
+	TABLE_FUNCTION("fps", DoEngineFps);
+	TABLE_FUNCTION("log", DoEngineLog);
+	TABLE_FUNCTION("speed", DoEngineSpeed);
+	TABLE_FUNCTION("timer", DoEngineTimer);
+	TABLE_FUNCTION("directory", DoEngineDirectory);
+	TABLE_FUNCTION("input", DoEngineInput);
+	TABLE_FUNCTION("script", DoEngineScript);
+	TABLE_FUNCTION("execute", DoEngineExecute);
+	TABLE_FUNCTION("read", DoEngineRead);
+	TABLE_FUNCTION("write", DoEngineWrite);
+	TABLE_FUNCTION("plugin", DoEnginePlugin);
+	TABLE_END("engine");
 	// GUI接口
-	lua_newtable(lua);
-	SET_TABLE_FUNCTION("enable", DoGuiEnable);
-	SET_TABLE_FUNCTION("size", DoGuiSize);
-	SET_TABLE_FUNCTION("scale", DoGuiScale);
-	SET_TABLE_FUNCTION("create", DoGuiCreate);
-	SET_TABLE_FUNCTION("modify", DoGuiModify);
-	SET_TABLE_FUNCTION("delete", DoGuiDelete);
-	SET_TABLE_FUNCTION("attrib", DoGuiAttrib);
-	lua_setglobal(lua, "gui");
+	TABLE_BEGIN();
+	TABLE_FUNCTION("enable", DoGuiEnable);
+	TABLE_FUNCTION("size", DoGuiSize);
+	TABLE_FUNCTION("scale", DoGuiScale);
+	TABLE_FUNCTION("create", DoGuiCreate);
+	TABLE_FUNCTION("modify", DoGuiModify);
+	TABLE_FUNCTION("delete", DoGuiDelete);
+	TABLE_FUNCTION("attrib", DoGuiAttrib);
+	TABLE_END("gui");
 	// 相机接口
-	lua_newtable(lua);
-	SET_TABLE_FUNCTION("type", DoCameraType);
-	SET_TABLE_FUNCTION("control", DoCameraControl);
-	SET_TABLE_FUNCTION("fov", DoCameraFov);
-	SET_TABLE_FUNCTION("clip", DoCameraClip);
-	SET_TABLE_FUNCTION("projection", DoCameraProjection);
-	SET_TABLE_FUNCTION("position", DoCameraPosition);
-	SET_TABLE_FUNCTION("target", DoCameraTarget);
-	SET_TABLE_FUNCTION("angle", DoCameraAngle);
-	SET_TABLE_FUNCTION("direction", DoCameraDirection);
-	SET_TABLE_FUNCTION("bind", DoCameraBind);
-	lua_setglobal(lua, "camera");
+	TABLE_BEGIN();
+	TABLE_FUNCTION("type", DoCameraType);
+	TABLE_FUNCTION("control", DoCameraControl);
+	TABLE_FUNCTION("fov", DoCameraFov);
+	TABLE_FUNCTION("clip", DoCameraClip);
+	TABLE_FUNCTION("projection", DoCameraProjection);
+	TABLE_FUNCTION("position", DoCameraPosition);
+	TABLE_FUNCTION("target", DoCameraTarget);
+	TABLE_FUNCTION("angle", DoCameraAngle);
+	TABLE_FUNCTION("direction", DoCameraDirection);
+	TABLE_FUNCTION("bind", DoCameraBind);
+	TABLE_END("camera");
 	// 场景节点接口
-	lua_newtable(lua);
-	SET_TABLE_FUNCTION("insert", DoSceneInsert);
-	SET_TABLE_FUNCTION("delete", DoSceneDelete);
-	SET_TABLE_FUNCTION("clear", DoSceneClear);
-	SET_TABLE_FUNCTION("list", DoSceneList);
-	SET_TABLE_FUNCTION("pick", DoScenePick);
-	SET_TABLE_FUNCTION("scale", DoSceneScale);
-	SET_TABLE_FUNCTION("angle", DoSceneAngle);
-	SET_TABLE_FUNCTION("orientation", DoSceneOrientation);
-	SET_TABLE_FUNCTION("position", DoScenePosition);
-	SET_TABLE_FUNCTION("visible", DoSceneVisible);
-	SET_TABLE_FUNCTION("update", DoSceneUpdate);
-	SET_TABLE_FUNCTION("vertex", DoSceneVertex);
-	SET_TABLE_FUNCTION("material", DoSceneMaterial);
-	SET_TABLE_FUNCTION("renderMode", DoSceneRenderMode);
-	SET_TABLE_FUNCTION("boundingBox", DoSceneBoundingBox);
-	SET_TABLE_FUNCTION("handle", DoSceneHandle);
-	lua_setglobal(lua, "scene");
+	TABLE_BEGIN();
+	TABLE_FUNCTION("insert", DoSceneInsert);
+	TABLE_FUNCTION("delete", DoSceneDelete);
+	TABLE_FUNCTION("clear", DoSceneClear);
+	TABLE_FUNCTION("list", DoSceneList);
+	TABLE_FUNCTION("pick", DoScenePick);
+	TABLE_FUNCTION("scale", DoSceneScale);
+	TABLE_FUNCTION("angle", DoSceneAngle);
+	TABLE_FUNCTION("orientation", DoSceneOrientation);
+	TABLE_FUNCTION("position", DoScenePosition);
+	TABLE_FUNCTION("visible", DoSceneVisible);
+	TABLE_FUNCTION("update", DoSceneUpdate);
+	TABLE_FUNCTION("vertex", DoSceneVertex);
+	TABLE_FUNCTION("material", DoSceneMaterial);
+	TABLE_FUNCTION("renderMode", DoSceneRenderMode);
+	TABLE_FUNCTION("boundingBox", DoSceneBoundingBox);
+	TABLE_FUNCTION("handle", DoSceneHandle);
+	TABLE_END("scene");
 	// 后处理接口
-	lua_newtable(lua);
-	SET_TABLE_FUNCTION("list", DoPostList);
-	SET_TABLE_FUNCTION("enable", DoPostEnable);
-	SET_TABLE_FUNCTION("register", DoPostRegister);
-	SET_TABLE_FUNCTION("param", DoPostParam);
-	lua_setglobal(lua, "post");
+	TABLE_BEGIN();
+	TABLE_FUNCTION("list", DoPostList);
+	TABLE_FUNCTION("enable", DoPostEnable);
+	TABLE_FUNCTION("register", DoPostRegister);
+	TABLE_FUNCTION("param", DoPostParam);
+	TABLE_END("post");
 	// 图形管理接口
-	lua_newtable(lua);
-	SET_TABLE_FUNCTION("screenshot", DoGraphicsScreenshot);
-	SET_TABLE_FUNCTION("stereo", DoGraphicsStereo);
-	SET_TABLE_FUNCTION("windowSize", DoGraphicsWindowSize);
-	SET_TABLE_FUNCTION("lightPosition", DoGraphicsLightPosition);
-	SET_TABLE_FUNCTION("directionLight", DoGraphicsDirectionLight);
-	SET_TABLE_FUNCTION("pointLight", DoGraphicsPointLight);
-	SET_TABLE_FUNCTION("spotLight", DoGraphicsSpotLight);
-	SET_TABLE_FUNCTION("shadow", DoGraphicsShadow);
-	SET_TABLE_FUNCTION("fog", DoGraphicsFog);
-	SET_TABLE_FUNCTION("environmentMap", DoGraphicsEnvironmentMap);
-	SET_TABLE_FUNCTION("background", DoGraphicsBackground);
-	SET_TABLE_FUNCTION("pickingRay", DoGraphicsPickingRay);
-	SET_TABLE_FUNCTION("project", DoGraphicsProject);
-	SET_TABLE_FUNCTION("renderTarget", DoGraphicsRenderTarget);
-	lua_setglobal(lua, "graphics");
+	TABLE_BEGIN();
+	TABLE_FUNCTION("screenshot", DoGraphicsScreenshot);
+	TABLE_FUNCTION("stereo", DoGraphicsStereo);
+	TABLE_FUNCTION("windowSize", DoGraphicsWindowSize);
+	TABLE_FUNCTION("lightPosition", DoGraphicsLightPosition);
+	TABLE_FUNCTION("directionLight", DoGraphicsDirectionLight);
+	TABLE_FUNCTION("pointLight", DoGraphicsPointLight);
+	TABLE_FUNCTION("spotLight", DoGraphicsSpotLight);
+	TABLE_FUNCTION("shadow", DoGraphicsShadow);
+	TABLE_FUNCTION("fog", DoGraphicsFog);
+	TABLE_FUNCTION("environmentMap", DoGraphicsEnvironmentMap);
+	TABLE_FUNCTION("background", DoGraphicsBackground);
+	TABLE_FUNCTION("pickingRay", DoGraphicsPickingRay);
+	TABLE_FUNCTION("project", DoGraphicsProject);
+	TABLE_FUNCTION("renderTarget", DoGraphicsRenderTarget);
+	TABLE_END("graphics");
 	// 纹理管理接口
-	lua_newtable(lua);
-	SET_TABLE_FUNCTION("create", DoTextureCreate);
-	SET_TABLE_FUNCTION("delete", DoTextureDelete);
-	SET_TABLE_FUNCTION("update", DoTextureUpdate);
-	lua_setglobal(lua, "texture");
+	TABLE_BEGIN();
+	TABLE_FUNCTION("create", DoTextureCreate);
+	TABLE_FUNCTION("delete", DoTextureDelete);
+	TABLE_FUNCTION("update", DoTextureUpdate);
+	TABLE_END("texture");
 	// 着色器管理接口
-	lua_newtable(lua);
-	SET_TABLE_FUNCTION("create", DoShaderCreate);
-	SET_TABLE_FUNCTION("delete", DoShaderDelete);
-	SET_TABLE_FUNCTION("update", DoShaderUpdate);
-	SET_TABLE_FUNCTION("param", DoShaderParam);
-	lua_setglobal(lua, "shader");
+	TABLE_BEGIN();
+	TABLE_FUNCTION("create", DoShaderCreate);
+	TABLE_FUNCTION("delete", DoShaderDelete);
+	TABLE_FUNCTION("update", DoShaderUpdate);
+	TABLE_FUNCTION("param", DoShaderParam);
+	TABLE_END("shader");
 	// 字体管理接口
-	lua_newtable(lua);
-	SET_TABLE_FUNCTION("list", DoFontList);
-	SET_TABLE_FUNCTION("load", DoFontLoad);
-	SET_TABLE_FUNCTION("clear", DoFontClear);
-	SET_TABLE_FUNCTION("use", DoFontUse);
-	lua_setglobal(lua, "font");
+	TABLE_BEGIN();
+	TABLE_FUNCTION("list", DoFontList);
+	TABLE_FUNCTION("load", DoFontLoad);
+	TABLE_FUNCTION("clear", DoFontClear);
+	TABLE_FUNCTION("use", DoFontUse);
+	TABLE_END("font");
 	// 声音管理接口
-	lua_newtable(lua);
-	SET_TABLE_FUNCTION("create", DoSoundCreate);
-	SET_TABLE_FUNCTION("delete", DoSoundDelete);
-	SET_TABLE_FUNCTION("play", DoSoundPlay);
-	SET_TABLE_FUNCTION("pause", DoSoundPause);
-	SET_TABLE_FUNCTION("stop", DoSoundStop);
-	SET_TABLE_FUNCTION("position", DoSoundPosition);
-	SET_TABLE_FUNCTION("volume", DoSoundVolume);
-	SET_TABLE_FUNCTION("update", DoSoundUpdate);
-	lua_setglobal(lua, "sound");
+	TABLE_BEGIN();
+	TABLE_FUNCTION("create", DoSoundCreate);
+	TABLE_FUNCTION("delete", DoSoundDelete);
+	TABLE_FUNCTION("play", DoSoundPlay);
+	TABLE_FUNCTION("pause", DoSoundPause);
+	TABLE_FUNCTION("stop", DoSoundStop);
+	TABLE_FUNCTION("position", DoSoundPosition);
+	TABLE_FUNCTION("volume", DoSoundVolume);
+	TABLE_FUNCTION("update", DoSoundUpdate);
+	TABLE_END("sound");
 	// 物理引擎接口
-	lua_newtable(lua);
-	SET_TABLE_FUNCTION("bind", DoPhysicsBind);
-	SET_TABLE_FUNCTION("unbind", DoPhysicsUnbind);
-	SET_TABLE_FUNCTION("collide", DoPhysicsCollide);
-	SET_TABLE_FUNCTION("reset", DoPhysicsReset);
-	SET_TABLE_FUNCTION("velocity", DoPhysicsVelocity);
-	SET_TABLE_FUNCTION("applyForce", DoPhysicsApplyForce);
-	SET_TABLE_FUNCTION("applyImpulse", DoPhysicsApplyImpulse);
-	SET_TABLE_FUNCTION("gravity", DoPhysicsGravity);
-	SET_TABLE_FUNCTION("joint", DoPhysicsJoint);
-	lua_setglobal(lua, "physics");
+	TABLE_BEGIN();
+	TABLE_FUNCTION("bind", DoPhysicsBind);
+	TABLE_FUNCTION("unbind", DoPhysicsUnbind);
+	TABLE_FUNCTION("collide", DoPhysicsCollide);
+	TABLE_FUNCTION("reset", DoPhysicsReset);
+	TABLE_FUNCTION("velocity", DoPhysicsVelocity);
+	TABLE_FUNCTION("applyForce", DoPhysicsApplyForce);
+	TABLE_FUNCTION("applyImpulse", DoPhysicsApplyImpulse);
+	TABLE_FUNCTION("gravity", DoPhysicsGravity);
+	TABLE_FUNCTION("joint", DoPhysicsJoint);
+	TABLE_END("physics");
 	// 动画接口
-	lua_newtable(lua);
-	SET_TABLE_FUNCTION("scale", DoAnimationScale);
-	SET_TABLE_FUNCTION("rotation", DoAnimationRotation);
-	SET_TABLE_FUNCTION("translation", DoAnimationTranslation);
-	SET_TABLE_FUNCTION("start", DoAnimationStart);
-	SET_TABLE_FUNCTION("stop", DoAnimationStop);
-	lua_setglobal(lua, "animation");
+	TABLE_BEGIN();
+	TABLE_FUNCTION("scale", DoAnimationScale);
+	TABLE_FUNCTION("rotation", DoAnimationRotation);
+	TABLE_FUNCTION("translation", DoAnimationTranslation);
+	TABLE_FUNCTION("start", DoAnimationStart);
+	TABLE_FUNCTION("stop", DoAnimationStop);
+	TABLE_END("animation");
 }
 
 /**
@@ -449,8 +448,25 @@ int CScriptManager::DoEngineLog(lua_State* lua) {
 		if (lua_isinteger(lua, 2)) {
 			CLog::SetLevel((CLog::Level)lua_tointeger(lua, 2));
 		}
-	} else if (lua_isstring(lua, 1)) {
-		CLog::Info(lua_tostring(lua, 1));
+	} else {
+		if (lua_isstring(lua, 1)) CLog::Debug(lua_tostring(lua, 1));
+		else if (lua_istable(lua, 1)) {
+			string info;
+			lua_pushnil(lua);
+			while (lua_next(lua, 1)) {
+				if (lua_type(lua, -2) == LUA_TNUMBER) info.append(" [").append(std::to_string(lua_tointeger(lua, -2))).append("]=");
+				if (lua_type(lua, -2) == LUA_TSTRING) info.append(" ").append(lua_tostring(lua, -2)).append("=");
+				int valueType = lua_type(lua, -1);
+				if (valueType == LUA_TBOOLEAN) info.append(lua_toboolean(lua, -1) != 0 ? "true" : "false");
+				else if (valueType == LUA_TNUMBER) info.append(lua_tostring(lua, -1));
+				else if (valueType == LUA_TSTRING) info.append("'").append(lua_tostring(lua, -1)).append("'");
+				else info.append(lua_typename(lua, lua_type(lua, -1)));
+				info.append(",");
+				lua_pop(lua, 1);
+			}
+			if (info.length() > 1) info.pop_back();
+			CLog::Debug("{%s }", info.c_str());
+		} else CLog::Debug(lua_typename(lua, lua_type(lua, 1)));
 	}
 	return 0;
 }
@@ -573,20 +589,28 @@ int CScriptManager::DoEngineInput(lua_State* lua) {
 int CScriptManager::DoEngineScript(lua_State* lua) {
 	bool success = false;
 	if (lua_isstring(lua, 1)) {
-		const char* filename = lua_tostring(lua, 1);
+		string filename = lua_tostring(lua, 1);
 		CFileManager::CBinaryFile file;
-		CEngine::GetFileManager()->ReadFile(filename, &file);
+		if (!CEngine::GetFileManager()->ReadFile(filename, &file) && !CFileManager::IsFullPath(filename)) {
+			lua_getglobal(lua, "__engine_script_path__");
+			if (lua_isstring(lua, -1)) {
+				filename = lua_tostring(lua, -1) + filename;
+				CEngine::GetFileManager()->ReadFile(filename, &file);
+			}
+			lua_pop(lua, 1);
+		}
+		string path = CFileManager::GetDirectory(filename);
+		string setpath = CStringUtil::Format("__engine_script_path__ = '%s'", path.c_str());
+		luaL_dostring(lua, setpath.c_str());
 		// 跳过 UTF8 的 BOM
 		int offset = 0;
 		const unsigned char* header = file.contents;
 		if (file.size >= 3 && header[0] == 0xEF && header[1] == 0xBB && header[2] == 0xBF) offset = 3;
-		if (luaL_loadbuffer(lua, (char*)file.contents + offset, file.size - offset, filename) ||
+		if (luaL_loadbuffer(lua, (char*)file.contents + offset, file.size - offset, filename.c_str()) ||
 			lua_pcall(lua, 0, LUA_MULTRET, 0)) {
-			CLog::Error("Open script file '%s' error", filename);
+			CLog::Error("Open script file '%s' error", filename.c_str());
 			CLog::Error(lua_tostring(lua, -1));
-		} else {
-			success = true;
-		}
+		} else success = true;
 	}
 	lua_pushboolean(lua, success);
 	return 1;
@@ -617,9 +641,9 @@ int CScriptManager::DoEngineExecute(lua_State* lua) {
 */
 int CScriptManager::DoEngineRead(lua_State* lua) {
 	if (lua_isstring(lua, 1)) {
-		CFileManager::CTextFile file;
+		CFileManager::CBinaryFile file;
 		if (CEngine::GetFileManager()->ReadFile(lua_tostring(lua, 1), &file)) {
-			lua_pushstring(lua, (char*)file.contents);
+			lua_pushlstring(lua, (char*)file.contents, file.size);
 			return 1;
 		}
 	}
@@ -632,8 +656,9 @@ int CScriptManager::DoEngineRead(lua_State* lua) {
 */
 int CScriptManager::DoEngineWrite(lua_State* lua) {
 	if (lua_isstring(lua, 1) && !lua_isnoneornil(lua, 2)) {
-		const char* content = lua_tostring(lua, 2);
-		CFileManager::CTextFile file(strlen(content));
+		size_t length = 0;
+		const char* content = lua_tolstring(lua, 2, &length);
+		CFileManager::CBinaryFile file(length);
 		memcpy(file.contents, content, file.size);
 		CEngine::GetFileManager()->WriteFile(&file, lua_tostring(lua, 1));
 	}
@@ -772,9 +797,9 @@ int CScriptManager::DoCameraType(lua_State* lua) {
 			CLog::Warn("Unknow camera type '%s'", cameraType);
 		}
 		if (lua_istable(lua, 2)) {
-			float damping = LuaTableFieldValue(lua, 2, "damping", -1.0f);
-			float minDistance = LuaTableFieldValue(lua, 2, "minDistance", -1.0f);
-			float maxDistance = LuaTableFieldValue(lua, 2, "maxDistance", -1.0f);
+			float damping = TableValue(lua, 2, "damping", -1.0f);
+			float minDistance = TableValue(lua, 2, "minDistance", -1.0f);
+			float maxDistance = TableValue(lua, 2, "maxDistance", -1.0f);
 			if (damping > 0.0f) {
 				if (!strcmp(cameraType, "chase")) static_cast<CCameraChase*>(pCamera)->SetDamping(damping);
 				else if (!strcmp(cameraType, "free")) static_cast<CCameraFree*>(pCamera)->SetDamping(damping);
@@ -791,17 +816,17 @@ int CScriptManager::DoCameraType(lua_State* lua) {
 				else if (!strcmp(cameraType, "geographic")) static_cast<CCameraGeographic*>(pCamera)->SetMaxDistance(maxDistance);
 			}
 			if (!strcmp(cameraType, "gaze")) {
-				float pitchMin = LuaTableFieldValue(lua, 2, "pitchMin", 3.141593f);
-				float pitchMax = LuaTableFieldValue(lua, 2, "pitchMax", -3.141593f);
+				float pitchMin = TableValue(lua, 2, "pitchMin", 3.141593f);
+				float pitchMax = TableValue(lua, 2, "pitchMax", -3.141593f);
 				if (pitchMin < pitchMax) static_cast<CCameraGaze*>(pCamera)->SetPitchRange(pitchMin, pitchMax);
 			} else if (!strcmp(cameraType, "free")) {
-				string track_line = LuaTableFieldValue(lua, 2, "track_line", "");
-				float track_speed = LuaTableFieldValue(lua, 2, "track_speed", 1.0f);
-				bool track_follow = LuaTableFieldValue(lua, 2, "track_follow", true);
-				bool track_loop = LuaTableFieldValue(lua, 2, "track_loop", true);
-				float offset_x = LuaTableFieldValue(lua, 2, "track_offset_x", 0.0f);
-				float offset_y = LuaTableFieldValue(lua, 2, "track_offset_y", 0.0f);
-				float offset_z = LuaTableFieldValue(lua, 2, "track_offset_z", 0.0f);
+				string track_line = TableValue(lua, 2, "track_line", "");
+				float track_speed = TableValue(lua, 2, "track_speed", 1.0f);
+				bool track_follow = TableValue(lua, 2, "track_follow", true);
+				bool track_loop = TableValue(lua, 2, "track_loop", true);
+				float offset_x = TableValue(lua, 2, "track_offset_x", 0.0f);
+				float offset_y = TableValue(lua, 2, "track_offset_y", 0.0f);
+				float offset_z = TableValue(lua, 2, "track_offset_z", 0.0f);
 				if (!track_line.empty()) {
 					CSceneNodeLine* pLine = static_cast<CSceneNodeLine*>(CEngine::GetSceneManager()->GetNodeByName(track_line));
 					if (pLine) {
@@ -993,49 +1018,49 @@ int CScriptManager::DoSceneInsert(lua_State* lua) {
 		const char* name = lua_tostring(lua, 3);
 		// 根据场景节点类型创建
 		if (!strcmp("animation", type)) {
-			const char* meshFile = LuaTableFieldValue(lua, 4, "meshFile", "");
-			bool start = LuaTableFieldValue(lua, 4, "start", true);
-			bool skeleton = LuaTableFieldValue(lua, 4, "skeleton", false);
+			const char* meshFile = TableValue(lua, 4, "meshFile", "");
+			bool start = TableValue(lua, 4, "start", true);
+			bool skeleton = TableValue(lua, 4, "skeleton", false);
 			pNode = new CSceneNodeAnimation(name, meshFile, start, skeleton);
 		} else if (!strcmp("axis", type)) {
 			pNode = new CSceneNodeAxis(name);
 		} else if (!strcmp("blast", type)) {
-			const char* texture = LuaTableFieldValue(lua, 4, "texture", "");
-			int row = LuaTableFieldValue(lua, 4, "row", 8);
-			int column = LuaTableFieldValue(lua, 4, "column", 8);
+			const char* texture = TableValue(lua, 4, "texture", "");
+			int row = TableValue(lua, 4, "row", 8);
+			int column = TableValue(lua, 4, "column", 8);
 			pNode = new CSceneNodeBlast(name, texture, row, column);
 		} else if (!strcmp("board", type)) {
-			const char* texture = LuaTableFieldValue(lua, 4, "texture", "");
-			float width = LuaTableFieldValue(lua, 4, "width", 1.0f);
-			float height = LuaTableFieldValue(lua, 4, "height", 1.0f);
-			int billboard = LuaTableFieldValue(lua, 4, "billboard", 0);
+			const char* texture = TableValue(lua, 4, "texture", "");
+			float width = TableValue(lua, 4, "width", 1.0f);
+			float height = TableValue(lua, 4, "height", 1.0f);
+			int billboard = TableValue(lua, 4, "billboard", 0);
 			pNode = new CSceneNodeBoard(name, texture, width, height, billboard);
 		} else if (!strcmp("cloud", type)) {
-			const char* color1 = LuaTableFieldValue(lua, 4, "skyColor", "#666699FF");
-			const char* color2 = LuaTableFieldValue(lua, 4, "cloudColor", "#666699FF");
-			float cloudSize = LuaTableFieldValue(lua, 4, "cloudSize", 100.0f);
+			const char* color1 = TableValue(lua, 4, "skyColor", "#666699FF");
+			const char* color2 = TableValue(lua, 4, "cloudColor", "#666699FF");
+			float cloudSize = TableValue(lua, 4, "cloudSize", 100.0f);
 			pNode = new CSceneNodeCloud(name, CColor(color1), CColor(color2), cloudSize);
 		} else if (!strcmp("decal", type)) {
 			CMatrix4 proj;
-			const char* texture = LuaTableFieldValue(lua, 4, "texture", "");
-			float fov = LuaTableFieldValue(lua, 4, "fov", 60.0f);
+			const char* texture = TableValue(lua, 4, "texture", "");
+			float fov = TableValue(lua, 4, "fov", 60.0f);
 			pNode = new CSceneNodeDecal(name, texture, proj.Perspective(fov, 1.0f, 0.5f, 1000.0f));
 		} else if (!strcmp("flame", type)) {
-			const char* texture = LuaTableFieldValue(lua, 4, "texture", "");
-			const char* distortionMap = LuaTableFieldValue(lua, 4, "distortionMap", "");
-			const char* alphaMask = LuaTableFieldValue(lua, 4, "alphaMask", "");
-			float width = LuaTableFieldValue(lua, 4, "width", 1.0f);
-			float height = LuaTableFieldValue(lua, 4, "height", 1.0f);
+			const char* texture = TableValue(lua, 4, "texture", "");
+			const char* distortionMap = TableValue(lua, 4, "distortionMap", "");
+			const char* alphaMask = TableValue(lua, 4, "alphaMask", "");
+			float width = TableValue(lua, 4, "width", 1.0f);
+			float height = TableValue(lua, 4, "height", 1.0f);
 			pNode = new CSceneNodeFlame(name, texture, distortionMap, alphaMask, width, height);
 		} else if (!strcmp("fresnel", type)) {
-			const char* meshFile = LuaTableFieldValue(lua, 4, "meshFile", "");
+			const char* meshFile = TableValue(lua, 4, "meshFile", "");
 			pNode = new CSceneNodeFresnel(name, meshFile);
 		} else if (!strcmp("geometry", type)) {
-			const char* shape = LuaTableFieldValue(lua, 4, "shape", "");
-			const char* texture = LuaTableFieldValue(lua, 4, "texture", "");
+			const char* shape = TableValue(lua, 4, "shape", "");
+			const char* texture = TableValue(lua, 4, "texture", "");
 			SGeometry geometry;
-			geometry.reversed = LuaTableFieldValue(lua, 4, "reversed", false);
-			geometry.slices = LuaTableFieldValue(lua, 4, "slices", 32);
+			geometry.reversed = TableValue(lua, 4, "reversed", false);
+			geometry.slices = TableValue(lua, 4, "slices", 32);
 			if (!strcmp(shape, "box")) geometry.shape = SGeometry::BOX;
 			else if (!strcmp(shape, "sphere")) geometry.shape = SGeometry::SPHERE;
 			else if (!strcmp(shape, "capsule")) geometry.shape = SGeometry::CAPSULE;
@@ -1047,35 +1072,35 @@ int CScriptManager::DoSceneInsert(lua_State* lua) {
 			// 几何体参数设置
 			switch (geometry.shape) {
 			case SGeometry::BOX:
-				geometry.box.x = LuaTableFieldValue(lua, 4, "x", 1.0f);
-				geometry.box.y = LuaTableFieldValue(lua, 4, "y", 1.0f);
-				geometry.box.z = LuaTableFieldValue(lua, 4, "z", 1.0f);
+				geometry.box.x = TableValue(lua, 4, "x", 1.0f);
+				geometry.box.y = TableValue(lua, 4, "y", 1.0f);
+				geometry.box.z = TableValue(lua, 4, "z", 1.0f);
 				break;
 			case SGeometry::SPHERE:
-				geometry.sphere.r = LuaTableFieldValue(lua, 4, "r", 1.0f);
+				geometry.sphere.r = TableValue(lua, 4, "r", 1.0f);
 				break;
 			case SGeometry::CAPSULE:
-				geometry.capsule.r = LuaTableFieldValue(lua, 4, "r", 1.0f);
-				geometry.capsule.h = LuaTableFieldValue(lua, 4, "h", 1.0f);
+				geometry.capsule.r = TableValue(lua, 4, "r", 1.0f);
+				geometry.capsule.h = TableValue(lua, 4, "h", 1.0f);
 				break;
 			case SGeometry::CYLINDER:
-				geometry.cylinder.r = LuaTableFieldValue(lua, 4, "r", 1.0f);
-				geometry.cylinder.h = LuaTableFieldValue(lua, 4, "h", 1.0f);
+				geometry.cylinder.r = TableValue(lua, 4, "r", 1.0f);
+				geometry.cylinder.h = TableValue(lua, 4, "h", 1.0f);
 				break;
 			case SGeometry::TORUS:
-				geometry.torus.r = LuaTableFieldValue(lua, 4, "r", 1.0f);
-				geometry.torus.c = LuaTableFieldValue(lua, 4, "c", 1.0f);
+				geometry.torus.r = TableValue(lua, 4, "r", 1.0f);
+				geometry.torus.c = TableValue(lua, 4, "c", 1.0f);
 				break;
 			case SGeometry::CONE:
-				geometry.cone.r = LuaTableFieldValue(lua, 4, "r", 1.0f);
-				geometry.cone.h = LuaTableFieldValue(lua, 4, "h", 1.0f);
+				geometry.cone.r = TableValue(lua, 4, "r", 1.0f);
+				geometry.cone.h = TableValue(lua, 4, "h", 1.0f);
 				break;
 			case SGeometry::PLANE:
-				geometry.plane.w = LuaTableFieldValue(lua, 4, "w", 1.0f);
-				geometry.plane.h = LuaTableFieldValue(lua, 4, "h", 1.0f);
+				geometry.plane.w = TableValue(lua, 4, "w", 1.0f);
+				geometry.plane.h = TableValue(lua, 4, "h", 1.0f);
 				break;
 			case SGeometry::CIRCLE:
-				geometry.circle.r = LuaTableFieldValue(lua, 4, "r", 1.0f);
+				geometry.circle.r = TableValue(lua, 4, "r", 1.0f);
 				break;
 			default: break;
 			}
@@ -1083,76 +1108,76 @@ int CScriptManager::DoSceneInsert(lua_State* lua) {
 		} else if (!strcmp("lensflare", type)) {
 			pNode = new CSceneNodeLensflare(name);
 		} else if (!strcmp("line", type)) {
-			const char* color = LuaTableFieldValue(lua, 4, "color", "red");
-			float width = LuaTableFieldValue(lua, 4, "width", 1.0f);
+			const char* color = TableValue(lua, 4, "color", "red");
+			float width = TableValue(lua, 4, "width", 1.0f);
 			pNode = new CSceneNodeLine(name, CColor(color), width);
 		} else if (!strcmp("particles", type)) {
 			float speed[3];
-			const char* texture = LuaTableFieldValue(lua, 4, "texture", "");
-			const char* color = LuaTableFieldValue(lua, 4, "color", "#FFC080FF");
-			int count = LuaTableFieldValue(lua, 4, "count", 100);
-			float size = LuaTableFieldValue(lua, 4, "size", 0.5f);
-			bool dark = LuaTableFieldValue(lua, 4, "dark", false);
-			float spread = LuaTableFieldValue(lua, 4, "spread", 0.5f);
-			float fade = LuaTableFieldValue(lua, 4, "fade", 1.0f);
-			speed[0] = LuaTableFieldValue(lua, 4, "dx", 0.0f);
-			speed[1] = LuaTableFieldValue(lua, 4, "dy", 0.0f);
-			speed[2] = LuaTableFieldValue(lua, 4, "dz", 0.0f);
+			const char* texture = TableValue(lua, 4, "texture", "");
+			const char* color = TableValue(lua, 4, "color", "#FFC080FF");
+			int count = TableValue(lua, 4, "count", 100);
+			float size = TableValue(lua, 4, "size", 0.5f);
+			bool dark = TableValue(lua, 4, "dark", false);
+			float spread = TableValue(lua, 4, "spread", 0.5f);
+			float fade = TableValue(lua, 4, "fade", 1.0f);
+			speed[0] = TableValue(lua, 4, "dx", 0.0f);
+			speed[1] = TableValue(lua, 4, "dy", 0.0f);
+			speed[2] = TableValue(lua, 4, "dz", 0.0f);
 			pNode = new CSceneNodeParticles(name, texture, size, count, dark, CColor(color), speed, spread, fade, true);
 		} else if (!strcmp("planet", type)) {
-			const char* texture = LuaTableFieldValue(lua, 4, "texture", "");
-			const char* textureNight = LuaTableFieldValue(lua, 4, "textureNight", "");
-			float radius = LuaTableFieldValue(lua, 4, "radius", 100.0f);
-			int slices = LuaTableFieldValue(lua, 4, "slices", 64);
+			const char* texture = TableValue(lua, 4, "texture", "");
+			const char* textureNight = TableValue(lua, 4, "textureNight", "");
+			float radius = TableValue(lua, 4, "radius", 100.0f);
+			int slices = TableValue(lua, 4, "slices", 64);
 			pNode = new CSceneNodePlanet(name, texture, textureNight, radius, slices);
 		} else if (!strcmp("plant", type)) {
-			const char* texture = LuaTableFieldValue(lua, 4, "texture", "");
-			float width = LuaTableFieldValue(lua, 4, "width", 1.0f);
-			float height = LuaTableFieldValue(lua, 4, "height", 1.0f);
-			const char* distributionMap = LuaTableFieldValue(lua, 4, "distributionMap", "");
-			int count = LuaTableFieldValue(lua, 4, "count", 100);
-			float density = LuaTableFieldValue(lua, 4, "density", 0.3f);
-			float range = LuaTableFieldValue(lua, 4, "range", 1000.0f);
+			const char* texture = TableValue(lua, 4, "texture", "");
+			float width = TableValue(lua, 4, "width", 1.0f);
+			float height = TableValue(lua, 4, "height", 1.0f);
+			const char* distributionMap = TableValue(lua, 4, "distributionMap", "");
+			int count = TableValue(lua, 4, "count", 100);
+			float density = TableValue(lua, 4, "density", 0.3f);
+			float range = TableValue(lua, 4, "range", 1000.0f);
 			pNode = new CSceneNodePlant(name, texture, width, height, distributionMap, count, density, range);
 		} else if (!strcmp("screen", type)) {
-			const char* texture = LuaTableFieldValue(lua, 4, "texture", "");
-			int width = LuaTableFieldValue(lua, 4, "width", 0);
-			int height = LuaTableFieldValue(lua, 4, "height", 0);
+			const char* texture = TableValue(lua, 4, "texture", "");
+			int width = TableValue(lua, 4, "width", 0);
+			int height = TableValue(lua, 4, "height", 0);
 			pNode = new CSceneNodeScreen(name, texture, width, height);
 		} else if (!strcmp("skybox", type)) {
 			string textureArray[6];
-			const char* texture = LuaTableFieldValue(lua, 4, "texture", "");
+			const char* texture = TableValue(lua, 4, "texture", "");
 			CStringUtil::Split(textureArray, 6, texture, ",", true);
 			pNode = new CSceneNodeSkybox(name, textureArray);
 		} else if (!strcmp("sound", type)) {
-			const char* soundFile = LuaTableFieldValue(lua, 4, "soundFile", "");
-			bool loop = LuaTableFieldValue(lua, 4, "loop", true);
-			bool start = LuaTableFieldValue(lua, 4, "start", true);
+			const char* soundFile = TableValue(lua, 4, "soundFile", "");
+			bool loop = TableValue(lua, 4, "loop", true);
+			bool start = TableValue(lua, 4, "start", true);
 			pNode = new CSceneNodeSound(name, soundFile, loop, start);
 		} else if (!strcmp("static", type)) {
-			const char* meshFile = LuaTableFieldValue(lua, 4, "meshFile", "");
+			const char* meshFile = TableValue(lua, 4, "meshFile", "");
 			pNode = new CSceneNodeStatic(name, meshFile);
 		} else if (!strcmp("terrain", type)) {
 			string textureArray[4];
-			const char* texture = LuaTableFieldValue(lua, 4, "texture", "");
-			const char* heightMap = LuaTableFieldValue(lua, 4, "heightMap", "");
-			const char* blendMap = LuaTableFieldValue(lua, 4, "blendMap", "");
-			float heightScale = LuaTableFieldValue(lua, 4, "heightScale", 100.0f);
-			float mapScale = LuaTableFieldValue(lua, 4, "mapScale", 5000.0f);
+			const char* texture = TableValue(lua, 4, "texture", "");
+			const char* heightMap = TableValue(lua, 4, "heightMap", "");
+			const char* blendMap = TableValue(lua, 4, "blendMap", "");
+			float heightScale = TableValue(lua, 4, "heightScale", 100.0f);
+			float mapScale = TableValue(lua, 4, "mapScale", 5000.0f);
 			CStringUtil::Split(textureArray, 4, texture, ",", true);
 			pNode = new CSceneNodeTerrain(name, heightMap, mapScale, heightScale, textureArray, blendMap);
 		} else if (!strcmp("text", type)) {
 			wchar_t text[128];
-			const char* src = LuaTableFieldValue(lua, 4, "text", "?");
+			const char* src = TableValue(lua, 4, "text", "?");
 			CStringUtil::Utf8ToWideCharArray(src, text, 128);
-			const char* color = LuaTableFieldValue(lua, 4, "color", "#FF0000FF");
-			const char* outline = LuaTableFieldValue(lua, 4, "outline", "#FFFF00FF");
-			const char* font = LuaTableFieldValue(lua, 4, "font", "default");
-			int fontSize = LuaTableFieldValue(lua, 4, "fontSize", 16);
+			const char* color = TableValue(lua, 4, "color", "#FF0000FF");
+			const char* outline = TableValue(lua, 4, "outline", "#FFFF00FF");
+			const char* font = TableValue(lua, 4, "font", "default");
+			int fontSize = TableValue(lua, 4, "fontSize", 16);
 			pNode = new CSceneNodeText(name, text, CColor(color), CColor(outline), font, fontSize);
 		} else if (!strcmp("water", type)) {
-			const char* normalMap = LuaTableFieldValue(lua, 4, "normalMap", "");
-			float depth = LuaTableFieldValue(lua, 4, "depth", 0.0f);
+			const char* normalMap = TableValue(lua, 4, "normalMap", "");
+			float depth = TableValue(lua, 4, "depth", 0.0f);
 			pNode = new CSceneNodeWater(name, normalMap, depth);
 		}
 		if (pNode && !CEngine::GetSceneManager()->InsertNode(pNode, pParent)) {
@@ -1464,12 +1489,12 @@ int CScriptManager::DoSceneMaterial(lua_State* lua) {
 		int meshIndex = (int)lua_tointeger(lua, 2);
 		if (meshIndex >= pMeshData->GetMeshCount()) return 0;
 		if (lua_istable(lua, 3)) {
-			const char* name = LuaTableFieldValue(lua, 3, "name", "");
-			float roughness = LuaTableFieldValue(lua, 3, "roughness", -1.0f);
-			float metalness = LuaTableFieldValue(lua, 3, "metalness", -1.0f);
-			const char* color = LuaTableFieldValue(lua, 3, "color", "");
-			const char* shader = LuaTableFieldValue(lua, 3, "shader", "");
-			const char* texture = LuaTableFieldValue(lua, 3, "texture", "");
+			const char* name = TableValue(lua, 3, "name", "");
+			float roughness = TableValue(lua, 3, "roughness", -1.0f);
+			float metalness = TableValue(lua, 3, "metalness", -1.0f);
+			const char* color = TableValue(lua, 3, "color", "");
+			const char* shader = TableValue(lua, 3, "shader", "");
+			const char* texture = TableValue(lua, 3, "texture", "");
 			vector<string> textures;
 			if (strlen(texture) > 0) CStringUtil::Split(textures, texture, ",", true);
 			if (meshIndex < 0) {
@@ -1573,51 +1598,51 @@ int CScriptManager::DoSceneHandle(lua_State* lua) {
 			CSceneNodeAnimation* that = static_cast<CSceneNodeAnimation*>(pNode);
 			if (!strcmp(function, "StartAnimation")) {
 				if (!lua_istable(lua, 3)) return 0;
-				const char* name = LuaTableFieldValue(lua, 3, "name", "");
-				bool loop = LuaTableFieldValue(lua, 3, "loop", true);
-				float transition = LuaTableFieldValue(lua, 3, "transition", -1.0f);
+				const char* name = TableValue(lua, 3, "name", "");
+				bool loop = TableValue(lua, 3, "loop", true);
+				float transition = TableValue(lua, 3, "transition", -1.0f);
 				that->StartAnimation(name, loop, transition);
 			} else if (!strcmp(function, "BlendAnimation")) {
 				if (!lua_istable(lua, 3)) return 0;
-				const char* anim1 = LuaTableFieldValue(lua, 3, "anim1", "");
-				const char* anim2 = LuaTableFieldValue(lua, 3, "anim2", "");
-				float k = LuaTableFieldValue(lua, 3, "k", 0.5f);
+				const char* anim1 = TableValue(lua, 3, "anim1", "");
+				const char* anim2 = TableValue(lua, 3, "anim2", "");
+				float k = TableValue(lua, 3, "k", 0.5f);
 				that->BlendAnimation(anim1, anim2, k);
 			} else if (!strcmp(function, "StopAnimation")) {
 				that->StopAnimation();
 			} else if (!strcmp(function, "SetAnimationFrameRate")) {
 				if (!lua_istable(lua, 3)) return 0;
-				float fps = LuaTableFieldValue(lua, 3, "fps", 30.0f);
+				float fps = TableValue(lua, 3, "fps", 30.0f);
 				that->SetAnimationFrameRate(fps);
 			} else if (!strcmp(function, "ShowSkeleton")) {
 				if (!lua_istable(lua, 3)) return 0;
-				bool visible = LuaTableFieldValue(lua, 3, "visible", true);
-				bool skeletonOnly = LuaTableFieldValue(lua, 3, "skeletonOnly", false);
+				bool visible = TableValue(lua, 3, "visible", true);
+				bool skeletonOnly = TableValue(lua, 3, "skeletonOnly", false);
 				that->ShowSkeleton(visible, skeletonOnly);
 			} else if (!strcmp(function, "GetAnimationName")) {
 				if (!lua_istable(lua, 3)) return 0;
-				int index = LuaTableFieldValue(lua, 3, "index", 0);
+				int index = TableValue(lua, 3, "index", 0);
 				lua_pushstring(lua, that->GetAnimationName(index).c_str());
 				return 1;
 			} else if (!strcmp(function, "PointFacing")) {
 				if (!lua_istable(lua, 3)) return 0;
 				CVector3 front, point;
-				const char* joint = LuaTableFieldValue(lua, 3, "joint", "");
-				front[0] = LuaTableFieldValue(lua, 3, "front_x", 0.0f);
-				front[1] = LuaTableFieldValue(lua, 3, "front_y", -1.0f);
-				front[2] = LuaTableFieldValue(lua, 3, "front_z", 0.0f);
-				point[0] = LuaTableFieldValue(lua, 3, "point_x", 0.0f);
-				point[1] = LuaTableFieldValue(lua, 3, "point_y", 0.0f);
-				point[2] = LuaTableFieldValue(lua, 3, "point_z", 0.0f);
-				float angle = LuaTableFieldValue(lua, 3, "angle", 1.047198f);
+				const char* joint = TableValue(lua, 3, "joint", "");
+				front[0] = TableValue(lua, 3, "front_x", 0.0f);
+				front[1] = TableValue(lua, 3, "front_y", -1.0f);
+				front[2] = TableValue(lua, 3, "front_z", 0.0f);
+				point[0] = TableValue(lua, 3, "point_x", 0.0f);
+				point[1] = TableValue(lua, 3, "point_y", 0.0f);
+				point[2] = TableValue(lua, 3, "point_z", 0.0f);
+				float angle = TableValue(lua, 3, "angle", 1.047198f);
 				that->PointFacing(joint, front, point, angle);
 			}
 		} else if (type == "blast") {
 			CSceneNodeBlast* that = static_cast<CSceneNodeBlast*>(pNode);
 			if (!strcmp(function, "InitBlast")) {
 				if (!lua_istable(lua, 3)) return 0;
-				float duration = LuaTableFieldValue(lua, 3, "duration", 1.0f);
-				float size = LuaTableFieldValue(lua, 3, "size", 1.0f);
+				float duration = TableValue(lua, 3, "duration", 1.0f);
+				float size = TableValue(lua, 3, "size", 1.0f);
 				that->InitBlast(duration, size);
 			} else if (!strcmp(function, "IsFinished")) {
 				lua_pushboolean(lua, that->IsFinished());
@@ -1634,49 +1659,49 @@ int CScriptManager::DoSceneHandle(lua_State* lua) {
 				return 3;
 			} else if (!strcmp(function, "SetAxis")) {
 				if (!lua_istable(lua, 3)) return 0;
-				float x = LuaTableFieldValue(lua, 3, "x", 0.0f);
-				float y = LuaTableFieldValue(lua, 3, "y", 0.0f);
-				float z = LuaTableFieldValue(lua, 3, "z", 1.0f);
+				float x = TableValue(lua, 3, "x", 0.0f);
+				float y = TableValue(lua, 3, "y", 0.0f);
+				float z = TableValue(lua, 3, "z", 1.0f);
 				that->SetAxis(CVector3(x, y, z));
 			} else if (!strcmp(function, "SetPlayTime")) {
 				if (!lua_istable(lua, 3)) return 0;
-				float time = LuaTableFieldValue(lua, 3, "time", 0.0f);
+				float time = TableValue(lua, 3, "time", 0.0f);
 				that->SetPlayTime(time);
 			}
 		} else if (type == "line") {
 			CSceneNodeLine* that = static_cast<CSceneNodeLine*>(pNode);
 			if (!strcmp(function, "AddPoint")) {
 				if (!lua_istable(lua, 3)) return 0;
-				float x = LuaTableFieldValue(lua, 3, "x", 0.0f);
-				float y = LuaTableFieldValue(lua, 3, "y", 0.0f);
-				float z = LuaTableFieldValue(lua, 3, "z", 0.0f);
+				float x = TableValue(lua, 3, "x", 0.0f);
+				float y = TableValue(lua, 3, "y", 0.0f);
+				float z = TableValue(lua, 3, "z", 0.0f);
 				that->AddPoint(CVector3(x, y, z));
 			} else if (!strcmp(function, "ClearPoint")) {
 				that->ClearPoint();
 			} else if (!strcmp(function, "SmoothLine")) {
 				if (!lua_istable(lua, 3)) return 0;
-				float ds = LuaTableFieldValue(lua, 3, "ds", 0.1f);
+				float ds = TableValue(lua, 3, "ds", 0.1f);
 				that->SmoothLine(ds);
 			} else if (!strcmp(function, "ShowPoints")) {
 				if (!lua_istable(lua, 3)) return 0;
-				bool show = LuaTableFieldValue(lua, 3, "show", true);
-				float pointSize = LuaTableFieldValue(lua, 3, "pointSize", 1.0f);
+				bool show = TableValue(lua, 3, "show", true);
+				float pointSize = TableValue(lua, 3, "pointSize", 1.0f);
 				that->ShowPoints(show, pointSize);
 			} else if (!strcmp(function, "DisableDepth")) {
 				if (!lua_istable(lua, 3)) return 0;
-				bool disable = LuaTableFieldValue(lua, 3, "disable", true);
+				bool disable = TableValue(lua, 3, "disable", true);
 				that->DisableDepth(disable);
 			} else if (!strcmp(function, "ScreenSpace")) {
 				if (!lua_istable(lua, 3)) return 0;
-				bool enable = LuaTableFieldValue(lua, 3, "enable", true);
+				bool enable = TableValue(lua, 3, "enable", true);
 				that->ScreenSpace(enable);
 			} else if (!strcmp(function, "Segment")) {
 				if (!lua_istable(lua, 3)) return 0;
-				bool enable = LuaTableFieldValue(lua, 3, "enable", true);
+				bool enable = TableValue(lua, 3, "enable", true);
 				that->Segment(enable);
 			} else if (!strcmp(function, "SetShader")) {
 				if (!lua_istable(lua, 3)) return 0;
-				const char* shader = LuaTableFieldValue(lua, 3, "shader", "");
+				const char* shader = TableValue(lua, 3, "shader", "");
 				that->SetShader(shader);
 			} else if (!strcmp(function, "GetPointCount")) {
 				lua_pushinteger(lua, that->GetPointCount());
@@ -1687,32 +1712,32 @@ int CScriptManager::DoSceneHandle(lua_State* lua) {
 			if (!strcmp(function, "InitParticles")) {
 				if (!lua_istable(lua, 3)) return 0;
 				CVector3 initSpeed;
-				initSpeed[0] = LuaTableFieldValue(lua, 3, "initSpeed_x", 0.0f);
-				initSpeed[1] = LuaTableFieldValue(lua, 3, "initSpeed_y", 0.0f);
-				initSpeed[2] = LuaTableFieldValue(lua, 3, "initSpeed_z", 0.0f);
-				float spreadSpeed = LuaTableFieldValue(lua, 3, "spreadSpeed", 1.0f);
-				float fadeSpeed = LuaTableFieldValue(lua, 3, "fadeSpeed", 1.0f);
+				initSpeed[0] = TableValue(lua, 3, "initSpeed_x", 0.0f);
+				initSpeed[1] = TableValue(lua, 3, "initSpeed_y", 0.0f);
+				initSpeed[2] = TableValue(lua, 3, "initSpeed_z", 0.0f);
+				float spreadSpeed = TableValue(lua, 3, "spreadSpeed", 1.0f);
+				float fadeSpeed = TableValue(lua, 3, "fadeSpeed", 1.0f);
 				that->InitParticles(initSpeed, spreadSpeed, fadeSpeed);
 			}
 		} else if (type == "sound") {
 			CSceneNodeSound* that = static_cast<CSceneNodeSound*>(pNode);
 			if (!strcmp(function, "Play")) {
 				if (!lua_istable(lua, 3)) return 0;
-				bool enable = LuaTableFieldValue(lua, 3, "enable", true);
+				bool enable = TableValue(lua, 3, "enable", true);
 				that->Play(enable);
 			}
 		} else if (type == "terrain") {
 			CSceneNodeTerrain* that = static_cast<CSceneNodeTerrain*>(pNode);
 			if (!strcmp(function, "GetHeight")) {
 				if (!lua_istable(lua, 3)) return 0;
-				float x = LuaTableFieldValue(lua, 3, "x", 0.0f);
-				float y = LuaTableFieldValue(lua, 3, "y", 0.0f);
+				float x = TableValue(lua, 3, "x", 0.0f);
+				float y = TableValue(lua, 3, "y", 0.0f);
 				lua_pushnumber(lua, that->GetHeight(x, y));
 				return 1;
 			} else if (!strcmp(function, "GetNormal")) {
 				if (!lua_istable(lua, 3)) return 0;
-				float x = LuaTableFieldValue(lua, 3, "x", 0.0f);
-				float y = LuaTableFieldValue(lua, 3, "y", 0.0f);
+				float x = TableValue(lua, 3, "x", 0.0f);
+				float y = TableValue(lua, 3, "y", 0.0f);
 				CVector3 normal = that->GetNormal(x, y);
 				lua_pushnumber(lua, normal[0]);
 				lua_pushnumber(lua, normal[1]);
@@ -1724,18 +1749,18 @@ int CScriptManager::DoSceneHandle(lua_State* lua) {
 			if (!strcmp(function, "SetText")) {
 				if (!lua_istable(lua, 3)) return 0;
 				wchar_t buffer[1024];
-				const char* text = LuaTableFieldValue(lua, 3, "text", "");
+				const char* text = TableValue(lua, 3, "text", "");
 				CStringUtil::Utf8ToWideCharArray(text, buffer, 1024);
 				that->SetText(buffer);
 			} else if (!strcmp(function, "SetFont")) {
 				if (!lua_istable(lua, 3)) return 0;
-				const char* font = LuaTableFieldValue(lua, 3, "font", "default");
-				int fontSize = LuaTableFieldValue(lua, 3, "fontSize", 16);
+				const char* font = TableValue(lua, 3, "font", "default");
+				int fontSize = TableValue(lua, 3, "fontSize", 16);
 				that->SetFont(font, fontSize);
 			} else if (!strcmp(function, "SetColor")) {
 				if (!lua_istable(lua, 3)) return 0;
-				const char* color = LuaTableFieldValue(lua, 3, "color", "red");
-				const char* outline = LuaTableFieldValue(lua, 3, "outline", "yellow");
+				const char* color = TableValue(lua, 3, "color", "red");
+				const char* outline = TableValue(lua, 3, "outline", "yellow");
 				that->SetColor(CColor(color), CColor(outline));
 			}
 		}
@@ -1821,6 +1846,14 @@ int CScriptManager::DoGraphicsScreenshot(lua_State* lua) {
 		string filepath = lua_tostring(lua, 1);
 		bool redraw = lua_isboolean(lua, 2) ? lua_toboolean(lua, 2) != 0 : true;
 		CEngine::GetGraphicsManager()->Screenshot(filepath, redraw);
+	} else if (lua_isnil(lua, 1)) {
+		bool redraw = lua_isboolean(lua, 2) ? lua_toboolean(lua, 2) != 0 : true;
+		CFileManager::CImageFile file(CFileManager::PNG);
+		CEngine::GetGraphicsManager()->Screenshot(file, redraw);
+		CFileManager::CBinaryFile buffer(file.size);
+		int size = CEngine::GetFileManager()->WriteFile(&file, buffer.contents, buffer.size);
+		lua_pushlstring(lua, (const char*)buffer.contents, size);
+		return 1;
 	}
 	return 0;
 }
@@ -2106,6 +2139,10 @@ int CScriptManager::DoTextureUpdate(lua_State* lua) {
 		CTextureManager* pTextureMgr = CEngine::GetTextureManager();
 		CTexture* pTexture = pTextureMgr->GetTexture(lua_tostring(lua, 1));
 		success = pTextureMgr->Update(pTexture, lua_tostring(lua, 2));
+		if (!success && pTexture) {
+			CRectangle region(0, 0, pTexture->GetWidth(), pTexture->GetHeight());
+			success = pTextureMgr->Update(pTexture, CColor(lua_tostring(lua, 2)), region);
+		}
 	}
 	lua_pushboolean(lua, success);
 	return 1;
@@ -2346,7 +2383,7 @@ int CScriptManager::DoPhysicsBind(lua_State* lua) {
 			geometry.box.y = 1.0f;
 			geometry.box.z = 1.0f;
 		}
-		const char* shape = LuaTableFieldValue(lua, 2, "shape", "");
+		const char* shape = TableValue(lua, 2, "shape", "");
 		if (!strcmp(shape, "box")) geometry.shape = SGeometry::BOX;
 		else if (!strcmp(shape, "sphere")) geometry.shape = SGeometry::SPHERE;
 		else if (!strcmp(shape, "capsule")) geometry.shape = SGeometry::CAPSULE;
@@ -2355,34 +2392,34 @@ int CScriptManager::DoPhysicsBind(lua_State* lua) {
 		else if (!strcmp(shape, "plane")) geometry.shape = SGeometry::PLANE;
 		switch (geometry.shape) {
 		case SGeometry::BOX:
-			geometry.box.x = LuaTableFieldValue(lua, 2, "x", geometry.box.x);
-			geometry.box.y = LuaTableFieldValue(lua, 2, "y", geometry.box.y);
-			geometry.box.z = LuaTableFieldValue(lua, 2, "z", geometry.box.z);
+			geometry.box.x = TableValue(lua, 2, "x", geometry.box.x);
+			geometry.box.y = TableValue(lua, 2, "y", geometry.box.y);
+			geometry.box.z = TableValue(lua, 2, "z", geometry.box.z);
 			break;
 		case SGeometry::SPHERE:
-			geometry.sphere.r = LuaTableFieldValue(lua, 2, "r", geometry.sphere.r);
+			geometry.sphere.r = TableValue(lua, 2, "r", geometry.sphere.r);
 			break;
 		case SGeometry::CAPSULE:
-			geometry.capsule.r = LuaTableFieldValue(lua, 2, "r", geometry.capsule.r);
-			geometry.capsule.h = LuaTableFieldValue(lua, 2, "h", geometry.capsule.h);
+			geometry.capsule.r = TableValue(lua, 2, "r", geometry.capsule.r);
+			geometry.capsule.h = TableValue(lua, 2, "h", geometry.capsule.h);
 			break;
 		case SGeometry::CYLINDER:
-			geometry.cylinder.r = LuaTableFieldValue(lua, 2, "r", geometry.cylinder.r);
-			geometry.cylinder.h = LuaTableFieldValue(lua, 2, "h", geometry.cylinder.h);
+			geometry.cylinder.r = TableValue(lua, 2, "r", geometry.cylinder.r);
+			geometry.cylinder.h = TableValue(lua, 2, "h", geometry.cylinder.h);
 			break;
 		case SGeometry::TORUS:
-			geometry.torus.r = LuaTableFieldValue(lua, 2, "r", geometry.torus.r);
-			geometry.torus.c = LuaTableFieldValue(lua, 2, "c", geometry.torus.c);
+			geometry.torus.r = TableValue(lua, 2, "r", geometry.torus.r);
+			geometry.torus.c = TableValue(lua, 2, "c", geometry.torus.c);
 			break;
 		default: break;
 		}
-		float mass = LuaTableFieldValue(lua, 2, "mass", 1.0f);
-		float linearDamping = LuaTableFieldValue(lua, 2, "linearDamping", 0.0f);
-		float angularDamping = LuaTableFieldValue(lua, 2, "angularDamping", 0.0f);
-		float friction = LuaTableFieldValue(lua, 2, "friction", 0.5f);
-		float restitution = LuaTableFieldValue(lua, 2, "restitution", 0.0f);
-		bool trigger = LuaTableFieldValue(lua, 2, "trigger", false);
-		bool allowSleep = LuaTableFieldValue(lua, 2, "allowSleep", true);
+		float mass = TableValue(lua, 2, "mass", 1.0f);
+		float linearDamping = TableValue(lua, 2, "linearDamping", 0.0f);
+		float angularDamping = TableValue(lua, 2, "angularDamping", 0.0f);
+		float friction = TableValue(lua, 2, "friction", 0.5f);
+		float restitution = TableValue(lua, 2, "restitution", 0.0f);
+		bool trigger = TableValue(lua, 2, "trigger", false);
+		bool allowSleep = TableValue(lua, 2, "allowSleep", true);
 		CRigidBody* pRigidBody = new CRigidBody(pNode);
 		pRigidBody->SetAttribute(mass, geometry, trigger, allowSleep);
 		pRigidBody->SetDamping(linearDamping, angularDamping);

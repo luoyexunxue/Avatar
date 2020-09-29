@@ -5,6 +5,7 @@
 #ifndef _CSCRIPTCONTEXT_H_
 #define _CSCRIPTCONTEXT_H_
 #include "AvatarConfig.h"
+#include <cstdint>
 #include <string>
 using std::string;
 
@@ -22,7 +23,7 @@ public:
 	//! 绑定脚本方法
 	void BindFunction(const string& name, void* function);
 	//! 绑定脚本方法
-	void BindFunction(const string& group, const string& name, void* function);
+	void BindFunction(const string& table, const string& name, void* function);
 
 	//! 判断是否 bool 类型
 	bool IsBoolean(int index);
@@ -45,7 +46,15 @@ public:
 	float ToNumber(int index);
 	//! 获取 string 值
 	const char* ToString(int index);
+	//! 获取 string 值
+	const char* ToString(int index, size_t* length);
 
+	//! 获取表元素个数
+	int TableSize(int index);
+	//! 获取表元素到栈顶
+	void TableField(int index, int key);
+	//! 获取表元素到栈顶
+	void TableField(int index, const char* key);
 	//! 获取表 bool 字段值
 	bool TableValue(int index, const char* name, bool def);
 	//! 获取表 int 字段值
@@ -63,6 +72,16 @@ public:
 	void PushValue(float value);
 	//! 将 string 值压栈
 	void PushValue(const char* value);
+	//! 将 string 值压栈
+	void PushValue(const char* value, size_t length);
+	//! 将空 table 压栈
+	void PushTable();
+	//! 将栈顶元素作为 table 值压栈
+	void PushTable(int key);
+	//! 将栈顶元素作为 table 值压栈
+	void PushTable(const char* key);
+	//! 将栈顶元素出栈
+	void PopValue(int count);
 
 	//! 引用回调方法
 	int RefCallback();
@@ -74,7 +93,7 @@ public:
 	//! 开始调用回调方法
 	void InvokeBegin(const string& function);
 	//! 结束调用回调方法
-	void InvokeEnd(int params);
+	int InvokeEnd(int params);
 
 private:
 	//! 私有构造函数

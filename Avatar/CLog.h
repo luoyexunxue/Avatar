@@ -8,8 +8,8 @@
 #include <string>
 #include <cstdarg>
 #include <fstream>
+#include <mutex>
 using std::string;
-using std::ofstream;
 
 /**
 * @brief 日志类
@@ -35,13 +35,13 @@ public:
 	static void SetLevel(CLog::Level level);
 
 	//! 输出一般信息
-	static void Info(const char* msg, ...);
+	static void Info(const char* format, ...);
 	//! 输出调试信息
-	static void Debug(const char* msg, ...);
+	static void Debug(const char* format, ...);
 	//! 输出警告信息
-	static void Warn(const char* msg, ...);
+	static void Warn(const char* format, ...);
 	//! 输出错误信息
-	static void Error(const char* msg, ...);
+	static void Error(const char* format, ...);
 
 	//! 输出字符串信息
 	static void Message(const string& msg);
@@ -53,29 +53,28 @@ private:
 	~CLog();
 
 	//! 日志输出方法
-	void Log(CLog::Level level, const char* msg, va_list args);
+	void Log(CLog::Level level, const char* format, va_list args);
 	//! 消息输出方法
 	void Log(const string& msg);
 
-	//! 打开输出控制台
+	//! 打开控制台
 	void ConsoleOpen(const string& name);
-	//! 关闭输出控制台
+	//! 关闭控制台
 	void ConsoleClose();
-
-	//! 打开输出文件
+	//! 打开文件输出
 	void FileOpen(const string& name);
-	//! 关闭输出文件
+	//! 关闭文件输出
 	void FileClose();
 
 private:
 	//! 日志参数
 	typedef struct _SLogParam {
-		bool locked;
 		bool console;
 		bool file;
 		bool printTime;
 		CLog::Level logLevel;
-		ofstream filestream;
+		std::mutex lock;
+		std::ofstream filestream;
 	} SLogParam;
 
 	//! 日志变量

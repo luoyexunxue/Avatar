@@ -525,6 +525,7 @@ int CFileManager::WriteFile(CFileData* file, unsigned char* buffer, unsigned int
 	case MP3: ret = SerializeMp3File(file, &data, &length); break;
 	}
 	if (!ret) return 0;
+	if (!buffer) return length;
 	if (length > size) length = size;
 	// 写入文件内容
 	memcpy(buffer, data, length);
