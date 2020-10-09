@@ -283,7 +283,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 		return 0;
 #ifdef AVATAR_ENABLE_KEYBOARD
 	case WM_CHAR:
-		pInputMgr->KeyboardInput(wParam);
+		pInputMgr->KeyboardInput((int)wParam);
 		return 0;
 	case WM_KEYDOWN:
 		if (wParam == VK_SHIFT) KeyPressed[0] = true;

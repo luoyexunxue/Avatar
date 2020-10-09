@@ -21,7 +21,7 @@ using namespace rapidxml;
 class AVATAR_EXPORT CMeshLoaderCollada : public CMeshLoader {
 public:
 	//! 加载模型
-	virtual CMeshData* LoadFile(const string& filename, uint8_t* data, uint32_t size);
+	virtual CMeshData* LoadFile(const string& filename, uint8_t* data, size_t size);
 
 private:
 	//! 读取图片节点

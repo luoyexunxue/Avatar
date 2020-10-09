@@ -12,10 +12,10 @@
 /**
 * 加载 GLTF 模型
 */
-CMeshData* CMeshLoaderGltf::LoadFile(const string& filename, uint8_t* data, uint32_t size) {
+CMeshData* CMeshLoaderGltf::LoadFile(const string& filename, uint8_t* data, size_t size) {
 	const char* json = reinterpret_cast<char*>(data);
 	bool isBinary = strncmp(json, "glTF", 4) == 0;
-	int jsonLength = size;
+	size_t jsonLength = size;
 	m_vecBuffer.clear();
 	m_setJoints.clear();
 	m_mapJoints.clear();
@@ -67,8 +67,8 @@ CMeshData* CMeshLoaderGltf::LoadFile(const string& filename, uint8_t* data, uint
 * 读取二进制缓冲区
 */
 void CMeshLoaderGltf::ReadBuffers() {
-	int count = m_cJsonObject["buffers"].GetCount();
-	for (int i = 0; i < count; i++) {
+	size_t count = m_cJsonObject["buffers"].GetCount();
+	for (size_t i = 0; i < count; i++) {
 		SBufferBin bin;
 		bin.allocated = false;
 		bin.data = 0;
@@ -159,8 +159,8 @@ void CMeshLoaderGltf::ReadJointNode(int index, const CMatrix4& matrix, SJoint* p
 		parent = pJoint;
 	}
 	if (node.IsContain("children")) {
-		int children_count = node["children"].GetCount();
-		for (int i = 0; i < children_count; i++) {
+		size_t children_count = node["children"].GetCount();
+		for (size_t i = 0; i < children_count; i++) {
 			ReadJointNode(node["children"][i].ToInt(), transform, parent);
 		}
 	}
@@ -188,8 +188,8 @@ void CMeshLoaderGltf::ReadMeshNode(int index, const CMatrix4& matrix) {
 	}
 	const CMatrix4 transform = matrix * local;
 	if (node.IsContain("children")) {
-		int children_count = node["children"].GetCount();
-		for (int i = 0; i < children_count; i++) {
+		size_t children_count = node["children"].GetCount();
+		for (size_t i = 0; i < children_count; i++) {
 			ReadMeshNode(node["children"][i].ToInt(), transform);
 		}
 	}
@@ -215,8 +215,8 @@ void CMeshLoaderGltf::ReadMeshNode(int index, const CMatrix4& matrix) {
 * 读取网格
 */
 void CMeshLoaderGltf::ReadMesh(CJsonObject& mesh, const CMatrix4& matrix, map<int, int>& skinMapper) {
-	int primitive_count = mesh["primitives"].GetCount();
-	for (int i = 0; i < primitive_count; i++) {
+	size_t primitive_count = mesh["primitives"].GetCount();
+	for (size_t i = 0; i < primitive_count; i++) {
 		CJsonObject& primitive = mesh["primitives"][i];
 		CJsonObject& attributes = primitive["attributes"];
 		int material_index = primitive.IsContain("material") ? primitive["material"].ToInt() : -1;
@@ -334,10 +334,10 @@ void CMeshLoaderGltf::ReadTexture(CJsonObject& texture, CMaterial* material) {
 */
 void CMeshLoaderGltf::ReadAnimation() {
 	if (!m_cJsonObject.IsContain("animations")) return;
-	int count = m_cJsonObject["animations"].GetCount();
+	size_t count = m_cJsonObject["animations"].GetCount();
 	float time_begin = 0.0f;
 	float time_end = 0.0f;
-	for (int i = 0; i < count; i++) {
+	for (size_t i = 0; i < count; i++) {
 		CJsonObject& animation = m_cJsonObject["animations"][i];
 		CJsonObject& channels = animation["channels"];
 		string name = animation.IsContain("name") ? animation["name"].ToString() : std::to_string(i);

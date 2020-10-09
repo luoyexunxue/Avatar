@@ -72,7 +72,7 @@ void CPostProcessUser::Apply(CTexture* target, CMesh* mesh) {
 	m_pPostProcessShader->UseShader();
 	m_pPostProcessShader->SetUniform("uElapsedTime", CTimer::Reset(m_strIdentifier, false));
 	if (!m_vecTextures.empty()) {
-		for (size_t i = m_vecTextures.size(); i > 0; i--) m_vecTextures[i - 1]->UseTexture(i);
+		for (size_t i = m_vecTextures.size(); i > 0; i--) m_vecTextures[i - 1]->UseTexture((int)i);
 		m_pRenderTexture->UseTexture(0);
 	} else m_pRenderTexture->UseTexture();
 	mesh->Render(false);

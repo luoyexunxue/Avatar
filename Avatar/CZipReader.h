@@ -26,9 +26,9 @@ public:
 	//! 关闭上次打开的文件
 	void Close();
 	//! 获取当前打开的文件大小
-	unsigned int Size();
+	size_t Size();
 	//! 读取当前打开的文件
-	unsigned int Read(unsigned char* buff, unsigned int size);
+	size_t Read(unsigned char* buff, size_t size);
 
 private:
 	//! 解压句柄

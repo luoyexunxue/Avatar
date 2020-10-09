@@ -19,7 +19,7 @@ using std::istringstream;
 /**
 * 加载 STL/OBJ/MS3D/BVH/B3DM/I3DM 模型
 */
-CMeshData* CMeshLoaderBasic::LoadFile(const string& filename, uint8_t* data, uint32_t size) {
+CMeshData* CMeshLoaderBasic::LoadFile(const string& filename, uint8_t* data, size_t size) {
 	string ext = CStringUtil::UpperCase(CFileManager::GetExtension(filename));
 	if (ext == "STL") return LoadStlFile(filename, data, size);
 	if (ext == "OBJ") return LoadObjFile(filename, data, size);
@@ -33,12 +33,12 @@ CMeshData* CMeshLoaderBasic::LoadFile(const string& filename, uint8_t* data, uin
 /**
 * 加载 STL 模型
 */
-CMeshData* CMeshLoaderBasic::LoadStlFile(const string& filename, uint8_t* data, uint32_t size) {
+CMeshData* CMeshLoaderBasic::LoadStlFile(const string& filename, uint8_t* data, size_t size) {
 	CStreamReader reader(data, size);
 	// 跳过80字节的头部
 	reader.Skip(80);
 	// 三角形数量
-	int triangleCount = reader.GetValue<int32_t>();
+	int32_t triangleCount = reader.GetValue<int32_t>();
 	// 不是有效的 STL 文件
 	if (reader.Available() <  triangleCount * 50) {
 		return 0;
@@ -68,7 +68,7 @@ CMeshData* CMeshLoaderBasic::LoadStlFile(const string& filename, uint8_t* data, 
 /**
 * 加载 OBJ 模型
 */
-CMeshData* CMeshLoaderBasic::LoadObjFile(const string& filename, uint8_t* data, uint32_t size) {
+CMeshData* CMeshLoaderBasic::LoadObjFile(const string& filename, uint8_t* data, size_t size) {
 	// 顶点索引
 	struct SVertIndex {
 		int vp;
@@ -91,7 +91,7 @@ CMeshData* CMeshLoaderBasic::LoadObjFile(const string& filename, uint8_t* data, 
 	string mtlFilePath;
 	string currentMtl = "";
 	CMesh* currentMesh = 0;
-	map<SVertIndex, int, SComparekey> mapVertices;
+	map<SVertIndex, unsigned int, SComparekey> mapVertices;
 	CMeshData* pMeshData = new CMeshData();
 	string baseDir = CFileManager::GetDirectory(filename);
 	istringstream stream(string((const char*)data, size));
@@ -141,25 +141,25 @@ CMeshData* CMeshLoaderBasic::LoadObjFile(const string& filename, uint8_t* data, 
 				reader >> face;
 				int index[3] = { -1, -1, -1 };
 				int length = ParseObjFace(face, index);
-				if (length > 0) index[0] = index[0] < 0? index[0] * 3 + vecVertices.size(): (index[0] - 1) * 3;
-				if (length > 1) index[1] = index[1] < 0? index[1] * 2 + vecTexCoords.size(): (index[1] - 1) * 2;
-				if (length > 2) index[2] = index[2] < 0? index[2] * 3 + vecNormals.size(): (index[2] - 1) * 3;
+				if (length > 0) index[0] = index[0] < 0 ? index[0] * 3 + (int)vecVertices.size() : (index[0] - 1) * 3;
+				if (length > 1) index[1] = index[1] < 0 ? index[1] * 2 + (int)vecTexCoords.size() : (index[1] - 1) * 2;
+				if (length > 2) index[2] = index[2] < 0 ? index[2] * 3 + (int)vecNormals.size() : (index[2] - 1) * 3;
 				vertIndex.push_back(SVertIndex(index));
 			}
 			if (vertIndex.size() < 3) continue;
-			int triangle[3];
+			unsigned int triangle[3];
 			for (size_t i = 0; i < vertIndex.size(); i++) {
 				SVertIndex& index = vertIndex[i];
 				CVertex vert;
 				if (index.vp >= 0) vert.SetPosition(&vecVertices[index.vp]);
 				if (index.vt >= 0) vert.SetTexCoord(&vecTexCoords[index.vt]);
 				if (index.vn >= 0) vert.SetNormal(&vecNormals[index.vn]);
-				int current = 0;
-				map<SVertIndex, int, SComparekey>::iterator iter = mapVertices.find(index);
+				unsigned int current = 0;
+				map<SVertIndex, unsigned int, SComparekey>::iterator iter = mapVertices.find(index);
 				if (iter != mapVertices.end()) current = iter->second;
 				else {
-					current = currentMesh->GetVertexCount();
-					mapVertices.insert(std::pair<SVertIndex, int>(index, current));
+					current = (unsigned int)currentMesh->GetVertexCount();
+					mapVertices.insert(std::pair<SVertIndex, unsigned int>(index, current));
 					currentMesh->AddVertex(vert);
 				}
 				if (i > 2) triangle[1] = triangle[2];
@@ -173,7 +173,7 @@ CMeshData* CMeshLoaderBasic::LoadObjFile(const string& filename, uint8_t* data, 
 	// 加载材质
 	LoadObjMaterial(mtlFilePath, pMeshData);
 	// 创建网格
-	for (int i = 0; i < pMeshData->GetMeshCount(); i++) {
+	for (size_t i = 0; i < pMeshData->GetMeshCount(); i++) {
 		CMesh* pMesh = pMeshData->GetMesh(i);
 		CVertex* v = pMesh->GetVertex(0);
 		if (vecNormals.empty() || (v->m_fNormal[0] == 0.0f && v->m_fNormal[1] == 0.0f && v->m_fNormal[2] == 0.0f)) {
@@ -188,7 +188,7 @@ CMeshData* CMeshLoaderBasic::LoadObjFile(const string& filename, uint8_t* data, 
 /**
 * 加载 MS3D 模型
 */
-CMeshData* CMeshLoaderBasic::LoadMs3dFile(const string& filename, uint8_t* data, uint32_t size) {
+CMeshData* CMeshLoaderBasic::LoadMs3dFile(const string& filename, uint8_t* data, size_t size) {
 	string baseDir = CFileManager::GetDirectory(filename);
 	CStreamReader reader(data, size);
 	// 读取文件头
@@ -212,8 +212,8 @@ CMeshData* CMeshLoaderBasic::LoadMs3dFile(const string& filename, uint8_t* data,
 	int numMeshes = reader.GetValue<uint16_t>();
 	for (int i = 0; i < numMeshes; i++) {
 		CMesh* pMesh = new CMesh();
-		int triangleCount = reader.Skip(33).GetValue<uint16_t>();
-		for (int j = 0; j < triangleCount; j++) {
+		unsigned int triangleCount = reader.Skip(33).GetValue<uint16_t>();
+		for (unsigned int j = 0; j < triangleCount; j++) {
 			uint16_t vertexIndices[3];
 			CVertex vertex[3];
 			int8_t boneId[3];
@@ -320,7 +320,7 @@ CMeshData* CMeshLoaderBasic::LoadMs3dFile(const string& filename, uint8_t* data,
 /**
 * 加载 BVH 动画
 */
-CMeshData* CMeshLoaderBasic::LoadBvhFile(const string& filename, uint8_t* data, uint32_t size) {
+CMeshData* CMeshLoaderBasic::LoadBvhFile(const string& filename, uint8_t* data, size_t size) {
 	string line;
 	istringstream stream(string((char*)data, size));
 	stream >> line;
@@ -369,7 +369,7 @@ CMeshData* CMeshLoaderBasic::LoadBvhFile(const string& filename, uint8_t* data, 
 		stream >> keyword >> frameCount;
 		stream >> keyword >> keyword >> frameTime;
 		for (int i = 0; i < frameCount; i++) {
-			for (int j = 0; j < pMeshData->GetJointCount(); j++) {
+			for (size_t j = 0; j < pMeshData->GetJointCount(); j++) {
 				SJoint* pJoint = pMeshData->GetJoint(j);
 				vector<string>& channels = jointChannels[pJoint->name];
 				SAnimationPosKey posKey;
@@ -401,7 +401,7 @@ CMeshData* CMeshLoaderBasic::LoadBvhFile(const string& filename, uint8_t* data, 
 /**
 * 加载 B3DM 文件
 */
-CMeshData* CMeshLoaderBasic::LoadB3dmFile(const string& filename, uint8_t* data, uint32_t size) {
+CMeshData* CMeshLoaderBasic::LoadB3dmFile(const string& filename, uint8_t* data, size_t size) {
 	if (!memcpy(data, "b3dm", 4)) return 0;
 	CStreamReader reader(data + 4, size - 4);
 	if (reader.GetValue<uint32_t>() != 1) return 0;
@@ -418,7 +418,7 @@ CMeshData* CMeshLoaderBasic::LoadB3dmFile(const string& filename, uint8_t* data,
 /**
 * 加载 I3DM 文件
 */
-CMeshData* CMeshLoaderBasic::LoadI3dmFile(const string& filename, uint8_t* data, uint32_t size) {
+CMeshData* CMeshLoaderBasic::LoadI3dmFile(const string& filename, uint8_t* data, size_t size) {
 	if (!memcpy(data, "i3dm", 4)) return 0;
 	CStreamReader reader(data + 4, size - 4);
 	if (reader.GetValue<uint32_t>() != 1) return 0;
@@ -487,7 +487,7 @@ void CMeshLoaderBasic::LoadObjMaterial(const string& filename, CMeshData* meshDa
 		}
 	}
 	// 对网格赋予材质
-	for (int i = 0; i < meshData->GetMeshCount(); i++) {
+	for (size_t i = 0; i < meshData->GetMeshCount(); i++) {
 		map<string, CMaterial*>::iterator iter = mapMaterials.find(meshData->GetMesh(i)->GetMaterial()->GetName());
 		if (iter != mapMaterials.end()) {
 			CMesh* mesh = meshData->GetMesh(i);

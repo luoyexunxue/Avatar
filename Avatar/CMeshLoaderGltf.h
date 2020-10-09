@@ -17,7 +17,7 @@ using std::map;
 class AVATAR_EXPORT CMeshLoaderGltf : public CMeshLoader {
 public:
 	//! 加载模型
-	virtual CMeshData* LoadFile(const string& filename, uint8_t* data, uint32_t size);
+	virtual CMeshData* LoadFile(const string& filename, uint8_t* data, size_t size);
 
 private:
 	//! 读取二进制缓冲区
@@ -63,7 +63,7 @@ private:
 	typedef struct _SBufferBin {
 		bool allocated;
 		unsigned char* data;
-		unsigned int size;
+		size_t size;
 	} SBufferBin;
 
 	//! 文件名称

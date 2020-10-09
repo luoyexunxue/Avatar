@@ -231,7 +231,7 @@ CTexture* CSceneNodeBoard::CreateTexture(const string& texture) {
 			}
 		}
 		const char* pathData = buffer.size > 0 ? (char*)m_pFileBuffer : videoFile.c_str();
-		if (VideoPlayOpen(pathData, buffer.size, &m_pVideoContext) != 0) return 0;
+		if (VideoPlayOpen(pathData, (int)buffer.size, &m_pVideoContext) != 0) return 0;
 	}
 	int frameWidth, frameHeight;
 	int channel = 0, sampleRate = 0, sampleBits = 0;

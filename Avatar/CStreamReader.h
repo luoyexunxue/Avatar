@@ -15,7 +15,7 @@ public:
 	/**
 	* 默认构造函数
 	*/
-	CStreamReader(unsigned char* buffer, int size) {
+	CStreamReader(unsigned char* buffer, size_t size) {
 		m_pBuffer = buffer;
 		m_pCurrent = buffer;
 		m_iBufferSize = size;
@@ -25,7 +25,7 @@ public:
 	/**
 	* 设置流指针位置
 	*/
-	CStreamReader& SetPosition(int pos) {
+	CStreamReader& SetPosition(size_t pos) {
 		m_pCurrent = m_pBuffer + pos;
 		m_iCurrentPos = pos;
 		if (m_iCurrentPos > m_iBufferSize) {
@@ -37,7 +37,7 @@ public:
 	/**
 	* 将流指针跳过指定字节数
 	*/
-	CStreamReader& Skip(int nByte) {
+	CStreamReader& Skip(size_t nByte) {
 		m_pCurrent += nByte;
 		m_iCurrentPos += nByte;
 		if (m_iCurrentPos > m_iBufferSize) {
@@ -49,14 +49,14 @@ public:
 	/**
 	* 获取当前位置
 	*/
-	int GetPosition() {
+	size_t GetPosition() {
 		return m_iCurrentPos;
 	}
 
 	/**
 	* 剩余字节数
 	*/
-	int Available() {
+	size_t Available() {
 		return m_iBufferSize - m_iCurrentPos;
 	}
 
@@ -85,8 +85,8 @@ public:
 	/**
 	* 读取数据
 	*/
-	int Read(unsigned char* data, int size) {
-		int readSize = m_iCurrentPos + size > m_iBufferSize? m_iBufferSize - m_iCurrentPos: size;
+	size_t Read(unsigned char* data, size_t size) {
+		size_t readSize = m_iCurrentPos + size > m_iBufferSize ? m_iBufferSize - m_iCurrentPos : size;
 		memcpy(data, m_pCurrent, readSize);
 		m_pCurrent += readSize;
 		m_iCurrentPos += readSize;
@@ -105,8 +105,8 @@ public:
 private:
 	unsigned char* m_pBuffer;
 	unsigned char* m_pCurrent;
-	int m_iBufferSize;
-	int m_iCurrentPos;
+	size_t m_iBufferSize;
+	size_t m_iCurrentPos;
 };
 
 #endif

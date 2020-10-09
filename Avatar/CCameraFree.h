@@ -78,9 +78,9 @@ private:
 	//! 当前漫游时间
 	float m_fTrackTime;
 	//! 当前漫游点
-	int m_iTrackPoint;
+	size_t m_iTrackPoint;
 	//! 之前漫游点
-	int m_iTrackPointPrev;
+	size_t m_iTrackPointPrev;
 	//! 漫游坐标偏移
 	CVector3 m_cTrackOffset;
 };

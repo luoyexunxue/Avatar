@@ -5,6 +5,7 @@
 #ifndef _CGUIEDITBOX_H_
 #define _CGUIEDITBOX_H_
 #include "CGuiEnvironment.h"
+#include "CFontManager.h"
 
 /**
 * @brief GUI 文本输入框
@@ -30,7 +31,7 @@ public:
 	//! 输入文本
 	wchar_t m_strText[256];
 	//! 对齐方式
-	int m_iAlignment;
+	CFontManager::Alignment m_iAlignment;
 	//! 背景颜色
 	unsigned char m_cBackColor[4];
 	//! 文本颜色

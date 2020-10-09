@@ -101,9 +101,9 @@ public:
 	static CMesh* CreateArrow(float r1, float r2, float h1, float h2, int slices, bool reversed);
 	static CMesh* CreateArrow(float r1, float r2, float h1, float h2, int slices, bool reversed, const CColor& color);
 	//! 创建拉伸体
-	static CMesh* CreateExtrude(const CVector2* polygon, int count, const CVector3* line, int length);
-	static CMesh* CreateExtrude(const CVector2* polygon, int count, const CVector3* line, int length, bool smooth);
-	static CMesh* CreateExtrude(const CVector2* polygon, int count, const CVector3* line, int length, bool smooth, const CColor& color);
+	static CMesh* CreateExtrude(const CVector2* polygon, size_t count, const CVector3* line, size_t length);
+	static CMesh* CreateExtrude(const CVector2* polygon, size_t count, const CVector3* line, size_t length, bool smooth);
+	static CMesh* CreateExtrude(const CVector2* polygon, size_t count, const CVector3* line, size_t length, bool smooth, const CColor& color);
 };
 
 #endif

@@ -10,7 +10,7 @@
 /**
 * 加载 3DS 模型
 */
-CMeshData* CMeshLoader3ds::LoadFile(const string& filename, uint8_t* data, uint32_t size) {
+CMeshData* CMeshLoader3ds::LoadFile(const string& filename, uint8_t* data, size_t size) {
 	// 不是有效的 3DS 文件
 	if (size < 16 || data[0] != 0x4D || data[1] != 0x4D) return 0;
 	m_strBaseDir = CFileManager::GetDirectory(filename);
@@ -44,10 +44,10 @@ CMeshData* CMeshLoader3ds::LoadFile(const string& filename, uint8_t* data, uint3
 /**
 * 递归读取块
 */
-void CMeshLoader3ds::ReadChunk(unsigned char* buffer, unsigned int size) {
+void CMeshLoader3ds::ReadChunk(unsigned char* buffer, size_t size) {
 	CStreamReader reader(buffer, size);
 	while (reader.Available() > 0) {
-		int currentPos = reader.GetPosition();
+		size_t currentPos = reader.GetPosition();
 		uint16_t chunkId = reader.GetValue<uint16_t>();
 		uint32_t chunkSize = reader.GetValue<uint32_t>();
 		switch (chunkId) {
@@ -77,13 +77,13 @@ void CMeshLoader3ds::ReadChunk(unsigned char* buffer, unsigned int size) {
 /**
 * 读取网格块
 */
-void CMeshLoader3ds::ReadMeshChunk(unsigned char* buffer, unsigned int size, CMesh* mesh) {
+void CMeshLoader3ds::ReadMeshChunk(unsigned char* buffer, size_t size, CMesh* mesh) {
 	int numVertices = 0;
 	int numTriangles = 0;
 	int numTexCoords = 0;
 	CStreamReader reader(buffer, size);
 	while (reader.Available() > 0) {
-		int currentPos = reader.GetPosition();
+		size_t currentPos = reader.GetPosition();
 		uint16_t chunkId = reader.GetValue<uint16_t>();
 		uint32_t chunkSize = reader.GetValue<uint32_t>();
 		switch (chunkId) {
@@ -131,7 +131,7 @@ void CMeshLoader3ds::ReadMaterialChunk(unsigned char* buffer, unsigned int size,
 	string textureFile;
 	CStreamReader reader(buffer, size);
 	while (reader.Available() > 0) {
-		int currentPos = reader.GetPosition();
+		size_t currentPos = reader.GetPosition();
 		uint16_t chunkId = reader.GetValue<uint16_t>();
 		uint32_t chunkSize = reader.GetValue<uint32_t>();
 		switch (chunkId) {
@@ -190,7 +190,7 @@ void CMeshLoader3ds::ReadColorChunk(unsigned char* buffer, unsigned int size, fl
 void CMeshLoader3ds::ReadTextureChunk(unsigned char* buffer, unsigned int size, string& texture) {
 	CStreamReader reader(buffer, size);
 	while (reader.Available() > 0) {
-		int currentPos = reader.GetPosition();
+		size_t currentPos = reader.GetPosition();
 		uint16_t chunkId = reader.GetValue<uint16_t>();
 		uint32_t chunkSize = reader.GetValue<uint32_t>();
 		switch (chunkId) {

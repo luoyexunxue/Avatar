@@ -91,9 +91,9 @@ struct SJoint {
 	//! 动态骨骼
 	SJointDynamic* physics;
 	//! 当前旋转关键帧
-	int currentRotKey[4];
+	size_t currentRotKey[4];
 	//! 当前位移关键帧
-	int currentPosKey[4];
+	size_t currentPosKey[4];
 	//! 旋转变换关键帧
 	vector<SAnimationRotKey> keyRot;
 	//! 位置变换关键帧
@@ -115,34 +115,34 @@ public:
 	~CMeshData();
 
 	//! 获取网格数量
-	int GetMeshCount() const;
+	size_t GetMeshCount() const;
 	//! 获取关节数量
-	int GetJointCount() const;
+	size_t GetJointCount() const;
 	//! 获取动画数量
-	int GetAnimationCount() const;
+	size_t GetAnimationCount() const;
 	//! 获取网格顶点计数
-	int GetVertexCount() const;
+	size_t GetVertexCount() const;
 	//! 获取网格三角形计数
-	int GetTriangleCount() const;
+	size_t GetTriangleCount() const;
 	//! 获取包围盒
 	CBoundingBox GetBoundingBox() const;
 
 	//! 获取指定网格
-	CMesh* GetMesh(int index);
+	CMesh* GetMesh(size_t index);
 	//! 获取指定关节
-	SJoint* GetJoint(int index);
+	SJoint* GetJoint(size_t index);
 	//! 获取指定关节
 	SJoint* GetJoint(const string& name);
 	//! 获取指定名称的动画
 	int GetAnimationIndex(const string& name);
 	//! 获取动画名称
-	string& GetAnimationName(int index);
+	string& GetAnimationName(size_t index);
 	//! 获取动画时长
-	float GetAnimationTime(int index);
+	float GetAnimationTime(size_t index);
 	//! 获取动画开始时间
-	float GetAnimationBeginTime(int index);
+	float GetAnimationBeginTime(size_t index);
 	//! 获取动画结束时间
-	float GetAnimationEndTime(int index);
+	float GetAnimationEndTime(size_t index);
 
 	//! 添加网格
 	CMeshData* AddMesh(CMesh* mesh);

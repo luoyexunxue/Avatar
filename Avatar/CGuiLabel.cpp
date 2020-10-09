@@ -108,7 +108,7 @@ void CGuiLabel::Draw(const CRectangle& rect, unsigned char* buffer) {
 	CFontManager* pFontMgr = CEngine::GetFontManager();
 	pFontMgr->UseFont(m_strFont);
 	pFontMgr->SetSize(m_iFontSize);
-	pFontMgr->DrawText(m_strText, &image, (CFontManager::Alignment)m_iAlignment, m_bStretchText);
+	pFontMgr->DrawText(m_strText, &image, m_iAlignment, m_bStretchText);
 	// 填充 GUI 缓冲区
 	int offsetX = rect.GetLeft() - m_cRegionScreen.GetLeft();
 	int offsetY = rect.GetTop() - m_cRegionScreen.GetTop();

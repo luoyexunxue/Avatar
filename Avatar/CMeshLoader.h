@@ -32,7 +32,7 @@ public:
 	//! 虚析构函数
 	virtual ~CMeshLoader() {}
 	//! 加载模型文件
-	virtual CMeshData* LoadFile(const string& filename, uint8_t* data, uint32_t size) = 0;
+	virtual CMeshData* LoadFile(const string& filename, uint8_t* data, size_t size) = 0;
 
 private:
 	//! 注册内置加载器
@@ -46,7 +46,7 @@ private:
 	//! 已缓存的网格模型
 	static map<string, CMeshData*> m_mapMeshDataCache;
 	//! 已缓存的网格模型引用
-	static map<CMeshData*, int> m_mapCacheRefCount;
+	static map<CMeshData*, size_t> m_mapCacheRefCount;
 };
 
 #endif

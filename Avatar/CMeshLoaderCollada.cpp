@@ -13,7 +13,7 @@ using std::istringstream;
 /**
 * 加载 DAE 模型
 */
-CMeshData* CMeshLoaderCollada::LoadFile(const string& filename, uint8_t* data, uint32_t size) {
+CMeshData* CMeshLoaderCollada::LoadFile(const string& filename, uint8_t* data, size_t size) {
 	char* xml = new char[size + 1];
 	memcpy(xml, data, size);
 	xml[size] = '\0';
@@ -61,7 +61,7 @@ CMeshData* CMeshLoaderCollada::LoadFile(const string& filename, uint8_t* data, u
 	if (library_effects) ReadEffects(library_effects, pMeshData);
 	if (library_animations) ReadAnimations(library_animations, pMeshData);
 	// 创建网格对象
-	for (int i = 0; i < pMeshData->GetMeshCount(); i++) {
+	for (size_t i = 0; i < pMeshData->GetMeshCount(); i++) {
 		pMeshData->GetMesh(i)->Create(library_animations != 0);
 	}
 	delete[] xml;
@@ -415,18 +415,18 @@ void CMeshLoaderCollada::ReadMesh(xml_node<>* mesh, const string& id, CMeshData*
 		CMesh* pMesh = new CMesh();
 		pMesh->GetMaterial()->GetName() = material_name;
 		pMesh->GetMaterial()->SetTexture("");
-		int currentPos = 0;
+		size_t currentPos = 0;
 		vector<unsigned int> vertex(3);
 		for (int i = 0; i < face_count; i++) {
-			int face_vert_count = 3;
+			size_t face_vert_count = 3;
 			if (polylist) stream_v >> face_vert_count;
 			if (polygons) face_vert_count = vecIdx.size() / stride;
 			vertex.resize(face_vert_count);
 			// 添加顶点和三角形
-			for (int j = 0; j < face_vert_count; j++) {
+			for (size_t j = 0; j < face_vert_count; j++) {
 				CVertex vert;
-				vertex[j] = pMesh->GetVertexCount();
-				int baseIndex = j * stride + currentPos;
+				vertex[j] = (unsigned int)pMesh->GetVertexCount();
+				size_t baseIndex = j * stride + currentPos;
 				if (input_offset[0] >= 0) vert.SetPosition(&vecPos[vecIdx[baseIndex + input_offset[0]] * input_stride[0]]);
 				if (input_offset[1] >= 0) vert.SetNormal(&vecNor[vecIdx[baseIndex + input_offset[1]] * input_stride[1]]);
 				if (input_offset[2] >= 0) vert.SetTexCoord(&vecTex[vecIdx[baseIndex + input_offset[2]] * input_stride[2]]);
@@ -434,7 +434,7 @@ void CMeshLoaderCollada::ReadMesh(xml_node<>* mesh, const string& id, CMeshData*
 				if (vertexJoint.empty()) pMesh->AddVertex(vert);
 				else pMesh->AddVertex(vert, vertexJoint[vecIdx[baseIndex + input_offset[0]]]);
 			}
-			for (int j = 2; j < face_vert_count; j++) {
+			for (size_t j = 2; j < face_vert_count; j++) {
 				pMesh->AddTriangle(vertex[0], vertex[j - 1], vertex[j]);
 			}
 			currentPos += face_vert_count * stride;
@@ -469,7 +469,7 @@ void CMeshLoaderCollada::ReadMesh(xml_node<>* mesh, const string& id, CMeshData*
 */
 void CMeshLoaderCollada::ReadProfile(xml_node<>* profile, const string& id, CMeshData* meshData) {
 	string url = "#" + id;
-	for (int i = 0; i < meshData->GetMeshCount(); i++) {
+	for (size_t i = 0; i < meshData->GetMeshCount(); i++) {
 		CMesh* mesh = meshData->GetMesh(i);
 		CMaterial* material = mesh->GetMaterial();
 		if (material->GetName() == url) {
@@ -639,11 +639,11 @@ void CMeshLoaderCollada::MapMaterial(xml_node<>* material) {
 * 映射顶点骨骼
 */
 void CMeshLoaderCollada::MapVertexJoint(const string& id, const vector<string>& joint, CMeshData* meshData) {
-	map<string, int> jointIndexMapper;
+	map<string, size_t> jointIndexMapper;
 	map<string, string> jointNameMapper;
 	// 关节名称->关节索引
-	for (int i = 0; i < meshData->GetJointCount(); i++) {
-		jointIndexMapper.insert(std::pair<string, int>(meshData->GetJoint(i)->name, i));
+	for (size_t i = 0; i < meshData->GetJointCount(); i++) {
+		jointIndexMapper.insert(std::pair<string, size_t>(meshData->GetJoint(i)->name, i));
 	}
 	// 关节SID->关节名称
 	for (map<string, SJoint*>::iterator i = m_mapJoints.begin(); i != m_mapJoints.end(); ++i) {
@@ -653,7 +653,7 @@ void CMeshLoaderCollada::MapVertexJoint(const string& id, const vector<string>& 
 	vector<int> jointMap(joint.size());
 	vector<CVertexJoint>& vertexJoint = m_mapVertexJoint[id];
 	for (size_t i = 0; i < joint.size(); i++) {
-		jointMap[i] = jointIndexMapper[jointNameMapper[joint[i]]];
+		jointMap[i] = static_cast<int>(jointIndexMapper[jointNameMapper[joint[i]]]);
 	}
 	for (size_t i = 0; i < vertexJoint.size(); i++) {
 		CVertexJoint* vertJoint = &vertexJoint[i];

@@ -41,8 +41,9 @@ bool CSceneNodeParticles::Init() {
 		m_pMesh->AddVertex(CVertex( m_fParticleSize, 0, -m_fParticleSize, 1, 1));
 		m_pMesh->AddVertex(CVertex(-m_fParticleSize, 0,  m_fParticleSize, 0, 0));
 		m_pMesh->AddVertex(CVertex( m_fParticleSize, 0,  m_fParticleSize, 0, 1));
-		m_pMesh->AddTriangle(i * 4 + 0, i * 4 + 1, i * 4 + 2);
-		m_pMesh->AddTriangle(i * 4 + 1, i * 4 + 3, i * 4 + 2);
+		unsigned int idx = (unsigned int)(i * 4);
+		m_pMesh->AddTriangle(idx + 0, idx + 1, idx + 2);
+		m_pMesh->AddTriangle(idx + 1, idx + 3, idx + 2);
 	}
 	m_pMesh->Create(true);
 	m_pMesh->GetMaterial()->SetRenderMode(true, true, !m_bDarkBlendMode);

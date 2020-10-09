@@ -293,7 +293,7 @@ CColor& CColor::FromName(const string& color) {
 		const float scale_byte = 1.0f / 255.0f;
 		const float scale_half = 1.0f / 15.0f;
 		const char* hex = color.at(0) == '#' ? color.c_str() + 1 : color.c_str() + 2;
-		const int length = strlen(hex);
+		size_t length = strlen(hex);
 		unsigned long var = strtoul(hex, 0, 16);
 		if (length == 8) {
 			m_fValue[0] = ((var >> 24) & 0xFF) * scale_byte;

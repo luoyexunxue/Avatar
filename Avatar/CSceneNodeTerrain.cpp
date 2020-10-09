@@ -168,7 +168,7 @@ bool CSceneNodeTerrain::LoadHeightMap(const string& filename, SHeightMap* height
 		for (int j = 0; j < file.width; j++) {
 			int indexSrc = j + i * file.width;
 			int indexDes = j + (file.height - i - 1) * (file.width + 1);
-			signed char data = file.contents[indexSrc * file.channels] - (char)(0x80);
+			int data = (file.contents[indexSrc * file.channels] & 0x00FF) - 0x80;
 			heightMap->data[indexDes] = data * heightMap->vScale * 0.007874f;
 		}
 	}

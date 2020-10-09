@@ -65,10 +65,10 @@ int main(int argc, char **argv) {
 				conf.log.enable = true;
 				if (i + 1 < argc && argv[i + 1][0] != '-') {
 					const char* log = argv[++i];
-					for (int n = strlen(log) - 1; n >= 0; n--) {
-						if (log[n] == 'c') conf.log.console = true;
-						else if (log[n] == 'f') conf.log.file = true;
-						else if (log[n] == 't') conf.log.time = true;
+					for (size_t n = strlen(log); n > 0; n--) {
+						if (log[n - 1] == 'c') conf.log.console = true;
+						else if (log[n - 1] == 'f') conf.log.file = true;
+						else if (log[n - 1] == 't') conf.log.time = true;
 					}
 				} else {
 					conf.log.console = true;

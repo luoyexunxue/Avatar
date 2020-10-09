@@ -61,11 +61,11 @@ string CStringUtil::UpperCase(const string& str) {
 */
 string CStringUtil::Trim(const string& str) {
 	const char* p = str.c_str();
-	int length = str.length();
-	int begIndex = 0;
-	int endIndex = str.length() - 1;
+	size_t length = str.length();
+	size_t begIndex = 0;
+	size_t endIndex = str.length() - 1;
 	while ((p[begIndex] == ' ' || p[begIndex] == '\t') && begIndex < length) begIndex++;
-	while ((p[endIndex] == ' ' || p[endIndex] == '\t') && endIndex >= 0) endIndex--;
+	while ((p[endIndex] == ' ' || p[endIndex] == '\t') && endIndex > 0) endIndex--;
 	if (endIndex < begIndex) {
 		return "";
 	} else {
@@ -78,8 +78,8 @@ string CStringUtil::Trim(const string& str) {
 */
 string CStringUtil::TrimLeft(const string& str) {
 	const char* p = str.c_str();
-	int length = str.length();
-	int index = 0;
+	size_t length = str.length();
+	size_t index = 0;
 	while ((p[index] == ' ' || p[index] == '\t') && index < length) index++;
 	return str.substr(index);
 }
@@ -89,7 +89,7 @@ string CStringUtil::TrimLeft(const string& str) {
 */
 string CStringUtil::TrimRight(const string& str) {
 	const char* p = str.c_str();
-	int index = str.length() - 1;
+	size_t index = str.length() - 1;
 	while ((p[index] == ' ' || p[index] == '\t') && index >= 0) index--;
 	return str.substr(0, index + 1);
 }
@@ -133,7 +133,7 @@ string CStringUtil::Remove(const string& str, const char* key) {
 * @param trim 是否对分割后的字符串去空格
 * @return 返回分割后的个数
 */
-int CStringUtil::Split(vector<string>& output, const string& str, const char* key, bool trim) {
+size_t CStringUtil::Split(vector<string>& output, const string& str, const char* key, bool trim) {
 	output.clear();
 	if (str.empty()) return 0;
 	string::size_type begIndex = 0;
@@ -157,9 +157,9 @@ int CStringUtil::Split(vector<string>& output, const string& str, const char* ke
 * @param trim 是否对分割后的字符串去空格
 * @return 返回分割后的个数
 */
-int CStringUtil::Split(string output[], int size, const string& str, const char* key, bool trim) {
+size_t CStringUtil::Split(string output[], size_t size, const string& str, const char* key, bool trim) {
 	if (str.empty() || size < 1) return 0;
-	int count = 0;
+	size_t count = 0;
 	string::size_type begIndex = 0;
 	string::size_type endIndex = 0;
 	while ((endIndex = str.find(key, begIndex)) != string::npos) {
@@ -196,11 +196,11 @@ string CStringUtil::Join(const vector<string>& input, const char* key) {
 * @param key 分割关键字
 * @return 返回连接后的字符串
 */
-string CStringUtil::Join(const string input[], int size, const char* key) {
-	if (size <= 0) return "";
+string CStringUtil::Join(const string input[], size_t size, const char* key) {
+	if (size == 0) return "";
 	std::ostringstream strbuff;
 	strbuff << input[0];
-	for (int i = 1; i < size; i++) {
+	for (size_t i = 1; i < size; i++) {
 		strbuff << key << input[i];
 	}
 	return strbuff.str();
@@ -233,8 +233,8 @@ bool CStringUtil::EndWith(const string& str, const char* key, bool ignoreCase) {
 /**
 * UTF8 字符串转换为 wchar_t 数组
 */
-void CStringUtil::Utf8ToWideCharArray(const char* src, wchar_t* buffer, int size) {
-	int count = 0;
+void CStringUtil::Utf8ToWideCharArray(const char* src, wchar_t* buffer, size_t size) {
+	size_t count = 0;
 	while (*src && count < size - 1) {
 		char flag = *src;
 		if ((flag & 0x80) == 0x00) {
@@ -260,8 +260,8 @@ void CStringUtil::Utf8ToWideCharArray(const char* src, wchar_t* buffer, int size
 /**
 * wchar_t 数组转换为 UTF8 字符串
 */
-void CStringUtil::WideCharArrayToUtf8(const wchar_t* src, char* buffer, int size) {
-	int count = 0;
+void CStringUtil::WideCharArrayToUtf8(const wchar_t* src, char* buffer, size_t size) {
+	size_t count = 0;
 	while (*src && count < size - 1) {
 		wchar_t flag = *src++;
 		if (flag <= 0x7F) {
@@ -291,21 +291,21 @@ void CStringUtil::WideCharArrayToUtf8(const wchar_t* src, char* buffer, int size
 * @param data 字节数组
 * @param size 数组长度
 */
-string CStringUtil::ByteArrayToHexString(const string& split, const unsigned char* data, int size) {
-	if (size <= 0) return "";
+string CStringUtil::ByteArrayToHexString(const string& split, const unsigned char* data, size_t size) {
+	if (size == 0) return "";
 	static const char LUT[] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
 	std::ostringstream result;
 	if (!split.empty()) {
 		result << "0x";
 		result.put(LUT[(data[0] & 0xF0) >> 4]);
 		result.put(LUT[(data[0] & 0x0F)]);
-		for (int i = 1; i < size; i++) {
+		for (size_t i = 1; i < size; i++) {
 			result << split << "0x";
 			result.put(LUT[(data[i] & 0xF0) >> 4]);
 			result.put(LUT[(data[i] & 0x0F)]);
 		}
 	} else {
-		for (int i = 0; i < size; i++) {
+		for (size_t i = 0; i < size; i++) {
 			result.put(LUT[(data[i] & 0xF0) >> 4]);
 			result.put(LUT[(data[i] & 0x0F)]);
 		}

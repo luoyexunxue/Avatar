@@ -12,7 +12,7 @@
 #include <cstring>
 
 #ifdef AVATAR_WINDOWS
-#pragma comment(lib, "thirdparty/libcurl/libcurl.lib")
+#pragma comment(lib, "thirdparty/libcurl/libcurl_imp.lib")
 #endif
 
 /**

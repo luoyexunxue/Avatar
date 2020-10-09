@@ -126,7 +126,7 @@ void CSceneNodeDecal::UpdateMesh() {
 			CVector3 n2 = CVector3(vertices[vertexIndices[1]].m_fNormal);
 			CVector3 n3 = CVector3(vertices[vertexIndices[2]].m_fNormal);
 			// 生成三角形
-			int baseIndex = m_pMesh->GetVertexCount();
+			unsigned int baseIndex = (unsigned int)m_pMesh->GetVertexCount();
 			for (int n = 0; n < count; n++) {
 				const float bu = intersect[n * 2];
 				const float bv = intersect[n * 2 + 1];

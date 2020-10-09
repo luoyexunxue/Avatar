@@ -44,8 +44,8 @@ public:
 	bool IsContain(const CVector3& point) const;
 	//! 计算表面积
 	float SurfaceArea() const;
-	//! 计算各轴的大小
-	float Size(int axis) const;
+	//! 计算轴向的宽度
+	float Width(int axis) const;
 	//! 计算中心点位置
 	CVector3 Center() const;
 	//! 对包围盒进行缩放

@@ -58,7 +58,7 @@ bool CUdpSocket::Open(int port, const char* ip) {
 	m_iPort = port;
 	m_sLocalAddr.sin_family = AF_INET;
 	m_sRemoteAddr.sin_family = AF_INET;
-	m_iSocket = socket(AF_INET, SOCK_DGRAM, 0);
+	m_iSocket = (int)socket(AF_INET, SOCK_DGRAM, 0);
 	// 若 ip 为空，则为服务器模式
 	if (ip) {
 		m_sRemoteAddr.sin_port = htons(port);

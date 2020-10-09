@@ -52,11 +52,11 @@ bool CSceneNodeAnimation::Init() {
 	m_cLocalBoundingBox.SetInvalid();
 	for (size_t i = 0; i < meshCount; i++) {
 		CMesh* mesh = m_pMeshData->GetMesh(i);
-		int vertexCount = mesh->GetVertexCount();
+		size_t vertexCount = mesh->GetVertexCount();
 		m_cLocalBoundingBox += mesh->GetBoundingBox();
 		m_vecMeshVertexPos[i].resize(vertexCount);
 		m_vecMeshVertexNor[i].resize(vertexCount);
-		for (int v = 0; v < vertexCount; v++) {
+		for (size_t v = 0; v < vertexCount; v++) {
 			m_vecMeshVertexPos[i][v].SetValue(mesh->GetVertex(v)->m_fPosition);
 			m_vecMeshVertexNor[i][v].SetValue(mesh->GetVertex(v)->m_fNormal, 0.0f);
 		}
@@ -80,8 +80,8 @@ void CSceneNodeAnimation::Destroy() {
 */
 void CSceneNodeAnimation::Render() {
 	if (CEngine::GetGraphicsManager()->IsDepthRender()) {
-		int meshCount = m_pMeshData->GetMeshCount();
-		for (int i = 0; i < meshCount; i++) {
+		size_t meshCount = m_pMeshData->GetMeshCount();
+		for (size_t i = 0; i < meshCount; i++) {
 			CMesh* pMesh = m_pMeshData->GetMesh(i);
 			pMesh->GetMaterial()->GetTexture()->UseTexture();
 			pMesh->Render(false);
@@ -89,8 +89,8 @@ void CSceneNodeAnimation::Render() {
 	} else {
 		if (m_iSkeletonMode < 0x02) {
 			CShader* currentShader = CEngine::GetShaderManager()->GetCurrentShader();
-			int meshCount = m_pMeshData->GetMeshCount();
-			for (int i = 0; i < meshCount; i++) {
+			size_t meshCount = m_pMeshData->GetMeshCount();
+			for (size_t i = 0; i < meshCount; i++) {
 				CMesh* pMesh = m_pMeshData->GetMesh(i);
 				if (pMesh->GetMaterial()->GetShader()) {
 					CCamera* pCamera = CEngine::GetGraphicsManager()->GetCamera();
@@ -249,8 +249,8 @@ void CSceneNodeAnimation::SetupFrame(float dt) {
 	CVector3 position;
 	CMatrix4 animateMat;
 	CVector3 gravity = CEngine::GetPhysicsManager()->GetGravity();
-	int jointCount = m_pMeshData->GetJointCount();
-	for (int i = 0; i < jointCount; i++) {
+	size_t jointCount = m_pMeshData->GetJointCount();
+	for (size_t i = 0; i < jointCount; i++) {
 		SJoint* pJoint = m_pMeshData->GetJoint(i);
 		if (pJoint->physics) {
 			PhysicalSimulation(pJoint, gravity, dt, animateMat);
@@ -280,23 +280,23 @@ void CSceneNodeAnimation::SetupFrame(float dt) {
 * 设置关节关键帧
 */
 void CSceneNodeAnimation::SetupJointKey() {
-	int jointCount = m_pMeshData->GetJointCount();
-	for (int i = 0; i < jointCount; i++) {
+	size_t jointCount = m_pMeshData->GetJointCount();
+	for (size_t i = 0; i < jointCount; i++) {
 		SJoint* pJoint = m_pMeshData->GetJoint(i);
-		const int numRotKeys = pJoint->keyRot.size();
-		const int numPosKeys = pJoint->keyPos.size();
-		int keyIndex1 = 0;
-		int keyIndex2 = 0;
-		int keyIndex3 = 0;
-		int keyIndex4 = 0;
+		const size_t numRotKeys = pJoint->keyRot.size();
+		const size_t numPosKeys = pJoint->keyPos.size();
+		size_t keyIndex1 = 0;
+		size_t keyIndex2 = 0;
+		size_t keyIndex3 = 0;
+		size_t keyIndex4 = 0;
 		while (numRotKeys > ++keyIndex1 && m_fAnimationBegin[0] >= pJoint->keyRot[keyIndex1].time);
 		while (numRotKeys > ++keyIndex2 && m_fAnimationBegin[1] >= pJoint->keyRot[keyIndex2].time);
 		while (numPosKeys > ++keyIndex3 && m_fAnimationBegin[0] >= pJoint->keyPos[keyIndex3].time);
 		while (numPosKeys > ++keyIndex4 && m_fAnimationBegin[1] >= pJoint->keyPos[keyIndex4].time);
-		pJoint->currentRotKey[2] = keyIndex1 - 1 > 0? keyIndex1 - 1: 0;
-		pJoint->currentRotKey[3] = keyIndex2 - 1 > 0? keyIndex2 - 1: 0;
-		pJoint->currentPosKey[2] = keyIndex3 - 1 > 0? keyIndex3 - 1: 0;
-		pJoint->currentPosKey[3] = keyIndex4 - 1 > 0? keyIndex4 - 1: 0;
+		pJoint->currentRotKey[2] = keyIndex1 - 1 > 0 ? keyIndex1 - 1 : 0;
+		pJoint->currentRotKey[3] = keyIndex2 - 1 > 0 ? keyIndex2 - 1 : 0;
+		pJoint->currentPosKey[2] = keyIndex3 - 1 > 0 ? keyIndex3 - 1 : 0;
+		pJoint->currentPosKey[3] = keyIndex4 - 1 > 0 ? keyIndex4 - 1 : 0;
 	}
 }
 
@@ -304,10 +304,10 @@ void CSceneNodeAnimation::SetupJointKey() {
 * 计算关节动画变换
 */
 void CSceneNodeAnimation::JointTransform(SJoint* joint, int channel, CQuaternion& rot, CVector3& pos) {
-	const int numRotKeys = joint->keyRot.size();
-	const int numPosKeys = joint->keyPos.size();
+	const size_t numRotKeys = joint->keyRot.size();
+	const size_t numPosKeys = joint->keyPos.size();
 	if (numRotKeys > 0) {
-		int keyIndex = joint->currentRotKey[channel];
+		size_t keyIndex = joint->currentRotKey[channel];
 		float keyTime = joint->keyRot[keyIndex].time;
 		if (m_fCurrentTime[channel] < keyTime) keyIndex = joint->currentRotKey[channel + 2];
 		while (numRotKeys > ++keyIndex && m_fCurrentTime[channel] >= joint->keyRot[keyIndex].time);
@@ -320,7 +320,7 @@ void CSceneNodeAnimation::JointTransform(SJoint* joint, int channel, CQuaternion
 		}
 	} else rot.SetValue(0.0f, 0.0f, 0.0f, 1.0f);
 	if (numPosKeys > 0) {
-		int keyIndex = joint->currentPosKey[channel];
+		size_t keyIndex = joint->currentPosKey[channel];
 		float keyTime = joint->keyPos[keyIndex].time;
 		if (m_fCurrentTime[channel] < keyTime) keyIndex = joint->currentPosKey[channel + 2];
 		while (numPosKeys > ++keyIndex && m_fCurrentTime[channel] >= joint->keyPos[keyIndex].time);
@@ -341,9 +341,9 @@ void CSceneNodeAnimation::UpdateVertex() {
 	m_cLocalBoundingBox.SetInvalid();
 	for (int i = 0; i < m_pMeshData->GetMeshCount(); i++) {
 		CMesh* mesh = m_pMeshData->GetMesh(i);
-		int count = mesh->GetVertexCount();
+		size_t count = mesh->GetVertexCount();
 		if (mesh->GetBindCount() != count) continue;
-		for (int j = 0; j < count; j++) {
+		for (size_t j = 0; j < count; j++) {
 			CVertex* vertex = mesh->GetVertex(j);
 			CVertexJoint* bind = mesh->GetBind(j);
 			if (bind->m_iCount > 0) {
@@ -366,9 +366,9 @@ void CSceneNodeAnimation::UpdateVertex() {
 * 绘制骨骼
 */
 void CSceneNodeAnimation::DrawSkeleton(bool topMost) {
-	int jointCount = m_pMeshData->GetJointCount();
+	size_t jointCount = m_pMeshData->GetJointCount();
 	if (jointCount == 0) return;
-	if (m_vecJointVertex.size() != (size_t)(jointCount - 1) << 1) {
+	if (m_vecJointVertex.size() != (jointCount - 1) << 1) {
 		m_vecJointVertex.resize((jointCount - 1) << 1);
 		for (size_t i = 0; i < m_vecJointVertex.size(); i += 2) {
 			m_vecJointVertex[i + 0].SetColor(CColor::Red);
@@ -378,7 +378,7 @@ void CSceneNodeAnimation::DrawSkeleton(bool topMost) {
 	// 计算骨骼节点模型坐标系位置
 	int index = 0;
 	const CVector3 orgin(0.0f, 0.0f, 0.0f, 1.0f);
-	for (int i = 0; i < jointCount; i++) {
+	for (size_t i = 0; i < jointCount; i++) {
 		SJoint* pJoint = m_pMeshData->GetJoint(i);
 		pJoint->position.SetValue(pJoint->worldMatrix * orgin);
 		if (pJoint->parent) {

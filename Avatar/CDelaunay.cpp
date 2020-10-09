@@ -103,32 +103,32 @@ bool CDelaunay::Generate() {
 /**
 * 获取顶点数量
 */
-int CDelaunay::GetPointCount() const {
+size_t CDelaunay::GetPointCount() const {
 	return m_vecPoints.size();
 }
 
 /**
 * 获取一个顶点
 */
-CVector3 CDelaunay::GetPoint(int index) const {
+CVector3 CDelaunay::GetPoint(size_t index) const {
 	return m_vecPoints[index];
 }
 
 /**
 * 获取三角形数量
 */
-int CDelaunay::GetTriangleCount() const {
+size_t CDelaunay::GetTriangleCount() const {
 	return m_vecTriangles.size();
 }
 
 /**
 * 获取一个三角形
 */
-void CDelaunay::GetTriangle(int index, int vertices[3]) const {
+void CDelaunay::GetTriangle(size_t index, unsigned int vertices[3]) const {
 	const STriangle& tri = m_vecTriangles[index];
-	vertices[0] = tri.a;
-	vertices[1] = tri.b;
-	vertices[2] = tri.c;
+	vertices[0] = (unsigned int)tri.a;
+	vertices[1] = (unsigned int)tri.b;
+	vertices[2] = (unsigned int)tri.c;
 }
 
 /**
@@ -153,7 +153,10 @@ CMesh* CDelaunay::CreateMesh(bool dynamic, bool gradient) {
 		pMesh->AddVertex(CVertex(v[0], v[1], v[2], s, t, 0.0f, 0.0f, 0.0f, color.m_fValue));
 	}
 	for (size_t i = 0; i < m_vecTriangles.size(); i++) {
-		pMesh->AddTriangle(m_vecTriangles[i].a, m_vecTriangles[i].b, m_vecTriangles[i].c);
+		unsigned int a = (unsigned int)m_vecTriangles[i].a;
+		unsigned int b = (unsigned int)m_vecTriangles[i].b;
+		unsigned int c = (unsigned int)m_vecTriangles[i].c;
+		pMesh->AddTriangle(a, b, c);
 	}
 	pMesh->SetupNormal();
 	pMesh->Create(dynamic);

@@ -340,7 +340,7 @@ void CShaderManager::AttachUniforms(CShader* shader) {
 	GLchar uniformName[256];
 	for (size_t i = 0; i < numUniform; i++) {
 		memset(uniformName, 0, 256);
-		glGetActiveUniform(shader->m_iProgram, i, 256, 0, &uniformSize, &uniformType, uniformName);
+		glGetActiveUniform(shader->m_iProgram, (GLuint)i, 256, 0, &uniformSize, &uniformType, uniformName);
 		// 获取 Uniform 类型
 		CShader::UniformType eUniformType;
 		switch (uniformType) {

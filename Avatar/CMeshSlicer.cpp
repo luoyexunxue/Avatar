@@ -67,7 +67,7 @@ bool CMeshSlicer::Slice(int axis, float value) {
 * 获取轨迹个数
 * @note 切割后可能包含不止一个轨迹，如中空结构的模型
 */
-int CMeshSlicer::GetTrackCount() const {
+size_t CMeshSlicer::GetTrackCount() const {
 	return m_vecTrackLines.size();
 }
 
@@ -76,14 +76,14 @@ int CMeshSlicer::GetTrackCount() const {
 * @note 轨迹上的点在切割平面上按逆时针次序依次排列，
 *	若为顺时针排列，则表示此轨迹为内部空腔
 */
-int CMeshSlicer::GetTrackPointCount(int track) const {
+size_t CMeshSlicer::GetTrackPointCount(size_t track) const {
 	return m_vecTrackLines[track].size();
 }
 
 /**
 * 获取轨迹的指定点
 */
-const CVector3& CMeshSlicer::GetTrackPoint(int track, int point) const {
+const CVector3& CMeshSlicer::GetTrackPoint(size_t track, size_t point) const {
 	list<CVector3>::const_iterator iter = m_vecTrackLines[track].begin();
 	while (point--) ++iter;
 	return *iter;
@@ -92,7 +92,7 @@ const CVector3& CMeshSlicer::GetTrackPoint(int track, int point) const {
 /**
 * 创建可渲染的场景节点
 */
-CSceneNode* CMeshSlicer::CreateRenderLine(CSceneNode* src, int track, bool depth, bool point) {
+CSceneNode* CMeshSlicer::CreateRenderLine(CSceneNode* src, size_t track, bool depth, bool point) {
 	if (!src) {
 		src = new CSceneNodeLine("slicer", CColor::Red, 1.0f);
 	}

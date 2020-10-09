@@ -173,7 +173,7 @@ void CCameraFree::OffsetLineTrack(const CVector3& offset) {
 * @param orient 插值输出方向
 */
 void CCameraFree::TrackLine(float dt, CVector3& pos, CQuaternion& orient) {
-	while ((size_t)m_iTrackPoint < m_vecTrackLine.size()) {
+	while (m_iTrackPoint < m_vecTrackLine.size()) {
 		if (m_fTrackTime < m_vecTrackLine[m_iTrackPoint++].time) {
 			m_iTrackPoint -= 1;
 			// 线性插值
@@ -194,7 +194,7 @@ void CCameraFree::TrackLine(float dt, CVector3& pos, CQuaternion& orient) {
 			break;
 		}
 		// 循环漫游线路
-		if (m_bTrackLoop && (size_t)m_iTrackPoint == m_vecTrackLine.size()) {
+		if (m_bTrackLoop && m_iTrackPoint == m_vecTrackLine.size()) {
 			m_fTrackTime -= m_vecTrackLine.back().time;
 			m_iTrackPoint = 1;
 			m_iTrackPointPrev = 0;

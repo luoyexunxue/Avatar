@@ -57,7 +57,7 @@ public:
 	//! 清空所有已加载字体库
 	void Clear();
 	//! 设置缓存大小
-	void SetCacheSize(int size);
+	void SetCacheSize(size_t size);
 
 	//! 使用字体库
 	bool UseFont(const string& name);
@@ -124,7 +124,7 @@ private:
 	map<string, SFontFace> m_mapFontFace;
 
 	//! 设定的缓存大小
-	int m_iCacheSize;
+	size_t m_iCacheSize;
 	//! LRU缓存
 	map<SCacheKey, SCacheEntry*> m_mapLRUCache;
 	//! LRU缓存链表头指针

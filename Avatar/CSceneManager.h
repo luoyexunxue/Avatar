@@ -56,18 +56,18 @@ public:
 	//! 通过类型查找节点
 	CSceneNode* GetNodeByType(const string& type, int index, CSceneNode* start = 0);
 	//! 通过射线查找节点
-	CSceneNode* GetNodeByRay(const CRay& ray, CVector3& hit, int* mesh = 0, int* face = 0);
+	CSceneNode* GetNodeByRay(const CRay& ray, CVector3& hit, size_t* mesh = 0, size_t* face = 0);
 	//! 获取管理的所有节点列表
 	void GetNodeList(vector<CSceneNode*>& nodeList);
 	//! 获取管理的指定类型节点列表
 	void GetNodeList(const string& type, vector<CSceneNode*>& nodeList);
 
 	//! 统计网格数量
-	int GetMeshCount();
+	size_t GetMeshCount();
 	//! 统计三角形个数
-	int GetTriangleCount();
+	size_t GetTriangleCount();
 	//! 统计顶点个数
-	int GetVertexCount();
+	size_t GetVertexCount();
 
 private:
 	CSceneManager();
@@ -79,7 +79,7 @@ private:
 	void DeleteAll(CSceneNode* parent);
 
 	//! 计算射线是否与场景节点相交，并返回交点距离
-	float Picking(CSceneNode* node, const CRay& ray, CVector3& hit, int* mesh, int* face);
+	float Picking(CSceneNode* node, const CRay& ray, CVector3& hit, size_t* mesh, size_t* face);
 	//! 半透明节点排序
 	void SortTranslucentNode();
 	//! 屏幕节点排序

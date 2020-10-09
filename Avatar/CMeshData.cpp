@@ -27,7 +27,7 @@ CMeshData::~CMeshData() {
 * 获取网格数量
 * @return 网格数量
 */
-int CMeshData::GetMeshCount() const {
+size_t CMeshData::GetMeshCount() const {
 	return m_pMeshData->meshes.size();
 }
 
@@ -35,7 +35,7 @@ int CMeshData::GetMeshCount() const {
 * 获取关节数量
 * @return 关节数量
 */
-int CMeshData::GetJointCount() const {
+size_t CMeshData::GetJointCount() const {
 	return m_pMeshData->joints.size();
 }
 
@@ -43,7 +43,7 @@ int CMeshData::GetJointCount() const {
 * 获取动画数量
 * @return 动画数量
 */
-int CMeshData::GetAnimationCount() const {
+size_t CMeshData::GetAnimationCount() const {
 	return m_pMeshData->animationNames.size();
 }
 
@@ -51,8 +51,8 @@ int CMeshData::GetAnimationCount() const {
 * 获取网格顶点计数
 * @return 顶点总数
 */
-int CMeshData::GetVertexCount() const {
-	int count = 0;
+size_t CMeshData::GetVertexCount() const {
+	size_t count = 0;
 	for (size_t i = 0; i < m_pMeshData->meshes.size(); i++) {
 		count += m_pMeshData->meshes[i]->GetVertexCount();
 	}
@@ -63,8 +63,8 @@ int CMeshData::GetVertexCount() const {
 * 获取网格三角形计数
 * @return 三角形总数
 */
-int CMeshData::GetTriangleCount() const {
-	int count = 0;
+size_t CMeshData::GetTriangleCount() const {
+	size_t count = 0;
 	for (size_t i = 0; i < m_pMeshData->meshes.size(); i++) {
 		count += m_pMeshData->meshes[i]->GetTriangleCount();
 	}
@@ -88,7 +88,7 @@ CBoundingBox CMeshData::GetBoundingBox() const {
 * @param index 索引
 * @return 网格对象指针
 */
-CMesh* CMeshData::GetMesh(int index) {
+CMesh* CMeshData::GetMesh(size_t index) {
 	return m_pMeshData->meshes[index];
 }
 
@@ -97,7 +97,7 @@ CMesh* CMeshData::GetMesh(int index) {
 * @param index 索引
 * @return 关节对象指针
 */
-SJoint* CMeshData::GetJoint(int index) {
+SJoint* CMeshData::GetJoint(size_t index) {
 	return m_pMeshData->joints[index];
 }
 
@@ -122,9 +122,9 @@ SJoint* CMeshData::GetJoint(const string& name) {
 * @return 动画索引，返回 -1 表示不存在
 */
 int CMeshData::GetAnimationIndex(const string& name) {
-	size_t count = m_pMeshData->animationNames.size();
-	if (name.empty()) return count > 0? 0: -1;
-	for (size_t i = 0; i < count; i++) {
+	int count = static_cast<int>(m_pMeshData->animationNames.size());
+	if (name.empty()) return count > 0 ? 0 : -1;
+	for (int i = 0; i < count; i++) {
 		if (m_pMeshData->animationNames[i] == name) {
 			return i;
 		}
@@ -137,7 +137,7 @@ int CMeshData::GetAnimationIndex(const string& name) {
 * @param index 索引
 * @return 动画名称
 */
-string& CMeshData::GetAnimationName(int index) {
+string& CMeshData::GetAnimationName(size_t index) {
 	return m_pMeshData->animationNames[index];
 }
 
@@ -146,7 +146,7 @@ string& CMeshData::GetAnimationName(int index) {
 * @param index 索引
 * @return 动画时长
 */
-float CMeshData::GetAnimationTime(int index) {
+float CMeshData::GetAnimationTime(size_t index) {
 	float beginTime = m_pMeshData->animationBeginTimes[index];
 	float endTime = m_pMeshData->animationEndTimes[index];
 	return endTime - beginTime;
@@ -157,7 +157,7 @@ float CMeshData::GetAnimationTime(int index) {
 * @param index 索引
 * @return 动画开始时间
 */
-float CMeshData::GetAnimationBeginTime(int index) {
+float CMeshData::GetAnimationBeginTime(size_t index) {
 	return m_pMeshData->animationBeginTimes[index];
 }
 
@@ -166,7 +166,7 @@ float CMeshData::GetAnimationBeginTime(int index) {
 * @param index 索引
 * @return 动画结束时间
 */
-float CMeshData::GetAnimationEndTime(int index) {
+float CMeshData::GetAnimationEndTime(size_t index) {
 	return m_pMeshData->animationEndTimes[index];
 }
 
@@ -186,7 +186,7 @@ CMeshData* CMeshData::AddMesh(CMesh* mesh) {
 * @return 当前 CMeshData 指针
 */
 CMeshData* CMeshData::AddJoint(SJoint* joint) {
-	joint->index = m_pMeshData->joints.size();
+	joint->index = (int)m_pMeshData->joints.size();
 	for (int i = 0; i < 4; i++) {
 		joint->currentRotKey[i] = 0;
 		joint->currentPosKey[i] = 0;
@@ -359,8 +359,8 @@ CMeshData* CMeshData::Clone() const {
 			dst->physics->facingPoint = src->physics->facingPoint;
 			dst->physics->frontDir = src->physics->frontDir;
 		}
-		memset(dst->currentRotKey, 0, sizeof(int) * 4);
-		memset(dst->currentPosKey, 0, sizeof(int) * 4);
+		memset(dst->currentRotKey, 0, sizeof(size_t) * 4);
+		memset(dst->currentPosKey, 0, sizeof(size_t) * 4);
 		dst->keyRot = src->keyRot;
 		dst->keyPos = src->keyPos;
 		meshData->m_pMeshData->joints[i] = dst;

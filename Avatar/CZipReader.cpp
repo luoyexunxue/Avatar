@@ -69,9 +69,9 @@ void CZipReader::Close() {
 /**
 * 获取当前打开的文件大小
 */
-unsigned int CZipReader::Size() {
+size_t CZipReader::Size() {
 	if (m_pZipFile) {
-		return (unsigned int)m_pFileInfo->uncompressed_size;
+		return (size_t)m_pFileInfo->uncompressed_size;
 	}
 	return 0;
 }
@@ -79,9 +79,9 @@ unsigned int CZipReader::Size() {
 /**
 * 读取当前打开的文件
 */
-unsigned int CZipReader::Read(unsigned char* buff, unsigned int size) {
+size_t CZipReader::Read(unsigned char* buff, size_t size) {
 	if (m_pZipFile) {
-		return (unsigned int)unzReadCurrentFile(m_pZipFile, buff, size);
+		return (size_t)unzReadCurrentFile(m_pZipFile, buff, (unsigned int)size);
 	}
 	return 0;
 }

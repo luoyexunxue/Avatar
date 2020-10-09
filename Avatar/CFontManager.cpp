@@ -75,7 +75,7 @@ bool CFontManager::Load(const string& file, const string& name) {
 	}
 	// 读取字体库
 	FT_Face face;
-	FT_Error err = FT_New_Memory_Face(m_pFreeTypeLib, pFile->contents, pFile->size, 0, &face);
+	FT_Error err = FT_New_Memory_Face(m_pFreeTypeLib, pFile->contents, (FT_Long)pFile->size, 0, &face);
 	if (err == FT_Err_Unknown_File_Format) {
 		CLog::Error("Could not open unknown font file format");
 		delete pFile;
@@ -115,11 +115,11 @@ void CFontManager::Clear() {
 * 设置缓存大小，缓存可以减少字体绘制时间
 * @param size LRU 缓存大小
 */
-void CFontManager::SetCacheSize(int size) {
+void CFontManager::SetCacheSize(size_t size) {
 	m_iCacheSize = size;
-	// 需要删除的元素个数
-	int count = static_cast<int>(m_mapLRUCache.size()) - size;
-	if (count > 0) {
+	// 需要删除多出来的元素
+	if (m_mapLRUCache.size() > size) {
+		size_t count = m_mapLRUCache.size() - size;
 		SCacheEntry* entry = m_pLRUCacheTail->prev;
 		while (count--) {
 			m_mapLRUCache.erase(entry->key);
@@ -364,7 +364,7 @@ bool CFontManager::CachePut(const wchar_t* text, CTextImage* image) {
 		entry->prev->next = entry->next;
 		entry->next->prev = entry->prev;
 	} else {
-		if (static_cast<int>(m_mapLRUCache.size()) < m_iCacheSize) {
+		if (m_mapLRUCache.size() < m_iCacheSize) {
 			entry = new SCacheEntry;
 		} else {
 			entry = m_pLRUCacheTail->prev;

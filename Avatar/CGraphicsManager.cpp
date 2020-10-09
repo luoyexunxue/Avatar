@@ -458,8 +458,8 @@ void CGraphicsManager::Screenshot(CFileManager::CImageFile& file, bool redraw) {
 	size_t rowBytes = pictureWidth * file.channels;
 	unsigned char* row = new unsigned char[rowBytes];
 	for (int i = 0; i < (pictureHeight >> 1); i++) {
-		int index1 = rowBytes * i;
-		int index2 = rowBytes * (pictureHeight - i - 1);
+		size_t index1 = rowBytes * i;
+		size_t index2 = rowBytes * (pictureHeight - i - 1);
 		memcpy(row, &file.contents[index1], rowBytes);
 		memcpy(&file.contents[index1], &file.contents[index2], rowBytes);
 		memcpy(&file.contents[index2], row, rowBytes);
@@ -491,7 +491,7 @@ void CGraphicsManager::Screenshot(const string& fileName, bool redraw) {
 	else if (ext == "JPG" || ext == "JPEG") fileType = CFileManager::JPG;
 	CFileManager::CImageFile file(fileType);
 	Screenshot(file, redraw);
-	if (pFileMgr->WriteFile(&file, fileName) > 0) {
+	if (pFileMgr->WriteFile(&file, fileName)) {
 		CLog::Info("Saved image file '%s'", fileName.c_str());
 	}
 }
@@ -577,7 +577,7 @@ void CGraphicsManager::PickingPosition(int x, int y, CVector3& position) {
 * @param size 顶点个数
 * @note 点的大小由着色器设置(uPointSize)
 */
-void CGraphicsManager::DrawPoints(const CVertex* vertices, int size) {
+void CGraphicsManager::DrawPoints(const CVertex* vertices, size_t size) {
 	size_t pointer = reinterpret_cast<size_t>(vertices);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
@@ -586,7 +586,7 @@ void CGraphicsManager::DrawPoints(const CVertex* vertices, int size) {
 	glDisableVertexAttribArray(1);
 	glDisableVertexAttribArray(2);
 	SetDepthOffsetEnable(true, -1.0f);
-	glDrawArrays(GL_POINTS, 0, size);
+	glDrawArrays(GL_POINTS, 0, (GLsizei)size);
 	SetDepthOffsetEnable(false, 0.0f);
 	glEnableVertexAttribArray(1);
 	glEnableVertexAttribArray(2);
@@ -599,7 +599,7 @@ void CGraphicsManager::DrawPoints(const CVertex* vertices, int size) {
 * @param width 线宽
 * @param strip 线条（true）还是线段（false）
 */
-void CGraphicsManager::DrawLines(const CVertex* vertices, int size, float width, bool strip) {
+void CGraphicsManager::DrawLines(const CVertex* vertices, size_t size, float width, bool strip) {
 	// 确保 size 为偶数且大于等于2
 	if (!strip) size -= size % 2;
 	if (size < 2) return;
@@ -612,7 +612,7 @@ void CGraphicsManager::DrawLines(const CVertex* vertices, int size, float width,
 	glDisableVertexAttribArray(2);
 	glLineWidth(width);
 	SetDepthOffsetEnable(true, -1.0f);
-	glDrawArrays(strip? GL_LINE_STRIP: GL_LINES, 0, size);
+	glDrawArrays(strip? GL_LINE_STRIP: GL_LINES, 0, (GLsizei)size);
 	SetDepthOffsetEnable(false, 0.0f);
 	glEnableVertexAttribArray(2);
 }
@@ -623,7 +623,7 @@ void CGraphicsManager::DrawLines(const CVertex* vertices, int size, float width,
 * @param size 顶点个数
 * @param strip 三角形带（true）还是三角形集合（false）
 */
-void CGraphicsManager::DrawTriangles(const CVertex* vertices, int size, bool strip) {
+void CGraphicsManager::DrawTriangles(const CVertex* vertices, size_t size, bool strip) {
 	// 顶点个数需为三的倍数
 	if (!strip) size -= size % 3;
 	if (size < 3) return;
@@ -634,7 +634,7 @@ void CGraphicsManager::DrawTriangles(const CVertex* vertices, int size, bool str
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(CVertex), (GLvoid*)(pointer + sizeof(float) * 4));
 	glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(CVertex), (GLvoid*)(pointer + sizeof(float) * 6));
 	glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(CVertex), (GLvoid*)(pointer + sizeof(float) * 10));
-	glDrawArrays(strip? GL_TRIANGLE_STRIP: GL_TRIANGLES, 0, size);
+	glDrawArrays(strip? GL_TRIANGLE_STRIP: GL_TRIANGLES, 0, (GLsizei)size);
 }
 
 /**

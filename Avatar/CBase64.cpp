@@ -38,16 +38,16 @@ static const unsigned char BASE64_DECODE_LUT[128] = {
 * @return 编码后的字符串长度
 * @note buffer 的大小一般为 (length * 4 / 3 + 4) + 1，最后+1为字符串终止符
 */
-int CBase64::Encode(const unsigned char* data, int length, char* buffer, int size) {
-	int blocks = length / 3;
-	int padding = length % 3;
-	int codingLength = padding == 0 ? blocks * 4 : blocks * 4 + 4;
+size_t CBase64::Encode(const unsigned char* data, size_t length, char* buffer, size_t size) {
+	size_t blocks = length / 3;
+	size_t padding = length % 3;
+	size_t codingLength = padding == 0 ? blocks * 4 : blocks * 4 + 4;
 	if (codingLength + 1 > size) {
 		blocks = (size - 1) >> 2;
 		padding = 0;
 		codingLength = blocks * 4;
 	}
-	for (int i = 0; i < blocks; i++) {
+	for (size_t i = 0; i < blocks; i++) {
 		unsigned char a = data[i * 3 + 0];
 		unsigned char b = data[i * 3 + 1];
 		unsigned char c = data[i * 3 + 2];
@@ -81,13 +81,13 @@ int CBase64::Encode(const unsigned char* data, int length, char* buffer, int siz
 * @param buffer 存放编码完成的字符串对象
 * @return 编码后的字符串长度
 */
-int CBase64::Encode(const unsigned char* data, int length, string& buffer) {
-	int blocks = length / 3;
-	int padding = length % 3;
-	int codingLength = padding == 0 ? blocks * 4 : blocks * 4 + 4;
+size_t CBase64::Encode(const unsigned char* data, size_t length, string& buffer) {
+	size_t blocks = length / 3;
+	size_t padding = length % 3;
+	size_t codingLength = padding == 0 ? blocks * 4 : blocks * 4 + 4;
 	char temp[5] = { 0, 0, 0, 0, 0 };
 	buffer.clear();
-	for (int i = 0; i < blocks; i++) {
+	for (size_t i = 0; i < blocks; i++) {
 		unsigned char a = data[i * 3 + 0];
 		unsigned char b = data[i * 3 + 1];
 		unsigned char c = data[i * 3 + 2];
@@ -124,7 +124,7 @@ int CBase64::Encode(const unsigned char* data, int length, string& buffer) {
 * @return 编码后的字符串长度
 * @note buffer 的大小一般为 (length * 4 / 3 + 4) + 1，最后+1为字符串终止符
 */
-int CBase64::Encode(const vector<unsigned char>& data, char* buffer, int size) {
+size_t CBase64::Encode(const vector<unsigned char>& data, char* buffer, size_t size) {
 	return Encode(&data[0], data.size(), buffer, size);
 }
 
@@ -134,7 +134,7 @@ int CBase64::Encode(const vector<unsigned char>& data, char* buffer, int size) {
 * @param buffer 存放编码完成的字符串对象
 * @return 编码后的字符串长度
 */
-int CBase64::Encode(const vector<unsigned char>& data, string& buffer) {
+size_t CBase64::Encode(const vector<unsigned char>& data, string& buffer) {
 	return Encode(&data[0], data.size(), buffer);
 }
 
@@ -146,22 +146,22 @@ int CBase64::Encode(const vector<unsigned char>& data, string& buffer) {
 * @return 解码后的二进制数据长度
 * @note buffer 的大小一般为 strlen(data) * 3 / 4
 */
-int CBase64::Decode(const char* data, unsigned char* buffer, int size) {
-	int length = strlen(data);
-	int blocks = length / 4;
-	int padding = 0;
+size_t CBase64::Decode(const char* data, unsigned char* buffer, size_t size) {
+	size_t length = strlen(data);
+	size_t blocks = length / 4;
+	size_t padding = 0;
 	while (data[length - padding - 1] == '=' && padding < 3) padding++;
 	if (padding != 0) {
 		blocks -= 1;
 		padding = 3 - padding;
 	}
-	int codingLength = blocks * 3 + padding;
+	size_t codingLength = blocks * 3 + padding;
 	if (codingLength > size) {
 		blocks = size / 3;
 		padding = size % 3;
 		codingLength = blocks * 3 + padding;
 	}
-	for (int i = 0; i < blocks; i++) {
+	for (size_t i = 0; i < blocks; i++) {
 		unsigned char a = BASE64_DECODE_LUT[(int)data[i * 4 + 0]];
 		unsigned char b = BASE64_DECODE_LUT[(int)data[i * 4 + 1]];
 		unsigned char c = BASE64_DECODE_LUT[(int)data[i * 4 + 2]];
@@ -192,7 +192,7 @@ int CBase64::Decode(const char* data, unsigned char* buffer, int size) {
 * @return 解码后的二进制数据长度
 * @note buffer 的大小一般为 data.length() * 3 / 4
 */
-int CBase64::Decode(const string& data, unsigned char* buffer, int size) {
+size_t CBase64::Decode(const string& data, unsigned char* buffer, size_t size) {
 	return Decode(data.c_str(), buffer, size);
 }
 
@@ -202,16 +202,16 @@ int CBase64::Decode(const string& data, unsigned char* buffer, int size) {
 * @param buffer 存放解码结果的缓冲区
 * @return 解码后的二进制数据长度
 */
-int CBase64::Decode(const char* data, vector<unsigned char>& buffer) {
-	int length = strlen(data);
-	int blocks = length / 4;
-	int padding = 0;
+size_t CBase64::Decode(const char* data, vector<unsigned char>& buffer) {
+	size_t length = strlen(data);
+	size_t blocks = length / 4;
+	size_t padding = 0;
 	while (data[length - padding - 1] == '=' && padding < 3) padding++;
 	if (padding != 0) {
 		blocks -= 1;
 		padding = 3 - padding;
 	}
-	int codingLength = blocks * 3 + padding;
+	size_t codingLength = blocks * 3 + padding;
 	buffer.resize(codingLength);
 	for (int i = 0; i < blocks; i++) {
 		unsigned char a = BASE64_DECODE_LUT[(int)data[i * 4 + 0]];
@@ -242,6 +242,6 @@ int CBase64::Decode(const char* data, vector<unsigned char>& buffer) {
 * @param buffer 存放解码结果的缓冲区
 * @return 解码后的二进制数据长度
 */
-int CBase64::Decode(const string& data, vector<unsigned char>& buffer) {
+size_t CBase64::Decode(const string& data, vector<unsigned char>& buffer) {
 	return Decode(data.c_str(), buffer);
 }

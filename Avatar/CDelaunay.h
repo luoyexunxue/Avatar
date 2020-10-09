@@ -32,13 +32,13 @@ public:
 	bool Generate();
 
 	//! 获取顶点数量
-	int GetPointCount() const;
+	size_t GetPointCount() const;
 	//! 获取一个顶点
-	CVector3 GetPoint(int index) const;
+	CVector3 GetPoint(size_t index) const;
 	//! 获取三角形数量
-	int GetTriangleCount() const;
+	size_t GetTriangleCount() const;
 	//! 获取一个三角形
-	void GetTriangle(int index, int vertices[3]) const;
+	void GetTriangle(size_t index, unsigned int vertices[3]) const;
 
 	//! 生成网格对象
 	CMesh* CreateMesh(bool dynamic, bool gradient);

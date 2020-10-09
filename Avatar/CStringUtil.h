@@ -36,13 +36,13 @@ public:
 	static string Remove(const string& str, const char* key);
 
 	//! 按指定的字符串分割
-	static int Split(vector<string>& output, const string& str, const char* key, bool trim);
+	static size_t Split(vector<string>& output, const string& str, const char* key, bool trim);
 	//! 按指定的字符串分割
-	static int Split(string output[], int size, const string& str, const char* key, bool trim);
+	static size_t Split(string output[], size_t size, const string& str, const char* key, bool trim);
 	//! 使用指定的分隔符连接字符串数组
 	static string Join(const vector<string>& input, const char* key);
 	//! 使用指定的分隔符连接字符串数组
-	static string Join(const string input[], int size, const char* key);
+	static string Join(const string input[], size_t size, const char* key);
 
 	//! 是否以指定字符串开头
 	static bool StartWith(const string& str, const char* key, bool ignoreCase = false);
@@ -50,11 +50,11 @@ public:
 	static bool EndWith(const string& str, const char* key, bool ignoreCase = false);
 
 	//! UTF8 字符串转换为 wchar_t 数组
-	static void Utf8ToWideCharArray(const char* src, wchar_t* buffer, int size);
+	static void Utf8ToWideCharArray(const char* src, wchar_t* buffer, size_t size);
 	//! wchar_t 数组转换为 UTF8 字符串
-	static void WideCharArrayToUtf8(const wchar_t* src, char* buffer, int size);
+	static void WideCharArrayToUtf8(const wchar_t* src, char* buffer, size_t size);
 	//! 字节数组转为十六进制字符串
-	static string ByteArrayToHexString(const string& split, const unsigned char* data, int size);
+	static string ByteArrayToHexString(const string& split, const unsigned char* data, size_t size);
 
 	//! 生成全球唯一ID
 	static string Guid();

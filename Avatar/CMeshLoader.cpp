@@ -35,7 +35,7 @@ map<string, CMeshData*> CMeshLoader::m_mapMeshDataCache;
 /**
 * 已缓存的网格模型引用
 */
-map<CMeshData*, int> CMeshLoader::m_mapCacheRefCount;
+map<CMeshData*, size_t> CMeshLoader::m_mapCacheRefCount;
 
 /**
 * 注册模型加载器
@@ -108,7 +108,7 @@ CMeshData* CMeshLoader::Load(const string& filename, bool cache) {
 	}
 	if (meshData && cache) {
 		m_mapMeshDataCache.insert(std::pair<string, CMeshData*>(cacheName, meshData));
-		m_mapCacheRefCount.insert(std::pair<CMeshData*, int>(meshData, 1));
+		m_mapCacheRefCount.insert(std::pair<CMeshData*, size_t>(meshData, 1));
 	}
 	return meshData;
 }
@@ -134,7 +134,7 @@ bool CMeshLoader::Save(const string& filename, CMeshData* meshData) {
 * @attention 当使用 CMeshLoader::Load() 且参数 cache 为 true 时必须使用此方法释放模型对象
 */
 void CMeshLoader::Remove(CMeshData* meshData) {
-	map<CMeshData*, int>::iterator iter = m_mapCacheRefCount.find(meshData);
+	map<CMeshData*, size_t>::iterator iter = m_mapCacheRefCount.find(meshData);
 	if (iter != m_mapCacheRefCount.end()) {
 		iter->second -= 1;
 		if (iter->second == 0) {
@@ -333,10 +333,10 @@ CMeshData* CMeshLoader::LoadAvatar(const string& filename) {
 bool CMeshLoader::SaveAvatar(const string& filename, CMeshData* meshData) {
 	map<CTexture*, string> textureMapper;
 	map<string, CFileManager::CBinaryFile*> textureBuffer;
-	map<string, uint32_t> textureSize;
-	uint32_t meshCount = meshData->GetMeshCount();
-	uint32_t jointCount = meshData->GetJointCount();
-	uint32_t animCount = meshData->GetAnimationCount();
+	map<string, size_t> textureSize;
+	uint32_t meshCount = (uint32_t)meshData->GetMeshCount();
+	uint32_t jointCount = (uint32_t)meshData->GetJointCount();
+	uint32_t animCount = (uint32_t)meshData->GetAnimationCount();
 	for (uint32_t i = 0; i < meshCount; i++) {
 		CMaterial* material = meshData->GetMesh(i)->GetMaterial();
 		for (int t = 0; t < material->GetTextureCount(); t++) {
@@ -352,14 +352,14 @@ bool CMeshLoader::SaveAvatar(const string& filename, CMeshData* meshData) {
 					image.height = texture->GetHeight();
 					CFileManager::CBinaryFile* buffer = new CFileManager::CBinaryFile(imageSize);
 					CEngine::GetTextureManager()->ReadData(texture, 0, 0, image.contents);
-					buffer->size = CEngine::GetFileManager()->WriteFile(&image, buffer->contents, buffer->size);
+					CEngine::GetFileManager()->WriteFile(&image, buffer->contents, &buffer->size);
 					textureBuffer[textureId] = buffer;
 				}
 			}
 		}
 	}
 	// 计算文件大小
-	uint32_t size = 24;
+	size_t size = 24;
 	for (uint32_t i = 0; i < meshCount; i++) {
 		CMesh* mesh = meshData->GetMesh(i);
 		size += 9 + mesh->GetVertexCount() * 48;
@@ -375,9 +375,9 @@ bool CMeshLoader::SaveAvatar(const string& filename, CMeshData* meshData) {
 	size += animCount * 40;
 	map<CTexture*, string>::iterator iter = textureMapper.begin();
 	while (iter != textureMapper.end()) {
-		unsigned int fileSize = CEngine::GetFileManager()->FileSize(iter->first->GetFilePath());
+		size_t fileSize = CEngine::GetFileManager()->FileSize(iter->first->GetFilePath());
 		if (!fileSize && textureBuffer.count(iter->second) > 0) fileSize = textureBuffer[iter->second]->size;
-		textureSize.insert(std::pair<string, uint32_t>(iter->second, fileSize));
+		textureSize.insert(std::pair<string, size_t>(iter->second, fileSize));
 		size += 44 + fileSize;
 		++iter;
 	}
@@ -392,8 +392,8 @@ bool CMeshLoader::SaveAvatar(const string& filename, CMeshData* meshData) {
 	for (uint32_t i = 0; i < meshCount; i++) {
 		CMesh* mesh = meshData->GetMesh(i);
 		uint8_t mesh_flag = mesh->GetBindCount() > 0 ? 0x01 : 0x00;
-		uint32_t mesh_vertex = mesh->GetVertexCount();
-		uint32_t mesh_triangle = mesh->GetTriangleCount();
+		uint32_t mesh_vertex = (uint32_t)mesh->GetVertexCount();
+		uint32_t mesh_triangle = (uint32_t)mesh->GetTriangleCount();
 		writer << mesh_flag << mesh_vertex << mesh_triangle;
 		for (uint32_t v = 0; v < mesh_vertex; v++) {
 			CVertex* vert = mesh->GetVertex(v);
@@ -463,8 +463,8 @@ bool CMeshLoader::SaveAvatar(const string& filename, CMeshData* meshData) {
 	// 写动画数据
 	for (uint32_t i = 0; i < jointCount; i++) {
 		SJoint* joint = meshData->GetJoint(i);
-		uint32_t numKeyRot = joint->keyRot.size();
-		uint32_t numKeyPos = joint->keyPos.size();
+		uint32_t numKeyRot = (uint32_t)joint->keyRot.size();
+		uint32_t numKeyPos = (uint32_t)joint->keyPos.size();
 		writer << numKeyRot << numKeyPos;
 		for (uint32_t k = 0; k < numKeyRot; k++) {
 			writer << joint->keyRot[k].time;
@@ -491,11 +491,11 @@ bool CMeshLoader::SaveAvatar(const string& filename, CMeshData* meshData) {
 		writer << beginTime << endTime;
 	}
 	// 写纹理数据
-	uint32_t textureCount = textureMapper.size();
+	uint32_t textureCount = (uint32_t)textureMapper.size();
 	writer << textureCount;
 	for (iter = textureMapper.begin(); iter != textureMapper.end(); ++iter) {
 		string ext = CStringUtil::UpperCase(CFileManager::GetExtension(iter->first->GetFilePath()));
-		uint32_t fileSize = textureSize[iter->second];
+		uint32_t fileSize = (uint32_t)textureSize[iter->second];
 		uint16_t width = (uint16_t)iter->first->GetWidth();
 		uint16_t height = (uint16_t)iter->first->GetHeight();
 		uint16_t channel = (uint16_t)iter->first->GetChannel();
@@ -521,5 +521,5 @@ bool CMeshLoader::SaveAvatar(const string& filename, CMeshData* meshData) {
 	}
 	map<string, CFileManager::CBinaryFile*>::iterator it = textureBuffer.begin();
 	while (it != textureBuffer.end()) { delete it->second; ++it; }
-	return CEngine::GetFileManager()->WriteFile(&file, filename) > 0;
+	return CEngine::GetFileManager()->WriteFile(&file, filename);
 }

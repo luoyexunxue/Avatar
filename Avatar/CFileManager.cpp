@@ -14,7 +14,6 @@
 #ifdef AVATAR_WINDOWS
 #include <Windows.h>
 #include "thirdparty/libjpeg/jpeglib.h"
-#pragma comment(lib, "thirdparty/zlib/zlib.lib")
 #pragma comment(lib, "thirdparty/libpng/libpng16.lib")
 #pragma comment(lib, "thirdparty/libjpeg/jpeg.lib")
 #else
@@ -286,8 +285,8 @@ bool CFileManager::FileExists(const string& filename) {
 * @param filename 需要检查的文件
 * @return 文件大小
 */
-unsigned int CFileManager::FileSize(const string& filename) {
-	unsigned int size = 0;
+size_t CFileManager::FileSize(const string& filename) {
+	size_t size = 0;
 	// 补全路径
 	bool isFullPath = IsFullPath(filename);
 	string fullpath = filename;
@@ -313,7 +312,7 @@ unsigned int CFileManager::FileSize(const string& filename) {
 		if (!isFullPath) fullpath = m_pCurrentDirectory->path + filename;
 		ifstream fin(fullpath, std::ios::in | std::ios::ate | std::ios::binary);
 		if (!fin.is_open()) return 0;
-		size = (unsigned int)fin.tellg();
+		size = fin.tellg();
 		fin.close();
 	}
 	return size;
@@ -358,7 +357,7 @@ void CFileManager::GetFileList(const string& directory, vector<string>& file) {
 * @return 读取成功返回 true
 */
 bool CFileManager::ReadFile(const string& filename, CFileData* file) {
-	unsigned int size = 0;
+	size_t size = 0;
 	unsigned char* data = 0;
 
 	// 清除文件原内容
@@ -402,7 +401,7 @@ bool CFileManager::ReadFile(const string& filename, CFileData* file) {
 			CLog::Warn("Could not read file from %s", fullpath.c_str());
 			return false;
 		}
-		size = (unsigned int)fin.tellg();
+		size = fin.tellg();
 		data = new unsigned char[size];
 		fin.seekg(0, std::ios::beg);
 		fin.read((char*)data, size);
@@ -431,7 +430,7 @@ bool CFileManager::ReadFile(const string& filename, CFileData* file) {
 * @param file 输出文件数据对象指针
 * @return 读取成功返回 true
 */
-bool CFileManager::ReadFile(unsigned char* buffer, unsigned int size, CFileData* file) {
+bool CFileManager::ReadFile(unsigned char* buffer, size_t size, CFileData* file) {
 	// 清除文件原内容
 	if (file->contents) {
 		delete[] file->contents;
@@ -457,15 +456,15 @@ bool CFileManager::ReadFile(unsigned char* buffer, unsigned int size, CFileData*
 * 写入文件
 * @param file 文件对象指针
 * @param filename 写入的文件名
-* @return 写入字节数
+* @return 写入成功返回 true
 */
-int CFileManager::WriteFile(CFileData* file, const string& filename) {
-	unsigned int size = 0;
+bool CFileManager::WriteFile(CFileData* file, const string& filename) {
+	size_t size = 0;
 	unsigned char* data = 0;
 
 	// 检查文件内容是否为空
 	if (!file->contents) {
-		return 0;
+		return false;
 	}
 	// 根据不同的文件类型进行序列化
 	bool ret = false;
@@ -479,7 +478,7 @@ int CFileManager::WriteFile(CFileData* file, const string& filename) {
 	case WAV: ret = SerializeWavFile(file, &data, &size); break;
 	case MP3: ret = SerializeMp3File(file, &data, &size); break;
 	}
-	if (!ret) return 0;
+	if (!ret) return false;
 	// 计算完整路径
 	string fullpath = filename;
 	if (!IsFullPath(filename) && !m_pCurrentDirectory->isRemoteUrl) {
@@ -491,26 +490,28 @@ int CFileManager::WriteFile(CFileData* file, const string& filename) {
 		fout.write((char*)data, size);
 		fout.close();
 		delete[] data;
-		return size;
+		return true;
 	} else CLog::Warn("Could not write file to %s", fullpath.c_str());
 	delete[] data;
-	return 0;
+	return false;
 }
 
 /**
 * 写入文件到缓冲区
 * @param file 文件对象指针
 * @param buffer 写入的缓冲区指针
-* @param size 写入的缓冲区大小
-* @return 写入字节数
+* @param size 写入的缓冲区大小，输出写入字节数
+* @return 写入成功返回 true
 */
-int CFileManager::WriteFile(CFileData* file, unsigned char* buffer, unsigned int size) {
-	unsigned int length = 0;
+bool CFileManager::WriteFile(CFileData* file, unsigned char* buffer, size_t* size) {
+	size_t length = 0;
+	size_t bufferSize = *size;
 	unsigned char* data = 0;
+	*size = 0;
 
 	// 检查文件内容是否为空
 	if (!file->contents) {
-		return 0;
+		return false;
 	}
 	// 根据不同的文件类型进行序列化
 	bool ret = false;
@@ -524,13 +525,18 @@ int CFileManager::WriteFile(CFileData* file, unsigned char* buffer, unsigned int
 	case WAV: ret = SerializeWavFile(file, &data, &length); break;
 	case MP3: ret = SerializeMp3File(file, &data, &length); break;
 	}
-	if (!ret) return 0;
-	if (!buffer) return length;
-	if (length > size) length = size;
+	if (!ret) return false;
+	// 返回需要的缓冲区大小
+	if (!buffer) {
+		*size = length;
+		return false;
+	}
+	if (length > bufferSize) length = bufferSize;
+	*size = length;
 	// 写入文件内容
 	memcpy(buffer, data, length);
 	delete[] data;
-	return length;
+	return true;
 }
 
 /**
@@ -540,7 +546,7 @@ int CFileManager::WriteFile(CFileData* file, unsigned char* buffer, unsigned int
 * @param file 输出文件对象指针
 * @return 成功则返回 true
 */
-bool CFileManager::ParseBinFile(unsigned char* data, unsigned int size, CFileData* file) {
+bool CFileManager::ParseBinFile(unsigned char* data, size_t size, CFileData* file) {
 	file->size = size;
 	file->contents = new unsigned char[size];
 	memcpy(file->contents, data, size);
@@ -554,7 +560,7 @@ bool CFileManager::ParseBinFile(unsigned char* data, unsigned int size, CFileDat
 * @param file 输出文件对象指针
 * @return 成功则返回 true
 */
-bool CFileManager::ParseTxtFile(unsigned char* data, unsigned int size, CFileData* file) {
+bool CFileManager::ParseTxtFile(unsigned char* data, size_t size, CFileData* file) {
 	file->size = size + 1;
 	file->contents = new unsigned char[size + 1];
 	file->contents[size] = 0;
@@ -569,7 +575,7 @@ bool CFileManager::ParseTxtFile(unsigned char* data, unsigned int size, CFileDat
 * @param file 输出文件对象指针
 * @return 成功则返回 true
 */
-bool CFileManager::ParseBmpFile(unsigned char* data, unsigned int size, CFileData* file) {
+bool CFileManager::ParseBmpFile(unsigned char* data, size_t size, CFileData* file) {
 	// 检查数据长度
 	if (size <= 0x36) return false;
 	uint32_t offBits = *(uint32_t*)(data + 0x0A);
@@ -638,7 +644,7 @@ bool CFileManager::ParseBmpFile(unsigned char* data, unsigned int size, CFileDat
 * @param file 输出文件对象指针
 * @return 成功则返回 true
 */
-bool CFileManager::ParseTgaFile(unsigned char* data, unsigned int size, CFileData* file) {
+bool CFileManager::ParseTgaFile(unsigned char* data, size_t size, CFileData* file) {
 	// 支持的 TGA 文件头
 	const unsigned char tag_header[10] = { 0, 0, 2, 0, 0, 0, 0, 0, 0, 0 };
 	const unsigned char tag_header_rle[10] = { 0, 0, 10, 0, 0, 0, 0, 0, 0, 0 };
@@ -722,7 +728,7 @@ bool CFileManager::ParseTgaFile(unsigned char* data, unsigned int size, CFileDat
 void pngStreamRead(png_structp png_ptr, png_bytep outBytes, png_size_t byteCountToRead) {
 	struct SParam {
 		unsigned char* ptr;
-		unsigned int size;
+		size_t size;
 	};
 	SParam* ptr = (SParam*)png_get_io_ptr(png_ptr);
 	if (ptr != NULL && ptr->size >= byteCountToRead) {
@@ -744,8 +750,8 @@ void pngStreamRead(png_structp png_ptr, png_bytep outBytes, png_size_t byteCount
 * @param file 输出文件对象指针
 * @return 成功则返回 true
 */
-bool CFileManager::ParsePngFile(unsigned char* data, unsigned int size, CFileData* file) {
-	png_uint_32 i, width, height, rowbytes;
+bool CFileManager::ParsePngFile(unsigned char* data, size_t size, CFileData* file) {
+	png_uint_32 width, height;
 	int bit_depth, color_type, colorChannels;
 	png_bytep* row_pointers;
 
@@ -760,7 +766,7 @@ bool CFileManager::ParsePngFile(unsigned char* data, unsigned int size, CFileDat
 
 	struct SParam {
 		unsigned char* ptr;
-		unsigned int size;
+		size_t size;
 	} streamPtr;
 
 	streamPtr.ptr  = data;
@@ -792,7 +798,7 @@ bool CFileManager::ParsePngFile(unsigned char* data, unsigned int size, CFileDat
 	if (png_get_valid(png_ptr, info_ptr, PNG_INFO_tRNS)) png_set_expand(png_ptr);
 
 	png_read_update_info(png_ptr, info_ptr);
-	rowbytes = png_get_rowbytes(png_ptr, info_ptr);
+	png_size_t rowbytes = png_get_rowbytes(png_ptr, info_ptr);
 	colorChannels = static_cast<int>(png_get_channels(png_ptr, info_ptr));
 
 	CImageFile* pImage = static_cast<CImageFile*>(file);
@@ -803,7 +809,7 @@ bool CFileManager::ParsePngFile(unsigned char* data, unsigned int size, CFileDat
 	pImage->contents = new unsigned char[pImage->size];
 	row_pointers = new png_bytep[height];
 
-	for (i = 0; i < height; i++) {
+	for (png_uint_32 i = 0; i < height; i++) {
 		row_pointers[i] = pImage->contents + i * rowbytes;
 	}
 	png_read_image(png_ptr, row_pointers);
@@ -820,13 +826,13 @@ bool CFileManager::ParsePngFile(unsigned char* data, unsigned int size, CFileDat
 * @param file 输出文件对象指针
 * @return 成功则返回 true
 */
-bool CFileManager::ParseJpgFile(unsigned char* data, unsigned int size, CFileData* file) {
+bool CFileManager::ParseJpgFile(unsigned char* data, size_t size, CFileData* file) {
 	struct jpeg_decompress_struct info;
 	struct jpeg_error_mgr err;
 
 	info.err = jpeg_std_error(&err);
 	jpeg_create_decompress(&info);
-	jpeg_mem_src(&info, data, size);
+	jpeg_mem_src(&info, data, (unsigned long)size);
 	jpeg_read_header(&info, TRUE);
 
 	CImageFile* pImage = static_cast<CImageFile*>(file);
@@ -856,7 +862,7 @@ bool CFileManager::ParseJpgFile(unsigned char* data, unsigned int size, CFileDat
 * @param file 输出文件对象指针
 * @return 成功则返回 true
 */
-bool CFileManager::ParseWavFile(unsigned char* data, unsigned int size, CFileData* file) {
+bool CFileManager::ParseWavFile(unsigned char* data, size_t size, CFileData* file) {
 	// 波形格式文件头
 	struct FmtHeader {
 		int8_t fmtId[4];
@@ -913,7 +919,7 @@ bool CFileManager::ParseWavFile(unsigned char* data, unsigned int size, CFileDat
 * @param file 输出文件对象指针
 * @return 成功则返回 true
 */
-bool CFileManager::ParseMp3File(unsigned char* data, unsigned int size, CFileData* file) {
+bool CFileManager::ParseMp3File(unsigned char* data, size_t size, CFileData* file) {
 	// 初始化 minimp3 库
 	mp3dec_t mp3d;
 	mp3dec_file_info_t info;
@@ -938,7 +944,7 @@ bool CFileManager::ParseMp3File(unsigned char* data, unsigned int size, CFileDat
 * @param size 输出数据大小
 * @return 成功则返回 true
 */
-bool CFileManager::SerializeBinFile(CFileData* file, unsigned char** data, unsigned int* size){
+bool CFileManager::SerializeBinFile(CFileData* file, unsigned char** data, size_t* size){
 	*size = file->size;
 	*data = new unsigned char[file->size];
 	memcpy(*data, file->contents, file->size);
@@ -952,8 +958,8 @@ bool CFileManager::SerializeBinFile(CFileData* file, unsigned char** data, unsig
 * @param size 输出数据大小
 * @return 成功则返回 true
 */
-bool CFileManager::SerializeTxtFile(CFileData* file, unsigned char** data, unsigned int* size) {
-	unsigned int txtLength = file->size;
+bool CFileManager::SerializeTxtFile(CFileData* file, unsigned char** data, size_t* size) {
+	size_t txtLength = file->size;
 	while (file->contents[txtLength - 1] == 0) txtLength -= 1;
 	*size = txtLength;
 	*data = new unsigned char[txtLength];
@@ -968,10 +974,10 @@ bool CFileManager::SerializeTxtFile(CFileData* file, unsigned char** data, unsig
 * @param size 输出数据大小
 * @return 成功则返回 true
 */
-bool CFileManager::SerializeBmpFile(CFileData* file, unsigned char** data, unsigned int* size) {
+bool CFileManager::SerializeBmpFile(CFileData* file, unsigned char** data, size_t* size) {
 	CImageFile* pImage = static_cast<CImageFile*>(file);
 	int rowExtra = 3 - (pImage->width * pImage->channels - 1) % 4;
-	unsigned int fileSize = pImage->size + 54 + pImage->height * rowExtra;
+	size_t fileSize = pImage->size + 54 + pImage->height * rowExtra;
 	unsigned char* pData = new unsigned char[fileSize];
 	memset(pData, 0x00, 54);
 	pData[0] = 'B';
@@ -1022,7 +1028,7 @@ bool CFileManager::SerializeBmpFile(CFileData* file, unsigned char** data, unsig
 * @param size 输出数据大小
 * @return 成功则返回 true
 */
-bool CFileManager::SerializeTgaFile(CFileData* file, unsigned char** data, unsigned int* size) {
+bool CFileManager::SerializeTgaFile(CFileData* file, unsigned char** data, size_t* size) {
 	CImageFile* pImage = static_cast<CImageFile*>(file);
 	unsigned char* pData = new unsigned char[pImage->size + 18];
 	// 文件头
@@ -1077,7 +1083,7 @@ void pngStreamFlush(png_structp png_ptr){
 * @param size 输出数据大小
 * @return 成功则返回 true
 */
-bool CFileManager::SerializePngFile(CFileData* file, unsigned char** data, unsigned int* size) {
+bool CFileManager::SerializePngFile(CFileData* file, unsigned char** data, size_t* size) {
 	vector<unsigned char> vecData;
 	int colorType;
 
@@ -1126,7 +1132,7 @@ bool CFileManager::SerializePngFile(CFileData* file, unsigned char** data, unsig
 * @param size 输出数据大小
 * @return 成功则返回 true
 */
-bool CFileManager::SerializeJpgFile(CFileData* file, unsigned char** data, unsigned int* size) {
+bool CFileManager::SerializeJpgFile(CFileData* file, unsigned char** data, size_t* size) {
 	struct jpeg_compress_struct info;
 	struct jpeg_error_mgr err;
 
@@ -1171,8 +1177,8 @@ bool CFileManager::SerializeJpgFile(CFileData* file, unsigned char** data, unsig
 * @param size 输出数据大小
 * @return 成功则返回 true
 */
-bool CFileManager::SerializeWavFile(CFileData* file, unsigned char** data, unsigned int* size) {
-	unsigned int fileSize = file->size + 0x2C;
+bool CFileManager::SerializeWavFile(CFileData* file, unsigned char** data, size_t* size) {
+	size_t fileSize = file->size + 0x2C;
 	unsigned char* pData = new unsigned char[fileSize];
 	CAudioFile* pAudio = static_cast<CAudioFile*>(file);
 	// WAV 文件头
@@ -1198,7 +1204,7 @@ bool CFileManager::SerializeWavFile(CFileData* file, unsigned char** data, unsig
 	pData[0x1D] = (unsigned char)((byteRate >> 8) & 0xFF);
 	pData[0x1E] = (unsigned char)((byteRate >> 16) & 0xFF);
 	pData[0x1F] = (unsigned char)((byteRate >> 24) & 0xFF);
-	unsigned short blockAlign = (pAudio->channels * pAudio->sampleBits) >> 3;
+	unsigned int blockAlign = (pAudio->channels * pAudio->sampleBits) >> 3;
 	pData[0x20] = (unsigned char)(blockAlign & 0xFF);
 	pData[0x21] = (unsigned char)((blockAlign >> 8) & 0xFF);
 	pData[0x22] = (unsigned char)(pAudio->sampleBits & 0xFF);
@@ -1222,7 +1228,7 @@ bool CFileManager::SerializeWavFile(CFileData* file, unsigned char** data, unsig
 * @param size 输出数据大小
 * @return 成功则返回 true
 */
-bool CFileManager::SerializeMp3File(CFileData* file, unsigned char** data, unsigned int* size) {
+bool CFileManager::SerializeMp3File(CFileData* file, unsigned char** data, size_t* size) {
 	CLog::Warn("Can't serialize MP3 file, SerializeMp3File is not implenment");
 	return false;
 }

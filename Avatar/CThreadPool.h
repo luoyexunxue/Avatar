@@ -43,9 +43,9 @@ public:
 	void AddTask(CThreadTask* task, void* param);
 
 	//! 获取总的线程数量
-	int GetThreadCount();
+	size_t GetThreadCount();
 	//! 获取未处理的任务数量
-	int GetTaskCount();
+	size_t GetTaskCount();
 
 private:
 	//! 工作线程

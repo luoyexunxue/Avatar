@@ -35,16 +35,16 @@ void CSceneNodeStatic::Destroy() {
 * 渲染场景节点
 */
 void CSceneNodeStatic::Render() {
-	int count = m_pMeshData->GetMeshCount();
+	size_t count = m_pMeshData->GetMeshCount();
 	if (CEngine::GetGraphicsManager()->IsDepthRender()) {
-		for (int i = 0; i < count; i++) {
+		for (size_t i = 0; i < count; i++) {
 			CMesh* pMesh = m_pMeshData->GetMesh(i);
 			pMesh->GetMaterial()->GetTexture()->UseTexture();
 			pMesh->Render(false);
 		}
 	} else {
 		CShader* currentShader = CEngine::GetShaderManager()->GetCurrentShader();
-		for (int i = 0; i < count; i++) {
+		for (size_t i = 0; i < count; i++) {
 			CMesh* pMesh = m_pMeshData->GetMesh(i);
 			if (pMesh->GetMaterial()->GetShader()) {
 				CCamera* pCamera = CEngine::GetGraphicsManager()->GetCamera();

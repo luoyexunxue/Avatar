@@ -42,7 +42,7 @@ public:
 	//! 设置自定义着色器
 	void SetShader(const string& shader);
 	//! 获取顶点个数
-	int GetPointCount();
+	size_t GetPointCount();
 	//! 获取指定顶点
 	CVertex* GetPoint(unsigned int index);
 

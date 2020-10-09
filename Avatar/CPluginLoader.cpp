@@ -83,7 +83,7 @@ void CPluginLoader::Destroy() {
 /**
 * 获取插件数量
 */
-int CPluginLoader::GetCount() {
+size_t CPluginLoader::GetCount() {
 	return m_mapPlugin.size();
 }
 

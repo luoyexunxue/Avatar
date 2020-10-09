@@ -39,9 +39,9 @@ public:
 	void Clear();
 
 	//! 获取树的最大深度
-	int GetMaxDepth();
+	size_t GetMaxDepth();
 	//! 获取包围盒重叠的数据对
-	int CollisionPair(vector<SCollidePair>& collidePair);
+	size_t CollisionPair(vector<SCollidePair>& collidePair);
 
 private:
 	//! 节点定义
@@ -68,7 +68,7 @@ private:
 	//! 计算两个包围盒中心的接近度
 	inline float Proximity(const CBoundingBox& a, const CBoundingBox& b);
 	//! 递归获取节点的最大深度
-	int GetMaxDepth(SDbvtNode* node, int depth);
+	size_t GetMaxDepth(SDbvtNode* node, size_t depth);
 	//! 递归获取包含指定数据的叶节点
 	SDbvtNode* GetLeaf(SDbvtNode* root, void* data);
 	//! 递归删除指定节点
@@ -78,7 +78,7 @@ private:
 	//! 根节点
 	SDbvtNode* m_pRoot;
 	//! 叶节点个数
-	int m_iLeavesCount;
+	size_t m_iLeavesCount;
 	//! 碰撞检测非递归遍历栈
 	vector<SNodePair> m_vecStack;
 };

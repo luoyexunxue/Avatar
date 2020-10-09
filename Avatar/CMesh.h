@@ -29,7 +29,7 @@ public:
 	inline CMaterial* GetMaterial() const { return m_pMaterial; }
 
 	//! 设置顶点数量
-	void SetVertexUsage(unsigned int count);
+	void SetVertexUsage(size_t count);
 	//! 添加一个顶点
 	void AddVertex(const CVertex& vertex);
 	//! 添加一个顶点并指定骨骼绑定信息
@@ -40,9 +40,9 @@ public:
 	void AddTriangle(const CVertex& a, const CVertex& b, const CVertex& c);
 
 	//! 移除网格顶点
-	void RemoveVertex(unsigned int index, int count);
+	void RemoveVertex(size_t index, int count);
 	//! 移除网格三角形
-	void RemoveTriangle(unsigned int index, int count);
+	void RemoveTriangle(size_t index, int count);
 
 	//! 附加一个网格
 	void Append(const CMesh* mesh);
@@ -54,21 +54,21 @@ public:
 	void Reverse(bool normal, bool texCoordU, bool texCoordV);
 
 	//! 获取顶点个数
-	int GetVertexCount() const;
+	size_t GetVertexCount() const;
 	//! 获取三角形个数
-	int GetTriangleCount() const;
+	size_t GetTriangleCount() const;
 	//! 获取绑定骨骼顶点数量
-	int GetBindCount() const;
+	size_t GetBindCount() const;
 	//! 获取网格顶点
-	CVertex* GetVertex(unsigned int index);
+	CVertex* GetVertex(size_t index);
 	//! 获取网格顶点
-	CVertex* GetVertex(unsigned int face, unsigned int index);
+	CVertex* GetVertex(size_t face, size_t index);
 	//! 获取三角形顶点
-	void GetTriangle(unsigned int index, CVertex* vertices[3]);
+	void GetTriangle(size_t index, CVertex* vertices[3]);
 	//! 获取三角形顶点索引
-	void GetTriangle(unsigned int index, unsigned int vertices[3]);
+	void GetTriangle(size_t index, unsigned int vertices[3]);
 	//! 获取顶点骨骼绑定
-	CVertexJoint* GetBind(unsigned int index);
+	CVertexJoint* GetBind(size_t index);
 
 	//! 生成网格
 	void Create(bool dynamic);
@@ -82,7 +82,7 @@ public:
 	//! 获取包围盒
 	CBoundingBox GetBoundingBox() const;
 	//! 射线拾取，返回距离
-	float Intersects(const CRay& ray, int* face, float* bu, float* bv) const;
+	float Intersects(const CRay& ray, size_t* face, float* bu, float* bv) const;
 	//! 计算体积并返回质心坐标
 	float Volume(CVector3& centroid) const;
 	//! 计算表面积

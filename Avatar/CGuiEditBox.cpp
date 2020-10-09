@@ -71,7 +71,7 @@ bool CGuiEditBox::SetAttribute(const string& name, const string& value) {
 	} else if (name == "__key") {
 		int key = atoi(value.c_str());
 		wchar_t ch = *(wchar_t*)&key;
-		int length = wcslen(m_strText);
+		size_t length = wcslen(m_strText);
 		if (ch < 0x20) {
 			if (ch == 0x08 && length > 0) m_strText[length - 1] = 0;
 		} else if (length < 255) {
@@ -130,7 +130,7 @@ void CGuiEditBox::Draw(const CRectangle& rect, unsigned char* buffer) {
 		pFontMgr->TextSize(empty, 0, &image.textHeight);
 		memset(image.data, 0, image.width * image.height);
 	} else {
-		pFontMgr->DrawText(m_strText, &image, (CFontManager::Alignment)m_iAlignment, false);
+		pFontMgr->DrawText(m_strText, &image, m_iAlignment, false);
 	}
 	// 光标位置
 	if (m_bShowCursor) {

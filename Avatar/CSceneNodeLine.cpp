@@ -184,7 +184,7 @@ void CSceneNodeLine::SetShader(const string& shader) {
 /**
 * 获取顶点个数
 */
-int CSceneNodeLine::GetPointCount() {
+size_t CSceneNodeLine::GetPointCount() {
 	return m_vecVertices.size();
 }
 

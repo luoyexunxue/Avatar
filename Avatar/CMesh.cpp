@@ -54,7 +54,7 @@ CMesh::~CMesh() {
 * 设置顶点使用个数
 * @param count 顶点个数
 */
-void CMesh::SetVertexUsage(unsigned int count) {
+void CMesh::SetVertexUsage(size_t count) {
 	m_vecVertexArray.reserve(count);
 }
 
@@ -100,7 +100,7 @@ void CMesh::AddTriangle(const CVertex& a, const CVertex& b, const CVertex& c) {
 	m_vecVertexArray.push_back(b);
 	m_vecVertexArray.push_back(c);
 	// 三角形
-	unsigned int baseIndex = m_vecVertexArray.size();
+	unsigned int baseIndex = (unsigned int)m_vecVertexArray.size();
 	m_vecIndexArray.push_back(baseIndex - 3);
 	m_vecIndexArray.push_back(baseIndex - 2);
 	m_vecIndexArray.push_back(baseIndex - 1);
@@ -111,15 +111,15 @@ void CMesh::AddTriangle(const CVertex& a, const CVertex& b, const CVertex& c) {
 * @param index 起始位置
 * @param count 顶点个数
 */
-void CMesh::RemoveVertex(unsigned int index, int count) {
-	const int vertexCount = static_cast<int>(m_vecVertexArray.size());
-	const int bindCount = static_cast<int>(m_vecBindArray.size());
-	const int maxCount = vertexCount - static_cast<int>(index);
+void CMesh::RemoveVertex(size_t index, int count) {
+	const size_t vertexCount = m_vecVertexArray.size();
+	const size_t bindCount = m_vecBindArray.size();
+	const int maxCount = static_cast<int>(vertexCount - index);
 	if (count < 0 || count > maxCount) count = maxCount;
 	vector<CVertex>::iterator it1 = m_vecVertexArray.begin() + index;
 	vector<CVertex>::iterator it2 = m_vecVertexArray.begin() + index + count;
 	m_vecVertexArray.erase(it1, it2);
-	if (count + static_cast<int>(index) <= bindCount) {
+	if (count + index <= bindCount) {
 		vector<CVertexJoint>::iterator it3 = m_vecBindArray.begin() + index;
 		vector<CVertexJoint>::iterator it4 = m_vecBindArray.begin() + index + count;
 		m_vecBindArray.erase(it3, it4);
@@ -131,9 +131,9 @@ void CMesh::RemoveVertex(unsigned int index, int count) {
 * @param index 起始位置
 * @param count 三角形个数
 */
-void CMesh::RemoveTriangle(unsigned int index, int count) {
-	const int triangleCount = static_cast<int>(m_vecIndexArray.size()) / 3;
-	const int maxCount = triangleCount - static_cast<int>(index);
+void CMesh::RemoveTriangle(size_t index, int count) {
+	const size_t triangleCount = m_vecIndexArray.size() / 3;
+	const int maxCount = static_cast<int>(triangleCount - index);
 	if (count < 0 || count > maxCount) count = maxCount;
 	vector<unsigned int>::iterator it1 = m_vecIndexArray.begin() + index * 3;
 	vector<unsigned int>::iterator it2 = m_vecIndexArray.begin() + (index + count) * 3;
@@ -256,7 +256,7 @@ void CMesh::Reverse(bool normal, bool texCoordU, bool texCoordV) {
 * 获取顶点个数
 * @return 顶点个数
 */
-int CMesh::GetVertexCount() const {
+size_t CMesh::GetVertexCount() const {
 	return m_vecVertexArray.size();
 }
 
@@ -264,7 +264,7 @@ int CMesh::GetVertexCount() const {
 * 获取三角形个数
 * @return 三角形个数
 */
-int CMesh::GetTriangleCount() const {
+size_t CMesh::GetTriangleCount() const {
 	return m_vecIndexArray.size() / 3;
 }
 
@@ -272,7 +272,7 @@ int CMesh::GetTriangleCount() const {
 * 获取绑定骨骼的顶点数量
 * @return 绑定骨骼顶点数量
 */
-int CMesh::GetBindCount() const {
+size_t CMesh::GetBindCount() const {
 	return m_vecBindArray.size();
 }
 
@@ -281,7 +281,7 @@ int CMesh::GetBindCount() const {
 * @param index 顶点索引
 * @return 顶点
 */
-CVertex* CMesh::GetVertex(unsigned int index) {
+CVertex* CMesh::GetVertex(size_t index) {
 	return &m_vecVertexArray[index];
 }
 
@@ -291,7 +291,7 @@ CVertex* CMesh::GetVertex(unsigned int index) {
 * @param index 顶点索引(0,1,2)
 * @return 顶点
 */
-CVertex* CMesh::GetVertex(unsigned int face, unsigned int index) {
+CVertex* CMesh::GetVertex(size_t face, size_t index) {
 	return &m_vecVertexArray[m_vecIndexArray[face * 3 + index]];
 }
 
@@ -300,7 +300,7 @@ CVertex* CMesh::GetVertex(unsigned int face, unsigned int index) {
 * @param index 三角形索引
 * @param vertices 输出三角形的三个顶点
 */
-void CMesh::GetTriangle(unsigned int index, CVertex* vertices[3]) {
+void CMesh::GetTriangle(size_t index, CVertex* vertices[3]) {
 	vertices[0] = &m_vecVertexArray[m_vecIndexArray[index * 3 + 0]];
 	vertices[1] = &m_vecVertexArray[m_vecIndexArray[index * 3 + 1]];
 	vertices[2] = &m_vecVertexArray[m_vecIndexArray[index * 3 + 2]];
@@ -311,7 +311,7 @@ void CMesh::GetTriangle(unsigned int index, CVertex* vertices[3]) {
 * @param index 三角形索引
 * @param vertices 输出三角形的三个顶点索引
 */
-void CMesh::GetTriangle(unsigned int index, unsigned int vertices[3]) {
+void CMesh::GetTriangle(size_t index, unsigned int vertices[3]) {
 	vertices[0] = m_vecIndexArray[index * 3 + 0];
 	vertices[1] = m_vecIndexArray[index * 3 + 1];
 	vertices[2] = m_vecIndexArray[index * 3 + 2];
@@ -322,7 +322,7 @@ void CMesh::GetTriangle(unsigned int index, unsigned int vertices[3]) {
 * @param index 顶点索引
 * @return 骨骼绑定信息
 */
-CVertexJoint* CMesh::GetBind(unsigned int index) {
+CVertexJoint* CMesh::GetBind(size_t index) {
 	return &m_vecBindArray[index];
 }
 
@@ -419,7 +419,7 @@ void CMesh::Render(bool material) {
 	glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(CVertex), (GLvoid*)(sizeof(float) * 6));
 	glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(CVertex), (GLvoid*)(sizeof(float) * 10));
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_iIndexBuffer);
-	glDrawElements(GL_TRIANGLES, m_iIndexArraySize, m_iVertexArraySize > 0x10000 ? GL_UNSIGNED_INT : GL_UNSIGNED_SHORT, 0);
+	glDrawElements(GL_TRIANGLES, (GLsizei)m_iIndexArraySize, m_iVertexArraySize > 0x10000 ? GL_UNSIGNED_INT : GL_UNSIGNED_SHORT, 0);
 	if (material) {
 		if (!m_pMaterial->m_bCullFace) glEnable(GL_CULL_FACE);
 		if (!m_pMaterial->m_bUseDepth) glEnable(GL_DEPTH_TEST);
@@ -571,7 +571,7 @@ CBoundingBox CMesh::GetBoundingBox() const {
 * @return 交点距离射线起点的距离，负数表示不相交
 * @note 交点坐标 = (1 - u - v)V0 + uV1 + vV2 其中 V0 V1 V2 为三角形三个顶点坐标
 */
-float CMesh::Intersects(const CRay& ray, int* face, float* bu, float* bv) const {
+float CMesh::Intersects(const CRay& ray, size_t* face, float* bu, float* bv) const {
 	float distance = -1.0f;
 	for (size_t i = 0; i < m_vecIndexArray.size(); i += 3) {
 		const float* v0 = m_vecVertexArray[m_vecIndexArray[i + 0]].m_fPosition;

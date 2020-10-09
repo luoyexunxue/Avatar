@@ -95,7 +95,7 @@ int CSoundManager::Create(const string& file) {
 			else bufferItem.valid = false;
 			if (bufferItem.valid) {
 				alGenBuffers(1, &bufferItem.buffer);
-				alBufferData(bufferItem.buffer, format, pFile->contents, pFile->size, pFile->sampleRate);
+				alBufferData(bufferItem.buffer, format, pFile->contents, (ALsizei)pFile->size, pFile->sampleRate);
 			}
 			delete pFile;
 		}
@@ -248,7 +248,7 @@ int CSoundManager::Create(int channel, int sampleRate, int sampleBits) {
 * 获取音源数量
 * @return 音源数量
 */
-int CSoundManager::SoundCount() {
+size_t CSoundManager::SoundCount() {
 	return m_mapSource.size();
 }
 
@@ -381,7 +381,7 @@ bool CSoundManager::Update(const string& original, const string& file) {
 	m_vecBuffer[select].channels = pFile->channels;
 	m_vecBuffer[select].sampleBits = pFile->sampleBits;
 	m_vecBuffer[select].frequency = pFile->sampleRate;
-	alBufferData(m_vecBuffer[select].buffer, format, pFile->contents, pFile->size, pFile->sampleRate);
+	alBufferData(m_vecBuffer[select].buffer, format, pFile->contents, (ALsizei)pFile->size, pFile->sampleRate);
 	delete pFile;
 	return true;
 }

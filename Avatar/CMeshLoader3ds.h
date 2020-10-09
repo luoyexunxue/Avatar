@@ -14,13 +14,13 @@ using std::vector;
 class AVATAR_EXPORT CMeshLoader3ds : public CMeshLoader {
 public:
 	//! 加载模型
-	virtual CMeshData* LoadFile(const string& filename, uint8_t* data, uint32_t size);
+	virtual CMeshData* LoadFile(const string& filename, uint8_t* data, size_t size);
 
 private:
 	//! 递归读取块
-	void ReadChunk(unsigned char* buffer, unsigned int size);
+	void ReadChunk(unsigned char* buffer, size_t size);
 	//! 读取网格块
-	void ReadMeshChunk(unsigned char* buffer, unsigned int size, CMesh* mesh);
+	void ReadMeshChunk(unsigned char* buffer, size_t size, CMesh* mesh);
 	//! 读取材质块
 	void ReadMaterialChunk(unsigned char* buffer, unsigned int size, CMaterial* material);
 	//! 读取颜色块

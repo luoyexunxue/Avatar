@@ -279,7 +279,7 @@ CMesh* CGeometryCreator::CreateCylinder(float radius, float height, int slices, 
 		}
 	}
 	// 顶部和底部中心顶点
-	int baseIndex = pMesh->GetVertexCount();
+	unsigned int baseIndex = (unsigned int)pMesh->GetVertexCount();
 	pMesh->AddVertex(CVertex(0, 0, z, 0, 0, 0, 0, 1, color.m_fValue));
 	pMesh->AddVertex(CVertex(0, 0, -z, 0, 0, 0, 0, -1, color.m_fValue));
 
@@ -291,7 +291,7 @@ CMesh* CGeometryCreator::CreateCylinder(float radius, float height, int slices, 
 	}
 	// 底部和顶部三角形
 	for (int i = 0; i < slices; i++) {
-		int index = (i << 2) + 2;
+		unsigned int index = (i << 2) + 2;
 		if (i + 1 == slices) {
 			pMesh->AddTriangle(2, baseIndex, index);
 			pMesh->AddTriangle(index + 1, baseIndex + 1, 3);
@@ -669,7 +669,7 @@ CMesh* CGeometryCreator::CreateArrow(float r1, float r2, float h1, float h2, int
 * @param length 拉伸线段定点数
 * @return 网格对象
 */
-CMesh* CGeometryCreator::CreateExtrude(const CVector2* polygon, int count, const CVector3* line, int length) {
+CMesh* CGeometryCreator::CreateExtrude(const CVector2* polygon, size_t count, const CVector3* line, size_t length) {
 	return CreateExtrude(polygon, count, line, length, false);
 }
 
@@ -682,7 +682,7 @@ CMesh* CGeometryCreator::CreateExtrude(const CVector2* polygon, int count, const
 * @param smooth 是否平滑表面
 * @return 网格对象
 */
-CMesh* CGeometryCreator::CreateExtrude(const CVector2* polygon, int count, const CVector3* line, int length, bool smooth) {
+CMesh* CGeometryCreator::CreateExtrude(const CVector2* polygon, size_t count, const CVector3* line, size_t length, bool smooth) {
 	return CreateExtrude(polygon, count, line, length, smooth, CColor::White);
 }
 
@@ -696,7 +696,7 @@ CMesh* CGeometryCreator::CreateExtrude(const CVector2* polygon, int count, const
 * @param color 颜色
 * @return 网格对象
 */
-CMesh* CGeometryCreator::CreateExtrude(const CVector2* polygon, int count, const CVector3* line, int length, bool smooth, const CColor& color) {
+CMesh* CGeometryCreator::CreateExtrude(const CVector2* polygon, size_t count, const CVector3* line, size_t length, bool smooth, const CColor& color) {
 	// 去除线段首部相同的点
 	while (length > 1 && line[1] == line[0]) { ++line; --length; }
 	if (count < 2 || length < 2) return 0;
@@ -717,8 +717,8 @@ CMesh* CGeometryCreator::CreateExtrude(const CVector2* polygon, int count, const
 	float* texCoordU = new float[count];
 	perimeter[0] = 0.0f;
 	texCoordU[0] = 0.0f;
-	for (int i = 1; i < count; i++) perimeter[i] = perimeter[i - 1] + (polygon[i] - polygon[i - 1]).Length();
-	for (int i = 1; i < count; i++) texCoordU[i] = perimeter[i] / perimeter[count - 1];
+	for (size_t i = 1; i < count; i++) perimeter[i] = perimeter[i - 1] + (polygon[i] - polygon[i - 1]).Length();
+	for (size_t i = 1; i < count; i++) texCoordU[i] = perimeter[i] / perimeter[count - 1];
 	// 开始循环计算拐点截面顶点
 	float lineLengthSum = 0.0f;
 	for (int i = 0; i < length; i++) {
@@ -733,7 +733,7 @@ CMesh* CGeometryCreator::CreateExtrude(const CVector2* polygon, int count, const
 		if (cosin < -1.0f) cosin = -1.0f;
 		else if (cosin > 1.0f) cosin = 1.0f;
 		const float rotateAngle = acosf(cosin);
-		for (int j = 0; j < count; j++) {
+		for (size_t j = 0; j < count; j++) {
 			// 切面交点通过计算变换后的截面顶点沿线段方向和切面求交得到
 			CVector3 prj;
 			CVector3 org = line[i] + rotate * CVector3(polygon[j].m_fValue[0], polygon[j].m_fValue[1], 0.0f);
@@ -758,16 +758,18 @@ CMesh* CGeometryCreator::CreateExtrude(const CVector2* polygon, int count, const
 		dir.SetValue(next);
 	}
 	// 添加三角形
-	for (int i = 0; i < length - 1; i++) {
-		for (int j = 0; j < count - 1; j++) {
-			int index1 = 2 * (count * i + j) + 1;
-			int index2 = 2 * (count * (i + 1) + j);
+	for (size_t i = 0; i < length - 1; i++) {
+		for (size_t j = 0; j < count - 1; j++) {
+			size_t index1 = 2 * (count * i + j) + 1;
+			size_t index2 = 2 * (count * (i + 1) + j);
 			if (!smooth) {
 				index1 = 4 * ((count - 1) * i + j) + 1;
 				index2 = 4 * ((count - 1) * (i + 1) + j);
 			}
-			pMesh->AddTriangle(index1, index1 + 2, index2);
-			pMesh->AddTriangle(index1 + 2, index2 + 2, index2);
+			unsigned int idx1 = (unsigned int)index1;
+			unsigned int idx2 = (unsigned int)index2;
+			pMesh->AddTriangle(idx1, idx1 + 2, idx2);
+			pMesh->AddTriangle(idx1 + 2, idx2 + 2, idx2);
 		}
 	}
 	delete[] perimeter;
@@ -775,9 +777,9 @@ CMesh* CGeometryCreator::CreateExtrude(const CVector2* polygon, int count, const
 	pMesh->SetupNormal();
 	// 平滑焊缝
 	if (smooth) {
-		for (int i = 0; i < length; i++) {
-			int m = 2 * count * i;
-			int n = 2 * count * (i + 1);
+		for (size_t i = 0; i < length; i++) {
+			size_t m = 2 * count * i;
+			size_t n = 2 * count * (i + 1);
 			CVertex* v11 = pMesh->GetVertex(m);
 			CVertex* v12 = pMesh->GetVertex(n - 2);
 			CVertex* v21 = pMesh->GetVertex(m + 1);

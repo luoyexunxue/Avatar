@@ -24,27 +24,23 @@ public:
 	//! 指定字符串构造
 	CJsonObject(const char* content);
 	//! 使用指定长度的字符串构造
-	CJsonObject(const char* content, int length);
+	CJsonObject(const char* content, size_t length);
 
 	//! 解析指定字符串
-	bool Parse(const char* content, int length);
+	bool Parse(const char* content, size_t length);
 	//! 判断是否包含指定值
 	bool IsContain(const char* name) const;
 	//! 获取数组节点数组大小
-	int GetCount() const;
+	size_t GetCount() const;
 
-	//! 获取节点内指定名称的值
-	CJsonObject& GetValue(const char* name);
 	//! 获取节点内指定名称的值
 	CJsonObject& GetValue(const string& name);
 	//! 获取数组节点内指定的值
-	CJsonObject& GetValue(int index);
-	//! 同 GetValue(const char* name)
-	CJsonObject& operator [] (const char* name);
+	CJsonObject& GetValue(size_t index);
 	//! 同 GetValue(const string& name)
 	CJsonObject& operator [] (const string& name);
 	//! 同 GetValue(int index)
-	CJsonObject& operator [] (int index);
+	CJsonObject& operator [] (size_t index);
 
 public:
 	//! 是否为空节点
@@ -75,7 +71,7 @@ private:
 	//! JSON 值泛定义
 	typedef struct _SValue {
 		enum { NIL, BOOL, INTEGER, FLOAT, STRING, OBJECT, ARRAY } type;
-		int length;
+		size_t length;
 		union {
 			bool bValue;
 			int iValue;
@@ -85,19 +81,19 @@ private:
 	} SValue;
 
 	//! 解析对象值
-	int ParseObject(const char* data, int length, CJsonObject& value);
+	int ParseObject(const char* data, size_t length, CJsonObject& value);
 	//! 解析数组值
-	int ParseArray(const char* data, int length, CJsonObject& value);
+	int ParseArray(const char* data, size_t length, CJsonObject& value);
 	//! 解析普通字符串
-	int ParseString(const char* data, int length, CJsonObject& value);
+	int ParseString(const char* data, size_t length, CJsonObject& value);
 	//! 解析空值
-	int ParseNull(const char* data, int length, CJsonObject& value);
+	int ParseNull(const char* data, size_t length, CJsonObject& value);
 	//! 解析布尔字符串
-	int ParseTrue(const char* data, int length, CJsonObject& value);
+	int ParseTrue(const char* data, size_t length, CJsonObject& value);
 	//! 解析布尔字符串
-	int ParseFalse(const char* data, int length, CJsonObject& value);
+	int ParseFalse(const char* data, size_t length, CJsonObject& value);
 	//! 解析数字字符串
-	int ParseNumber(const char* data, int length, CJsonObject& value);
+	int ParseNumber(const char* data, size_t length, CJsonObject& value);
 
 private:
 	//! JSON 值

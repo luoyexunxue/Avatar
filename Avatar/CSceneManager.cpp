@@ -323,9 +323,9 @@ CSceneNode* CSceneManager::GetNodeByType(const string& type, int index, CSceneNo
 * @param face 获取到的与射线相交的三角形
 * @return 对应的场景节点，若无对应的场景节点，则为空
 */
-CSceneNode* CSceneManager::GetNodeByRay(const CRay& ray, CVector3& hit, int* mesh, int* face) {
-	int hitMesh;
-	int hitFace;
+CSceneNode* CSceneManager::GetNodeByRay(const CRay& ray, CVector3& hit, size_t* mesh, size_t* face) {
+	size_t hitMesh;
+	size_t hitFace;
 	CVector3 hitPoint;
 	float minDistance = -1.0f;
 	CSceneNode* pPickNode = 0;
@@ -404,8 +404,8 @@ void CSceneManager::GetNodeList(const string& type, vector<CSceneNode*>& nodeLis
 * 统计网格数量
 * @return 网格对象统计信息
 */
-int CSceneManager::GetMeshCount() {
-	int meshCount = 0;
+size_t CSceneManager::GetMeshCount() {
+	size_t meshCount = 0;
 	map<string, CSceneNode*>::iterator iter = m_mapSceneNode.begin();
 	while (iter != m_mapSceneNode.end()) {
 		CMeshData* pMeshData = iter->second->GetMeshData();
@@ -419,8 +419,8 @@ int CSceneManager::GetMeshCount() {
 * 统计三角形个数
 * @return 三角形统计信息
 */
-int CSceneManager::GetTriangleCount() {
-	int triangleCount = 0;
+size_t CSceneManager::GetTriangleCount() {
+	size_t triangleCount = 0;
 	map<string, CSceneNode*>::iterator iter = m_mapSceneNode.begin();
 	while (iter != m_mapSceneNode.end()) {
 		CMeshData* pMeshData = iter->second->GetMeshData();
@@ -434,8 +434,8 @@ int CSceneManager::GetTriangleCount() {
 * 统计顶点个数
 * @return 顶点统计信息
 */
-int CSceneManager::GetVertexCount() {
-	int vertexCount = 0;
+size_t CSceneManager::GetVertexCount() {
+	size_t vertexCount = 0;
 	map<string, CSceneNode*>::iterator iter = m_mapSceneNode.begin();
 	while (iter != m_mapSceneNode.end()) {
 		CMeshData* pMeshData = iter->second->GetMeshData();
@@ -489,7 +489,7 @@ void CSceneManager::DeleteAll(CSceneNode* parent) {
 * @param face 相交的三角形
 * @return 交点距离，负数表示不相交
 */
-float CSceneManager::Picking(CSceneNode* node, const CRay& ray, CVector3& hit, int* mesh, int* face) {
+float CSceneManager::Picking(CSceneNode* node, const CRay& ray, CVector3& hit, size_t* mesh, size_t* face) {
 	CMeshData* pMeshData = node->GetMeshData();
 	if (!pMeshData) return -1.0f;
 	// 将射线转换到节点局部坐标系下
@@ -497,12 +497,13 @@ float CSceneManager::Picking(CSceneNode* node, const CRay& ray, CVector3& hit, i
 	CMatrix4 worldMat(node->m_cWorldMatrix);
 	localRay.Transform(worldMat.Invert());
 	// 对每个网格内的三角形进行相交测试
-	int meshCount = pMeshData->GetMeshCount();
-	int meshIndex, faceIndex;
-	float bu, bv;
+	size_t meshCount = pMeshData->GetMeshCount();
+	size_t meshIndex = -1;
+	size_t faceIndex = -1;
+	float bu = 0.0f, bv = 0.0f;
 	float distance = -1.0f;
-	for (int i = 0; i < meshCount; i++) {
-		int f; float u, v;
+	for (size_t i = 0; i < meshCount; i++) {
+		size_t f; float u, v;
 		float d = pMeshData->GetMesh(i)->Intersects(localRay, &f, &u, &v);
 		if (d > 0 && (d < distance || distance < 0)) {
 			meshIndex = i;

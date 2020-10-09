@@ -53,13 +53,13 @@ CMesh* CMeshBlend::Blend() {
 * @param weights 权重列表，为空表示所有网格权重相同
 * @param count 参数 weights 的长度，如果长度小于网格数量，则之后的网格权重都为零
 */
-CMesh* CMeshBlend::Blend(float* weights, int count) {
+CMesh* CMeshBlend::Blend(float* weights, size_t count) {
 	if (m_vecMeshes.empty()) return 0;
 	if (!weights) {
 		for (size_t i = 0; i < m_vecWeights.size(); i++) m_vecWeights[i] = 1.0f;
 	} else {
-		if ((size_t)count > m_vecMeshes.size()) count = m_vecMeshes.size();
-		for (int i = 0; i < count; i++) m_vecWeights[i] = weights[i];
+		if (count > m_vecMeshes.size()) count = m_vecMeshes.size();
+		for (size_t i = 0; i < count; i++) m_vecWeights[i] = weights[i];
 		for (size_t i = count; i < m_vecWeights.size(); i++) m_vecWeights[i] = 0.0f;
 	}
 	return Blend();
@@ -73,14 +73,14 @@ void CMeshBlend::SetupMesh() {
 	m_pTargetMesh = new CMesh();
 	m_pTargetMesh->SetVertexUsage(m_vecMeshes[0]->GetVertexCount());
 	m_pTargetMesh->GetMaterial()->CopyFrom(temp->GetMaterial());
-	int triangles = temp->GetTriangleCount();
-	int vertices = temp->GetVertexCount();
-	for (int i = 0; i < triangles; i++) {
+	size_t triangles = temp->GetTriangleCount();
+	size_t vertices = temp->GetVertexCount();
+	for (size_t i = 0; i < triangles; i++) {
 		unsigned int index[3];
 		temp->GetTriangle(i, index);
 		m_pTargetMesh->AddTriangle(index[0], index[1], index[2]);
 	}
-	for (int i = 0; i < vertices; i++) {
+	for (size_t i = 0; i < vertices; i++) {
 		CVertex* vert = temp->GetVertex(i);
 		m_pTargetMesh->AddVertex(*vert);
 	}
@@ -91,8 +91,8 @@ void CMeshBlend::SetupMesh() {
 * 对顶点插值
 */
 void CMeshBlend::Interpolate() {
-	int vertexCount = m_pTargetMesh->GetVertexCount();
-	for (int i = 0; i < vertexCount; i++) {
+	size_t vertexCount = m_pTargetMesh->GetVertexCount();
+	for (size_t i = 0; i < vertexCount; i++) {
 		CVertex* target = m_pTargetMesh->GetVertex(i);
 		target->m_fPosition[0] = 0.0f;
 		target->m_fPosition[1] = 0.0f;

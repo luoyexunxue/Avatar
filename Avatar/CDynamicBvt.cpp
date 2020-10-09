@@ -26,8 +26,8 @@ CDynamicBvt::~CDynamicBvt() {
 void CDynamicBvt::Insert(void* data, const CBoundingBox& volume) {
 	// 创建节点
 	SDbvtNode* node = new SDbvtNode(data, volume);
-	node->children[0]	= 0;
-	node->children[1]	= 0;
+	node->children[0] = 0;
+	node->children[1] = 0;
 	m_iLeavesCount++;
 
 	// 根节点为空，直接插入根节点
@@ -170,7 +170,7 @@ void CDynamicBvt::Clear() {
 /**
 * 获取树的最大深度
 */
-int CDynamicBvt::GetMaxDepth() {
+size_t CDynamicBvt::GetMaxDepth() {
 	if (m_pRoot) return GetMaxDepth(m_pRoot, 1);
 	return 0;
 }
@@ -178,7 +178,7 @@ int CDynamicBvt::GetMaxDepth() {
 /**
 * 获取包围盒重叠的数据对
 */
-int CDynamicBvt::CollisionPair(vector<SCollidePair>& collidePair) {
+size_t CDynamicBvt::CollisionPair(vector<SCollidePair>& collidePair) {
 	collidePair.clear();
 	// 节点数低于两个
 	if (m_iLeavesCount < 2) return 0;
@@ -238,10 +238,10 @@ float CDynamicBvt::Proximity(const CBoundingBox& a, const CBoundingBox& b) {
 /**
 * 获取节点的最大深度
 */
-int CDynamicBvt::GetMaxDepth(SDbvtNode* node, int depth) {
+size_t CDynamicBvt::GetMaxDepth(SDbvtNode* node, size_t depth) {
 	if (node->IsInternal()) {
-		int depth1 = GetMaxDepth(node->children[0], depth + 1);
-		int depth2 = GetMaxDepth(node->children[1], depth + 1);
+		size_t depth1 = GetMaxDepth(node->children[0], depth + 1);
+		size_t depth2 = GetMaxDepth(node->children[1], depth + 1);
 		depth = depth2 > depth1? depth2: depth1;
 	}
 	return depth;

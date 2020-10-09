@@ -156,14 +156,14 @@ float CBoundingBox::SurfaceArea() const {
 }
 
 /**
-* 计算各轴的大小
-* @param axis 0-X 1-Y 2-Z
+* 计算轴向的宽度
+* @param axis 坐标轴 1-X 2-Y 3-Z
 */
-float CBoundingBox::Size(int axis) const {
+float CBoundingBox::Width(int axis) const {
 	if (!IsValid()) return 0.0f;
-	if (axis == 0) return m_cMax.m_fValue[0] - m_cMin.m_fValue[0];
-	if (axis == 1) return m_cMax.m_fValue[1] - m_cMin.m_fValue[1];
-	if (axis == 2) return m_cMax.m_fValue[2] - m_cMin.m_fValue[2];
+	if (axis == 1) return m_cMax.m_fValue[0] - m_cMin.m_fValue[0];
+	if (axis == 2) return m_cMax.m_fValue[1] - m_cMin.m_fValue[1];
+	if (axis == 3) return m_cMax.m_fValue[2] - m_cMin.m_fValue[2];
 	return 0.0f;
 }
 

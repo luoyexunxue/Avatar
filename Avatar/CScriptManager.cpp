@@ -41,7 +41,7 @@
 #include <cstring>
 
 #ifdef AVATAR_WINDOWS
-#pragma comment(lib, "thirdparty/lua/liblua.lib")
+#pragma comment(lib, "thirdparty/lua/lua.lib")
 #endif
 
 /**
@@ -1252,7 +1252,7 @@ int CScriptManager::DoScenePick(lua_State* lua) {
 		float dy = (float)lua_tonumber(lua, 5);
 		float dz = (float)lua_tonumber(lua, 6);
 		CVector3 hit;
-		int mesh, face;
+		size_t mesh, face;
 		CRay ray(CVector3(x, y, z), CVector3(dx, dy, dz));
 		CSceneNode* pNode = CEngine::GetSceneManager()->GetNodeByRay(ray, hit, &mesh, &face);
 		if (pNode) {
@@ -1416,7 +1416,7 @@ int CScriptManager::DoSceneUpdate(lua_State* lua) {
 		int meshIndex = (int)lua_tointeger(lua, 2);
 		if (meshIndex < 0 || meshIndex >= pMeshData->GetMeshCount()) return 0;
 		CMesh* pMesh = pMeshData->GetMesh(meshIndex);
-		int vertexCount = pMesh->GetVertexCount();
+		size_t vertexCount = pMesh->GetVertexCount();
 		lua_pushnil(lua);
 		while (lua_next(lua, 3)) {
 			if (lua_isinteger(lua, -2) && lua_istable(lua, -1)) {
@@ -1504,7 +1504,7 @@ int CScriptManager::DoSceneMaterial(lua_State* lua) {
 					if (metalness >= 0.0f) pMaterial->m_fMetalness = metalness;
 					if (strlen(color) > 0) CColor(color).GetValue(pMaterial->m_fColor);
 					if (strlen(shader) > 0) pMaterial->SetShader(shader);
-					for (size_t t = 0; t < textures.size(); t++) pMaterial->SetTexture(textures[t], t);
+					for (size_t t = 0; t < textures.size(); t++) pMaterial->SetTexture(textures[t], static_cast<int>(t));
 				}
 			} else {
 				CMaterial* pMaterial = pMeshData->GetMesh(meshIndex)->GetMaterial();
@@ -1513,7 +1513,7 @@ int CScriptManager::DoSceneMaterial(lua_State* lua) {
 				if (metalness >= 0.0f) pMaterial->m_fMetalness = metalness;
 				if (strlen(color) > 0) CColor(color).GetValue(pMaterial->m_fColor);
 				if (strlen(shader) > 0) pMaterial->SetShader(shader);
-				for (size_t t = 0; t < textures.size(); t++) pMaterial->SetTexture(textures[t], t);
+				for (size_t t = 0; t < textures.size(); t++) pMaterial->SetTexture(textures[t], static_cast<int>(t));
 			}
 		} else {
 			CMaterial* pMaterial = pMeshData->GetMesh(meshIndex < 0 ? 0 : meshIndex)->GetMaterial();
@@ -1851,8 +1851,8 @@ int CScriptManager::DoGraphicsScreenshot(lua_State* lua) {
 		CFileManager::CImageFile file(CFileManager::PNG);
 		CEngine::GetGraphicsManager()->Screenshot(file, redraw);
 		CFileManager::CBinaryFile buffer(file.size);
-		int size = CEngine::GetFileManager()->WriteFile(&file, buffer.contents, buffer.size);
-		lua_pushlstring(lua, (const char*)buffer.contents, size);
+		CEngine::GetFileManager()->WriteFile(&file, buffer.contents, &buffer.size);
+		lua_pushlstring(lua, (const char*)buffer.contents, buffer.size);
 		return 1;
 	}
 	return 0;

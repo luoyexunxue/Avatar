@@ -115,7 +115,7 @@ void CSceneNodePlant::AddPlant(CMesh* mesh, float x, float y, float z, float ang
 	const float cosa = cosf(angle) * m_fWidth * 0.5f;
 	const float baseColor[4] = { 0.5f, 0.5f, 0.5f, 1.0f };
 	const float topColor[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
-	const int baseIndex = mesh->GetVertexCount();
+	const int baseIndex = (unsigned int)mesh->GetVertexCount();
 	mesh->AddVertex(CVertex(x - cosa, y - sina, z, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, baseColor));
 	mesh->AddVertex(CVertex(x + cosa, y + sina, z, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, baseColor));
 	mesh->AddVertex(CVertex(x - cosa, y - sina, z + m_fHeight, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, topColor));

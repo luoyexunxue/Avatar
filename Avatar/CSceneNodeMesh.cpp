@@ -32,14 +32,14 @@ void CSceneNodeMesh::Destroy() {
 * 渲染场景节点
 */
 void CSceneNodeMesh::Render() {
-	int meshCount = m_pMeshData->GetMeshCount();
+	size_t meshCount = m_pMeshData->GetMeshCount();
 	if (CEngine::GetGraphicsManager()->IsDepthRender()) {
-		for (int i = 0; i < meshCount; i++) {
+		for (size_t i = 0; i < meshCount; i++) {
 			m_pMeshData->GetMesh(i)->GetMaterial()->GetTexture()->UseTexture();
 			m_pMeshData->GetMesh(i)->Render(false);
 		}
 	} else {
-		for (int i = 0; i < meshCount; i++) {
+		for (size_t i = 0; i < meshCount; i++) {
 			CMesh* mesh = m_pMeshData->GetMesh(i);
 			if (mesh->GetMaterial()->GetShader()) {
 				CCamera* pCamera = CEngine::GetGraphicsManager()->GetCamera();

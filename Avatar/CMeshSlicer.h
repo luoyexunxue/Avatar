@@ -34,14 +34,14 @@ public:
 	bool Slice(int axis, float value);
 
 	//! 获取轨迹个数
-	int GetTrackCount() const;
+	size_t GetTrackCount() const;
 	//! 获取一个轨迹的点个数
-	int GetTrackPointCount(int track) const;
+	size_t GetTrackPointCount(size_t track) const;
 	//! 获取一个轨迹的指定点
-	const CVector3& GetTrackPoint(int track, int point) const;
+	const CVector3& GetTrackPoint(size_t track, size_t point) const;
 
 	//! 创建可渲染的场景节点
-	CSceneNode* CreateRenderLine(CSceneNode* src, int track, bool depth, bool point);
+	CSceneNode* CreateRenderLine(CSceneNode* src, size_t track, bool depth, bool point);
 
 private:
 	//! 切割三角形

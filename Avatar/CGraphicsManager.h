@@ -92,11 +92,11 @@ public:
 	void PickingPosition(int x, int y, CVector3& position);
 
 	//! 绘制点
-	void DrawPoints(const CVertex* vertices, int size);
+	void DrawPoints(const CVertex* vertices, size_t size);
 	//! 绘制线
-	void DrawLines(const CVertex* vertices, int size, float width, bool strip);
+	void DrawLines(const CVertex* vertices, size_t size, float width, bool strip);
 	//! 绘制三角形
-	void DrawTriangles(const CVertex* vertices, int size, bool strip);
+	void DrawTriangles(const CVertex* vertices, size_t size, bool strip);
 	//! 绘制四边形
 	void DrawQuadrilateral(const CColor& color, bool flipTexCoord);
 	//! 绘制立方体

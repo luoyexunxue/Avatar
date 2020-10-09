@@ -38,7 +38,7 @@ public:
 	//! 创建指定属性的音源
 	int Create(int channel, int sampleRate, int sampleBits);
 	//! 获取音源数量
-	int SoundCount();
+	size_t SoundCount();
 
 	//! 检查音源是否有效
 	bool IsValid(int soundId);
@@ -114,7 +114,7 @@ private:
 	typedef struct _SSoundSource {
 		int soundId;
 		int bufferCount;
-		int bufferIndex[2];
+		size_t bufferIndex[2];
 		unsigned int source;
 	} SSoundSource;
 

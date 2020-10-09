@@ -70,14 +70,14 @@ void CThreadPool::AddTask(CThreadTask* task, void* param) {
 /**
 * 获取总的线程数量
 */
-int CThreadPool::GetThreadCount() {
+size_t CThreadPool::GetThreadCount() {
 	return m_vecThread.size();
 }
 
 /**
 * 获取未处理的任务数量
 */
-int CThreadPool::GetTaskCount() {
+size_t CThreadPool::GetTaskCount() {
 	return m_queTask.size();
 }
 

@@ -35,8 +35,8 @@ void CSceneNodeFresnel::Destroy() {
 * 渲染场景节点
 */
 void CSceneNodeFresnel::Render() {
-	int count = m_pMeshData->GetMeshCount();
-	for (int i = 0; i < count; i++) {
+	size_t count = m_pMeshData->GetMeshCount();
+	for (size_t i = 0; i < count; i++) {
 		m_pMeshData->GetMesh(i)->Render();
 	}
 }

@@ -5,6 +5,7 @@
 #ifndef _CGUILABEL_H_
 #define _CGUILABEL_H_
 #include "CGuiEnvironment.h"
+#include "CFontManager.h"
 
 /**
 * @brief GUI 文本标签
@@ -28,7 +29,7 @@ private:
 	//! 标签文本
 	wchar_t m_strText[256];
 	//! 对齐方式
-	int m_iAlignment;
+	CFontManager::Alignment m_iAlignment;
 	//! 文字拉伸到标签大小
 	bool m_bStretchText;
 	//! 背景颜色

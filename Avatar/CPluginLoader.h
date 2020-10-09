@@ -24,7 +24,7 @@ public:
 	static void Destroy();
 
 	//! 获取插件数量
-	static int GetCount();
+	static size_t GetCount();
 	//! 获取已加载的插件列表
 	static void GetPluginList(vector<string>& pluginList);
 	//! 获取插件路径

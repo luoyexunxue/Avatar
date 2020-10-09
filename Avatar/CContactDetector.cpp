@@ -1011,8 +1011,8 @@ int CContactDetector::TorusPlaneTest(const CRigidBody* body1, const CRigidBody* 
 int CContactDetector::ConePlaneTest(const CRigidBody* body1, const CRigidBody* body2, SContact* contact) {
 	CVector3 pos1 = body1->GetSceneNode()->GetWorldPosition();
 	CVector3 pos2 = body2->GetSceneNode()->GetWorldPosition();
-	float radius = body1->GetGeometry().cylinder.r;
-	float height = body1->GetGeometry().cylinder.h * 0.5f;
+	float radius = body1->GetGeometry().cone.r;
+	float height = body1->GetGeometry().cone.h;
 
 	// 圆锥体与平面法向的单位向量
 	CMatrix4& m1 = body1->GetSceneNode()->m_cWorldMatrix;
@@ -1023,9 +1023,10 @@ int CContactDetector::ConePlaneTest(const CRigidBody* body1, const CRigidBody* b
 	CVector3 tangent = nz2.CrossProduct(nz1);
 	if (tangent.Length() == 0.0f) tangent.SetValue(nz1.Tangent());
 	CVector3 lineVec = nz1.CrossProduct(tangent).Normalize().Scale(radius);
-	CVector3 point0 = pos1 + (nz1 * 0.75f);
-	CVector3 point1 = pos1 - (nz1 * 0.25f) + lineVec;
-	CVector3 point2 = pos1 - (nz1 * 0.25f) - lineVec;
+	CVector3 topVec = nz1.Scale(height);
+	CVector3 point0 = pos1 + (topVec * 0.75f);
+	CVector3 point1 = pos1 - (topVec * 0.25f) + lineVec;
+	CVector3 point2 = pos1 - (topVec * 0.25f) - lineVec;
 	// 计算锥顶及线段两端与平面的交点
 	CPlane plane(pos2, nz2);
 	float len0 = plane.Distance(point0);

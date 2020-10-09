@@ -29,7 +29,7 @@ public:
 	//! 混合
 	CMesh* Blend();
 	//! 按指定权重混合
-	CMesh* Blend(float* weights, int count);
+	CMesh* Blend(float* weights, size_t count);
 
 private:
 	//! 初始化目标网格
