@@ -63,7 +63,7 @@ bool CSceneNodeTerrain::Init() {
 	m_pTreeRoot = BuildQuadTree(0, 0, 0, m_pHeightMap->size);
 	m_pMeshData = new CMeshData();
 	BuildTerrainMesh(m_pTreeRoot, 0, 0);
-	for (int i = 0; i < m_pMeshData->GetMeshCount(); i++) {
+	for (size_t i = 0; i < m_pMeshData->GetMeshCount(); i++) {
 		CMaterial* material = m_pMeshData->GetMesh(i)->GetMaterial();
 		material->SetShader(pShader);
 		material->SetTexture(m_strTexture[0], 0);

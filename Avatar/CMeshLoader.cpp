@@ -345,12 +345,8 @@ bool CMeshLoader::SaveAvatar(const string& filename, CMeshData* meshData) {
 				string textureId = CStringUtil::Guid();
 				textureMapper.insert(std::pair<CTexture*, string>(texture, textureId));
 				if (texture->IsValid() && !CEngine::GetFileManager()->FileExists(texture->GetFilePath())) {
-					unsigned int imageSize = 4 * texture->GetWidth() * texture->GetHeight();
-					CFileManager::CImageFile image(CFileManager::PNG, imageSize);
-					image.channels = 4;
-					image.width = texture->GetWidth();
-					image.height = texture->GetHeight();
-					CFileManager::CBinaryFile* buffer = new CFileManager::CBinaryFile(imageSize);
+					CFileManager::CImageFile image(CFileManager::PNG, 4, texture->GetWidth(), texture->GetHeight());
+					CFileManager::CBinaryFile* buffer = new CFileManager::CBinaryFile(image.size);
 					CEngine::GetTextureManager()->ReadData(texture, 0, 0, image.contents);
 					CEngine::GetFileManager()->WriteFile(&image, buffer->contents, &buffer->size);
 					textureBuffer[textureId] = buffer;

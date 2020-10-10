@@ -149,7 +149,7 @@ CMesh* CDelaunay::CreateMesh(bool dynamic, bool gradient) {
 		CVector3& v = m_vecPoints[i];
 		float s = (v[0] - boundingBox.m_cMin[0]) * isizex;
 		float t = (v[1] - boundingBox.m_cMin[1]) * isizey;
-		if (gradient) color.FromHsla((v[2] - boundingBox.m_cMin[2]) * isizez * 240.0f, 100.0f, 50.0f, 1.0f);
+		if (gradient) color.Hsla((v[2] - boundingBox.m_cMin[2]) * isizez * 240.0f, 100.0f, 50.0f, 1.0f);
 		pMesh->AddVertex(CVertex(v[0], v[1], v[2], s, t, 0.0f, 0.0f, 0.0f, color.m_fValue));
 	}
 	for (size_t i = 0; i < m_vecTriangles.size(); i++) {

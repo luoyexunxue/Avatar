@@ -721,9 +721,9 @@ CMesh* CGeometryCreator::CreateExtrude(const CVector2* polygon, size_t count, co
 	for (size_t i = 1; i < count; i++) texCoordU[i] = perimeter[i] / perimeter[count - 1];
 	// 开始循环计算拐点截面顶点
 	float lineLengthSum = 0.0f;
-	for (int i = 0; i < length; i++) {
+	for (size_t i = 0; i < length; i++) {
 		// 计算切面，切面法向为前一段线段向量和下一段线段向量之和
-		CVector3 next = line[i + 1 == length? i: i + 1] - line[i];
+		CVector3 next = line[i + 1 == length ? i : i + 1] - line[i];
 		float distance = next.Length();
 		if (distance == 0.0f) next.SetValue(dir);
 		CPlane clipPlane(line[i], dir + next.Normalize());

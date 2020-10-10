@@ -213,7 +213,7 @@ size_t CBase64::Decode(const char* data, vector<unsigned char>& buffer) {
 	}
 	size_t codingLength = blocks * 3 + padding;
 	buffer.resize(codingLength);
-	for (int i = 0; i < blocks; i++) {
+	for (size_t i = 0; i < blocks; i++) {
 		unsigned char a = BASE64_DECODE_LUT[(int)data[i * 4 + 0]];
 		unsigned char b = BASE64_DECODE_LUT[(int)data[i * 4 + 1]];
 		unsigned char c = BASE64_DECODE_LUT[(int)data[i * 4 + 2]];

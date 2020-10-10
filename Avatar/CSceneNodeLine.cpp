@@ -191,7 +191,7 @@ size_t CSceneNodeLine::GetPointCount() {
 /**
 * 获取指定顶点
 */
-CVertex* CSceneNodeLine::GetPoint(unsigned int index) {
+CVertex* CSceneNodeLine::GetPoint(size_t index) {
 	if (index >= m_vecVertices.size()) return 0;
 	return &m_vecVertices[index];
 }

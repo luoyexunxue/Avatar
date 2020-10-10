@@ -44,7 +44,7 @@ public:
 	//! 获取顶点个数
 	size_t GetPointCount();
 	//! 获取指定顶点
-	CVertex* GetPoint(unsigned int index);
+	CVertex* GetPoint(size_t index);
 
 private:
 	//! 三次 B 样条曲线插值

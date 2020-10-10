@@ -94,7 +94,7 @@ void CSceneNodeDecal::UpdateMesh() {
 	m_pMesh->RemoveVertex(0, -1);
 	m_pMesh->RemoveTriangle(0, -1);
 	CMeshData* pMeshData = m_pParent->GetMeshData();
-	for (int m = 0; m < pMeshData->GetMeshCount(); m++) {
+	for (size_t m = 0; m < pMeshData->GetMeshCount(); m++) {
 		CMesh* mesh = pMeshData->GetMesh(m);
 		// 对所有顶点进行变换
 		CBoundingBox boundingBox;
@@ -111,7 +111,7 @@ void CSceneNodeDecal::UpdateMesh() {
 		// 对不在投影视景体内的网格跳过
 		if (!m_cDecalFrustum.IsOverlapAABB(boundingBox)) continue;
 		// 对所有三角形进行裁剪
-		for (int i = 0; i < mesh->GetTriangleCount(); i++) {
+		for (size_t i = 0; i < mesh->GetTriangleCount(); i++) {
 			unsigned int vertexIndices[3];
 			mesh->GetTriangle(i, vertexIndices);
 			CVector3 p1 = CVector3(vertices[vertexIndices[0]].m_fPosition);

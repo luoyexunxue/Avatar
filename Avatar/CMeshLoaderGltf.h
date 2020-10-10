@@ -29,7 +29,7 @@ private:
 	//! 读取节点
 	void ReadMeshNode(int index, const CMatrix4& matrix);
 	//! 读取网格
-	void ReadMesh(CJsonObject& mesh, const CMatrix4& matrix, map<int, int>& skinMapper);
+	void ReadMesh(CJsonObject& mesh, const CMatrix4& matrix, map<size_t, int>& skinMapper);
 	//! 读取材质信息
 	void ReadMaterial(int index, CMaterial* material, int* texcoord);
 	//! 读取纹理数据
@@ -40,7 +40,7 @@ private:
 	//! 添加三角形
 	void AddTriangles(CMesh* mesh, int accessorIndex);
 	//! 添加顶点
-	void AddVertices(CMesh* mesh, int position, int joints, int weights, map<int, int>& skinMapper);
+	void AddVertices(CMesh* mesh, int position, int joints, int weights, map<size_t, int>& skinMapper);
 	//! 设置顶点法相
 	void SetupVerticesNormal(CMesh* mesh, int accessorIndex);
 	//! 设置顶点纹理坐标

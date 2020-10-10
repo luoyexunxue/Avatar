@@ -304,6 +304,7 @@ int main(int argc, char **argv)
 | texture.create | 创建或载入纹理 | name:*string*, &lt;width:*integer*, height:*integer*, shader:*string* / depth:*boolean*&gt; | &lt;texture:*string*&gt; |
 | texture.delete | 删除纹理资源 | name:*string* | - |
 | texture.update | 更新纹理数据 | name:*string*, file:*string* / color:*string* | success:*boolean* |
+| texture.data | 读取纹理数据 | name:*string*, &lt;face:*integer*, level:*integer*&gt; | pngData:*string* |
 | shader.create | 创建着色器 | name:*string*, vert:*string*, frag:*string* | &lt;shader:*string*&gt; |
 | shader.delete | 删除着色器资源 | name:*string* | - |
 | shader.update | 更新着色器程序 | name:*string*, define:*string*, undef:*string* | success:*boolean* |

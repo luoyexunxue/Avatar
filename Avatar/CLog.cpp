@@ -136,11 +136,11 @@ void CLog::Log(CLog::Level level, const char* format, va_list args) {
 	if (m_pLogParam->printTime) {
 		CTimer::GetTimeString("[%Y-%m-%d %H:%M:%S] ", header, 60);
 		switch (level) {
-		case CLog::LEVEL_INFO: strncat(header, "I ", 2); break;
-		case CLog::LEVEL_DEBUG: strncat(header, "D ", 2); break;
-		case CLog::LEVEL_WARN: strncat(header, "W ", 2); break;
-		case CLog::LEVEL_ERROR: strncat(header, "E ", 2); break;
-		default: strncat(header, "- ", 2); break;
+		case CLog::LEVEL_INFO: strncat(header, "I ", 3); break;
+		case CLog::LEVEL_DEBUG: strncat(header, "D ", 3); break;
+		case CLog::LEVEL_WARN: strncat(header, "W ", 3); break;
+		case CLog::LEVEL_ERROR: strncat(header, "E ", 3); break;
+		default: strncat(header, "- ", 3); break;
 		}
 	}
 	m_pLogParam->lock.lock();

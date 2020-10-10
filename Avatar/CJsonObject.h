@@ -81,19 +81,19 @@ private:
 	} SValue;
 
 	//! 解析对象值
-	int ParseObject(const char* data, size_t length, CJsonObject& value);
+	size_t ParseObject(const char* data, size_t length, CJsonObject& value);
 	//! 解析数组值
-	int ParseArray(const char* data, size_t length, CJsonObject& value);
+	size_t ParseArray(const char* data, size_t length, CJsonObject& value);
 	//! 解析普通字符串
-	int ParseString(const char* data, size_t length, CJsonObject& value);
+	size_t ParseString(const char* data, size_t length, CJsonObject& value);
 	//! 解析空值
-	int ParseNull(const char* data, size_t length, CJsonObject& value);
+	size_t ParseNull(const char* data, size_t length, CJsonObject& value);
 	//! 解析布尔字符串
-	int ParseTrue(const char* data, size_t length, CJsonObject& value);
+	size_t ParseTrue(const char* data, size_t length, CJsonObject& value);
 	//! 解析布尔字符串
-	int ParseFalse(const char* data, size_t length, CJsonObject& value);
+	size_t ParseFalse(const char* data, size_t length, CJsonObject& value);
 	//! 解析数字字符串
-	int ParseNumber(const char* data, size_t length, CJsonObject& value);
+	size_t ParseNumber(const char* data, size_t length, CJsonObject& value);
 
 private:
 	//! JSON 值

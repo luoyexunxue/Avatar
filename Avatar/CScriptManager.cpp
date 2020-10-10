@@ -359,6 +359,7 @@ void CScriptManager::RegisterInterface(lua_State* lua) {
 	TABLE_FUNCTION("create", DoTextureCreate);
 	TABLE_FUNCTION("delete", DoTextureDelete);
 	TABLE_FUNCTION("update", DoTextureUpdate);
+	TABLE_FUNCTION("data", DoTextureData);
 	TABLE_END("texture");
 	// 着色器管理接口
 	TABLE_BEGIN();
@@ -831,7 +832,7 @@ int CScriptManager::DoCameraType(lua_State* lua) {
 					CSceneNodeLine* pLine = static_cast<CSceneNodeLine*>(CEngine::GetSceneManager()->GetNodeByName(track_line));
 					if (pLine) {
 						vector<CVector3> track;
-						for (int i = 0; i < pLine->GetPointCount(); i++) track.push_back(pLine->GetPoint(i)->m_fPosition);
+						for (size_t i = 0; i < pLine->GetPointCount(); i++) track.push_back(pLine->GetPoint(i)->m_fPosition);
 						static_cast<CCameraFree*>(pCamera)->StartLineTrack(track, track_speed, track_follow, track_loop);
 						static_cast<CCameraFree*>(pCamera)->OffsetLineTrack(CVector3(offset_x, offset_y, offset_z));
 					}
@@ -1414,9 +1415,9 @@ int CScriptManager::DoSceneUpdate(lua_State* lua) {
 		CMeshData* pMeshData = pNode ? pNode->GetMeshData() : 0;
 		if (!pMeshData) return 0;
 		int meshIndex = (int)lua_tointeger(lua, 2);
-		if (meshIndex < 0 || meshIndex >= pMeshData->GetMeshCount()) return 0;
+		if (meshIndex < 0 || meshIndex >= static_cast<int>(pMeshData->GetMeshCount())) return 0;
 		CMesh* pMesh = pMeshData->GetMesh(meshIndex);
-		size_t vertexCount = pMesh->GetVertexCount();
+		int vertexCount = static_cast<int>(pMesh->GetVertexCount());
 		lua_pushnil(lua);
 		while (lua_next(lua, 3)) {
 			if (lua_isinteger(lua, -2) && lua_istable(lua, -1)) {
@@ -1457,8 +1458,8 @@ int CScriptManager::DoSceneVertex(lua_State* lua) {
 			int face = (int)lua_tointeger(lua, 3);
 			int vert = (int)lua_tointeger(lua, 4);
 			if (vert < 0 || vert >= 3) return 0;
-			if (mesh < 0 || mesh >= pMeshData->GetMeshCount()) return 0;
-			if (face < 0 || face >= pMeshData->GetMesh(mesh)->GetTriangleCount()) return 0;
+			if (mesh < 0 || mesh >= static_cast<int>(pMeshData->GetMeshCount())) return 0;
+			if (face < 0 || face >= static_cast<int>(pMeshData->GetMesh(mesh)->GetTriangleCount())) return 0;
 			CVertex* pVert = pMeshData->GetMesh(mesh)->GetVertex(face, vert);
 			lua_pushnumber(lua, pVert->m_fPosition[0]);
 			lua_pushnumber(lua, pVert->m_fPosition[1]);
@@ -1487,7 +1488,7 @@ int CScriptManager::DoSceneMaterial(lua_State* lua) {
 		CMeshData* pMeshData = pNode ? pNode->GetMeshData() : 0;
 		if (!pMeshData) return 0;
 		int meshIndex = (int)lua_tointeger(lua, 2);
-		if (meshIndex >= pMeshData->GetMeshCount()) return 0;
+		if (meshIndex >= static_cast<int>(pMeshData->GetMeshCount())) return 0;
 		if (lua_istable(lua, 3)) {
 			const char* name = TableValue(lua, 3, "name", "");
 			float roughness = TableValue(lua, 3, "roughness", -1.0f);
@@ -1498,7 +1499,7 @@ int CScriptManager::DoSceneMaterial(lua_State* lua) {
 			vector<string> textures;
 			if (strlen(texture) > 0) CStringUtil::Split(textures, texture, ",", true);
 			if (meshIndex < 0) {
-				for (int i = 0; i < pMeshData->GetMeshCount(); i++) {
+				for (size_t i = 0; i < pMeshData->GetMeshCount(); i++) {
 					CMaterial* pMaterial = pMeshData->GetMesh(i)->GetMaterial();
 					if (roughness >= 0.0f) pMaterial->m_fRoughness = roughness;
 					if (metalness >= 0.0f) pMaterial->m_fMetalness = metalness;
@@ -1557,7 +1558,7 @@ int CScriptManager::DoSceneRenderMode(lua_State* lua) {
 			bool cullFace = lua_toboolean(lua, 2) != 0;
 			bool useDepth = lua_toboolean(lua, 3) != 0;
 			bool addColor = lua_toboolean(lua, 4) != 0;
-			for (int i = 0; i < pMeshData->GetMeshCount(); i++) {
+			for (size_t i = 0; i < pMeshData->GetMeshCount(); i++) {
 				pMeshData->GetMesh(i)->GetMaterial()->SetRenderMode(cullFace, useDepth, addColor);
 			}
 		}
@@ -1993,9 +1994,7 @@ int CScriptManager::DoGraphicsFog(lua_State* lua) {
 				float end = (float)lua_tonumber(lua, 6);
 				CEngine::GetGraphicsManager()->SetFogEnable(true, start, end, CColor(r, g, b));
 			}
-		} else {
-			CEngine::GetGraphicsManager()->SetFogEnable(false, 0.0f, 0.0f, CColor::White);
-		}
+		} else CEngine::GetGraphicsManager()->SetFogEnable(false, 0.0f, 0.0f, CColor::White);
 		return 0;
 	}
 	lua_pushboolean(lua, CEngine::GetGraphicsManager()->GetFogEnable());
@@ -2009,12 +2008,9 @@ int CScriptManager::DoGraphicsEnvironmentMap(lua_State* lua) {
 	if (lua_isboolean(lua, 1)) {
 		if (lua_toboolean(lua, 1)) {
 			if (lua_isstring(lua, 2)) {
-				const char* cubemap = lua_tostring(lua, 2);
-				CEngine::GetGraphicsManager()->SetEnvironmentMapEnable(true, cubemap);
+				CEngine::GetGraphicsManager()->SetEnvironmentMapEnable(true, lua_tostring(lua, 2));
 			}
-		} else {
-			CEngine::GetGraphicsManager()->SetEnvironmentMapEnable(false, "");
-		}
+		} else CEngine::GetGraphicsManager()->SetEnvironmentMapEnable(false, "");
 		return 0;
 	}
 	lua_pushboolean(lua, CEngine::GetGraphicsManager()->GetEnvironmentMapEnable());
@@ -2124,8 +2120,8 @@ int CScriptManager::DoTextureCreate(lua_State* lua) {
 */
 int CScriptManager::DoTextureDelete(lua_State* lua) {
 	if (lua_isstring(lua, 1)) {
-		CTextureManager* pTextureMgr = CEngine::GetTextureManager();
-		pTextureMgr->Drop(pTextureMgr->GetTexture(lua_tostring(lua, 1)));
+		CTexture* pTexture = CEngine::GetTextureManager()->GetTexture(lua_tostring(lua, 1));
+		CEngine::GetTextureManager()->Drop(pTexture);
 	}
 	return 0;
 }
@@ -2136,15 +2132,38 @@ int CScriptManager::DoTextureDelete(lua_State* lua) {
 int CScriptManager::DoTextureUpdate(lua_State* lua) {
 	bool success = false;
 	if (lua_isstring(lua, 1) && lua_isstring(lua, 2)) {
-		CTextureManager* pTextureMgr = CEngine::GetTextureManager();
-		CTexture* pTexture = pTextureMgr->GetTexture(lua_tostring(lua, 1));
-		success = pTextureMgr->Update(pTexture, lua_tostring(lua, 2));
-		if (!success && pTexture) {
-			CRectangle region(0, 0, pTexture->GetWidth(), pTexture->GetHeight());
-			success = pTextureMgr->Update(pTexture, CColor(lua_tostring(lua, 2)), region);
+		const char* file = lua_tostring(lua, 2);
+		CTexture* pTexture = CEngine::GetTextureManager()->GetTexture(lua_tostring(lua, 1));
+		if (pTexture) {
+			CColor color;
+			if (color.FromName(file)) {
+				CRectangle region(0, 0, pTexture->GetWidth(), pTexture->GetHeight());
+				success = CEngine::GetTextureManager()->Update(pTexture, color, region);
+			} else success = CEngine::GetTextureManager()->Update(pTexture, file);
 		}
 	}
 	lua_pushboolean(lua, success);
+	return 1;
+}
+
+/**
+* 读取纹理数据
+*/
+int CScriptManager::DoTextureData(lua_State* lua) {
+	if (lua_isstring(lua, 1)) {
+		CTexture* pTexture = CEngine::GetTextureManager()->GetTexture(lua_tostring(lua, 1));
+		if (pTexture) {
+			int face = lua_isinteger(lua, 2) ? (int)lua_tointeger(lua, 2) : 0;
+			int level = lua_isinteger(lua, 3) ? (int)lua_tointeger(lua, 3) : 0;
+			CFileManager::CImageFile image(CFileManager::PNG, 4, pTexture->GetWidth(), pTexture->GetHeight());
+			CFileManager::CBinaryFile buffer(image.size);
+			CEngine::GetTextureManager()->ReadData(pTexture, face, level, image.contents);
+			CEngine::GetFileManager()->WriteFile(&image, buffer.contents, &buffer.size);
+			lua_pushlstring(lua, (const char*)buffer.contents, buffer.size);
+			return 1;
+		}
+	}
+	lua_pushnil(lua);
 	return 1;
 }
 

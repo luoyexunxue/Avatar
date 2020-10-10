@@ -3,6 +3,7 @@
 // ye_luo@qq.com
 //================================================
 #include "CColor.h"
+#include <cstring>
 #include <cstdlib>
 #include <algorithm>
 
@@ -106,6 +107,10 @@ CColor::CColor(int r, int g, int b, int a) {
 * 由字符串构造
 */
 CColor::CColor(const string& color) {
+	m_fValue[0] = 1.0f;
+	m_fValue[1] = 1.0f;
+	m_fValue[2] = 1.0f;
+	m_fValue[3] = 1.0f;
 	FromName(color);
 }
 
@@ -147,6 +152,57 @@ void CColor::SetValue(float r, float g, float b, float a) {
 	m_fValue[1] = g;
 	m_fValue[2] = b;
 	m_fValue[3] = a;
+}
+
+/**
+* 从名称获取颜色值
+*/
+bool CColor::FromName(const string& color) {
+	if (color.empty()) return false;
+	if (color.at(0) == '#' || color.find("0x") == 0) {
+		const float scale_byte = 1.0f / 255.0f;
+		const float scale_half = 1.0f / 15.0f;
+		const char* hex = color.at(0) == '#' ? color.c_str() + 1 : color.c_str() + 2;
+		unsigned long var = strtoul(hex, 0, 16);
+		switch (strlen(hex)) {
+		case 8:
+			m_fValue[0] = ((var >> 24) & 0xFF) * scale_byte;
+			m_fValue[1] = ((var >> 16) & 0xFF) * scale_byte;
+			m_fValue[2] = ((var >> 8) & 0xFF) * scale_byte;
+			m_fValue[3] = (var & 0xFF) * scale_byte;
+			break;
+		case 6:
+			m_fValue[0] = ((var >> 16) & 0xFF) * scale_byte;
+			m_fValue[1] = ((var >> 8) & 0xFF) * scale_byte;
+			m_fValue[2] = (var & 0xFF) * scale_byte;
+			m_fValue[3] = 1.0f;
+			break;
+		case 4:
+			m_fValue[0] = ((var >> 12) & 0x0F) * scale_half;
+			m_fValue[1] = ((var >> 8) & 0x0F) * scale_half;
+			m_fValue[2] = ((var >> 4) & 0x0F) * scale_half;
+			m_fValue[3] = (var & 0x0F) * scale_half;
+			break;
+		case 3:
+			m_fValue[0] = ((var >> 8) & 0x0F) * scale_half;
+			m_fValue[1] = ((var >> 4) & 0x0F) * scale_half;
+			m_fValue[2] = (var & 0x0F) * scale_half;
+			m_fValue[3] = 1.0f;
+			break;
+		default: return false;
+		}
+	}
+	else if (color == "transparent") SetValue(CColor::Transparent);
+	else if (color == "white") SetValue(CColor::White);
+	else if (color == "gray") SetValue(CColor::Gray);
+	else if (color == "black") SetValue(CColor::Black);
+	else if (color == "red") SetValue(CColor::Red);
+	else if (color == "green") SetValue(CColor::Green);
+	else if (color == "blue") SetValue(CColor::Blue);
+	else if (color == "yellow") SetValue(CColor::Yellow);
+	else if (color == "purple") SetValue(CColor::Purple);
+	else return false;
+	return true;
 }
 
 /**
@@ -252,7 +308,7 @@ CColor& CColor::Invert() {
 * @param l 亮度 lightness, 范围 0-100
 * @param a 不透明度 alpha, 范围 0-1
 */
-CColor& CColor::FromHsla(float h, float s, float l, float a) {
+CColor& CColor::Hsla(float h, float s, float l, float a) {
 	h *= 0.002777f;
 	s *= 0.01f;
 	l *= 0.01f;
@@ -282,51 +338,6 @@ CColor& CColor::FromHsla(float h, float s, float l, float a) {
 		else m_fValue[2] = p;
 	}
 	m_fValue[3] = a;
-	return *this;
-}
-
-/**
-* 从名称获取颜色值
-*/
-CColor& CColor::FromName(const string& color) {
-	if (!color.empty() && (color.at(0) == '#' || color.find("0x") == 0)) {
-		const float scale_byte = 1.0f / 255.0f;
-		const float scale_half = 1.0f / 15.0f;
-		const char* hex = color.at(0) == '#' ? color.c_str() + 1 : color.c_str() + 2;
-		size_t length = strlen(hex);
-		unsigned long var = strtoul(hex, 0, 16);
-		if (length == 8) {
-			m_fValue[0] = ((var >> 24) & 0xFF) * scale_byte;
-			m_fValue[1] = ((var >> 16) & 0xFF) * scale_byte;
-			m_fValue[2] = ((var >> 8) & 0xFF) * scale_byte;
-			m_fValue[3] = (var & 0xFF) * scale_byte;
-		} else if (length == 6) {
-			m_fValue[0] = ((var >> 16) & 0xFF) * scale_byte;
-			m_fValue[1] = ((var >> 8) & 0xFF) * scale_byte;
-			m_fValue[2] = (var & 0xFF) * scale_byte;
-			m_fValue[3] = 1.0f;
-		} else if (length == 4) {
-			m_fValue[0] = ((var >> 12) & 0x0F) * scale_half;
-			m_fValue[1] = ((var >> 8) & 0x0F) * scale_half;
-			m_fValue[2] = ((var >> 4) & 0x0F) * scale_half;
-			m_fValue[3] = (var & 0x0F) * scale_half;
-		} else if (length == 3) {
-			m_fValue[0] = ((var >> 8) & 0x0F) * scale_half;
-			m_fValue[1] = ((var >> 4) & 0x0F) * scale_half;
-			m_fValue[2] = (var & 0x0F) * scale_half;
-			m_fValue[3] = 1.0f;
-		} else SetValue(CColor::White);
-	}
-	else if (color == "transparent") SetValue(CColor::Transparent);
-	else if (color == "white") SetValue(CColor::White);
-	else if (color == "gray") SetValue(CColor::Gray);
-	else if (color == "black") SetValue(CColor::Black);
-	else if (color == "red") SetValue(CColor::Red);
-	else if (color == "green") SetValue(CColor::Green);
-	else if (color == "blue") SetValue(CColor::Blue);
-	else if (color == "yellow") SetValue(CColor::Yellow);
-	else if (color == "purple") SetValue(CColor::Purple);
-	else SetValue(CColor::White);
 	return *this;
 }
 

@@ -41,6 +41,9 @@ public:
 	//! 设置颜色值
 	void SetValue(float r, float g, float b, float a);
 
+	//! 从名字设置颜色
+	bool FromName(const string& name);
+
 	//! 获取颜色值
 	void GetValue(float* color) const;
 	//! 获取颜色值
@@ -60,9 +63,7 @@ public:
 	//! 反转颜色
 	CColor& Invert();
 	//! 从 HSLA 转换
-	CColor& FromHsla(float h, float s, float l, float a);
-	//! 从名字设置颜色
-	CColor& FromName(const string& name);
+	CColor& Hsla(float h, float s, float l, float a);
 
 	//! 返回颜色代码
 	string ToString();

@@ -38,7 +38,7 @@ CMeshData* CMeshLoaderBasic::LoadStlFile(const string& filename, uint8_t* data, 
 	// 跳过80字节的头部
 	reader.Skip(80);
 	// 三角形数量
-	int32_t triangleCount = reader.GetValue<int32_t>();
+	size_t triangleCount = reader.GetValue<int32_t>();
 	// 不是有效的 STL 文件
 	if (reader.Available() <  triangleCount * 50) {
 		return 0;

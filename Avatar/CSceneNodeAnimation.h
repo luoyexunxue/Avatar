@@ -37,7 +37,7 @@ public:
 	//! 设置骨骼显示
 	void ShowSkeleton(bool visible, bool skeletonOnly);
 	//! 获取动画名称
-	string GetAnimationName(int index);
+	string GetAnimationName(size_t index);
 	//! 骨骼注视功能
 	void PointFacing(const string& joint, const CVector3& front, const CVector3& point, float angle);
 

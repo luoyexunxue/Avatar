@@ -181,11 +181,11 @@ string CJsonObject::ToString() const {
 /**
 * 解析对象值
 */
-int CJsonObject::ParseObject(const char* data, size_t length, CJsonObject& value) {
+size_t CJsonObject::ParseObject(const char* data, size_t length, CJsonObject& value) {
 	if (length < 2 || data[0] != '{') return 0;
 	value.m_sValue.type = SValue::OBJECT;
-	int position = 0;
-	int count = 0;
+	size_t position = 0;
+	size_t count = 0;
 	bool start = true;
 	string name = "";
 	while (++position < length) {
@@ -245,11 +245,11 @@ int CJsonObject::ParseObject(const char* data, size_t length, CJsonObject& value
 /**
 * 解析数组值
 */
-int CJsonObject::ParseArray(const char* data, size_t length, CJsonObject& value) {
+size_t CJsonObject::ParseArray(const char* data, size_t length, CJsonObject& value) {
 	if (length < 2 || data[0] != '[') return 0;
 	value.m_sValue.type = SValue::ARRAY;
-	int position = 0;
-	int count = 0;
+	size_t position = 0;
+	size_t count = 0;
 	while (++position < length) {
 		switch (data[position]) {
 		case ' ':
@@ -310,9 +310,9 @@ int CJsonObject::ParseArray(const char* data, size_t length, CJsonObject& value)
 /**
 * 解析普通字符串
 */
-int CJsonObject::ParseString(const char* data, size_t length, CJsonObject& value) {
+size_t CJsonObject::ParseString(const char* data, size_t length, CJsonObject& value) {
 	if (length < 2) return 0;
-	int position = 0;
+	size_t position = 0;
 	while (position + 1 < length && (data[position] == '\\' || data[position + 1] != '"')) position++;
 	position += 1;
 	if (data[position] == '"') {
@@ -327,7 +327,7 @@ int CJsonObject::ParseString(const char* data, size_t length, CJsonObject& value
 /**
 * 解析空值
 */
-int CJsonObject::ParseNull(const char* data, size_t length, CJsonObject& value) {
+size_t CJsonObject::ParseNull(const char* data, size_t length, CJsonObject& value) {
 	if (length > 3 && data[1] == 'u' && data[2] == 'l' && data[3] == 'l') {
 		value.m_sValue.type = SValue::NIL;
 		value.m_sValue.pValue = 0;
@@ -340,7 +340,7 @@ int CJsonObject::ParseNull(const char* data, size_t length, CJsonObject& value) 
 /**
 * 解析布尔字符串 True
 */
-int CJsonObject::ParseTrue(const char* data, size_t length, CJsonObject& value) {
+size_t CJsonObject::ParseTrue(const char* data, size_t length, CJsonObject& value) {
 	if (length > 3 && data[1] == 'r' && data[2] == 'u' && data[3] == 'e') {
 		value.m_sValue.type = SValue::BOOL;
 		value.m_sValue.bValue = true;
@@ -353,7 +353,7 @@ int CJsonObject::ParseTrue(const char* data, size_t length, CJsonObject& value) 
 /**
 * 解析布尔字符串 False
 */
-int CJsonObject::ParseFalse(const char* data, size_t length, CJsonObject& value) {
+size_t CJsonObject::ParseFalse(const char* data, size_t length, CJsonObject& value) {
 	if (length > 4 && data[1] == 'a' && data[2] == 'l' && data[3] == 's' && data[4] == 'e') {
 		value.m_sValue.type = SValue::BOOL;
 		value.m_sValue.bValue = false;
@@ -366,12 +366,12 @@ int CJsonObject::ParseFalse(const char* data, size_t length, CJsonObject& value)
 /**
 * 解析数字字符串
 */
-int CJsonObject::ParseNumber(const char* data, size_t length, CJsonObject& value) {
+size_t CJsonObject::ParseNumber(const char* data, size_t length, CJsonObject& value) {
 	if (data[0] == '-' || (data[0] >= '0' && data[0] <= '9')) {
-		int position = 0;
+		size_t position = 0;
 		while (position < length && data[position] != ' ' && data[position] != ',' && data[position] != '}' && data[position] != ']') position++;
 		bool integer = true;
-		for (int i = 0; i < position; i++) {
+		for (size_t i = 0; i < position; i++) {
 			if (data[i] == '.' || data[i] == 'e' || data[i] == 'E') {
 				integer = false;
 				break;

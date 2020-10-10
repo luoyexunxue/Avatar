@@ -136,11 +136,9 @@ void CGuiEditBox::Draw(const CRectangle& rect, unsigned char* buffer) {
 	if (m_bShowCursor) {
 		int dx = 0;
 		int dy = (image.height - image.textHeight) >> 1;
-		switch (m_iAlignment) {
-		case CFontManager::MIDDLELEFT: dx = image.textWidth + 1; break;
-		case CFontManager::MIDDLECENTER: dx = (width + image.textWidth) >> 1; break;
-		case CFontManager::MIDDLERIGHT: dx = width - 1; break;
-		}
+		if (m_iAlignment == CFontManager::MIDDLELEFT) dx = image.textWidth + 1;
+		else if (m_iAlignment == CFontManager::MIDDLECENTER) dx = (width + image.textWidth) >> 1;
+		else if (m_iAlignment == CFontManager::MIDDLERIGHT) dx = width - 1;
 		if (dx < width) {
 			for (int h = 0; h < image.textHeight; h++) {
 				image.data[(h + dy) * width + dx] = 0xFF;

@@ -88,6 +88,7 @@ public:
 		int height;
 		CImageFile(FileType type) : CFileData(type), channels(0), width(0), height(0) {}
 		CImageFile(FileType type, size_t size) : CFileData(type, size), channels(0), width(0), height(0) {}
+		CImageFile(FileType type, int c, int w, int h) : CFileData(type, c * w * h), channels(c), width(w), height(h) {}
 	};
 
 	//! 音频文件

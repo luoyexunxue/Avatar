@@ -141,6 +141,7 @@ private:
 	static int DoTextureCreate(lua_State* lua);
 	static int DoTextureDelete(lua_State* lua);
 	static int DoTextureUpdate(lua_State* lua);
+	static int DoTextureData(lua_State* lua);
 	//! 着色器接口
 	static int DoShaderCreate(lua_State* lua);
 	static int DoShaderDelete(lua_State* lua);

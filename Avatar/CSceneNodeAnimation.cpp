@@ -229,7 +229,7 @@ void CSceneNodeAnimation::ShowSkeleton(bool visible, bool skeletonOnly) {
 /**
 * 获取动画名称
 */
-string CSceneNodeAnimation::GetAnimationName(int index) {
+string CSceneNodeAnimation::GetAnimationName(size_t index) {
 	if (index >= m_pMeshData->GetAnimationCount()) return "";
 	return m_pMeshData->GetAnimationName(index);
 }
@@ -339,7 +339,7 @@ void CSceneNodeAnimation::JointTransform(SJoint* joint, int channel, CQuaternion
 */
 void CSceneNodeAnimation::UpdateVertex() {
 	m_cLocalBoundingBox.SetInvalid();
-	for (int i = 0; i < m_pMeshData->GetMeshCount(); i++) {
+	for (size_t i = 0; i < m_pMeshData->GetMeshCount(); i++) {
 		CMesh* mesh = m_pMeshData->GetMesh(i);
 		size_t count = mesh->GetVertexCount();
 		if (mesh->GetBindCount() != count) continue;
