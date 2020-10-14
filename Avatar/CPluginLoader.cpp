@@ -43,8 +43,8 @@ bool CPluginLoader::Load(const string& filename, CEngine* engine) {
 		return false;
 	}
 	// 获取插件描述
-	char description[1024];
-	plugin->avatar_desc(description);
+	const char* description;
+	plugin->avatar_desc(&description);
 	plugin->description.assign(description);
 	m_mapPlugin.insert(std::pair<string, SPlugin*>(plugin->name, plugin));
 	CLog::Info("Load plugin '%s' success", plugin->name.c_str());

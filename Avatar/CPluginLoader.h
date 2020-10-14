@@ -35,7 +35,7 @@ public:
 private:
 	//! 定义插件接口
 	typedef int(*pfn_avatar_init)(CEngine* engine);
-	typedef int(*pfn_avatar_desc)(char* buffer);
+	typedef int(*pfn_avatar_desc)(const char** buffer);
 	typedef int(*pfn_avatar_destroy)();
 	//! 插件定义
 	typedef struct _SPlugin {
