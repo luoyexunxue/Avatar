@@ -6,7 +6,7 @@ OnInput = function(name, value, arg1, arg2)
 	if name == "fire" then
 		local sx, sy, sz, dx, dy, dz = graphics.pickingRay(arg1, arg2)
 		local node, x, y, z, mesh, face = scene.pick(sx, sy, sz, dx, dy, dz)
-		if node ~= "" then
+		if node ~= nil then
 			local px, py, pz = scene.position(node)
 			local vx, vy, vz, s, t, nx, ny, nz = scene.vertex(node, mesh, face, 0)
 			px = px + nx

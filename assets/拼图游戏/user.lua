@@ -167,7 +167,7 @@ OnInput = function(name, value, arg1, arg2)
 		if showtime then return end
 		local x, y, z, dx, dy, dz = graphics.pickingRay(arg1, arg2)
 		local node, x, y, z = scene.pick(x, y, z, dx, dy, dz)
-		if node == "" then return end
+		if node == nil then return end
 		if lastSelected == node then
 			scene.material(node, 0, {color="white"})
 			lastSelected = nil
