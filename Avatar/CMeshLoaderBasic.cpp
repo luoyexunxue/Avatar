@@ -20,6 +20,7 @@ using std::istringstream;
 * 加载 STL/OBJ/MS3D/BVH/B3DM/I3DM 模型
 */
 CMeshData* CMeshLoaderBasic::LoadFile(const string& filename, uint8_t* data, size_t size) {
+	if (size == 0) return 0;
 	string ext = CStringUtil::UpperCase(CFileManager::GetExtension(filename));
 	if (ext == "STL") return LoadStlFile(filename, data, size);
 	if (ext == "OBJ") return LoadObjFile(filename, data, size);

@@ -440,21 +440,19 @@ int CScriptManager::DoEngineFps(lua_State* lua) {
 }
 
 /**
-* 使能日志或输出日志消息
+* 输出日志消息
 */
 int CScriptManager::DoEngineLog(lua_State* lua) {
-	if (lua_isboolean(lua, 1)) {
-		if (lua_toboolean(lua, 1)) CLog::Create(true, false);
-		else CLog::Destroy();
-		if (lua_isinteger(lua, 2)) {
-			CLog::SetLevel((CLog::Level)lua_tointeger(lua, 2));
-		}
-	} else {
-		if (lua_isstring(lua, 1)) CLog::Debug(lua_tostring(lua, 1));
-		else if (lua_istable(lua, 1)) {
-			string info;
+	string info;
+	const int args = lua_gettop(lua);
+	for (int n = 1; n <= args; n++) {
+		if (lua_isboolean(lua, n)) info.append(lua_toboolean(lua, n) ? "true" : "false");
+		else if (lua_isstring(lua, n)) info.append(lua_tostring(lua, n));
+		else if (lua_istable(lua, n)) {
+			int count = 0;
+			info.append("{");
 			lua_pushnil(lua);
-			while (lua_next(lua, 1)) {
+			while (lua_next(lua, n)) {
 				if (lua_type(lua, -2) == LUA_TNUMBER) info.append(" [").append(std::to_string(lua_tointeger(lua, -2))).append("]=");
 				if (lua_type(lua, -2) == LUA_TSTRING) info.append(" ").append(lua_tostring(lua, -2)).append("=");
 				int valueType = lua_type(lua, -1);
@@ -464,11 +462,14 @@ int CScriptManager::DoEngineLog(lua_State* lua) {
 				else info.append(lua_typename(lua, lua_type(lua, -1)));
 				info.append(",");
 				lua_pop(lua, 1);
+				count += 1;
 			}
-			if (info.length() > 1) info.pop_back();
-			CLog::Debug("{%s }", info.c_str());
-		} else CLog::Debug(lua_typename(lua, lua_type(lua, 1)));
+			if (count > 0) info.pop_back();
+			info.append(" }");
+		} else info.append(lua_typename(lua, lua_type(lua, n)));
+		if (n != args) info.append(", ");
 	}
+	CLog::Debug("%s", info.c_str());
 	return 0;
 }
 
@@ -1266,7 +1267,7 @@ int CScriptManager::DoScenePick(lua_State* lua) {
 			return 6;
 		}
 	}
-	lua_pushstring(lua, "");
+	lua_pushnil(lua);
 	return 1;
 }
 

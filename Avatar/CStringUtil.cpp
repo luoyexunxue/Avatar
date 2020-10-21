@@ -61,15 +61,15 @@ string CStringUtil::UpperCase(const string& str) {
 */
 string CStringUtil::Trim(const string& str) {
 	const char* p = str.c_str();
-	size_t length = str.length();
-	size_t begIndex = 0;
-	size_t endIndex = str.length() - 1;
-	while ((p[begIndex] == ' ' || p[begIndex] == '\t') && begIndex < length) begIndex++;
-	while ((p[endIndex] == ' ' || p[endIndex] == '\t') && endIndex > 0) endIndex--;
-	if (endIndex < begIndex) {
+	size_t len = str.length();
+	size_t beg = 0;
+	size_t end = len - 1;
+	while ((p[beg] == ' ' || p[beg] == '\t' || p[beg] == '\r' || p[beg] == '\n') && beg < len) beg++;
+	while ((p[end] == ' ' || p[end] == '\t' || p[end] == '\r' || p[end] == '\n') && end > 0) end--;
+	if (end < beg) {
 		return "";
 	} else {
-		return str.substr(begIndex, endIndex - begIndex + 1);
+		return str.substr(beg, end - beg + 1);
 	}
 }
 
@@ -78,10 +78,10 @@ string CStringUtil::Trim(const string& str) {
 */
 string CStringUtil::TrimLeft(const string& str) {
 	const char* p = str.c_str();
-	size_t length = str.length();
-	size_t index = 0;
-	while ((p[index] == ' ' || p[index] == '\t') && index < length) index++;
-	return str.substr(index);
+	size_t len = str.length();
+	size_t pos = 0;
+	while ((p[pos] == ' ' || p[pos] == '\t' || p[pos] == '\r' || p[pos] == '\n') && pos < len) pos++;
+	return str.substr(pos);
 }
 
 /**
@@ -89,9 +89,9 @@ string CStringUtil::TrimLeft(const string& str) {
 */
 string CStringUtil::TrimRight(const string& str) {
 	const char* p = str.c_str();
-	size_t index = str.length() - 1;
-	while ((p[index] == ' ' || p[index] == '\t') && index >= 0) index--;
-	return str.substr(0, index + 1);
+	size_t pos = str.length() - 1;
+	while ((p[pos] == ' ' || p[pos] == '\t' || p[pos] == '\r' || p[pos] == '\n') && pos >= 0) pos--;
+	return str.substr(0, pos + 1);
 }
 
 /**

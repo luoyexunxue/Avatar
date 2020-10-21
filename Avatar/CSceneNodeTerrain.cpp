@@ -73,6 +73,8 @@ bool CSceneNodeTerrain::Init() {
 		material->SetTexture(m_strBlendTexture, 4);
 		material->GetTexture(4)->SetWrapModeMirroredRepeat(true, true);
 	}
+	const float width = m_pHeightMap->hScale * 0.5f;
+	m_cLocalBoundingBox.SetValue(-width, -width, -m_pHeightMap->vScale, width, width, m_pHeightMap->vScale);
 	return true;
 }
 
@@ -124,12 +126,29 @@ CMeshData* CSceneNodeTerrain::GetMeshData() {
 float CSceneNodeTerrain::GetHeight(float x, float y) const {
 	const float mapOffset = m_pHeightMap->size * 0.5f;
 	const float mapScale = static_cast<float>(m_pHeightMap->size) / m_pHeightMap->hScale;
-	int sx = static_cast<int>(x * mapScale + mapOffset);
-	int sy = static_cast<int>(y * mapScale + mapOffset);
-	if (sx <= m_pHeightMap->size && sy <= m_pHeightMap->size) {
-		return m_pHeightMap->data[sx + sy * (m_pHeightMap->size + 1)] + m_cPosition.m_fValue[2];
-	}
-	return m_cPosition.m_fValue[2];
+	x = x * mapScale + mapOffset;
+	y = y * mapScale + mapOffset;
+	int sx1 = static_cast<int>(x);
+	int sy1 = static_cast<int>(y);
+	int sx2 = sx1 + 1;
+	int sy2 = sy1 + 1;
+	if (sx2 < 0 || sy2 < 0 || sx1 > m_pHeightMap->size || sy1 > m_pHeightMap->size) return m_cPosition.m_fValue[2];
+	if (sx1 < 0) sx1 = 0;
+	if (sy1 < 0) sy1 = 0;
+	if (sx2 > m_pHeightMap->size) sx2 = m_pHeightMap->size;
+	if (sy2 > m_pHeightMap->size) sy2 = m_pHeightMap->size;
+	// 双线性插值
+	float p1 = m_pHeightMap->data[sx1 + sy1 * (m_pHeightMap->size + 1)];
+	float p2 = m_pHeightMap->data[sx1 + sy2 * (m_pHeightMap->size + 1)];
+	float p3 = m_pHeightMap->data[sx2 + sy1 * (m_pHeightMap->size + 1)];
+	float p4 = m_pHeightMap->data[sx2 + sy2 * (m_pHeightMap->size + 1)];
+	float kx = x - sx1;
+	float ky = y - sy1;
+	float height = p1 * (1.0f - kx) * (1.0f - ky);
+	height += p2 * (1.0f - kx) * ky;
+	height += p3 * kx * (1.0f - ky);
+	height += p4 * kx * ky;
+	return height + m_cPosition.m_fValue[2];
 }
 
 /**
@@ -141,7 +160,7 @@ CVector3 CSceneNodeTerrain::GetNormal(float x, float y) const {
 	int sx = static_cast<int>(x * mapScale + mapOffset);
 	int sy = static_cast<int>(y * mapScale + mapOffset);
 	CVector3 normal(0.0f, 0.0f, 1.0f, 0.0f);
-	if (sx <= m_pHeightMap->size && sy <= m_pHeightMap->size) {
+	if (sx >= 0 && y >= 0 && sx <= m_pHeightMap->size && sy <= m_pHeightMap->size) {
 		GetMapNormal(sx, sy, normal);
 	}
 	return normal;

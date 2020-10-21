@@ -13,6 +13,7 @@
 * 加载 GLTF 模型
 */
 CMeshData* CMeshLoaderGltf::LoadFile(const string& filename, uint8_t* data, size_t size) {
+	if (size == 0) return 0;
 	const char* json = reinterpret_cast<char*>(data);
 	bool isBinary = strncmp(json, "glTF", 4) == 0;
 	size_t jsonLength = size;

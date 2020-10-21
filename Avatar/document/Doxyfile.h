@@ -240,11 +240,11 @@ int main(int argc, char **argv)
 | :------- | :--- | :--- | :----- |
 | engine.info | 获取引擎信息 | - | {version:*string*, platform:*string*} |
 | engine.fps | 获取当前帧率 | - | fps:*float* |
-| engine.log | 使能日志或输出日志 | enable:*boolean*, &lt;level:*integer*&gt; / msg:*any* | - |
+| engine.log | 输出日志 | [msg:*any*] | - |
 | engine.speed | 设置引擎时间快慢 | speed:*float*, &lt;fixed:*boolean*&gt; | - |
 | engine.timer | 获取定时器定时 | name:*string*, &lt;reset:*boolean*&gt; | elapse:*float* |
 | engine.directory | 获取或设置数据目录 | &lt;dir:*string*&gt; | &lt;dir:*string*&gt; |
-| engine.input | 输入消息 | method:*string*, [params] | - |
+| engine.input | 输入消息 | method:*string*, [params:*boolean* / *integer* / *float*] | - |
 | engine.script | 执行 LUA 脚本 | file:*string* | success:*boolean* |
 | engine.execute | 执行回调方法 | function:*string*, &lt;argument:*string*&gt; | result:*integer* |
 | engine.read | 读取指定文件数据 | file:*string* | data:*string* |
@@ -271,7 +271,7 @@ int main(int argc, char **argv)
 | scene.delete | 删除场景节点 | name:*string* | - |
 | scene.clear | 清除所有场景节点 | - | - |
 | scene.list | 获取场景节点列表 | - | {name:*string*} |
-| scene.pick | 射线选择场景节点 | x:*float*, y:*float*, z:*float*, dx:*float*, dy:*float*, dz:*float* | name:*string*, &lt;x:*float*, y:*float*, z:*float*, mesh:*integer*, face:*integer*&gt; |
+| scene.pick | 射线选择场景节点 | x:*float*, y:*float*, z:*float*, dx:*float*, dy:*float*, dz:*float* | name:*string* / *nil*, &lt;x:*float*, y:*float*, z:*float*, mesh:*integer*, face:*integer*&gt; |
 | scene.scale | 获取或设置场景节点缩放 | name:*string*, &lt;x:*float*, y:*float*, z:*float*&gt; | &lt;x:*float*, y:*float*, z:*float*&gt; |
 | scene.angle | 获取或设置场景节点角度 | name:*string*, &lt;x:*float*, y:*float*, z:*float*&gt; | &lt;x:*float*, y:*float*, z:*float*&gt; |
 | scene.orientation | 获取或设置场景节点方位 | name:*string*, &lt;x:*float*, y:*float*, z:*float*, w:*float*&gt; | &lt;x:*float*, y:*float*, z:*float*, w:*float*&gt; |
@@ -282,11 +282,11 @@ int main(int argc, char **argv)
 | scene.material | 获取或设置节点网格材质 | name:*string*, mesh:*integer*, &lt;{param}&gt; | &lt;{param}&gt; |
 | scene.renderMode | 设置场景节点渲染模式 | name:*string*, cullFace:*boolean*, useDepth:*boolean*, addColor:*boolean* | - |
 | scene.boundingBox | 获取场景节点包围盒 | name:*string* | &lt;minx:*float*, miny:*float*, minz:*float*, maxx:*float*, maxy:*float*, maxz:*float*&gt; |
-| scene.handle | 调用场景节点方法 | name:*string*, function:*string*, &lt;{param}&gt; | [ret] |
+| scene.handle | 调用场景节点方法 | name:*string*, function:*string*, &lt;{param}&gt; | [ret:*any*] |
 | post.list | 获取已注册的后处理列表 | - | {name:*string*} |
 | post.enable | 获取或设置指定后处理 | name:*string*, &lt;enable:*boolean*&gt; | &lt;enable:*boolean*&gt; |
 | post.register | 注册用户自定义后处理 | name:*string*, shader:*string*, &lt;texture:*string*, cube:*boolean*&gt; | success:*boolean* |
-| post.param | 设置后处理参数 | name:*string*, key:*string*, [value] | - |
+| post.param | 设置后处理参数 | name:*string*, key:*string*, [value:*integer* / *float*] | - |
 | graphics.screenshot | 屏幕截图 | file:*string* / *nil*, &lt;redraw:*boolean*&gt; | &lt;data:*string*&gt; |
 | graphics.stereo | 获取或设置立体显示 | &lt;enable:*boolean*&gt; | &lt;enable:*boolean*&gt; |
 | graphics.windowSize | 获取窗口大小 | - | width:*integer*, height:*integer* |
@@ -308,7 +308,7 @@ int main(int argc, char **argv)
 | shader.create | 创建着色器 | name:*string*, vert:*string*, frag:*string* | &lt;shader:*string*&gt; |
 | shader.delete | 删除着色器资源 | name:*string* | - |
 | shader.update | 更新着色器程序 | name:*string*, define:*string*, undef:*string* | success:*boolean* |
-| shader.param | 设置着色器参数 | name:*string*, key:*string*, [value] | - |
+| shader.param | 设置着色器参数 | name:*string*, key:*string*, [value:*integer* / *float*] | - |
 | font.list | 获取已加载的字体列表 | - | {name:*string*} |
 | font.load | 加载字体 | name:*string*, file:*string* | success:*boolean* |
 | font.clear | 清空全部已加载的字体 | - | - |
