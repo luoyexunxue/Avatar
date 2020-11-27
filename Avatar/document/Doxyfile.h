@@ -329,7 +329,7 @@ int main(int argc, char **argv)
 | physics.applyForce | 向刚体施加力 | name:*string*, x:*float*, y:*float*, z:*float*, &lt;px:*float*, py:*float*, pz:*float*&gt; | - |
 | physics.applyImpulse | 向刚体施加冲量 | name:*string*, x:*float*, y:*float*, z:*float*, &lt;px:*float*, py:*float*, pz:*float*&gt; | - |
 | physics.gravity | 设置物理引擎重力 | x:*float*, y:*float*, z:*float* | - |
-| physics.joint | 为关节设置物理模拟 | name:*string*, joint:*string*, &lt;mass:*float*, hk:*float*, vk:*float*, damping:*float*&gt; | - |
+| physics.joint | 为关节设置物理模拟 | name:*string*, joint:*string*, &lt;mass:*float*, bendFactor:*float*, stretchFactor:*float*, damping:*float*&gt; | - |
 | animation.scale | 添加缩放动画 | name:*string*, x:*float*, y:*float*, z:*float*, interpolator:*string*, duration:*float* | - |
 | animation.rotation | 添加旋转动画 | name:*string*, x:*float*, y:*float*, z:*float*, interpolator:*string*, duration:*float* | - |
 | animation.translation | 添加位移动画 | name:*string*, x:*float*, y:*float*, z:*float*, interpolator:*string*, duration:*float* | - |

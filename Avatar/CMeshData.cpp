@@ -238,12 +238,12 @@ CMeshData* CMeshData::AddAnimation(const string& name, float beginTime, float en
 * 为骨骼添加物理模拟支持
 * @param name 关节名称
 * @param mass 关节末端质量
-* @param hk 沿关节方向的弹性系数，即拉伸系数
-* @param vk 垂直于关节方向的弹性系数，即折弯系数
+* @param bendFactor 垂直于关节方向的弹性系数，即折弯系数
+* @param stretchFactor 沿关节方向的弹性系数，即拉伸系数
 * @param damping 阻尼系数
 * @return 骨骼是否存在
 */
-bool CMeshData::SetPhysics(const string& name, float mass, float hk, float vk, float damping) {
+bool CMeshData::SetPhysics(const string& name, float mass, float bendFactor, float stretchFactor, float damping) {
 	SJoint* pJoint = GetJoint(name);
 	if (!pJoint) return false;
 	if (!pJoint->physics) {
@@ -252,9 +252,11 @@ bool CMeshData::SetPhysics(const string& name, float mass, float hk, float vk, f
 		pJoint->physics->isFacing = false;
 	}
 	pJoint->physics->mass = mass;
-	pJoint->physics->hElasticity = hk;
-	pJoint->physics->vElasticity = vk;
+	pJoint->physics->bendElasticity = bendFactor;
+	pJoint->physics->stretchElasticity = stretchFactor;
 	pJoint->physics->damping = damping;
+	pJoint->physics->velocity.SetValue(CVector3::Zero);
+	pJoint->physics->acceleration.SetValue(CVector3::Zero);
 	return true;
 }
 
@@ -277,8 +279,8 @@ bool CMeshData::SetFacing(const string& name, const CVector3& front, const CVect
 	}
 	pJoint->physics->isFacing = true;
 	pJoint->physics->mass = 0.0f;
-	pJoint->physics->hElasticity = 0.0f;
-	pJoint->physics->vElasticity = 0.0f;
+	pJoint->physics->bendElasticity = 0.0f;
+	pJoint->physics->stretchElasticity = 0.0f;
 	pJoint->physics->facingPoint = point;
 	pJoint->physics->frontDir.SetValue(front.m_fValue, 0.0f);
 	pJoint->physics->restrictAngle = angle;
@@ -351,8 +353,8 @@ CMeshData* CMeshData::Clone() const {
 			dst->physics = new SJointDynamic();
 			dst->physics->enabled = src->physics->enabled;
 			dst->physics->mass = src->physics->mass;
-			dst->physics->vElasticity = src->physics->vElasticity;
-			dst->physics->hElasticity = src->physics->hElasticity;
+			dst->physics->bendElasticity = src->physics->bendElasticity;
+			dst->physics->stretchElasticity = src->physics->stretchElasticity;
 			dst->physics->damping = src->physics->damping;
 			dst->physics->isFacing = src->physics->isFacing;
 			dst->physics->restrictAngle = src->physics->restrictAngle;

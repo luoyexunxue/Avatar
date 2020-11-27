@@ -2594,16 +2594,16 @@ int CScriptManager::DoPhysicsJoint(lua_State* lua) {
 			CMeshData* meshData = reinterpret_cast<CSceneNodeAnimation*>(pNode)->GetMeshData();
 			if (meshData) {
 				float mass = 1.0f;
-				float hK = 200.0f;
-				float vK = 100.0f;
+				float bendFactor = 200.0f;
+				float stretchFactor = 100.0f;
 				float damping = -0.1f;
 				if (lua_isnumber(lua, 3) && lua_isnumber(lua, 4) && lua_isnumber(lua, 5) && lua_isnumber(lua, 6)) {
 					mass = (float)lua_tonumber(lua, 3);
-					hK = (float)lua_tonumber(lua, 4);
-					vK = (float)lua_tonumber(lua, 5);
+					bendFactor = (float)lua_tonumber(lua, 4);
+					stretchFactor = (float)lua_tonumber(lua, 5);
 					damping = (float)lua_tonumber(lua, 6);
 				}
-				meshData->SetPhysics(lua_tostring(lua, 2), mass, hK, vK, damping);
+				meshData->SetPhysics(lua_tostring(lua, 2), mass, bendFactor, stretchFactor, damping);
 			}
 		}
 	}

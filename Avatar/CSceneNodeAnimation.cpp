@@ -451,13 +451,15 @@ void CSceneNodeAnimation::PhysicalSimulation(SJoint* joint, const CVector3& grav
 			physics->position = v0 * lv0 + parentPos;
 		}
 		// 计算受力
-		CVector3 hForce = v0 * (physics->hElasticity * (lv1 - lv0));
-		CVector3 vForce = v2 * (physics->vElasticity * acosf(cosa));
-		CVector3 force = gravity * physics->mass + hForce + vForce;
-		// 速度积分
-		physics->velocity += force * (time / physics->mass);
+		CVector3 vForce = v2 * (physics->bendElasticity * acosf(cosa));
+		CVector3 hForce = v0 * (physics->stretchElasticity * (lv1 - lv0));
+		CVector3 force = gravity * physics->mass + vForce + hForce;
+		// 速度位置 verlet 算法
+		CVector3 acceleration = force / physics->mass;
+		physics->velocity += (acceleration + physics->acceleration) * (time * 0.5f);
 		physics->velocity += physics->velocity * physics->damping;
-		physics->position += physics->velocity * time;
+		physics->acceleration = acceleration;
+		physics->position += physics->velocity * time + physics->acceleration * (time * time * 0.5f);
 	}
 	physics->parentPos.SetValue(targetPosParent);
 	// 计算关节变换

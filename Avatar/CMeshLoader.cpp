@@ -249,8 +249,8 @@ CMeshData* CMeshLoader::LoadAvatar(const string& filename) {
 			joint->physics->enabled = (joint_flag & 0x01) != 0x00;
 			joint->physics->isFacing = false;
 			reader >> joint->physics->mass;
-			reader >> joint->physics->vElasticity;
-			reader >> joint->physics->hElasticity;
+			reader >> joint->physics->bendElasticity;
+			reader >> joint->physics->stretchElasticity;
 			reader >> joint->physics->damping;
 		}
 		meshData->AddJoint(joint);
@@ -451,8 +451,8 @@ bool CMeshLoader::SaveAvatar(const string& filename, CMeshData* meshData) {
 		writer.SetValue(joint_flag);
 		if (joint->physics) {
 			writer << joint->physics->mass;
-			writer << joint->physics->vElasticity;
-			writer << joint->physics->hElasticity;
+			writer << joint->physics->bendElasticity;
+			writer << joint->physics->stretchElasticity;
 			writer << joint->physics->damping;
 		}
 	}

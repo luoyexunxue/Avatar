@@ -279,7 +279,9 @@ void CPhysicsManager::IntegrateVelocity() {
 		// 更新非静止刚体的位置和方向
 		CSceneNode* pNode = pBody->m_pSceneNode;
 		if (!pBody->m_bStatic) {
-			pNode->SetPosition(pNode->m_cPosition + pBody->m_cLinearVelocity * m_fTimeStep);
+			CVector3 position = pNode->m_cPosition;
+			position += pBody->m_cLinearVelocity * m_fTimeStep + pBody->m_cAcceleration * (m_fTimeStep * m_fTimeStep * 0.5f);
+			pNode->SetPosition(position);
 			CQuaternion orientation = pNode->m_cOrientation;
 			CQuaternion rotation(pBody->m_cAngularVelocity[0], pBody->m_cAngularVelocity[1], pBody->m_cAngularVelocity[2], 0);
 			rotation *= 0.5f * m_fTimeStep;

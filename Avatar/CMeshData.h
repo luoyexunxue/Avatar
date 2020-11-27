@@ -43,14 +43,16 @@ struct SJointDynamic {
 	bool enabled;
 	//! 质量绑定
 	float mass;
-	//! 垂直方向弹性系数
-	float vElasticity;
-	//! 水平方向弹性系数
-	float hElasticity;
+	//! 弯曲弹性系数
+	float bendElasticity;
+	//! 拉伸弹性系数
+	float stretchElasticity;
 	//! 阻尼系数
 	float damping;
 	//! 当前速度(计算)
 	CVector3 velocity;
+	//! 当前加速度(计算)
+	CVector3 acceleration;
 	//! 最终位置(计算)
 	CVector3 position;
 	//! 父节点位置(计算)
@@ -152,7 +154,7 @@ public:
 	CMeshData* AddAnimation(const string& name, float beginTime, float endTime);
 
 	//! 设置骨骼物理支持
-	bool SetPhysics(const string& name, float mass, float hk, float vk, float damping);
+	bool SetPhysics(const string& name, float mass, float bendFactor, float stretchFactor, float damping);
 	//! 设置骨骼朝向点
 	bool SetFacing(const string& name, const CVector3& front, const CVector3& point, float angle, float damping);
 
