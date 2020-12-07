@@ -7,10 +7,12 @@
 #include "CVector2.h"
 #include "CVector3.h"
 #include "CStringUtil.h"
+#include "CLog.h"
 #include <cstring>
 
 /**
 * 构造函数
+* @note 纹理图片有4个通道，其中第4个通道为混合纹理通道，其余3个为分层纹理通道
 */
 CSceneNodeTerrain::CSceneNodeTerrain(const string& name, const string& heightMap, float mapScale,
 		float heightScale, const string texture[4], const string& blendMap): CSceneNode("terrain", name) {
@@ -27,6 +29,7 @@ CSceneNodeTerrain::CSceneNodeTerrain(const string& name, const string& heightMap
 	m_pHeightMap->hScale = mapScale;
 	m_pHeightMap->vScale = heightScale;
 	m_pMeshData = 0;
+	m_fErrorTolerance = 20.0f;
 }
 
 /**
@@ -51,18 +54,13 @@ bool CSceneNodeTerrain::Init() {
 	const float height3 = 0.7f * m_pHeightMap->vScale;
 	pShader->SetUniform("uHeightRange", CVector3(height1, height2, height3));
 	// 高度图大小的2的幂次就是四叉树最大级别
-	int maxLevel = 0;
-	int mapSize = m_pHeightMap->size >> 1;
-	while (mapSize > 0) {
-		mapSize >>= 1;
-		maxLevel += 1;
-	}
+	m_iMaxLevel = 0;
+	while ((m_pHeightMap->width & (1 << m_iMaxLevel)) == 0) m_iMaxLevel += 1;
 	// 网格所在级别边长最大为 129
-	m_iMeshLevel = maxLevel - 7 < 0 ? 0 : maxLevel - 7;
-	m_iMaxLevel = maxLevel;
-	m_pTreeRoot = BuildQuadTree(0, 0, 0, m_pHeightMap->size);
+	m_iMeshLevel = m_iMaxLevel > 7 ? m_iMaxLevel - 7 : 0;
+	m_pTreeRoot = BuildQuadTree(0, 0, 0, m_pHeightMap->width);
 	m_pMeshData = new CMeshData();
-	BuildTerrainMesh(m_pTreeRoot, 0, 0);
+	BuildTerrainMesh(m_pTreeRoot, 0);
 	for (size_t i = 0; i < m_pMeshData->GetMeshCount(); i++) {
 		CMaterial* material = m_pMeshData->GetMesh(i)->GetMaterial();
 		material->SetShader(pShader);
@@ -93,9 +91,11 @@ void CSceneNodeTerrain::Destroy() {
 * 渲染场景节点
 */
 void CSceneNodeTerrain::Render() {
-	// 首先更新网格顶点索引缓冲
 	CCamera* pCamera = CEngine::GetGraphicsManager()->GetCamera();
-	CheckVisibility(m_pTreeRoot, pCamera->GetFrustum(), pCamera->m_cPosition);
+	float fov = pCamera->GetFieldOfView() * 0.0174533f;
+	float tolerance = m_fErrorTolerance * 2.0f * (1.0f - cosf(fov)) / (pCamera->GetViewWidth() * sinf(fov));
+	CheckVisibility(m_pTreeRoot, pCamera->GetFrustum(), pCamera->m_cPosition, tolerance);
+	// 更新网格顶点索引缓冲
 	UpdateIndexBuffer(m_pTreeRoot);
 	if (CEngine::GetGraphicsManager()->IsDepthRender()) {
 		CEngine::GetTextureManager()->GetTexture("white")->UseTexture();
@@ -124,24 +124,24 @@ CMeshData* CSceneNodeTerrain::GetMeshData() {
 * 获取指定地点的高度
 */
 float CSceneNodeTerrain::GetHeight(float x, float y) const {
-	const float mapOffset = m_pHeightMap->size * 0.5f;
-	const float mapScale = static_cast<float>(m_pHeightMap->size) / m_pHeightMap->hScale;
+	const float mapOffset = m_pHeightMap->width * 0.5f;
+	const float mapScale = static_cast<float>(m_pHeightMap->width) / m_pHeightMap->hScale;
 	x = x * mapScale + mapOffset;
 	y = y * mapScale + mapOffset;
 	int sx1 = static_cast<int>(x);
 	int sy1 = static_cast<int>(y);
 	int sx2 = sx1 + 1;
 	int sy2 = sy1 + 1;
-	if (sx2 < 0 || sy2 < 0 || sx1 > m_pHeightMap->size || sy1 > m_pHeightMap->size) return m_cPosition.m_fValue[2];
+	if (sx2 < 0 || sy2 < 0 || sx1 > m_pHeightMap->width || sy1 > m_pHeightMap->width) return m_cPosition.m_fValue[2];
 	if (sx1 < 0) sx1 = 0;
 	if (sy1 < 0) sy1 = 0;
-	if (sx2 > m_pHeightMap->size) sx2 = m_pHeightMap->size;
-	if (sy2 > m_pHeightMap->size) sy2 = m_pHeightMap->size;
+	if (sx2 > m_pHeightMap->width) sx2 = m_pHeightMap->width;
+	if (sy2 > m_pHeightMap->width) sy2 = m_pHeightMap->width;
 	// 双线性插值
-	float p1 = m_pHeightMap->data[sx1 + sy1 * (m_pHeightMap->size + 1)];
-	float p2 = m_pHeightMap->data[sx1 + sy2 * (m_pHeightMap->size + 1)];
-	float p3 = m_pHeightMap->data[sx2 + sy1 * (m_pHeightMap->size + 1)];
-	float p4 = m_pHeightMap->data[sx2 + sy2 * (m_pHeightMap->size + 1)];
+	float p1 = m_pHeightMap->data[sx1 + sy1 * (m_pHeightMap->width + 1)];
+	float p2 = m_pHeightMap->data[sx1 + sy2 * (m_pHeightMap->width + 1)];
+	float p3 = m_pHeightMap->data[sx2 + sy1 * (m_pHeightMap->width + 1)];
+	float p4 = m_pHeightMap->data[sx2 + sy2 * (m_pHeightMap->width + 1)];
 	float kx = x - sx1;
 	float ky = y - sy1;
 	float height = p1 * (1.0f - kx) * (1.0f - ky);
@@ -155,15 +155,23 @@ float CSceneNodeTerrain::GetHeight(float x, float y) const {
 * 获取指定地点的法向
 */
 CVector3 CSceneNodeTerrain::GetNormal(float x, float y) const {
-	const float mapOffset = m_pHeightMap->size * 0.5f;
-	const float mapScale = static_cast<float>(m_pHeightMap->size) / m_pHeightMap->hScale;
+	const float mapOffset = m_pHeightMap->width * 0.5f;
+	const float mapScale = static_cast<float>(m_pHeightMap->width) / m_pHeightMap->hScale;
 	int sx = static_cast<int>(x * mapScale + mapOffset);
 	int sy = static_cast<int>(y * mapScale + mapOffset);
 	CVector3 normal(0.0f, 0.0f, 1.0f, 0.0f);
-	if (sx >= 0 && y >= 0 && sx <= m_pHeightMap->size && sy <= m_pHeightMap->size) {
+	if (sx >= 0 && y >= 0 && sx <= m_pHeightMap->width && sy <= m_pHeightMap->width) {
 		GetMapNormal(sx, sy, normal);
 	}
 	return normal;
+}
+
+/**
+* 设置渲染精度容差
+*/
+void CSceneNodeTerrain::SetErrorTolerance(float tolerance) {
+	if (tolerance < 10.0f) tolerance = 10.0f;
+	m_fErrorTolerance = tolerance;
 }
 
 /**
@@ -180,39 +188,44 @@ bool CSceneNodeTerrain::LoadHeightMap(const string& filename, SHeightMap* height
 	CFileManager::CImageFile file(fileType);
 	if (!CEngine::GetFileManager()->ReadFile(filename, &file)) return false;
 	// 高度图长宽必须相等，且为2的幂次
-	if (file.width != file.height || (file.width & (file.width - 1)) != 0) return false;
-	heightMap->size = file.width;
-	heightMap->data = new float[(file.width + 1) * (file.height + 1)];
+	if (file.width != file.height || (file.width & (file.width - 1)) != 0) {
+		CLog::Warn("Height map width not equal with height or not power of 2");
+		return false;
+	}
+	// 高度图宽度 2^n，顶点个数 2^n + 1，方便四叉树划分
+	const int size = file.width + 1;
+	heightMap->width = file.width;
+	heightMap->data = new float[size * size];
 	for (int i = 0; i < file.height; i++) {
 		for (int j = 0; j < file.width; j++) {
 			int indexSrc = j + i * file.width;
-			int indexDes = j + (file.height - i - 1) * (file.width + 1);
+			int indexDes = j + (size - i - 2) * size;
 			int data = (file.contents[indexSrc * file.channels] & 0x00FF) - 0x80;
 			heightMap->data[indexDes] = data * heightMap->vScale * 0.007874f;
 		}
 	}
-	// 扩展高度图大小至 2^n + 1
-	int newSize = heightMap->size + 1;
-	int index1 = newSize * (newSize - 1);
-	int index2 = newSize * (newSize - 2);
-	heightMap->data[index1 + newSize - 1] = heightMap->data[index2 + newSize - 2];
-	for (int i = 0; i < heightMap->size; i++) {
-		heightMap->data[index1 + i] = heightMap->data[index2 + i];
-		heightMap->data[newSize * (i + 1) - 1] = heightMap->data[newSize * (i + 1) - 2];
-	}
+	int isrc = size * (size - 2);
+	int idst = size * (size - 1);
+	for (int i = 0; i < heightMap->width; i++) heightMap->data[idst + i] = heightMap->data[isrc + i];
+	for (int i = 1; i <= size; i++) heightMap->data[size * i - 1] = heightMap->data[size * i - 2];
 	// 用于修补裂缝的顶点标记
-	heightMap->flag = new bool[newSize * newSize];
-	memset(heightMap->flag, 0, sizeof(bool) * newSize * newSize);
+	heightMap->flag = new bool[size * size];
+	memset(heightMap->flag, 0, sizeof(bool) * size * size);
 	return true;
 }
 
 /**
 * 递归生成地形四叉树
+* @param parent 父节点
+* @param index 节点索引[0-RD 1-LD 2-LU 3-RU]
+* @param level 节点层级，四叉树根节点层级为0
+* @param size 节点宽度，对应高度图
+* @return 当前创建好的四叉树节点
 */
 CSceneNodeTerrain::SQuadTree* CSceneNodeTerrain::BuildQuadTree(SQuadTree* parent, int index, int level, int size) {
 	if (level >= m_iMaxLevel) return 0;
 	const int halfSize = size >> 1;
-	const int mapLength = m_pHeightMap->size + 1;
+	const int mapLength = m_pHeightMap->width + 1;
 	SQuadTree* node = new SQuadTree();
 	node->mesh = 0;
 	node->parent = parent;
@@ -220,15 +233,14 @@ CSceneNodeTerrain::SQuadTree* CSceneNodeTerrain::BuildQuadTree(SQuadTree* parent
 	node->level = level;
 	node->size = size;
 	if (parent) {
-		if (index == 0) node->center = parent->center + (mapLength + 1) * halfSize;
-		else if (index == 1) node->center = parent->center + (mapLength - 1) * halfSize;
-		else if (index == 2) node->center = parent->center - (mapLength + 1) * halfSize;
-		else if (index == 3) node->center = parent->center - (mapLength - 1) * halfSize;
-	} else {
-		node->center = (mapLength + 1) * halfSize;
-	}
-	int cx = node->center / mapLength;
-	int cy = node->center % mapLength;
+		switch (index) {
+		case 0: node->center = parent->center + halfSize * (mapLength + 1); break;
+		case 1: node->center = parent->center + halfSize * (mapLength - 1); break;
+		case 2: node->center = parent->center - halfSize * (mapLength + 1); break;
+		case 3: node->center = parent->center - halfSize * (mapLength - 1); break;
+		default: break;
+		}
+	} else node->center = halfSize * (mapLength + 1);
 	node->corner[0] = node->center + halfSize * (mapLength + 1);
 	node->corner[1] = node->center + halfSize * (mapLength - 1);
 	node->corner[2] = node->center - halfSize * (mapLength + 1);
@@ -238,14 +250,17 @@ CSceneNodeTerrain::SQuadTree* CSceneNodeTerrain::BuildQuadTree(SQuadTree* parent
 	node->children[2] = BuildQuadTree(node, 2, level + 1, halfSize);
 	node->children[3] = BuildQuadTree(node, 3, level + 1, halfSize);
 	// 计算节点包围盒
-	const float mapOffset = m_pHeightMap->size * 0.5f;
-	const float mapScale = m_pHeightMap->hScale / static_cast<float>(m_pHeightMap->size);
+	const int cx = node->center / mapLength;
+	const int cy = node->center % mapLength;
+	const float mapOffset = m_pHeightMap->width * 0.5f;
+	const float mapScale = m_pHeightMap->hScale / static_cast<float>(m_pHeightMap->width);
 	if (node->IsInternal()) {
 		node->volume.SetValue(node->children[0]->volume);
 		node->volume.Update(node->children[1]->volume);
 		node->volume.Update(node->children[2]->volume);
 		node->volume.Update(node->children[3]->volume);
 	} else {
+		// 叶子节点宽度为2，包含3x3个顶点
 		for (int i = -1; i <= 1; i++) {
 			for (int j = -1; j <= 1; j++) {
 				float x = (cx + i - mapOffset) * mapScale;
@@ -259,24 +274,26 @@ CSceneNodeTerrain::SQuadTree* CSceneNodeTerrain::BuildQuadTree(SQuadTree* parent
 	float px = (cx - mapOffset) * mapScale;
 	float py = (cy - mapOffset) * mapScale;
 	node->position.SetValue(px, py, m_pHeightMap->data[cx + cy * mapLength]);
-	node->roughness = node->volume.m_cMax[2] - node->volume.m_cMin[2];
+	node->geometricError = node->volume.m_cMax[2] - node->volume.m_cMin[2];
 	return node;
 }
 
 /**
 * 递归生成地形网格
+* @param node 当前四叉树节点
+* @param index 在父节点中子节点的索引
 */
-void CSceneNodeTerrain::BuildTerrainMesh(SQuadTree* node, int index, int size) {
+void CSceneNodeTerrain::BuildTerrainMesh(SQuadTree* node, int index) {
 	if (node->level == m_iMeshLevel) {
 		CMesh* mesh = new CMesh();
 		mesh->SetVertexUsage((node->size + 1) * (node->size + 1));
 		const int halfSize = node->size >> 1;
-		const int mapLength = m_pHeightMap->size + 1;
-		const float mapOffset = m_pHeightMap->size * 0.5f;
-		const float mapScale = m_pHeightMap->hScale / static_cast<float>(m_pHeightMap->size);
+		const int mapLength = m_pHeightMap->width + 1;
+		const float mapOffset = m_pHeightMap->width * 0.5f;
+		const float mapScale = m_pHeightMap->hScale / static_cast<float>(m_pHeightMap->width);
 		const float texScale = 1.0f / m_pHeightMap->hScale;
-		int sx = (node->center / mapLength) - halfSize;
-		int sy = (node->center % mapLength) - halfSize;
+		const int sx = (node->center / mapLength) - halfSize;
+		const int sy = (node->center % mapLength) - halfSize;
 		CVector3 normal;
 		for (int i = 0; i <= node->size; i++) {
 			for (int j = 0; j <= node->size; j++) {
@@ -300,30 +317,29 @@ void CSceneNodeTerrain::BuildTerrainMesh(SQuadTree* node, int index, int size) {
 		mesh->Create(true);
 		m_pMeshData->AddMesh(mesh);
 		node->mesh = mesh;
-		// 四个角分别为 右上 右下 左下 左上
+		// Mesh的四个角及中心顶点索引
 		node->index[0] = node->size * (node->size + 2);
 		node->index[1] = node->size * (node->size + 1);
 		node->index[2] = 0;
 		node->index[3] = node->size;
 		node->index[4] = halfSize * (node->size + 2);
-		size = node->size;
 	} else if (node->level > m_iMeshLevel) {
+		const int meshSize = m_pHeightMap->width >> m_iMeshLevel;
 		const int halfSize = node->size >> 1;
-		if (index == 0) node->index[0] = node->parent->index[0];
-		else if (index == 1) node->index[0] = node->parent->index[0] - node->size;
-		else if (index == 2) node->index[0] = node->parent->index[0] - node->size * (size + 2);
-		else if (index == 3) node->index[0] = node->parent->index[0] - node->size * (size + 1);
-		node->index[1] = node->index[0] - node->size;
-		node->index[2] = node->index[0] - node->size * (size + 2);
-		node->index[3] = node->index[0] - node->size * (size + 1);
-		node->index[4] = node->index[0] - halfSize * (size + 2);
+		// 计算网格子节点四个角及中心顶点索引
+		int offset[4] = { 0, node->size, node->size * (meshSize + 2), node->size * (meshSize + 1) };
+		node->index[0] = node->parent->index[0] - offset[index];
+		node->index[1] = node->index[0] - offset[1];
+		node->index[2] = node->index[0] - offset[2];
+		node->index[3] = node->index[0] - offset[3];
+		node->index[4] = node->index[0] - halfSize * (meshSize + 2);
 		node->mesh = node->parent->mesh;
 	}
 	if (node->IsInternal()) {
-		BuildTerrainMesh(node->children[0], 0, size);
-		BuildTerrainMesh(node->children[1], 1, size);
-		BuildTerrainMesh(node->children[2], 2, size);
-		BuildTerrainMesh(node->children[3], 3, size);
+		BuildTerrainMesh(node->children[0], 0);
+		BuildTerrainMesh(node->children[1], 1);
+		BuildTerrainMesh(node->children[2], 2);
+		BuildTerrainMesh(node->children[3], 3);
 	}
 }
 
@@ -343,25 +359,23 @@ void CSceneNodeTerrain::DeleteQuadTree(SQuadTree* node) {
 /**
 * 递归检查四叉树节点可见性
 */
-void CSceneNodeTerrain::CheckVisibility(SQuadTree* node, const CFrustum& frustum, const CVector3& eye) {
-	// 分辨率调节因子
-	const float resolution = 0.05f;
+void CSceneNodeTerrain::CheckVisibility(SQuadTree* node, const CFrustum& frustum, const CVector3& camera, float tolerance) {
 	node->visible = frustum.IsOverlapAABB(node->volume);
 	if (node->visible) {
 		bool endRetrieval = node->IsLeaf();
 		if (!endRetrieval) {
-			float error = resolution * (eye - node->position).Length() / node->roughness;
-			if (error >= 1.0f && node->level > m_iMeshLevel) {
+			float toleranceError = tolerance * (camera - node->position).Length();
+			if (toleranceError > node->geometricError && node->level > m_iMeshLevel) {
 				node->children[0]->visible = false;
 				node->children[1]->visible = false;
 				node->children[2]->visible = false;
 				node->children[3]->visible = false;
 				endRetrieval = true;
 			} else {
-				CheckVisibility(node->children[0], frustum, eye);
-				CheckVisibility(node->children[1], frustum, eye);
-				CheckVisibility(node->children[2], frustum, eye);
-				CheckVisibility(node->children[3], frustum, eye);
+				CheckVisibility(node->children[0], frustum, camera, tolerance);
+				CheckVisibility(node->children[1], frustum, camera, tolerance);
+				CheckVisibility(node->children[2], frustum, camera, tolerance);
+				CheckVisibility(node->children[3], frustum, camera, tolerance);
 			}
 		}
 		// 标记每一个可能存在裂缝的角
@@ -393,9 +407,9 @@ void CSceneNodeTerrain::RenderTerrain(SQuadTree* node, bool useMaterial) {
 * 递归平移地形网格
 */
 void CSceneNodeTerrain::TranslateMesh(SQuadTree* node) {
-	const int mapLength = m_pHeightMap->size + 1;
-	const float mapOffset = m_pHeightMap->size * 0.5f;
-	const float mapScale = m_pHeightMap->hScale / static_cast<float>(m_pHeightMap->size);
+	const int mapLength = m_pHeightMap->width + 1;
+	const float mapOffset = m_pHeightMap->width * 0.5f;
+	const float mapScale = m_pHeightMap->hScale / static_cast<float>(m_pHeightMap->width);
 	int cx = node->center / mapLength;
 	int cy = node->center % mapLength;
 	float px = (cx - mapOffset) * mapScale;
@@ -434,15 +448,15 @@ bool CSceneNodeTerrain::UpdateIndexBuffer(SQuadTree* node) {
 		if (node->level == m_iMeshLevel) {
 			mesh->RemoveTriangle(0, -1);
 		}
-		bool childInvisible = true;
+		bool childVisible = false;
 		if (node->IsInternal()) {
-			childInvisible &= UpdateIndexBuffer(node->children[0]);
-			childInvisible &= UpdateIndexBuffer(node->children[1]);
-			childInvisible &= UpdateIndexBuffer(node->children[2]);
-			childInvisible &= UpdateIndexBuffer(node->children[3]);
+			childVisible |= UpdateIndexBuffer(node->children[0]);
+			childVisible |= UpdateIndexBuffer(node->children[1]);
+			childVisible |= UpdateIndexBuffer(node->children[2]);
+			childVisible |= UpdateIndexBuffer(node->children[3]);
 		}
 		// 四个子节点都不可见的情况下绘制当前节点
-		if (mesh && childInvisible) {
+		if (mesh && !childVisible) {
 			AddTriangle(node, node->index[4], node->index[1], node->index[0], node->corner[1], node->corner[0]);
 			AddTriangle(node, node->index[4], node->index[2], node->index[1], node->corner[2], node->corner[1]);
 			AddTriangle(node, node->index[4], node->index[3], node->index[2], node->corner[3], node->corner[2]);
@@ -452,30 +466,36 @@ bool CSceneNodeTerrain::UpdateIndexBuffer(SQuadTree* node) {
 			mesh->Update(2);
 		}
 	}
-	return !node->visible;
+	return node->visible;
 }
 
 /**
 * 添加三角形并修补裂缝
+* @param node 四叉树节点
+* @param index0 节点中心网格索引
+* @param index1 节点网格边索引1
+* @param index2 节点网格边索引2
+* @param flag1 节点高度图边1索引
+* @param flag2 节点高度图边2索引
 */
-void CSceneNodeTerrain::AddTriangle(SQuadTree* node, int center, int index1, int index2, int flag1, int flag2) {
-	const int powerOfTwo = m_iMaxLevel - node->level - 1;
-	const int stepLocal = (index2 - index1) >> powerOfTwo;
-	const int stepWorld = (flag2 - flag1) >> powerOfTwo;
-	int indexA = stepLocal + index1;
-	int indexB = stepWorld + flag1;
-	CMesh* mesh = node->mesh;
+void CSceneNodeTerrain::AddTriangle(SQuadTree* node, int index0, int index1, int index2, int flag1, int flag2) {
+	// 相当于对网格坐标系local和高度图坐标系world分别除以(node->size/2)，也就是步进长度为2
+	const int shift = m_iMaxLevel - node->level - 1;
+	const int stepLocal = (index2 - index1) >> shift;
+	const int stepWorld = (flag2 - flag1) >> shift;
+	int index_local = stepLocal + index1;
+	int index_world = stepWorld + flag1;
 	// 对边 index1-index2 进行遍历，添加分割的顶点索引
-	while (indexB != flag2) {
-		if (m_pHeightMap->flag[indexB]) {
-			m_pHeightMap->flag[indexB] = false;
-			mesh->AddTriangle(center, index1, indexA);
-			index1 = indexA;
+	while (index_world != flag2) {
+		if (m_pHeightMap->flag[index_world]) {
+			m_pHeightMap->flag[index_world] = false;
+			node->mesh->AddTriangle(index0, index1, index_local);
+			index1 = index_local;
 		}
-		indexA += stepLocal;
-		indexB += stepWorld;
+		index_local += stepLocal;
+		index_world += stepWorld;
 	}
-	mesh->AddTriangle(center, index1, indexA);
+	node->mesh->AddTriangle(index0, index1, index_local);
 }
 
 /**
@@ -488,11 +508,11 @@ void CSceneNodeTerrain::GetMapNormal(int x, int y, CVector3& normal) const {
 	int y2 = y + 1;
 	if (x1 < 0) x1 = x;
 	if (y1 < 0) y1 = y;
-	if (x2 > m_pHeightMap->size) x2 = x;
-	if (y2 > m_pHeightMap->size) y2 = y;
+	if (x2 > m_pHeightMap->width) x2 = x;
+	if (y2 > m_pHeightMap->width) y2 = y;
 	// 计算周围四个点相对目标点的向量
-	const int mapLength = m_pHeightMap->size + 1;
-	const float mapScale = m_pHeightMap->hScale / static_cast<float>(m_pHeightMap->size);
+	const int mapLength = m_pHeightMap->width + 1;
+	const float mapScale = m_pHeightMap->hScale / static_cast<float>(m_pHeightMap->width);
 	float offset = m_pHeightMap->data[x + y * mapLength];
 	CVector3 v1(-mapScale, 0.0f, m_pHeightMap->data[x1 + y * mapLength] - offset);
 	CVector3 v2(0.0f, -mapScale, m_pHeightMap->data[x + y1 * mapLength] - offset);

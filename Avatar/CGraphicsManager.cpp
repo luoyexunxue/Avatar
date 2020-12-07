@@ -1013,6 +1013,7 @@ void CGraphicsManager::DrawReflectMap() {
 	// 渲染所有水面倒影
 	for (size_t i = 0; i < nodeList.size(); i++) {
 		CSceneNode* node = nodeList[i];
+		if (!node->m_bVisible) continue;
 		// 获取水面平面
 		CPlane reflectPlane(CVector3(0.0f, 0.0f, 1.0f), 0.0f);
 		reflectPlane.Transform(node->m_cWorldMatrix);

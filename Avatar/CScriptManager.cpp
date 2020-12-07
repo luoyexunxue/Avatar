@@ -1614,8 +1614,7 @@ int CScriptManager::DoSceneHandle(lua_State* lua) {
 				that->StopAnimation();
 			} else if (!strcmp(function, "SetAnimationFrameRate")) {
 				if (!lua_istable(lua, 3)) return 0;
-				float fps = TableValue(lua, 3, "fps", 30.0f);
-				that->SetAnimationFrameRate(fps);
+				that->SetAnimationFrameRate(TableValue(lua, 3, "fps", 30.0f));
 			} else if (!strcmp(function, "ShowSkeleton")) {
 				if (!lua_istable(lua, 3)) return 0;
 				bool visible = TableValue(lua, 3, "visible", true);
@@ -1667,8 +1666,7 @@ int CScriptManager::DoSceneHandle(lua_State* lua) {
 				that->SetAxis(CVector3(x, y, z));
 			} else if (!strcmp(function, "SetPlayTime")) {
 				if (!lua_istable(lua, 3)) return 0;
-				float time = TableValue(lua, 3, "time", 0.0f);
-				that->SetPlayTime(time);
+				that->SetPlayTime(TableValue(lua, 3, "time", 0.0f));
 			}
 		} else if (type == "line") {
 			CSceneNodeLine* that = static_cast<CSceneNodeLine*>(pNode);
@@ -1682,8 +1680,7 @@ int CScriptManager::DoSceneHandle(lua_State* lua) {
 				that->ClearPoint();
 			} else if (!strcmp(function, "SmoothLine")) {
 				if (!lua_istable(lua, 3)) return 0;
-				float ds = TableValue(lua, 3, "ds", 0.1f);
-				that->SmoothLine(ds);
+				that->SmoothLine(TableValue(lua, 3, "ds", 0.1f));
 			} else if (!strcmp(function, "ShowPoints")) {
 				if (!lua_istable(lua, 3)) return 0;
 				bool show = TableValue(lua, 3, "show", true);
@@ -1691,20 +1688,16 @@ int CScriptManager::DoSceneHandle(lua_State* lua) {
 				that->ShowPoints(show, pointSize);
 			} else if (!strcmp(function, "DisableDepth")) {
 				if (!lua_istable(lua, 3)) return 0;
-				bool disable = TableValue(lua, 3, "disable", true);
-				that->DisableDepth(disable);
+				that->DisableDepth(TableValue(lua, 3, "disable", true));
 			} else if (!strcmp(function, "ScreenSpace")) {
 				if (!lua_istable(lua, 3)) return 0;
-				bool enable = TableValue(lua, 3, "enable", true);
-				that->ScreenSpace(enable);
+				that->ScreenSpace(TableValue(lua, 3, "enable", true));
 			} else if (!strcmp(function, "Segment")) {
 				if (!lua_istable(lua, 3)) return 0;
-				bool enable = TableValue(lua, 3, "enable", true);
-				that->Segment(enable);
+				that->Segment(TableValue(lua, 3, "enable", true));
 			} else if (!strcmp(function, "SetShader")) {
 				if (!lua_istable(lua, 3)) return 0;
-				const char* shader = TableValue(lua, 3, "shader", "");
-				that->SetShader(shader);
+				that->SetShader(TableValue(lua, 3, "shader", ""));
 			} else if (!strcmp(function, "GetPointCount")) {
 				lua_pushinteger(lua, that->GetPointCount());
 				return 1;
@@ -1725,8 +1718,7 @@ int CScriptManager::DoSceneHandle(lua_State* lua) {
 			CSceneNodeSound* that = static_cast<CSceneNodeSound*>(pNode);
 			if (!strcmp(function, "Play")) {
 				if (!lua_istable(lua, 3)) return 0;
-				bool enable = TableValue(lua, 3, "enable", true);
-				that->Play(enable);
+				that->Play(TableValue(lua, 3, "enable", true));
 			}
 		} else if (type == "terrain") {
 			CSceneNodeTerrain* that = static_cast<CSceneNodeTerrain*>(pNode);
@@ -1745,6 +1737,9 @@ int CScriptManager::DoSceneHandle(lua_State* lua) {
 				lua_pushnumber(lua, normal[1]);
 				lua_pushnumber(lua, normal[2]);
 				return 3;
+			} else if (!strcmp(function, "SetErrorTolerance")) {
+				if (!lua_istable(lua, 3)) return 0;
+				that->SetErrorTolerance(TableValue(lua, 3, "tolerance", 20.0f));
 			}
 		} else if (type == "text") {
 			CSceneNodeText* that = static_cast<CSceneNodeText*>(pNode);

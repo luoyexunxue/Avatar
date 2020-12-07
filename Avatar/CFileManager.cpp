@@ -820,6 +820,18 @@ bool CFileManager::ParsePngFile(unsigned char* data, size_t size, CFileData* fil
 }
 
 /**
+* JPG 错误处理回调
+*/
+void jpegErrorExit(j_common_ptr cinfo) {
+	struct jpeg_err_struct {
+		jpeg_error_mgr err;
+		jmp_buf jmp_buffer;
+	};
+	jpeg_err_struct* myerr = (jpeg_err_struct*)cinfo->err;
+	longjmp(myerr->jmp_buffer, 1);
+}
+
+/**
 * 解析 JPG 文件
 * @param data 输入 JPG 文件数据
 * @param size 输入数据大小
@@ -828,10 +840,18 @@ bool CFileManager::ParsePngFile(unsigned char* data, size_t size, CFileData* fil
 */
 bool CFileManager::ParseJpgFile(unsigned char* data, size_t size, CFileData* file) {
 	struct jpeg_decompress_struct info;
-	struct jpeg_error_mgr err;
+	struct jpeg_err_struct {
+		jpeg_error_mgr err;
+		jmp_buf jmp_buffer;
+	} jpeg_err;
 
-	info.err = jpeg_std_error(&err);
+	info.err = jpeg_std_error(&jpeg_err.err);
+	jpeg_err.err.error_exit = jpegErrorExit;
 	jpeg_create_decompress(&info);
+	if (setjmp(jpeg_err.jmp_buffer)) {
+		jpeg_destroy_decompress(&info);
+		return false;
+	}
 	jpeg_mem_src(&info, data, (unsigned long)size);
 	jpeg_read_header(&info, TRUE);
 
