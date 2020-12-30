@@ -11,7 +11,7 @@
 #include "CDeviceAndroid.h"
 #include "CGuiEnvironment.h"
 #include "CMeshLoader.h"
-#include "CCameraChase.h"
+#include "CCameraSmooth.h"
 #include "CPluginLoader.h"
 #include "CStringUtil.h"
 
@@ -55,7 +55,7 @@ bool CEngine::Init(const SEngineConfig& config) {
 	CLog::Info("Loading engine plugins completed.");
 	// 设置默认光照及相机
 	GetGraphicsManager()->SetLight(CVector3(0, 1, -1, 0), CVector3::Zero, CVector3(1.0f, 1.0f, 1.0f, 100.0f));
-	GetGraphicsManager()->SetCamera(new CCameraChase());
+	GetGraphicsManager()->SetCamera(new CCameraSmooth());
 	// 加载系统内置字体
 	GetFontManager()->Load("system/default.ttf", "default");
 	CLog::Info("Loading default font completed.");

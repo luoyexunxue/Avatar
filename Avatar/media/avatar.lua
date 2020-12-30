@@ -47,7 +47,7 @@ OnReady = function()
 	end)
 	addButton("shiftCamera", "相机切换", function()
 		local cameraType = camera.type()
-		if cameraType == "chase" then
+		if cameraType == "smooth" then
 			camera.type("gaze")
 		elseif cameraType == "gaze" then
 			camera.type("geographic")
@@ -58,7 +58,7 @@ OnReady = function()
 		elseif cameraType == "viewer" then
 			camera.type("default")
 		elseif cameraType == "default" then
-			camera.type("chase")
+			camera.type("smooth")
 		end
 		print("切换相机类型为 "..camera.type())
 	end)

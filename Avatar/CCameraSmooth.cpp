@@ -2,7 +2,7 @@
 // Copyright (c) 2020 周仁锋. All rights reserved.
 // ye_luo@qq.com
 //================================================
-#include "CCameraChase.h"
+#include "CCameraSmooth.h"
 #include "CMatrix4.h"
 #include "CVector3.h"
 #include <cmath>
@@ -10,7 +10,7 @@
 /**
 * 构造函数
 */
-CCameraChase::CCameraChase() {
+CCameraSmooth::CCameraSmooth() {
 	m_fDamping = 5.0f;
 	m_fYawInAdvance = m_fYaw;
 	m_fPitchInAdvance = m_fPitch;
@@ -20,16 +20,16 @@ CCameraChase::CCameraChase() {
 
 /**
 * 获取相机名称
-* @return chase
+* @return smooth
 */
-const char* CCameraChase::GetName() const {
-	return "chase";
+const char* CCameraSmooth::GetName() const {
+	return "smooth";
 }
 
 /**
 * 控制信息输入
 */
-void CCameraChase::Input(CInputManager::SInput* input) {
+void CCameraSmooth::Input(CInputManager::SInput* input) {
 	if (!m_bControlAttached) return;
 	if (input->bMove) {
 		CMatrix4 viewMat = m_cViewMatrix;
@@ -53,7 +53,7 @@ void CCameraChase::Input(CInputManager::SInput* input) {
 /**
 * 设置相机高度
 */
-void CCameraChase::SetHeight(float height) {
+void CCameraSmooth::SetHeight(float height) {
 	m_cPosInAdvance[2] = height;
 	m_cPosition[2] = height;
 }
@@ -61,14 +61,14 @@ void CCameraChase::SetHeight(float height) {
 /**
 * 设置相机位置
 */
-void CCameraChase::SetPosition(const CVector3& pos) {
+void CCameraSmooth::SetPosition(const CVector3& pos) {
 	m_cPosInAdvance = pos;
 }
 
 /**
 * 设置相机方位
 */
-void CCameraChase::SetAngle(float yaw, float pitch, float roll) {
+void CCameraSmooth::SetAngle(float yaw, float pitch, float roll) {
 	m_fYawInAdvance = yaw;
 	m_fPitchInAdvance = pitch;
 	m_fRollInAdvance = roll;
@@ -84,7 +84,7 @@ void CCameraChase::SetAngle(float yaw, float pitch, float roll) {
 /**
 * 设置相机目标
 */
-void CCameraChase::SetTarget(const CVector3& pos) {
+void CCameraSmooth::SetTarget(const CVector3& pos) {
 	CVector3 lookVec = pos - m_cPosInAdvance;
 	if (lookVec.Length() == 0) return;
 	// 更新相机方位角
@@ -97,7 +97,7 @@ void CCameraChase::SetTarget(const CVector3& pos) {
 /**
 * 更新相机
 */
-void CCameraChase::Update(float dt) {
+void CCameraSmooth::Update(float dt) {
 	dt *= m_fDamping;
 	if (dt > 1.0f) dt = 1.0f;
 	// 差值计算
@@ -114,14 +114,14 @@ void CCameraChase::Update(float dt) {
 * 设置阻尼系数
 * @param k 阻尼系数，越大惯性表现越小
 */
-void CCameraChase::SetDamping(float k) {
+void CCameraSmooth::SetDamping(float k) {
 	m_fDamping = k;
 }
 
 /**
 * 限制方位角
 */
-void CCameraChase::RestrictYawRange(bool shortest) {
+void CCameraSmooth::RestrictYawRange(bool shortest) {
 	const float PI = 3.141592654f;
 	const float PI2 = 6.283185307f;
 	// 保存角度差值

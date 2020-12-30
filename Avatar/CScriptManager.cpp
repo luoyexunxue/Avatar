@@ -9,9 +9,9 @@
 #include "CLog.h"
 #include "CStringUtil.h"
 #include "CPluginLoader.h"
-#include "CCameraChase.h"
 #include "CCameraGaze.h"
 #include "CCameraFree.h"
+#include "CCameraSmooth.h"
 #include "CCameraViewer.h"
 #include "CCameraGeographic.h"
 #include "CGuiEnvironment.h"
@@ -366,6 +366,7 @@ void CScriptManager::RegisterInterface(lua_State* lua) {
 	TABLE_FUNCTION("create", DoShaderCreate);
 	TABLE_FUNCTION("delete", DoShaderDelete);
 	TABLE_FUNCTION("update", DoShaderUpdate);
+	TABLE_FUNCTION("define", DoShaderDefine);
 	TABLE_FUNCTION("param", DoShaderParam);
 	TABLE_END("shader");
 	// 字体管理接口
@@ -789,10 +790,10 @@ int CScriptManager::DoCameraType(lua_State* lua) {
 		const char* cameraType = lua_tostring(lua, 1);
 		if (pCamera) delete pCamera;
 		if (!strcmp(cameraType, "default")) pCamera = new CCamera();
-		else if (!strcmp(cameraType, "chase")) pCamera = new CCameraChase();
 		else if (!strcmp(cameraType, "free")) pCamera = new CCameraFree();
 		else if (!strcmp(cameraType, "gaze")) pCamera = new CCameraGaze();
 		else if (!strcmp(cameraType, "geographic")) pCamera = new CCameraGeographic();
+		else if (!strcmp(cameraType, "smooth")) pCamera = new CCameraSmooth();
 		else if (!strcmp(cameraType, "viewer")) pCamera = new CCameraViewer();
 		else {
 			pCamera = new CCamera();
@@ -803,10 +804,10 @@ int CScriptManager::DoCameraType(lua_State* lua) {
 			float minDistance = TableValue(lua, 2, "minDistance", -1.0f);
 			float maxDistance = TableValue(lua, 2, "maxDistance", -1.0f);
 			if (damping > 0.0f) {
-				if (!strcmp(cameraType, "chase")) static_cast<CCameraChase*>(pCamera)->SetDamping(damping);
-				else if (!strcmp(cameraType, "free")) static_cast<CCameraFree*>(pCamera)->SetDamping(damping);
+				if (!strcmp(cameraType, "free")) static_cast<CCameraFree*>(pCamera)->SetDamping(damping);
 				else if (!strcmp(cameraType, "gaze")) static_cast<CCameraGaze*>(pCamera)->SetDamping(damping);
 				else if (!strcmp(cameraType, "geographic")) static_cast<CCameraGeographic*>(pCamera)->SetDamping(damping);
+				else if (!strcmp(cameraType, "smooth")) static_cast<CCameraSmooth*>(pCamera)->SetDamping(damping);
 				else if (!strcmp(cameraType, "viewer")) static_cast<CCameraViewer*>(pCamera)->SetDamping(damping);
 			}
 			if (minDistance > 0.0f) {
@@ -1203,7 +1204,7 @@ int CScriptManager::DoSceneDelete(lua_State* lua) {
 				if (callback >= 0) luaL_unref(lua, LUA_REGISTRYINDEX, callback);
 				CEngine::GetPhysicsManager()->DelRigidBody(pBody);
 			}
-			CEngine::GetAnimationManager()->Stop(pNode);
+			CEngine::GetAnimationManager()->Stop(pNode, false);
 			CEngine::GetSceneManager()->DeleteNode(pNode);
 		}
 	}
@@ -2201,12 +2202,27 @@ int CScriptManager::DoShaderDelete(lua_State* lua) {
 int CScriptManager::DoShaderUpdate(lua_State* lua) {
 	bool success = false;
 	if (lua_isstring(lua, 1) && lua_isstring(lua, 2) && lua_isstring(lua, 3)) {
+		const char* vert = lua_tostring(lua, 2);
+		const char* frag = lua_tostring(lua, 3);
+		CShaderManager* pShaderMgr = CEngine::GetShaderManager();
+		CShader* pShader = pShaderMgr->GetShader(lua_tostring(lua, 1));
+		success = pShaderMgr->Update(pShader, vert, frag);
+	}
+	lua_pushboolean(lua, success);
+	return 1;
+}
+
+/**
+* 着色器程序宏定义
+*/
+int CScriptManager::DoShaderDefine(lua_State* lua) {
+	bool success = false;
+	if (lua_isstring(lua, 1) && lua_isstring(lua, 2) && lua_isstring(lua, 3)) {
 		string append = lua_tostring(lua, 2);
 		string remove = lua_tostring(lua, 3);
 		CShaderManager* pShaderMgr = CEngine::GetShaderManager();
 		CShader* pShader = pShaderMgr->GetShader(lua_tostring(lua, 1));
-		pShaderMgr->Update(pShader, append, remove);
-		success = pShader ? pShader->IsValid() : false;
+		success = pShaderMgr->Update(pShader, append, remove, 0);
 	}
 	lua_pushboolean(lua, success);
 	return 1;
@@ -2704,7 +2720,8 @@ int CScriptManager::DoAnimationStop(lua_State* lua) {
 	if (lua_isstring(lua, 1)) {
 		CSceneNode* pNode = CEngine::GetSceneManager()->GetNodeByName(lua_tostring(lua, 1));
 		if (pNode) {
-			CEngine::GetAnimationManager()->Stop(pNode);
+			bool reset = lua_isboolean(lua, 2) ? lua_toboolean(lua, 2) != 0 : false;
+			CEngine::GetAnimationManager()->Stop(pNode, reset);
 		}
 	}
 	return 0;

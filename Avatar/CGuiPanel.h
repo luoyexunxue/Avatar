@@ -27,6 +27,8 @@ private:
 	int m_iCurrentOffset[2];
 	//! 背景颜色
 	unsigned char m_cBackColor[4];
+	//! 未显示区域标记
+	bool m_bOcclusionArea[4];
 };
 
 #endif

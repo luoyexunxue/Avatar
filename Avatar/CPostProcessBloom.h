@@ -17,6 +17,9 @@ public:
 	virtual void Apply(CTexture* target, CMesh* mesh);
 
 private:
+	void SetGaussKernel(CShader* blurShader, int kernelSize, float sigma);
+
+private:
 	CShader* m_pBlurShader;
 	CTexture* m_pHBlurTexture;
 	CTexture* m_pVBlurTexture;

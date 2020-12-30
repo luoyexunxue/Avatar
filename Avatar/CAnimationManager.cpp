@@ -144,16 +144,18 @@ bool CAnimationManager::Pause(CSceneNode* node) {
 /**
 * 停止动画
 * @param node 关联的场景节点
+* @param reset 是否恢复到初始状态
 * @return 成功返回 true
 */
-bool CAnimationManager::Stop(CSceneNode* node) {
+bool CAnimationManager::Stop(CSceneNode* node, bool reset) {
 	SAnimationData* anim = GetAnimationData(node, false);
 	if (!anim) return false;
-	// 对场景节点变换到最终状态后停止
-	anim->sceneNode->m_cScale = anim->scale.back().value;
-	anim->sceneNode->m_cOrientation = anim->rotation.back().value;
-	anim->sceneNode->m_cPosition = anim->translation.back().value;
-	anim->sceneNode->Transform();
+	if (reset) {
+		anim->sceneNode->m_cScale = anim->scale.front().value;
+		anim->sceneNode->m_cOrientation = anim->rotation.front().value;
+		anim->sceneNode->m_cPosition = anim->translation.front().value;
+		anim->sceneNode->Transform();
+	}
 	m_lstAnimation.remove(anim);
 	delete anim;
 	return true;

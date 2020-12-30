@@ -307,7 +307,8 @@ int main(int argc, char **argv)
 | texture.data | 读取纹理数据 | name:*string*, &lt;face:*integer*, level:*integer*&gt; | pngData:*string* |
 | shader.create | 创建着色器 | name:*string*, vert:*string*, frag:*string* | &lt;shader:*string*&gt; |
 | shader.delete | 删除着色器资源 | name:*string* | - |
-| shader.update | 更新着色器程序 | name:*string*, define:*string*, undef:*string* | success:*boolean* |
+| shader.update | 更新着色器程序 | name:*string*, vert:*string*, frag:*string* | success:*boolean* |
+| shader.define | 着色器程序宏定义 | name:*string*, define:*string*, undef:*string* | success:*boolean* |
 | shader.param | 设置着色器参数 | name:*string*, key:*string*, [value:*integer* / *float*] | - |
 | font.list | 获取已加载的字体列表 | - | {name:*string*} |
 | font.load | 加载字体 | name:*string*, file:*string* | success:*boolean* |
@@ -334,7 +335,7 @@ int main(int argc, char **argv)
 | animation.rotation | 添加旋转动画 | name:*string*, x:*float*, y:*float*, z:*float*, interpolator:*string*, duration:*float* | - |
 | animation.translation | 添加位移动画 | name:*string*, x:*float*, y:*float*, z:*float*, interpolator:*string*, duration:*float* | - |
 | animation.start | 开始执行动画 | name:*string*, &lt;repeat:*integer*, swing:*boolean*, delay:*float*&gt; | - |
-| animation.stop | 停止执行动画 | name:*string* | - |
+| animation.stop | 停止执行动画 | name:*string*, &lt;reset:*boolean*&gt; | - |
 
 @remarks <> 内部参数为可选参数，[] 内部参数为可变个数参数.
 */

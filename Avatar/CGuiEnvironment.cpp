@@ -32,13 +32,15 @@ CGuiEnvironment::CGuiEnvironment() {
 	m_fScaleFactor = 1.0f;
 	m_iScreenSize[0] = 1;
 	m_iScreenSize[1] = 1;
-	m_cDrawRegion.Resize(1, 1);
 	m_iLastMouseButton = 0;
 	m_iLastMouseDownPos[0] = -1;
 	m_iLastMouseDownPos[1] = -1;
 	m_pFocusElement = 0;
 	m_pDragElement = 0;
 	m_pGuiBuffer = new unsigned char[4];
+	m_pRootElement = new CGuiElementRoot();
+	m_pRootElement->m_cRegion.Resize(1, 1);
+	m_pRootElement->m_cRegionScreen.SetValue(m_pRootElement->m_cRegion);
 	// 创建着色器
 	const char* vertShader = "\
 		in vec4 aPosition;\
@@ -95,12 +97,7 @@ CGuiEnvironment* CGuiEnvironment::m_pInstance = 0;
 * 销毁 GUI 环境
 */
 void CGuiEnvironment::Destroy() {
-	list<CGuiElement*>::iterator iter = m_lstElements.begin();
-	while (iter != m_lstElements.end()) {
-		delete (*iter);
-		++iter;
-	}
-	m_lstElements.clear();
+	DeleteElement(m_pRootElement);
 	delete m_pRenderMesh;
 	delete[] m_pGuiBuffer;
 	delete this;
@@ -110,7 +107,7 @@ void CGuiEnvironment::Destroy() {
 * 渲染 GUI 界面
 */
 void CGuiEnvironment::Render() {
-	if (!m_bEnabled || m_lstElements.empty()) return;
+	if (!m_bEnabled || m_pRootElement->m_lstChildren.empty()) return;
 	if (m_pFocusElement && m_pFocusElement->Redraw()) {
 		m_vecInvalidateRect.push_back(m_pFocusElement->m_cRegionScreen);
 	}
@@ -194,10 +191,11 @@ void CGuiEnvironment::SetEnable(bool enable) {
 */
 void CGuiEnvironment::SetScale(float scale) {
 	m_fScaleFactor = 1.0f / scale;
-	m_cDrawRegion.Resize(m_iScreenSize[0], m_iScreenSize[1]);
-	m_cDrawRegion.Scale(m_fScaleFactor, false);
+	m_pRootElement->m_cRegion.Resize(m_iScreenSize[0], m_iScreenSize[1]);
+	m_pRootElement->m_cRegion.Scale(m_fScaleFactor, false);
+	m_pRootElement->m_cRegionScreen.SetValue(m_pRootElement->m_cRegion);
 	m_vecInvalidateRect.clear();
-	m_vecInvalidateRect.push_back(m_cDrawRegion);
+	m_vecInvalidateRect.push_back(m_pRootElement->m_cRegion);
 }
 
 /**
@@ -207,10 +205,11 @@ void CGuiEnvironment::SetSize(int width, int height) {
 	if (m_iScreenSize[0] != width || m_iScreenSize[1] != height) {
 		m_iScreenSize[0] = width;
 		m_iScreenSize[1] = height;
-		m_cDrawRegion.Resize(m_iScreenSize[0], m_iScreenSize[1]);
-		m_cDrawRegion.Scale(m_fScaleFactor, false);
+		m_pRootElement->m_cRegion.Resize(m_iScreenSize[0], m_iScreenSize[1]);
+		m_pRootElement->m_cRegion.Scale(m_fScaleFactor, false);
+		m_pRootElement->m_cRegionScreen.SetValue(m_pRootElement->m_cRegion);
 		m_vecInvalidateRect.clear();
-		m_vecInvalidateRect.push_back(m_cDrawRegion);
+		m_vecInvalidateRect.push_back(m_pRootElement->m_cRegion);
 	}
 }
 
@@ -218,8 +217,8 @@ void CGuiEnvironment::SetSize(int width, int height) {
 * 获取 GUI 画布大小
 */
 void CGuiEnvironment::GetSize(int* width, int* height) {
-	*width = m_cDrawRegion.GetWidth();
-	*height = m_cDrawRegion.GetHeight();
+	*width = m_pRootElement->m_cRegion.GetWidth();
+	*height = m_pRootElement->m_cRegion.GetHeight();
 }
 
 /**
@@ -245,13 +244,10 @@ bool CGuiEnvironment::GuiCreate(const string& name, const string& type, const st
 			CStringUtil::Split(keyvalue, attribs[i], "=", true);
 			pElement->SetAttribute(keyvalue[0], keyvalue[1]);
 		}
-		m_lstElements.push_back(pElement);
-		CGuiElement* parent = pElement->m_pParent;
+		if (!pElement->m_pParent) pElement->m_pParent = m_pRootElement;
 		pElement->m_cRegionScreen.SetValue(pElement->m_cRegion);
-		if (parent) {
-			pElement->m_cRegionScreen.Offset(parent->m_cRegionScreen).Offset(parent->m_iOffset);
-			parent->m_lstChildren.push_back(pElement);
-		}
+		pElement->m_cRegionScreen.Offset(pElement->m_pParent->m_cRegionScreen).Offset(pElement->m_pParent->m_iOffset);
+		pElement->m_pParent->m_lstChildren.push_back(pElement);
 		InvalidateRegion(pElement->m_cRegionScreen);
 		return true;
 	}
@@ -263,59 +259,54 @@ bool CGuiEnvironment::GuiCreate(const string& name, const string& type, const st
 */
 bool CGuiEnvironment::GuiModify(const string& name, const string& desc) {
 	CGuiElement* pElement = GetElement(name);
-	if (pElement) {
-		CGuiElement* parent = pElement->m_pParent;
-		const CRectangle region = pElement->m_cRegionScreen;
-		vector<string> attribs;
-		vector<string> keyvalue;
-		CStringUtil::Split(attribs, desc, ";", true);
-		for (size_t i = 0; i < attribs.size(); i++) {
-			if (attribs[i].empty()) continue;
-			CStringUtil::Split(keyvalue, attribs[i], "=", true);
-			pElement->SetAttribute(keyvalue[0], keyvalue[1]);
-		}
-		CGuiElement* newParent = pElement->m_pParent;
-		pElement->m_cRegionScreen.SetValue(pElement->m_cRegion);
-		if (newParent) {
-			pElement->m_cRegionScreen.Offset(newParent->m_cRegionScreen).Offset(newParent->m_iOffset);
-			if (newParent != parent) newParent->m_lstChildren.push_back(pElement);
-		}
-		if (newParent != parent && parent) {
-			InvalidateRegion(region);
-			parent->m_lstChildren.remove(pElement);
-		}
-		InvalidateRegion(region.Union(pElement->m_cRegionScreen));
-		return true;
+	if (!pElement) return false;
+	CGuiElement* parent_prev = pElement->m_pParent;
+	const CRectangle region = pElement->m_cRegionScreen;
+	vector<string> attribs;
+	vector<string> keyvalue;
+	CStringUtil::Split(attribs, desc, ";", true);
+	for (size_t i = 0; i < attribs.size(); i++) {
+		if (attribs[i].empty()) continue;
+		CStringUtil::Split(keyvalue, attribs[i], "=", true);
+		pElement->SetAttribute(keyvalue[0], keyvalue[1]);
 	}
-	return false;
+	if (!pElement->m_pParent) pElement->m_pParent = m_pRootElement;
+	if (pElement->m_pParent != parent_prev) {
+		pElement->m_pParent->m_lstChildren.push_back(pElement);
+		parent_prev->m_lstChildren.remove(pElement);
+	}
+	UpdateElement(pElement);
+	InvalidateRegion(region.Union(pElement->m_cRegionScreen));
+	return true;
 }
 
 /**
 * 删除 GUI 元素
 */
 bool CGuiEnvironment::GuiDelete(const string& name) {
-	list<CGuiElement*>::iterator iter = m_lstElements.begin();
-	while (iter != m_lstElements.end()) {
-		CGuiElement* pElement = *iter;
-		if (pElement->m_strName == name) {
-			m_lstElements.erase(iter);
-			InvalidateRegion(pElement->m_cRegionScreen);
-			DeleteElement(pElement);
-			return true;
-		}
-		++iter;
-	}
-	return false;
+	CGuiElement* pElement = GetElement(name);
+	if (!pElement) return false;
+	pElement->m_pParent->m_lstChildren.remove(pElement);
+	InvalidateRegion(pElement->m_cRegionScreen);
+	DeleteElement(pElement);
+	return true;
 }
 
 /**
 * 获取指定名称的GUI元素
 */
 CGuiEnvironment::CGuiElement* CGuiEnvironment::GetElement(const string& name) {
-	list<CGuiElement*>::iterator iter = m_lstElements.begin();
-	while (iter != m_lstElements.end()) {
-		if ((*iter)->m_strName == name) return *iter;
-		++iter;
+	list<CGuiElement*> elements;
+	elements.push_back(m_pRootElement);
+	while (!elements.empty()) {
+		CGuiElement* element = elements.back();
+		elements.pop_back();
+		list<CGuiElement*>::iterator iter = element->m_lstChildren.begin();
+		while (iter != element->m_lstChildren.end()) {
+			if ((*iter)->m_strName == name) return *iter;
+			if (!(*iter)->m_lstChildren.empty()) elements.push_back(*iter);
+			++iter;
+		}
 	}
 	return 0;
 }
@@ -325,11 +316,12 @@ CGuiEnvironment::CGuiElement* CGuiEnvironment::GetElement(const string& name) {
 * @note 只获取可见的 GUI 元素
 */
 CGuiEnvironment::CGuiElement* CGuiEnvironment::GetElement(CGuiElement* parent, int x, int y) {
-	list<CGuiElement*>::iterator iter = parent ? parent->m_lstChildren.end() : m_lstElements.end();
-	list<CGuiElement*>::iterator begin = parent ? parent->m_lstChildren.begin() : m_lstElements.begin();
+	if (!parent) parent = m_pRootElement;
+	list<CGuiElement*>::iterator iter = parent->m_lstChildren.end();
+	list<CGuiElement*>::iterator begin = parent->m_lstChildren.begin();
 	while (iter != begin) {
 		CGuiElement* item = *--iter;
-		if (item->m_pParent && !item->m_pParent->m_bVisible) continue;
+		if (!item->m_pParent->m_bVisible) continue;
 		if (item->m_bVisible && item->m_cRegionScreen.IsContain(x, y)) {
 			CGuiElement* child = item->m_lstChildren.empty() ? 0 : GetElement(item, x, y);
 			return child ? child : item;
@@ -342,13 +334,9 @@ CGuiEnvironment::CGuiElement* CGuiEnvironment::GetElement(CGuiElement* parent, i
 * 删除指定的元素和其子元素
 */
 void CGuiEnvironment::DeleteElement(CGuiElement* element) {
-	list<CGuiElement*>::iterator iter = m_lstElements.begin();
-	while (iter != m_lstElements.end()) {
-		CGuiElement* child = *iter;
-		if (element == child->m_pParent) {
-			DeleteElement(child);
-		}
-		++iter;
+	list<CGuiElement*>::iterator iter = element->m_lstChildren.begin();
+	while (iter != element->m_lstChildren.end()) {
+		DeleteElement(*iter++);
 	}
 	if (element->m_pParent) element->m_pParent->m_lstChildren.remove(element);
 	if (element == m_pFocusElement) m_pFocusElement = 0;
@@ -357,11 +345,23 @@ void CGuiEnvironment::DeleteElement(CGuiElement* element) {
 }
 
 /**
+* 更新指定的元素和其子元素
+*/
+void CGuiEnvironment::UpdateElement(CGuiElement* element) {
+	element->m_cRegionScreen.SetValue(element->m_cRegion);
+	element->m_cRegionScreen.Offset(element->m_pParent->m_cRegionScreen).Offset(element->m_pParent->m_iOffset);
+	list<CGuiElement*>::iterator iter = element->m_lstChildren.begin();
+	while (iter != element->m_lstChildren.end()) {
+		UpdateElement(*iter++);
+	}
+}
+
+/**
 * 使指定矩形绘图区无效，导致重绘
 */
 void CGuiEnvironment::InvalidateRegion(const CRectangle& rect) {
 	// 计算包含在屏幕范围内的区域
-	CRectangle r = rect.Intersect(m_cDrawRegion);
+	CRectangle r = rect.Intersect(m_pRootElement->m_cRegion);
 	for (size_t i = 0; i < m_vecInvalidateRect.size(); i++) {
 		if (m_vecInvalidateRect[i].IsContain(r)) return;
 	}
@@ -375,14 +375,14 @@ void CGuiEnvironment::DrawInvalidateRegion() {
 	CTextureManager* pTextureMgr = CEngine::GetTextureManager();
 	CTexture* pTexture = m_pRenderMesh->GetMaterial()->GetTexture();
 	// 计算是否需要更改绘图区域大小
-	if (m_cDrawRegion.GetWidth() != pTexture->GetWidth() ||
-		m_cDrawRegion.GetHeight() != pTexture->GetHeight()) {
+	if (m_pRootElement->m_cRegion.GetWidth() != pTexture->GetWidth() ||
+		m_pRootElement->m_cRegion.GetHeight() != pTexture->GetHeight()) {
 		// 清空全部区域
-		int bufferSize = m_cDrawRegion.GetArea() * 4;
+		int bufferSize = m_pRootElement->m_cRegion.GetArea() * 4;
 		delete[] m_pGuiBuffer;
 		m_pGuiBuffer = new unsigned char[bufferSize];
 		memset(m_pGuiBuffer, 0, bufferSize);
-		pTextureMgr->Resize(pTexture, m_cDrawRegion.GetWidth(), m_cDrawRegion.GetHeight());
+		pTextureMgr->Resize(pTexture, m_pRootElement->m_cRegion.GetWidth(), m_pRootElement->m_cRegion.GetHeight());
 		pTextureMgr->Update(pTexture, m_pGuiBuffer);
 	} else {
 		// 清空重绘区域
@@ -396,28 +396,27 @@ void CGuiEnvironment::DrawInvalidateRegion() {
 			pTextureMgr->Update(pTexture, m_pGuiBuffer, m_vecInvalidateRect[i]);
 		}
 	}
-	// 绘制需要重绘的元素
-	list<CGuiElement*>::iterator iter = m_lstElements.begin();
-	while (iter != m_lstElements.end()) {
-		CGuiElement* pElement = *iter;
-		for (size_t i = 0; i < m_vecInvalidateRect.size(); i++) {
-			CRectangle drawRegion = m_vecInvalidateRect[i].Intersect(pElement->m_cRegionScreen);
-			if (pElement->m_pParent) drawRegion *= pElement->m_pParent->m_cRegionScreen;
-			if (!drawRegion.IsEmpty() && pElement->m_bVisible) {
-				// 父元素可见则渲染，并且绘制区域经过父元素区域裁剪
-				bool parentVisible = true;
-				CGuiElement* parent = pElement->m_pParent;
-				while (parent && parentVisible) {
-					parentVisible = parentVisible && parent->m_bVisible;
-					parent = parent->m_pParent;
-				}
-				if (parentVisible) {
+	// 绘制需要重绘的元素，深度优先遍历
+	list<CGuiElement*> elements;
+	elements.push_back(m_pRootElement);
+	while (!elements.empty()) {
+		CGuiElement* item = elements.back();
+		elements.pop_back();
+		list<CGuiElement*>::iterator iter = item->m_lstChildren.begin();
+		while (iter != item->m_lstChildren.end()) {
+			CGuiElement* pElement = *iter++;
+			if (!pElement->m_bVisible) continue;
+			if (!pElement->m_lstChildren.empty()) elements.push_back(pElement);
+			for (size_t i = 0; i < m_vecInvalidateRect.size(); i++) {
+				CRectangle drawRegion = m_vecInvalidateRect[i].Intersect(pElement->m_cRegionScreen);
+				drawRegion *= pElement->m_pParent->m_cRegionScreen;
+				if (!drawRegion.IsEmpty()) {
+					// 指定屏幕坐标以及缓冲区绘制元素，缓冲区已被清零
 					pElement->Draw(drawRegion, m_pGuiBuffer);
 					pTextureMgr->Update(pTexture, m_pGuiBuffer, drawRegion);
 				}
 			}
 		}
-		++iter;
 	}
 	// 重置无效区域
 	m_vecInvalidateRect.clear();

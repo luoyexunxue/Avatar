@@ -8,6 +8,7 @@
 #include "CColor.h"
 #include <cstring>
 #include <cstdlib>
+#include <cmath>
 
 /**
 * 构造函数，指定名称
@@ -27,6 +28,7 @@ CGuiButton::CGuiButton(const string& name) : CGuiElement(name) {
 	m_cForeColor[1] = 0xFF;
 	m_cForeColor[2] = 0xFF;
 	m_cForeColor[3] = 0xFF;
+	m_iBorderRadius = 0;
 	// 背景图片
 	m_pImage = 0;
 	m_iImageWidth = 0;
@@ -55,6 +57,7 @@ bool CGuiButton::SetAttribute(const string& name, const string& value) {
 	else if (name == "fontSize") m_iFontSize = atoi(value.c_str());
 	else if (name == "text") CStringUtil::Utf8ToWideCharArray(value.c_str(), m_strText, 64);
 	else if (name == "stretch") m_bStretchText = value == "true";
+	else if (name == "borderRadius") m_iBorderRadius = atoi(value.c_str());
 	else if (name == "image") {
 		CFileManager::CImageFile* pFile = CTextureManager::ReadImage(value, false);
 		if (pFile) {
@@ -89,6 +92,7 @@ string CGuiButton::GetAttribute(const string& name) {
 	else if (name == "font") return m_strFont;
 	else if (name == "fontSize") return CStringUtil::Format("%d", m_iFontSize);
 	else if (name == "stretch") return m_bStretchText ? "true" : "false";
+	else if (name == "borderRadius") return CStringUtil::Format("%d", m_iBorderRadius);
 	else if (name == "text") {
 		char text[128] = { 0 };
 		CStringUtil::WideCharArrayToUtf8(m_strText, text, 128);
@@ -112,45 +116,56 @@ void CGuiButton::Draw(const CRectangle& rect, unsigned char* buffer) {
 	int width = m_cRegion.GetWidth();
 	int height = m_cRegion.GetHeight();
 	// 绘制标题
-	CFontManager::CTextImage* pImage = 0;
+	CFontManager::CTextImage* pText = 0;
 	if (m_strText[0]) {
-		pImage = new CFontManager::CTextImage(width, height);
+		pText = new CFontManager::CTextImage(width, height);
 		CFontManager* pFontMgr = CEngine::GetFontManager();
 		pFontMgr->UseFont(m_strFont);
 		pFontMgr->SetSize(m_iFontSize);
-		pFontMgr->DrawText(m_strText, pImage, CFontManager::MIDDLECENTER, m_bStretchText);
+		pFontMgr->DrawText(m_strText, pText, CFontManager::MIDDLECENTER, m_bStretchText);
 	}
 	// 填充 GUI 缓冲区
 	int offsetX = rect.GetLeft() - m_cRegionScreen.GetLeft();
 	int offsetY = rect.GetTop() - m_cRegionScreen.GetTop();
 	int drawWidth = rect.GetWidth();
 	int drawHeight = rect.GetHeight();
+	unsigned char imageColor[4];
+	unsigned char* backColor = m_pImage ? imageColor : m_cBackColor;
 	for (int h = 0; h < drawHeight; h++) {
 		for (int w = 0; w < drawWidth; w++) {
+			const int x = w + offsetX;
+			const int y = h + offsetY;
+			unsigned char pixel = pText ? pText->data[y * width + x] : 0;
 			unsigned int index = (h * drawWidth + w) << 2;
-			unsigned char pixel = pImage? pImage->data[(h + offsetY) * width + w + offsetX]: 0;
-			// 背景图片，与背景颜色混合并拉伸平铺
 			if (m_pImage) {
-				int ix = (w + offsetX) * m_iImageWidth / width;
-				int iy = (h + offsetY) * m_iImageHeight / height;
+				// 背景图片，与背景颜色混合并拉伸平铺
+				int ix = x * m_iImageWidth / width;
+				int iy = y * m_iImageHeight / height;
 				const unsigned char* rgb = &m_pImage[(iy * m_iImageWidth + ix) * m_iImageChannels];
-				unsigned char backColor[4] = {
-					(unsigned char)((m_cBackColor[0] * rgb[0]) >> 8),
-					(unsigned char)((m_cBackColor[1] * (m_iImageChannels >= 3? rgb[1]: rgb[0])) >> 8),
-					(unsigned char)((m_cBackColor[2] * (m_iImageChannels >= 3? rgb[2]: rgb[0])) >> 8),
-					(unsigned char)((m_cBackColor[3] * (m_iImageChannels >= 4? rgb[3]: 0xFF)) >> 8)
-				};
-				buffer[index + 0] = (pixel * m_cForeColor[0] + (0xFF - pixel) * backColor[0]) >> 8;
-				buffer[index + 1] = (pixel * m_cForeColor[1] + (0xFF - pixel) * backColor[1]) >> 8;
-				buffer[index + 2] = (pixel * m_cForeColor[2] + (0xFF - pixel) * backColor[2]) >> 8;
-				buffer[index + 3] = (pixel * m_cForeColor[3] + (0xFF - pixel) * backColor[3]) >> 8;
-			} else {
-				buffer[index + 0] = (pixel * m_cForeColor[0] + (0xFF - pixel) * m_cBackColor[0]) >> 8;
-				buffer[index + 1] = (pixel * m_cForeColor[1] + (0xFF - pixel) * m_cBackColor[1]) >> 8;
-				buffer[index + 2] = (pixel * m_cForeColor[2] + (0xFF - pixel) * m_cBackColor[2]) >> 8;
-				buffer[index + 3] = (pixel * m_cForeColor[3] + (0xFF - pixel) * m_cBackColor[3]) >> 8;
+				imageColor[0] = (unsigned char)((m_cBackColor[0] * rgb[0]) >> 8);
+				imageColor[1] = (unsigned char)((m_cBackColor[1] * (m_iImageChannels >= 3 ? rgb[1] : rgb[0])) >> 8);
+				imageColor[2] = (unsigned char)((m_cBackColor[2] * (m_iImageChannels >= 3 ? rgb[2] : rgb[0])) >> 8);
+				imageColor[3] = (unsigned char)((m_cBackColor[3] * (m_iImageChannels >= 4 ? rgb[3] : 0xFF)) >> 8);
+			}
+			buffer[index + 0] = (pixel * m_cForeColor[0] + (0xFF - pixel) * backColor[0]) >> 8;
+			buffer[index + 1] = (pixel * m_cForeColor[1] + (0xFF - pixel) * backColor[1]) >> 8;
+			buffer[index + 2] = (pixel * m_cForeColor[2] + (0xFF - pixel) * backColor[2]) >> 8;
+			buffer[index + 3] = (pixel * m_cForeColor[3] + (0xFF - pixel) * backColor[3]) >> 8;
+			if (m_iBorderRadius > 0) {
+				int dx = 0, dy = 0;
+				if (x < m_iBorderRadius) dx = m_iBorderRadius - x;
+				else if (x >= width - m_iBorderRadius) dx = m_iBorderRadius + x - width + 1;
+				if (y < m_iBorderRadius) dy = m_iBorderRadius - y;
+				else if (y >= height - m_iBorderRadius) dy = m_iBorderRadius + y - height + 1;
+				float distance = sqrtf((float)(dx * dx + dy * dy)) - m_iBorderRadius;
+				if (distance > 0.0f) {
+					// 抗锯齿算法 e^5.545 - 1 = 255
+					const float anti_alias_width = 3.0f;
+					const float alpha = expf(5.545f - distance * 5.545f / anti_alias_width) - 1.0f;
+					buffer[index + 3] = (unsigned char)std::max(0.0f, alpha);
+				}
 			}
 		}
 	}
-	if (pImage) delete pImage;
+	if (pText) delete pText;
 }

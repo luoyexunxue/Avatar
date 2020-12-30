@@ -146,6 +146,7 @@ private:
 	static int DoShaderCreate(lua_State* lua);
 	static int DoShaderDelete(lua_State* lua);
 	static int DoShaderUpdate(lua_State* lua);
+	static int DoShaderDefine(lua_State* lua);
 	static int DoShaderParam(lua_State* lua);
 	//! 字体接口
 	static int DoFontList(lua_State* lua);

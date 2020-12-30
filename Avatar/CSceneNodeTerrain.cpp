@@ -9,6 +9,7 @@
 #include "CStringUtil.h"
 #include "CLog.h"
 #include <cstring>
+#include <cmath>
 
 /**
 * 构造函数

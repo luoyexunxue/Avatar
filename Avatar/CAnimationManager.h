@@ -40,7 +40,7 @@ public:
 	//! 暂停动画
 	bool Pause(CSceneNode* node);
 	//! 停止动画
-	bool Stop(CSceneNode* node);
+	bool Stop(CSceneNode* node, bool reset);
 	//! 清除所有动画
 	void Clear();
 

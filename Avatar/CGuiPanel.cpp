@@ -20,6 +20,10 @@ CGuiPanel::CGuiPanel(const string& name) : CGuiElement(name) {
 	m_cBackColor[1] = 0xFF;
 	m_cBackColor[2] = 0xFF;
 	m_cBackColor[3] = 0xFF;
+	m_bOcclusionArea[0] = false;
+	m_bOcclusionArea[1] = false;
+	m_bOcclusionArea[2] = false;
+	m_bOcclusionArea[3] = false;
 }
 
 /**
@@ -42,8 +46,14 @@ bool CGuiPanel::Drag(bool release, int dx, int dy, CRectangle& region) {
 	}
 	dx += m_iCurrentOffset[0];
 	dy += m_iCurrentOffset[1];
-	m_iOffset[0] = std::max(std::min(m_cRegion[2] - rect[2], 0), std::min(-rect[0], dx));
-	m_iOffset[1] = std::max(std::min(m_cRegion[3] - rect[3], 0), std::min(-rect[1], dy));
+	int limit_x = std::min(m_cRegion[2] - rect[2], 0);
+	int limit_y = std::min(m_cRegion[3] - rect[3], 0);
+	m_iOffset[0] = std::max(limit_x, std::min(-rect[0], dx));
+	m_iOffset[1] = std::max(limit_y, std::min(-rect[1], dy));
+	m_bOcclusionArea[0] = m_iOffset[0] != 0;
+	m_bOcclusionArea[1] = m_iOffset[1] != 0;
+	m_bOcclusionArea[2] = m_iOffset[0] != limit_x;
+	m_bOcclusionArea[3] = m_iOffset[1] != limit_y;
 	iter = m_lstChildren.begin();
 	while (iter != m_lstChildren.end()) {
 		CGuiElement* pElement = *iter;

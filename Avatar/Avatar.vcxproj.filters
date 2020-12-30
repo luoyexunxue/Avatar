@@ -162,7 +162,7 @@
     <ClCompile Include="CVector2.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="CCameraChase.cpp">
+    <ClCompile Include="CCameraSmooth.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="CCameraGaze.cpp">
@@ -509,7 +509,7 @@
     <ClInclude Include="CVector2.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="CCameraChase.h">
+    <ClInclude Include="CCameraSmooth.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="CCameraGaze.h">

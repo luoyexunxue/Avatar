@@ -20,7 +20,7 @@ end)
 
 --Ìí¼Ó°´Å¥
 addButton = function(name, text, onClick)
-	gui.create(name, "button", "parent=panel;width=100;height=42;top="..gElementTop..";text="..text, function(evt, arg1, arg2)
+	gui.create(name, "button", "parent=panel;width=100;height=42;borderRadius=21;top="..gElementTop..";text="..text, function(evt, arg1, arg2)
 		if evt == 0 then onClick()
 		elseif evt == 1 then gui.modify(name, "backColor=0xFF00FFFF")
 		elseif evt == 2 then gui.modify(name, "backColor=0x0D74D5FF")

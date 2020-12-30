@@ -43,6 +43,8 @@ private:
 	int m_iImageHeight;
 	//! 背景图片通道数
 	int m_iImageChannels;
+	//! 圆角半径
+	int m_iBorderRadius;
 };
 
 #endif

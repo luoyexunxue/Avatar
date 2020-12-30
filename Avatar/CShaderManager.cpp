@@ -123,13 +123,14 @@ void CShaderManager::Drop(CShader* shader) {
 }
 
 /**
-* 更新着色器程序
+* 更新着色器代码
 * @param shader 需要更新的着色器
-* @param append 需要添加的宏，逗号隔开
-* @param remove 需要移除的宏，逗号隔开
+* @param vert 顶点着色器代码字符串
+* @param frag 像素着色器代码字符串
+* @return 着色器是否有效
 */
-void CShaderManager::Update(CShader* shader, const string& append, const string& remove) {
-	if (!shader) return;
+bool CShaderManager::Update(CShader* shader, const char* vert, const char* frag) {
+	if (!shader) return false;
 	// 保存当前 Uniform 值
 	struct SUniformValue {
 		string name;
@@ -165,9 +166,9 @@ void CShaderManager::Update(CShader* shader, const string& append, const string&
 	}
 	// 删除当前的着色器程序
 	glDeleteProgram(shader->m_iProgram);
-	// 添加和删除宏定义
-	ShaderSourceDefine(shader, append, remove);
 	// 重新创建着色器
+	shader->m_strVertShader = vert;
+	shader->m_strFragShader = frag;
 	CreateShader(shader);
 	// 设置之前保存的 uniform 值
 	for (size_t i = 0; i < uniformValues.size(); i++) {
@@ -186,6 +187,43 @@ void CShaderManager::Update(CShader* shader, const string& append, const string&
 			}
 		}
 	}
+	return shader->m_bIsValid;
+}
+
+/**
+* 更新着色器程序
+* @param shader 需要更新的着色器
+* @param append 需要添加的宏，分隔符隔开
+* @param remove 需要移除的宏，分隔符隔开
+* @param split 分隔符，默认逗号
+* @return 着色器是否有效
+*/
+bool CShaderManager::Update(CShader* shader, const string& append, const string& remove, const char* split) {
+	if (!shader) return false;
+	vector<string> appendArray;
+	vector<string> removeArray;
+	if (!split || !split[0]) split = ",";
+	CStringUtil::Split(appendArray, append, split, true);
+	CStringUtil::Split(removeArray, remove, split, true);
+	string defined = "";
+	string vertShader = shader->m_strVertShader;
+	string fragShader = shader->m_strFragShader;
+	// 删除定义的宏
+	for (size_t i = 0; i < appendArray.size(); i++) {
+		string item = "#define " + appendArray[i] + "\n";
+		vertShader = CStringUtil::Remove(vertShader, item.c_str());
+		fragShader = CStringUtil::Remove(fragShader, item.c_str());
+		defined += item;
+	}
+	for (size_t i = 0; i < removeArray.size(); i++) {
+		string item = "#define " + removeArray[i] + "\n";
+		vertShader = CStringUtil::Remove(vertShader, item.c_str());
+		fragShader = CStringUtil::Remove(fragShader, item.c_str());
+	}
+	// 添加宏定义
+	string vert = defined + vertShader;
+	string frag = defined + fragShader;
+	return Update(shader, vert.c_str(), frag.c_str());
 }
 
 /**
@@ -382,35 +420,4 @@ void CShaderManager::AttachUniforms(CShader* shader) {
 			shader->m_mapUniformTypes.insert(std::pair<string, CShader::UniformType>(strName, eUniformType));
 		}
 	}
-}
-
-/**
-* 对着色器代码添加或去掉宏定义
-* @param shader 着色器指针
-* @param append 需要添加的宏
-* @param remove 需要移除的宏
-*/
-void CShaderManager::ShaderSourceDefine(CShader* shader, const string& append, const string& remove) {
-	vector<string> appendArray;
-	vector<string> removeArray;
-	CStringUtil::Split(appendArray, append, ",", true);
-	CStringUtil::Split(removeArray, remove, ",", true);
-	// 删除定义的宏
-	string defined = "";
-	string vertShader = shader->m_strVertShader;
-	string fragShader = shader->m_strFragShader;
-	for (size_t i = 0; i < appendArray.size(); i++) {
-		string item = "#define " + appendArray[i] + "\n";
-		vertShader = CStringUtil::Remove(vertShader, item.c_str());
-		fragShader = CStringUtil::Remove(fragShader, item.c_str());
-		defined += item;
-	}
-	for (size_t i = 0; i < removeArray.size(); i++) {
-		string item = "#define " + removeArray[i] + "\n";
-		vertShader = CStringUtil::Remove(vertShader, item.c_str());
-		fragShader = CStringUtil::Remove(fragShader, item.c_str());
-	}
-	// 添加宏定义
-	shader->m_strVertShader = defined + vertShader;
-	shader->m_strFragShader = defined + fragShader;
 }

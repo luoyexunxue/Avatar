@@ -34,8 +34,10 @@ public:
 
 	//! 销毁指定的着色器
 	void Drop(CShader* shader);
+	//! 更新着色器代码
+	bool Update(CShader* shader, const char* vert, const char* frag);
 	//! 更新着色器特性
-	void Update(CShader* shader, const string& append, const string& remove);
+	bool Update(CShader* shader, const string& append, const string& remove, const char* split);
 
 	//! 获取指定名称的着色器
 	CShader* GetShader(const string& name);
@@ -54,8 +56,6 @@ private:
 	bool CompileShader(const char* source, unsigned int shader, bool isFragment);
 	//! 给指定的着色器绑定 Uniform 变量
 	void AttachUniforms(CShader* shader);
-	//! 对着色器代码宏定义
-	void ShaderSourceDefine(CShader* shader, const string& append, const string& remove);
 
 private:
 	//! 当前着色器

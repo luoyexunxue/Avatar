@@ -235,10 +235,10 @@ void CGraphicsManager::SetShadowEnable(bool enable) {
 			CShader* pShader = pShaderMgr->GetShader(shaderName[i]);
 			pShader->UseShader();
 			if (enable) {
-				if (!m_bShadowEnable) pShaderMgr->Update(pShader, "ENABLE_SHADOW", "");
+				if (!m_bShadowEnable) pShaderMgr->Update(pShader, "ENABLE_SHADOW", "", 0);
 				pShader->SetUniform("uShadowMap", 8);
 			} else {
-				pShaderMgr->Update(pShader, "", "ENABLE_SHADOW");
+				pShaderMgr->Update(pShader, "", "ENABLE_SHADOW", 0);
 			}
 		}
 		m_bShadowEnable = enable;
@@ -273,11 +273,11 @@ void CGraphicsManager::SetFogEnable(bool enable, float start, float end, const C
 			CShader* pShader = pShaderMgr->GetShader(shaderName[i]);
 			pShader->UseShader();
 			if (enable) {
-				if (!m_bFogEnable) pShaderMgr->Update(pShader, "ENABLE_FOG", "");
+				if (!m_bFogEnable) pShaderMgr->Update(pShader, "ENABLE_FOG", "", 0);
 				pShader->SetUniform("uFogColor", fogColor);
 				pShader->SetUniform("uFogParam", CVector2(start, end));
 			} else {
-				pShaderMgr->Update(pShader, "", "ENABLE_FOG");
+				pShaderMgr->Update(pShader, "", "ENABLE_FOG", 0);
 			}
 		}
 		m_bFogEnable = enable;
@@ -332,7 +332,7 @@ void CGraphicsManager::SetEnvironmentMapEnable(bool enable, const string& cubema
 			CShader* pShader = pShaderMgr->GetShader(shaderName[i]);
 			pShader->UseShader();
 			if (enable) {
-				if (!m_bEnvironmentMapEnable) pShaderMgr->Update(pShader, "ENABLE_ENVIRONMENT", "");
+				if (!m_bEnvironmentMapEnable) pShaderMgr->Update(pShader, "ENABLE_ENVIRONMENT", "", 0);
 				pShader->SetUniform("uIrradianceMap", 9);
 				pShader->SetUniform("uEnvironmentMap", 10);
 				pShader->SetUniform("uBRDFIntegrationMap", 11);
@@ -341,7 +341,7 @@ void CGraphicsManager::SetEnvironmentMapEnable(bool enable, const string& cubema
 				pBRDFIntegrationMap->UseTexture(11);
 				glActiveTexture(GL_TEXTURE0);
 			} else {
-				pShaderMgr->Update(pShader, "", "ENABLE_ENVIRONMENT");
+				pShaderMgr->Update(pShader, "", "ENABLE_ENVIRONMENT", 0);
 			}
 		}
 		m_bEnvironmentMapEnable = enable;

@@ -88,9 +88,9 @@ public:
 		bool m_bVisible;
 		//! 子元素偏移
 		int m_iOffset[2];
-		//! 元素区域
+		//! 元素相对位置
 		CRectangle m_cRegion;
-		//! 屏幕位置
+		//! 元素屏幕位置
 		CRectangle m_cRegionScreen;
 	};
 
@@ -105,10 +105,22 @@ private:
 
 	//! 删除指定的元素和其子元素
 	void DeleteElement(CGuiElement* element);
+	//! 更新指定的元素和其子元素
+	void UpdateElement(CGuiElement* element);
 	//! 使绘图区无效
 	void InvalidateRegion(const CRectangle& region);
 	//! 绘制指定的无效区域
 	void DrawInvalidateRegion();
+
+private:
+	//! GUI元素根节点定义
+	class CGuiElementRoot : public CGuiElement {
+	public:
+		CGuiElementRoot() : CGuiElement("__root__") {}
+		virtual bool SetAttribute(const string& name, const string& value) { return false; }
+		virtual string GetAttribute(const string& name){ return  string(); }
+		virtual void Draw(const CRectangle& rect, unsigned char* buffer) {}
+	};
 
 private:
 	//! GUI使能状态
@@ -119,12 +131,10 @@ private:
 	unsigned char* m_pGuiBuffer;
 	//! 记录屏幕大小
 	int m_iScreenSize[2];
-	//! 画布区域大小
-	CRectangle m_cDrawRegion;
 	//! 需要刷新的无效区域
 	vector<CRectangle> m_vecInvalidateRect;
-	//! GUI元素列表
-	list<CGuiElement*> m_lstElements;
+	//! GUI元素根节点
+	CGuiElement* m_pRootElement;
 
 	//! 记录鼠标状态
 	int m_iLastMouseButton;

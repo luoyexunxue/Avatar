@@ -17,6 +17,7 @@ typedef int socklen_t;
 #include <fcntl.h>
 #include <sys/ioctl.h>
 #include <net/if.h>
+#include <unistd.h>
 #endif
 
 /**
@@ -83,6 +84,7 @@ void CUdpSocket::Close() {
 		closesocket(m_iSocket);
 #else
 		shutdown(m_iSocket, SHUT_RDWR);
+		close(m_iSocket);
 #endif
 	}
 }

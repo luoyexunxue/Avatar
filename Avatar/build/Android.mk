@@ -9,8 +9,8 @@ include $(PREBUILT_SHARED_LIBRARY)
 # 编译引擎并链接相应的第三方库
 include $(CLEAR_VARS)
 LOCAL_MODULE := engine
-LOCAL_SRC_FILES := CAnimationManager.cpp CBase64.cpp CBoundingBox.cpp CCamera.cpp CCameraChase.cpp \
-	CCameraFree.cpp CCameraGaze.cpp CCameraGeographic.cpp CCameraViewer.cpp CColor.cpp \
+LOCAL_SRC_FILES := CAnimationManager.cpp CBase64.cpp CBoundingBox.cpp CCamera.cpp CCameraFree.cpp \
+	CCameraGaze.cpp CCameraGeographic.cpp CCameraSmooth.cpp CCameraViewer.cpp CColor.cpp \
 	CContactDetector.cpp CDelaunay.cpp CDeviceAndroid.cpp CDynamicBvt.cpp CEngine.cpp CFFT.cpp \
 	CFileManager.cpp CFontManager.cpp CFrustum.cpp CGeometryCreator.cpp CGraphicsManager.cpp \
 	CGuiButton.cpp CGuiEditBox.cpp CGuiEnvironment.cpp CGuiLabel.cpp CGuiPanel.cpp CGuiTrackBar.cpp \

@@ -2,19 +2,19 @@
 // Copyright (c) 2020 周仁锋. All rights reserved.
 // ye_luo@qq.com
 //================================================
-#ifndef _CCAMERACHASE_H_
-#define _CCAMERACHASE_H_
+#ifndef _CCAMERASMOOTH_H_
+#define _CCAMERASMOOTH_H_
 #include "CCamera.h"
 
 /**
-* @brief 追逐式相机
+* @brief 平滑式相机
 *
 * 针对基本相机类型基础上增加了平滑移动效果
 */
-class AVATAR_EXPORT CCameraChase: public CCamera {
+class AVATAR_EXPORT CCameraSmooth: public CCamera {
 public:
 	//! 默认构造函数
-	CCameraChase();
+	CCameraSmooth();
 
 	//! 获取相机名称
 	virtual const char* GetName() const;

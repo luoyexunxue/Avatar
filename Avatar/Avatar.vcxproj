@@ -179,10 +179,10 @@
     <ClCompile Include="CBase64.cpp" />
     <ClCompile Include="CBoundingBox.cpp" />
     <ClCompile Include="CCamera.cpp" />
-    <ClCompile Include="CCameraChase.cpp" />
     <ClCompile Include="CCameraFree.cpp" />
     <ClCompile Include="CCameraGaze.cpp" />
     <ClCompile Include="CCameraGeographic.cpp" />
+    <ClCompile Include="CCameraSmooth.cpp" />
     <ClCompile Include="CCameraViewer.cpp" />
     <ClCompile Include="CColor.cpp" />
     <ClCompile Include="CContactDetector.cpp" />
@@ -294,10 +294,10 @@
     <ClInclude Include="CBase64.h" />
     <ClInclude Include="CBoundingBox.h" />
     <ClInclude Include="CCamera.h" />
-    <ClInclude Include="CCameraChase.h" />
     <ClInclude Include="CCameraFree.h" />
     <ClInclude Include="CCameraGaze.h" />
     <ClInclude Include="CCameraGeographic.h" />
+    <ClInclude Include="CCameraSmooth.h" />
     <ClInclude Include="CCameraViewer.h" />
     <ClInclude Include="CColor.h" />
     <ClInclude Include="CContactDetector.h" />
