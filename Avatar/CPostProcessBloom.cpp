@@ -118,8 +118,11 @@ void CPostProcessBloom::SetGaussKernel(CShader* blurShader, int kernelSize, floa
 	const float sig2 = -1.0f / (2.0f * sigma * sigma);
 	float sum = 0.0f;
 	kernel[padding] = 1.0f;
-	for (int i = 1; i <= padding; i++) kernel[padding - i] = kernel[i + padding] = expf(i * i * sig2);
+	for (int i = 1; i <= padding; i++) {
+		kernel[padding + i] = expf(i * i * sig2);
+		kernel[padding - i] = kernel[padding + i];
+	}
 	for (int i = 0; i < kernelSize; i++) sum += kernel[i];
 	for (int i = 0; i < kernelSize; i++) kernel[i] /= sum;
-	for (int i = 0; i < kernelSize; i++) blurShader->SetUniform(CStringUtil::Format("uWeights[%d]", i), kernel[i]);
+	blurShader->SetUniform("uWeights", kernel, 1, kernelSize);
 }

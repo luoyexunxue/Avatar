@@ -17,3 +17,5 @@ OnUpdate = function(dt)
 	scene.angle("friendship", 0, 1.57, theta + 1.57)
 	camera.target(x, y, 0)
 end
+
+post.enable('bloom', true)
