@@ -32,7 +32,7 @@ public:
 	void Destroy();
 
 	//! 注册后处理
-	bool Register(const string& name, CPostProcess* postProcess);
+	bool Register(const string& name, CPostProcess* post);
 	//! 附加或取消指定的图像后处理
 	bool Enable(const string& name, bool enable);
 	//! 指定的后处理是否启用
@@ -71,7 +71,7 @@ private:
 	//! 后处理列表
 	map<string, CPostProcess*> m_mapPostProcess;
 	//! 启用的后处理
-	list<CPostProcess*> m_lstEnabledPostProcess;
+	list<string> m_lstEnabledPostProcess;
 	//! 用于后处理渲染的网格对象
 	CMesh* m_pRenderMesh;
 

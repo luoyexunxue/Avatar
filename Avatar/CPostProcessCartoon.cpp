@@ -9,7 +9,7 @@
 * 初始化后处理对象
 */
 bool CPostProcessCartoon::Init(int width, int height) {
-	const char* fragShader = "\
+	const char* cartoon = "\
 		uniform sampler2D uTexture;\
 		uniform vec3 uBaseColor;\
 		uniform float uNumShades;\
@@ -23,7 +23,7 @@ bool CPostProcessCartoon::Init(int width, int height) {
 		}";
 	CShaderManager* pShaderMgr = CEngine::GetShaderManager();
 	CTextureManager* pTextureMgr = CEngine::GetTextureManager();
-	m_pPostProcessShader = pShaderMgr->Create("postprocess_cartoon", GetVertexShader(), fragShader);
+	m_pPostProcessShader = pShaderMgr->Create("postprocess_cartoon", GetVertexShader(), cartoon);
 	m_pPostProcessShader->SetUniform("uTexture", 0);
 	m_pPostProcessShader->SetUniform("uBaseColor", CVector3(1.0f, 0.9f, 0.9f));
 	m_pPostProcessShader->SetUniform("uNumShades", 4.0f);

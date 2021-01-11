@@ -15,14 +15,14 @@ public:
 	virtual void Resize(int width, int height);
 	virtual void Destroy();
 	virtual void Apply(CTexture* target, CMesh* mesh);
+	virtual void Enable(bool enable);
 
 private:
-	CShader* m_pDepthShader;
 	CShader* m_pSsaoShader;
 	CShader* m_pBlurShader;
+	CTexture* m_pDepthTexture;
 	CTexture* m_pSsaoTexture;
 	CTexture* m_pBlurTexture;
-	CTexture* m_pDepthTexture;
 	CTexture* m_pRandomTexture;
 };
 

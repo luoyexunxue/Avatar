@@ -12,7 +12,7 @@
 * 构造函数，指定名称
 */
 CGuiPanel::CGuiPanel(const string& name) : CGuiElement(name) {
-	m_cRegion.SetValue(0, 0, 0, 32);
+	m_cRegion.SetValue(0, 0, 64, 32);
 	m_cRegionScreen.SetValue(m_cRegion);
 	m_iCurrentOffset[0] = 0;
 	m_iCurrentOffset[1] = 0;
@@ -20,16 +20,12 @@ CGuiPanel::CGuiPanel(const string& name) : CGuiElement(name) {
 	m_cBackColor[1] = 0xFF;
 	m_cBackColor[2] = 0xFF;
 	m_cBackColor[3] = 0xFF;
-	m_bOcclusionArea[0] = false;
-	m_bOcclusionArea[1] = false;
-	m_bOcclusionArea[2] = false;
-	m_bOcclusionArea[3] = false;
 }
 
 /**
 * 拖动操作
 */
-bool CGuiPanel::Drag(bool release, int dx, int dy, CRectangle& region) {
+bool CGuiPanel::OnDrag(bool release, int dx, int dy, CRectangle& region) {
 	CRectangle rect(0, 0, 0, 0);
 	list<CGuiElement*>::iterator iter = m_lstChildren.begin();
 	while (iter != m_lstChildren.end()) {
@@ -37,23 +33,17 @@ bool CGuiPanel::Drag(bool release, int dx, int dy, CRectangle& region) {
 		++iter;
 	}
 	region.SetValue(m_cRegionScreen);
+	dx += m_iCurrentOffset[0];
+	dy += m_iCurrentOffset[1];
 	if (release) {
-		dx += m_iCurrentOffset[0];
-		dy += m_iCurrentOffset[1];
 		m_iCurrentOffset[0] = std::max(std::min(m_cRegion[2] - rect[2], 0), std::min(-rect[0], dx));
 		m_iCurrentOffset[1] = std::max(std::min(m_cRegion[3] - rect[3], 0), std::min(-rect[1], dy));
 		return true;
 	}
-	dx += m_iCurrentOffset[0];
-	dy += m_iCurrentOffset[1];
 	int limit_x = std::min(m_cRegion[2] - rect[2], 0);
 	int limit_y = std::min(m_cRegion[3] - rect[3], 0);
 	m_iOffset[0] = std::max(limit_x, std::min(-rect[0], dx));
 	m_iOffset[1] = std::max(limit_y, std::min(-rect[1], dy));
-	m_bOcclusionArea[0] = m_iOffset[0] != 0;
-	m_bOcclusionArea[1] = m_iOffset[1] != 0;
-	m_bOcclusionArea[2] = m_iOffset[0] != limit_x;
-	m_bOcclusionArea[3] = m_iOffset[1] != limit_y;
 	iter = m_lstChildren.begin();
 	while (iter != m_lstChildren.end()) {
 		CGuiElement* pElement = *iter;
@@ -93,8 +83,7 @@ string CGuiPanel::GetAttribute(const string& name) {
 	else if (name == "parent") return m_pParent ? m_pParent->m_strName : "";
 	else if (name == "backColor") {
 		const char* fmt = "#%02X%02X%02X%02X";
-		const unsigned char* val = m_cBackColor;
-		return CStringUtil::Format(fmt, val[3], val[2], val[1], val[0]);
+		return CStringUtil::Format(fmt, m_cBackColor[3], m_cBackColor[2], m_cBackColor[1], m_cBackColor[0]);
 	}
 	return "";
 }

@@ -40,6 +40,8 @@ public:
 	string GetAnimationName(size_t index);
 	//! 骨骼注视功能
 	void PointFacing(const string& joint, const CVector3& front, const CVector3& point, float angle);
+	//! 设置骨骼变换
+	void SetTransform(const string& joint, const CVector3& translation, const CVector3& rotation, const CVector3& scale);
 
 private:
 	//! 设置动画帧

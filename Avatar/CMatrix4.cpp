@@ -358,33 +358,33 @@ CMatrix4& CMatrix4::Translate(float dx, float dy, float dz) {
 
 /**
 * 生成变换矩阵.
-* @note 变换顺序 1. scale 2. rot 3. pos
+* @note 变换顺序 1. scale 2. rotation 3. translation
 */
-void CMatrix4::MakeTransform(const CVector3& scale, const CMatrix4& rot, const CVector3& pos) {
-	m_fValue[0] = scale.m_fValue[0] * rot.m_fValue[0];
-	m_fValue[1] = scale.m_fValue[0] * rot.m_fValue[1];
-	m_fValue[2] = scale.m_fValue[0] * rot.m_fValue[2];
+void CMatrix4::MakeTransform(const CVector3& scale, const CMatrix4& rotation, const CVector3& translation) {
+	m_fValue[0] = scale.m_fValue[0] * rotation.m_fValue[0];
+	m_fValue[1] = scale.m_fValue[0] * rotation.m_fValue[1];
+	m_fValue[2] = scale.m_fValue[0] * rotation.m_fValue[2];
 	m_fValue[3] = 0.0f;
-	m_fValue[4] = scale.m_fValue[1] * rot.m_fValue[4];
-	m_fValue[5] = scale.m_fValue[1] * rot.m_fValue[5];
-	m_fValue[6] = scale.m_fValue[1] * rot.m_fValue[6];
+	m_fValue[4] = scale.m_fValue[1] * rotation.m_fValue[4];
+	m_fValue[5] = scale.m_fValue[1] * rotation.m_fValue[5];
+	m_fValue[6] = scale.m_fValue[1] * rotation.m_fValue[6];
 	m_fValue[7] = 0.0f;
-	m_fValue[8] = scale.m_fValue[2] * rot.m_fValue[8];
-	m_fValue[9] = scale.m_fValue[2] * rot.m_fValue[9];
-	m_fValue[10] = scale.m_fValue[2] * rot.m_fValue[10];
+	m_fValue[8] = scale.m_fValue[2] * rotation.m_fValue[8];
+	m_fValue[9] = scale.m_fValue[2] * rotation.m_fValue[9];
+	m_fValue[10] = scale.m_fValue[2] * rotation.m_fValue[10];
 	m_fValue[11] = 0.0f;
-	m_fValue[12] = pos.m_fValue[0];
-	m_fValue[13] = pos.m_fValue[1];
-	m_fValue[14] = pos.m_fValue[2];
+	m_fValue[12] = translation.m_fValue[0];
+	m_fValue[13] = translation.m_fValue[1];
+	m_fValue[14] = translation.m_fValue[2];
 	m_fValue[15] = 1.0f;
 }
 
 /**
 * 生成变换矩阵，旋转由四元数表示.
-* @note 变换顺序 1. scale 2. rot 3. pos
+* @note 变换顺序 1. scale 2. rotation 3. translation
 */
-void CMatrix4::MakeTransform(const CVector3& scale, const CQuaternion& rot, const CVector3& pos) {
-	MakeTransform(scale, rot.ToMatrix(), pos);
+void CMatrix4::MakeTransform(const CVector3& scale, const CQuaternion& rotation, const CVector3& translation) {
+	MakeTransform(scale, rotation.ToMatrix(), translation);
 }
 
 /**

@@ -279,19 +279,16 @@ void CPhysicsManager::IntegrateVelocity() {
 		// 更新非静止刚体的位置和方向
 		CSceneNode* pNode = pBody->m_pSceneNode;
 		if (!pBody->m_bStatic) {
-			CVector3 position = pNode->m_cPosition;
-			position += pBody->m_cLinearVelocity * m_fTimeStep + pBody->m_cAcceleration * (m_fTimeStep * m_fTimeStep * 0.5f);
-			pNode->SetPosition(position);
-			CQuaternion orientation = pNode->m_cOrientation;
 			CQuaternion rotation(pBody->m_cAngularVelocity[0], pBody->m_cAngularVelocity[1], pBody->m_cAngularVelocity[2], 0);
 			rotation *= 0.5f * m_fTimeStep;
-			rotation *= orientation;
-			orientation += rotation;
-			orientation.Normalize();
-			pNode->SetOrientation(orientation);
+			rotation *= pNode->m_cOrientation;
+			pNode->m_cOrientation += rotation;
+			pNode->m_cOrientation.Normalize();
+			pNode->m_cPosition += pBody->m_cLinearVelocity * m_fTimeStep + pBody->m_cAcceleration * (m_fTimeStep * m_fTimeStep * 0.5f);
+			pNode->Transform();
 			// 通过当前方向更新世界坐标系下的惯性张量
 			// L-world = I-world * ω-world = O * I-local * (O-1 * ω-world) => I-world = O * I-local * OT
-			CMatrix4 orientMatrix = orientation.ToMatrix();
+			CMatrix4 orientMatrix = pNode->m_cOrientation.ToMatrix();
 			pBody->m_cInvInertiaTensorWorld = orientMatrix;
 			pBody->m_cInvInertiaTensorWorld.SetScaled(pBody->m_cInvInertiaLocal);
 			pBody->m_cInvInertiaTensorWorld *= orientMatrix.Transpose();

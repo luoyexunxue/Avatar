@@ -14,7 +14,7 @@ public:
 	//! 构造函数
 	CGuiPanel(const string& name);
 	//! 拖动操作
-	virtual bool Drag(bool release, int dx, int dy, CRectangle& region);
+	virtual bool OnDrag(bool release, int dx, int dy, CRectangle& region);
 	//! 属性设置
 	virtual bool SetAttribute(const string& name, const string& value);
 	//! 获取属性

@@ -428,6 +428,16 @@ CVector3& CVector3::operator -= (const CVector3& vector) {
 /**
 * 重载运算符 *=
 */
+CVector3& CVector3::operator *= (const CVector3& vector) {
+	m_fValue[0] *= vector.m_fValue[0];
+	m_fValue[1] *= vector.m_fValue[1];
+	m_fValue[2] *= vector.m_fValue[2];
+	return *this;
+}
+
+/**
+* 重载运算符 *=
+*/
 CVector3& CVector3::operator *= (float factor) {
 	m_fValue[0] *= factor;
 	m_fValue[1] *= factor;

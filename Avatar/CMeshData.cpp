@@ -251,6 +251,7 @@ bool CMeshData::SetPhysics(const string& name, float mass, float bendFactor, flo
 		pJoint->physics->enabled = true;
 		pJoint->physics->isFacing = false;
 	}
+	pJoint->physics->isManual = false;
 	pJoint->physics->mass = mass;
 	pJoint->physics->bendElasticity = bendFactor;
 	pJoint->physics->stretchElasticity = stretchFactor;
@@ -278,12 +279,40 @@ bool CMeshData::SetFacing(const string& name, const CVector3& front, const CVect
 		pJoint->physics->damping = damping;
 	}
 	pJoint->physics->isFacing = true;
+	pJoint->physics->isManual = false;
 	pJoint->physics->mass = 0.0f;
 	pJoint->physics->bendElasticity = 0.0f;
 	pJoint->physics->stretchElasticity = 0.0f;
 	pJoint->physics->facingPoint = point;
 	pJoint->physics->frontDir.SetValue(front.m_fValue, 0.0f);
 	pJoint->physics->restrictAngle = angle;
+	return true;
+}
+
+/**
+* 设置骨骼变换
+* @param name 关节名称
+* @param translation 平移(局部坐标系)
+* @param rotation 旋转(局部坐标系)
+* @param scale 缩放(局部坐标系)
+* @return 骨骼是否存在
+*/
+bool CMeshData::SetTransform(const string& name, const CVector3& translation, const CVector3& rotation, const CVector3& scale) {
+	SJoint* pJoint = GetJoint(name);
+	if (!pJoint) return false;
+	if (!pJoint->physics) {
+		pJoint->physics = new SJointDynamic();
+		pJoint->physics->enabled = true;
+	}
+	pJoint->physics->isFacing = false;
+	pJoint->physics->isManual = true;
+	pJoint->physics->mass = 0.0f;
+	pJoint->physics->bendElasticity = 0.0f;
+	pJoint->physics->stretchElasticity = 0.0f;
+	pJoint->physics->damping = 0.0f;
+	CQuaternion orient;
+	orient.FromEulerAngles(rotation.m_fValue[0], rotation.m_fValue[1], rotation.m_fValue[2]);
+	pJoint->physics->transform.MakeTransform(scale, orient, translation);
 	return true;
 }
 

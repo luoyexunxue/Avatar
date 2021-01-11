@@ -16,11 +16,12 @@ public:
 	virtual void Destroy();
 	virtual void Apply(CTexture* target, CMesh* mesh);
 
-private:
-	void SetGaussKernel(CShader* blurShader, int kernelSize, float sigma);
+	//! 设置高斯模糊参数
+	void SetGaussKernel(int size, float sigma);
 
 private:
-	CShader* m_pBlurShader;
+	CShader* m_pHighlightShader;
+	CShader* m_pGaussBlurShader;
 	CTexture* m_pHBlurTexture;
 	CTexture* m_pVBlurTexture;
 };

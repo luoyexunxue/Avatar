@@ -1,0 +1,30 @@
+﻿OnReady = function()
+   graphics.background(0.160802,0.152958,0.160802)
+   engine.input('map',1,2,3)
+   engine.input('scale',0,0)
+   engine.input('disable',false,false,true)
+   dofile('setup.lua')
+   dofile('load.lua')
+   dofile('gui.lua')
+   dofile('user.lua')
+end
+
+OnUpdate = function(dt)
+   updateLight()
+end
+
+OnInput = function(name, value, arg1, arg2)
+end
+
+OnSize = function(width, height)
+end
+
+OnExit = function()
+end
+
+updateLight = function()
+end
+
+dofile = function(file)
+   engine.script(file)
+end

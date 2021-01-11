@@ -121,6 +121,8 @@ private:
 
 	//! 绘制场景
 	void Draw();
+	//! 绘制深度图
+	void DrawDepthMap();
 	//! 绘制阴影贴图
 	void DrawShadowMap();
 	//! 绘制全景图

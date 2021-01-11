@@ -9,7 +9,7 @@
 * 初始化后处理对象
 */
 bool CPostProcessOculus::Init(int width, int height) {
-	const char* fragShader = "\
+	const char* oculus = "\
 		uniform sampler2D uTexture;\
 		uniform vec2 uLensCenter;\
 		uniform vec2 uScaleIn;\
@@ -38,7 +38,7 @@ bool CPostProcessOculus::Init(int width, int height) {
 		}";
 	CShaderManager* pShaderMgr = CEngine::GetShaderManager();
 	CTextureManager* pTextureMgr = CEngine::GetTextureManager();
-	m_pPostProcessShader = pShaderMgr->Create("postprocess_oculus", GetVertexShader(), fragShader);
+	m_pPostProcessShader = pShaderMgr->Create("postprocess_oculus", GetVertexShader(), oculus);
 	m_pPostProcessShader->SetUniform("uTexture", 0);
 	m_pPostProcessShader->SetUniform("uScaleIn", CVector2(2.0f, 2.0f));
 	m_pPostProcessShader->SetUniform("uScaleOut", CVector2(0.45f, 0.45f));

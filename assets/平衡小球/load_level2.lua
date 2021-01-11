@@ -116,9 +116,9 @@ scene.angle('skybox',0,0,0)
 scene.scale('skybox',1,1,1)
 scene.visible('skybox',true)
 
-animation.param('carry', 'acceleratedecelerate', 5, -1, true)
-animation.translation('carry', 12.76,6.92,-1.312, 20.14,6.92,-1.312)
-animation.start('carry')
+animation.translation('carry', 12.76,6.92,-1.312, 0, 'acceleratedecelerate')
+animation.translation('carry', 20.14,6.92,-1.312, 5, 'acceleratedecelerate')
+animation.start('carry', -1, true)
 
 physics.collide('target', OnSuccess)
 physics.collide('b1', function(name)

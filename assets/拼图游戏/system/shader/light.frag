@@ -45,6 +45,8 @@ float shadow(vec2 uv, float depth)
 
 void main()
 {
+	if (vColor.a < 0.1) discard;
+
 	// ¹âÕÕ¼ÆËã
 	float attenuation = 1.0;
 	vec3 lightDir = -vLightDir.xyz;

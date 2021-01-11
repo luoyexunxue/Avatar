@@ -1638,6 +1638,20 @@ int CScriptManager::DoSceneHandle(lua_State* lua) {
 				point[2] = TableValue(lua, 3, "point_z", 0.0f);
 				float angle = TableValue(lua, 3, "angle", 1.047198f);
 				that->PointFacing(joint, front, point, angle);
+			} else if (!strcmp(function, "SetTransform")) {
+				if (!lua_istable(lua, 3)) return 0;
+				CVector3 translation, rotation, scale;
+				const char* joint = TableValue(lua, 3, "joint", "");
+				translation[0] = TableValue(lua, 3, "translation_x", 0.0f);
+				translation[1] = TableValue(lua, 3, "translation_y", 0.0f);
+				translation[2] = TableValue(lua, 3, "translation_z", 0.0f);
+				rotation[0] = TableValue(lua, 3, "rotation_x", 0.0f);
+				rotation[1] = TableValue(lua, 3, "rotation_y", 0.0f);
+				rotation[2] = TableValue(lua, 3, "rotation_z", 0.0f);
+				scale[0] = TableValue(lua, 3, "scale_x", 1.0f);
+				scale[1] = TableValue(lua, 3, "scale_y", 1.0f);
+				scale[2] = TableValue(lua, 3, "scale_z", 1.0f);
+				that->SetTransform(joint, translation, rotation, scale);
 			}
 		} else if (type == "blast") {
 			CSceneNodeBlast* that = static_cast<CSceneNodeBlast*>(pNode);
@@ -2627,20 +2641,18 @@ int CScriptManager::DoPhysicsJoint(lua_State* lua) {
 int CScriptManager::DoAnimationScale(lua_State* lua) {
 	if (lua_isstring(lua, 1)) {
 		CSceneNode* pNode = CEngine::GetSceneManager()->GetNodeByName(lua_tostring(lua, 1));
-		if (pNode &&
-			lua_isnumber(lua, 2) && lua_isnumber(lua, 3) && lua_isnumber(lua, 4) &&
-			lua_isstring(lua, 5) && lua_isnumber(lua, 6)) {
+		if (pNode && lua_isnumber(lua, 2) && lua_isnumber(lua, 3) && lua_isnumber(lua, 4) && lua_isnumber(lua, 5)) {
 			float x = (float)lua_tonumber(lua, 2);
 			float y = (float)lua_tonumber(lua, 3);
 			float z = (float)lua_tonumber(lua, 4);
-			const char* interpolator = lua_tostring(lua, 5);
-			float duration = (float)lua_tonumber(lua, 6);
+			float duration = (float)lua_tonumber(lua, 5);
+			const char* interpolator = lua_isstring(lua, 6) ? lua_tostring(lua, 6) : "";
 			CAnimationManager::Interpolator type = CAnimationManager::LINEAR;
 			if (!strcmp(interpolator, "linear")) type = CAnimationManager::LINEAR;
 			else if (!strcmp(interpolator, "accelerate")) type = CAnimationManager::ACCELERATE;
 			else if (!strcmp(interpolator, "decelerate")) type = CAnimationManager::DECELERATE;
 			else if (!strcmp(interpolator, "acceleratedecelerate")) type = CAnimationManager::ACCELERATEDECELERATE;
-			CEngine::GetAnimationManager()->AddScale(pNode, CVector3(x, y, z), type, duration);
+			CEngine::GetAnimationManager()->AddScale(pNode, CVector3(x, y, z), duration, type);
 		}
 	}
 	return 0;
@@ -2652,21 +2664,18 @@ int CScriptManager::DoAnimationScale(lua_State* lua) {
 int CScriptManager::DoAnimationRotation(lua_State* lua) {
 	if (lua_isstring(lua, 1)) {
 		CSceneNode* pNode = CEngine::GetSceneManager()->GetNodeByName(lua_tostring(lua, 1));
-		if (pNode &&
-			lua_isnumber(lua, 2) && lua_isnumber(lua, 3) && lua_isnumber(lua, 4) &&
-			lua_isstring(lua, 5) && lua_isnumber(lua, 6)) {
+		if (pNode && lua_isnumber(lua, 2) && lua_isnumber(lua, 3) && lua_isnumber(lua, 4) && lua_isnumber(lua, 5)) {
 			float x = (float)lua_tonumber(lua, 2);
 			float y = (float)lua_tonumber(lua, 3);
 			float z = (float)lua_tonumber(lua, 4);
-			const char* interpolator = lua_tostring(lua, 5);
-			float duration = (float)lua_tonumber(lua, 6);
-			CQuaternion rot;
+			float duration = (float)lua_tonumber(lua, 5);
+			const char* interpolator = lua_isstring(lua, 6) ? lua_tostring(lua, 6) : "";
 			CAnimationManager::Interpolator type = CAnimationManager::LINEAR;
 			if (!strcmp(interpolator, "linear")) type = CAnimationManager::LINEAR;
 			else if (!strcmp(interpolator, "accelerate")) type = CAnimationManager::ACCELERATE;
 			else if (!strcmp(interpolator, "decelerate")) type = CAnimationManager::DECELERATE;
 			else if (!strcmp(interpolator, "acceleratedecelerate")) type = CAnimationManager::ACCELERATEDECELERATE;
-			CEngine::GetAnimationManager()->AddRotation(pNode, rot.FromEulerAngles(x, y, z), type, duration);
+			CEngine::GetAnimationManager()->AddRotation(pNode, CQuaternion().FromEulerAngles(x, y, z), duration, type);
 		}
 	}
 	return 0;
@@ -2678,20 +2687,18 @@ int CScriptManager::DoAnimationRotation(lua_State* lua) {
 int CScriptManager::DoAnimationTranslation(lua_State* lua) {
 	if (lua_isstring(lua, 1)) {
 		CSceneNode* pNode = CEngine::GetSceneManager()->GetNodeByName(lua_tostring(lua, 1));
-		if (pNode &&
-			lua_isnumber(lua, 2) && lua_isnumber(lua, 3) && lua_isnumber(lua, 4) &&
-			lua_isstring(lua, 5) && lua_isnumber(lua, 6)) {
+		if (pNode && lua_isnumber(lua, 2) && lua_isnumber(lua, 3) && lua_isnumber(lua, 4) && lua_isnumber(lua, 5)) {
 			float x = (float)lua_tonumber(lua, 2);
 			float y = (float)lua_tonumber(lua, 3);
 			float z = (float)lua_tonumber(lua, 4);
-			const char* interpolator = lua_tostring(lua, 5);
-			float duration = (float)lua_tonumber(lua, 6);
+			float duration = (float)lua_tonumber(lua, 5);
+			const char* interpolator = lua_isstring(lua, 6) ? lua_tostring(lua, 6) : "";
 			CAnimationManager::Interpolator type = CAnimationManager::LINEAR;
 			if (!strcmp(interpolator, "linear")) type = CAnimationManager::LINEAR;
 			else if (!strcmp(interpolator, "accelerate")) type = CAnimationManager::ACCELERATE;
 			else if (!strcmp(interpolator, "decelerate")) type = CAnimationManager::DECELERATE;
 			else if (!strcmp(interpolator, "acceleratedecelerate")) type = CAnimationManager::ACCELERATEDECELERATE;
-			CEngine::GetAnimationManager()->AddTranslation(pNode, CVector3(x, y, z), type, duration);
+			CEngine::GetAnimationManager()->AddTranslation(pNode, CVector3(x, y, z), duration, type);
 		}
 	}
 	return 0;
@@ -2706,8 +2713,9 @@ int CScriptManager::DoAnimationStart(lua_State* lua) {
 		if (pNode) {
 			int repeat = lua_isinteger(lua, 2) ? (int)lua_tointeger(lua, 2) : 1;
 			bool swing = lua_isboolean(lua, 3) ? lua_toboolean(lua, 3) != 0 : false;
-			float delay = lua_isnumber(lua, 4) ? (float)lua_tonumber(lua, 4) : 0.0f;
-			CEngine::GetAnimationManager()->Start(pNode, repeat, swing, delay);
+			bool relative = lua_isboolean(lua, 4) ? lua_toboolean(lua, 4) != 0 : false;
+			float delay = lua_isnumber(lua, 5) ? (float)lua_tonumber(lua, 5) : 0.0f;
+			CEngine::GetAnimationManager()->Start(pNode, repeat, swing, relative, delay);
 		}
 	}
 	return 0;

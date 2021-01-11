@@ -67,6 +67,10 @@ struct SJointDynamic {
 	CVector3 frontDir;
 	//! 关节的正面方向(计算)
 	CVector3 direction;
+	//! 手动动画
+	bool isManual;
+	//! 手动动画变换(设置)
+	CMatrix4 transform;
 };
 
 /**
@@ -157,6 +161,8 @@ public:
 	bool SetPhysics(const string& name, float mass, float bendFactor, float stretchFactor, float damping);
 	//! 设置骨骼朝向点
 	bool SetFacing(const string& name, const CVector3& front, const CVector3& point, float angle, float damping);
+	//! 设置骨骼变换
+	bool SetTransform(const string& name, const CVector3& translation, const CVector3& rotation, const CVector3& scale);
 
 	//! 清空所有网格
 	void ClearMesh(bool release);

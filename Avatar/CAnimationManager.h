@@ -36,7 +36,7 @@ public:
 
 public:
 	//! 开始动画
-	bool Start(CSceneNode* node, int repeat, bool swing, float delay = 0.0f);
+	bool Start(CSceneNode* node, int repeat, bool swing, bool relative, float delay = 0.0f);
 	//! 暂停动画
 	bool Pause(CSceneNode* node);
 	//! 停止动画
@@ -45,11 +45,11 @@ public:
 	void Clear();
 
 	//! 添加缩放动画
-	void AddScale(CSceneNode* node, const CVector3& value, Interpolator interpolator, float duration);
+	void AddScale(CSceneNode* node, const CVector3& value, float duration, Interpolator interpolator);
 	//! 添加旋转动画
-	void AddRotation(CSceneNode* node, const CQuaternion& value, Interpolator interpolator, float duration);
+	void AddRotation(CSceneNode* node, const CQuaternion& value, float duration, Interpolator interpolator);
 	//! 添加平移动画
-	void AddTranslation(CSceneNode* node, const CVector3& value, Interpolator interpolator, float duration);
+	void AddTranslation(CSceneNode* node, const CVector3& value, float duration, Interpolator interpolator);
 
 	//! 获取执行的所有动画节点列表
 	void GetAnimationList(vector<CSceneNode*>& animationList);
@@ -81,6 +81,7 @@ private:
 		vector<STranslationKey> translation;
 		int numberRepeat;
 		bool reciprocating;
+		bool incremental;
 		float duration;
 		//! 内部计算变量
 		int repeatCount;

@@ -53,6 +53,21 @@ addEditbox = function(name, text)
 	gElementTop = gElementTop + 50
 end
 
+--添加列表框
+addListview = function(name, items, onItem)
+	local text = ''
+	for i, v in ipairs(items) do
+		text = text..v..','
+	end
+	gui.create(name, "listview", "parent=panel;width=100;height=142;top="..gElementTop..";items="..text..";align=left", function(evt, arg1, arg2)
+		if evt == 0 then
+			local index = tonumber(gui.attrib(name, "selectedIndex"))
+			if index >= 0 then onItem(items[index + 1]) end
+		end
+	end)
+	gElementTop = gElementTop + 150
+end
+
 --更新panel高度
 updatePanelSize = function()
 	local w, h = gui.size()

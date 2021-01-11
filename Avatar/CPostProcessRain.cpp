@@ -11,7 +11,7 @@
 * 初始化后处理对象
 */
 bool CPostProcessRain::Init(int width, int height) {
-	const char* fragShader = "\
+	const char* rain = "\
 		uniform sampler2D uTexture;\
 		uniform sampler2D uTextureNoise;\
 		uniform float uElapsedTime;\
@@ -47,7 +47,7 @@ bool CPostProcessRain::Init(int width, int height) {
 	// 创建着色器与纹理
 	CShaderManager* pShaderMgr = CEngine::GetShaderManager();
 	CTextureManager* pTextureMgr = CEngine::GetTextureManager();
-	m_pPostProcessShader = pShaderMgr->Create("postprocess_rain", GetVertexShader(), fragShader);
+	m_pPostProcessShader = pShaderMgr->Create("postprocess_rain", GetVertexShader(), rain);
 	m_pPostProcessShader->SetUniform("uTexture", 0);
 	m_pPostProcessShader->SetUniform("uTextureNoise", 1);
 	m_pPostProcessShader->SetUniform("uElapsedTime", 0.0f);

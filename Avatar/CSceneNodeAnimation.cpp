@@ -242,6 +242,13 @@ void CSceneNodeAnimation::PointFacing(const string& joint, const CVector3& front
 }
 
 /**
+* 设置骨骼变换
+*/
+void CSceneNodeAnimation::SetTransform(const string& joint, const CVector3& translation, const CVector3& rotation, const CVector3& scale) {
+	m_pMeshData->SetTransform(joint, translation, rotation, scale);
+}
+
+/**
 * 设置动画帧
 */
 void CSceneNodeAnimation::SetupFrame(float dt) {
@@ -415,6 +422,10 @@ void CSceneNodeAnimation::PhysicalSimulation(SJoint* joint, const CVector3& grav
 	const CVector3 orgin(0.0f, 0.0f, 0.0f, 1.0f);
 	SJointDynamic* physics = joint->physics;
 	if (!physics->enabled) return;
+	if (physics->isManual) {
+		anim.SetValue(physics->transform);
+		return;
+	}
 	CMatrix4 mat1 = joint->parent ? m_cWorldMatrix * joint->parent->worldMatrix : m_cWorldMatrix;
 	CMatrix4 mat2 = mat1 * joint->localMatrix;
 	// 世界坐标系关节目标位置

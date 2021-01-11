@@ -57,6 +57,7 @@ CPostProcessManager* CPostProcessManager::m_pInstance = 0;
 void CPostProcessManager::Destroy() {
 	map<string, CPostProcess*>::iterator iter = m_mapPostProcess.begin();
 	while (iter != m_mapPostProcess.end()) {
+		iter->second->Enable(false);
 		iter->second->Destroy();
 		delete iter->second;
 		++iter;
@@ -67,32 +68,32 @@ void CPostProcessManager::Destroy() {
 /**
 * 注册后处理过程
 */
-bool CPostProcessManager::Register(const string& name, CPostProcess* postProcess) {
-	map<string, CPostProcess*>::iterator iter = m_mapPostProcess.find(name);
-	if (iter != m_mapPostProcess.end()) {
-		// 删除已注册的同名称后处理
-		list<CPostProcess*>::iterator listIter = m_lstEnabledPostProcess.begin();
-		while (listIter != m_lstEnabledPostProcess.end()) {
-			if (*listIter == iter->second) {
-				m_lstEnabledPostProcess.erase(listIter);
+bool CPostProcessManager::Register(const string& name, CPostProcess* post) {
+	// 删除已注册的同名称后处理
+	if (m_mapPostProcess.count(name) > 0) {
+		list<string>::iterator iter = m_lstEnabledPostProcess.begin();
+		while (m_lstEnabledPostProcess.end() != iter++) {
+			if (*iter == name) {
+				m_lstEnabledPostProcess.erase(iter);
 				break;
 			}
-			++listIter;
 		}
-		iter->second->Destroy();
-		delete iter->second;
-		m_mapPostProcess.erase(iter);
+		CPostProcess* item = m_mapPostProcess[name];
+		m_mapPostProcess.erase(name);
+		item->Enable(false);
+		item->Destroy();
+		delete item;
 	}
 	int width, height;
 	CEngine::GetGraphicsManager()->GetWindowSize(&width, &height);
-	if (!postProcess->Init(width, height)) {
-		postProcess->Destroy();
-		delete postProcess;
+	if (!post->Init(width, height)) {
+		post->Destroy();
+		delete post;
 		return false;
 	}
-	postProcess->m_iScreenSize[0] = width;
-	postProcess->m_iScreenSize[1] = height;
-	m_mapPostProcess.insert(std::pair<string, CPostProcess*>(name, postProcess));
+	post->m_iScreenSize[0] = width;
+	post->m_iScreenSize[1] = height;
+	m_mapPostProcess.insert(std::pair<string, CPostProcess*>(name, post));
 	return true;
 }
 
@@ -100,39 +101,32 @@ bool CPostProcessManager::Register(const string& name, CPostProcess* postProcess
 * 附加或取消指定的图像后处理
 */
 bool CPostProcessManager::Enable(const string& name, bool enable) {
-	map<string, CPostProcess*>::iterator iter = m_mapPostProcess.find(name);
-	if (iter == m_mapPostProcess.end()) {
-		if (!RegisterDefault(name)) return false;
-		iter = m_mapPostProcess.find(name);
-	}
-	if (iter != m_mapPostProcess.end()) {
-		list<CPostProcess*>::iterator listIter = m_lstEnabledPostProcess.begin();
-		while (listIter != m_lstEnabledPostProcess.end()) {
-			if (*listIter == iter->second) {
-				if (!enable) m_lstEnabledPostProcess.erase(listIter);
-				return true;
-			}
-			++listIter;
+	if (m_mapPostProcess.count(name) == 0 && !RegisterDefault(name)) return false;
+	list<string>::iterator iter = m_lstEnabledPostProcess.begin();
+	while (iter != m_lstEnabledPostProcess.end()) {
+		if (*iter == name) {
+			m_lstEnabledPostProcess.erase(iter);
+			if (enable) m_lstEnabledPostProcess.push_back(name);
+			else m_mapPostProcess[name]->Enable(false);
+			return true;
 		}
-		if (enable) m_lstEnabledPostProcess.push_back(iter->second);
-		return true;
+		++iter;
 	}
-	return false;
+	if (enable) {
+		m_mapPostProcess[name]->Enable(true);
+		m_lstEnabledPostProcess.push_back(name);
+	}
+	return true;
 }
 
 /**
 * 指定的后处理是否启用
 */
 bool CPostProcessManager::IsEnabled(const string& name) {
-	map<string, CPostProcess*>::iterator iter = m_mapPostProcess.find(name);
-	if (iter != m_mapPostProcess.end()) {
-		list<CPostProcess*>::iterator listIter = m_lstEnabledPostProcess.begin();
-		while (listIter != m_lstEnabledPostProcess.end()) {
-			if (*listIter == iter->second) {
-				return true;
-			}
-			++listIter;
-		}
+	list<string>::iterator iter = m_lstEnabledPostProcess.begin();
+	while (iter != m_lstEnabledPostProcess.end()) {
+		if (*iter == name) return true;
+		++iter;
 	}
 	return false;
 }
@@ -155,9 +149,9 @@ void CPostProcessManager::GetPostProcessList(vector<string>& postList) {
 bool CPostProcessManager::PrepareFrame(CTexture* renderTarget, int width, int height) {
 	if (m_lstEnabledPostProcess.empty()) return false;
 	// 通知屏幕大小
-	list<CPostProcess*>::iterator iter = m_lstEnabledPostProcess.begin();
+	list<string>::iterator iter = m_lstEnabledPostProcess.begin();
 	while (iter != m_lstEnabledPostProcess.end()) {
-		CPostProcess* item = *iter++;
+		CPostProcess* item = m_mapPostProcess[*iter++];
 		if (item->m_iScreenSize[0] != width || item->m_iScreenSize[1] != height) {
 			item->Resize(width, height);
 			item->m_iScreenSize[0] = width;
@@ -165,22 +159,23 @@ bool CPostProcessManager::PrepareFrame(CTexture* renderTarget, int width, int he
 		}
 	}
 	// 将第一个后处理设置为渲染目标
+	CPostProcess* first = m_mapPostProcess[m_lstEnabledPostProcess.front()];
 	m_pSavedRenderTarget = renderTarget;
-	renderTarget = m_lstEnabledPostProcess.front()->m_pRenderTexture;
+	renderTarget = first->m_pRenderTexture;
 	CEngine::GetGraphicsManager()->SetRenderTarget(renderTarget, 0, true, true);
 	return true;
 }
 
 /**
 * 进行后处理
+* @note 后处理逐个执行，后一个的输入纹理作为前一个的渲染目标
 */
 void CPostProcessManager::ApplyFrame() {
 	if (!m_lstEnabledPostProcess.empty()) {
-		// 逐个进行后处理，后一个的输入纹理作为前一个的渲染目标
-		list<CPostProcess*>::iterator iter = m_lstEnabledPostProcess.begin();
-		CPostProcess* current = *iter;
+		list<string>::iterator iter = m_lstEnabledPostProcess.begin();
+		CPostProcess* current = m_mapPostProcess[*iter];
 		while (++iter != m_lstEnabledPostProcess.end()) {
-			CPostProcess* next = *iter;
+			CPostProcess* next = m_mapPostProcess[*iter];
 			current->Apply(next->m_pRenderTexture, m_pRenderMesh);
 			current = next;
 		}

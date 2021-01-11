@@ -228,7 +228,7 @@ bool CGraphicsManager::GetStereoMode() {
 */
 void CGraphicsManager::SetShadowEnable(bool enable) {
 	if (enable || m_bShadowEnable) {
-		const char* shaderName[] = { "texturelight", "terrain", "light" };
+		const char* shaderName[] = { "texturelight", "terrain", "light", "hemilight" };
 		const int shaderCount = sizeof(shaderName) / sizeof(char*);
 		CShaderManager* pShaderMgr = CEngine::GetShaderManager();
 		for (size_t i = 0; i < shaderCount; i++) {
@@ -264,7 +264,7 @@ bool CGraphicsManager::GetShadowEnable() {
 void CGraphicsManager::SetFogEnable(bool enable, float start, float end, const CColor& color) {
 	if (enable || m_bFogEnable) {
 		const char* shaderName[] = {
-			"texture", "texturelight", "water", "terrain", "light", "fresnel", "skybox", "flame"
+			"texture", "texturelight", "water", "terrain", "light", "hemilight", "fresnel", "skybox", "flame"
 		};
 		const int shaderCount = sizeof(shaderName) / sizeof(char*);
 		CShaderManager* pShaderMgr = CEngine::GetShaderManager();
@@ -313,12 +313,12 @@ void CGraphicsManager::SetEnvironmentMapEnable(bool enable, const string& cubema
 			if (!pBRDFIntegrationMap) {
 				pBRDFIntegrationMap = pTextureMgr->Create("__integrationmap__", 512, 512, false, false, false);
 				SetRenderTarget(pBRDFIntegrationMap, 0, false, false);
-				pTextureMgr->Update(pBRDFIntegrationMap, "", "ibl_integrationmap", 0);
+				pTextureMgr->Update(pBRDFIntegrationMap, "", "integrationmap", 0);
 			}
 			SetRenderTarget(pIrradianceMap, 0, false, false);
-			pTextureMgr->Update(pIrradianceMap, cubemap, "ibl_irradiancemap", 0);
+			pTextureMgr->Update(pIrradianceMap, cubemap, "irradiancemap", 0);
 			SetRenderTarget(pEnvironmentMap, 0, false, false);
-			CShader* pShader = pShaderMgr->GetShader("ibl_environmentmap");
+			CShader* pShader = pShaderMgr->GetShader("environmentmap");
 			pShader->UseShader();
 			for (int i = 0; i < 5; i++) {
 				pShader->SetUniform("uRoughness", (float)i / 4.0f);
@@ -326,7 +326,7 @@ void CGraphicsManager::SetEnvironmentMapEnable(bool enable, const string& cubema
 			}
 			SetRenderTarget(pRenderTarget, 0, false, false);
 		}
-		const char* shaderName[] = { "texturelight", "light" };
+		const char* shaderName[] = { "texturelight", "light", "hemilight" };
 		const int shaderCount = sizeof(shaderName) / sizeof(char*);
 		for (size_t i = 0; i < shaderCount; i++) {
 			CShader* pShader = pShaderMgr->GetShader(shaderName[i]);
@@ -724,11 +724,6 @@ void CGraphicsManager::SetRenderTarget(CTexture* texture, int level, bool clearC
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	}
 	glViewport(0, 0, viewWidth, viewHeight);
-	// 如果是渲染深度图，需要将深度值设置为1.0
-	if (clearColor) {
-		const float* color = m_bRenderDepth ? CColor::Red.m_fValue : m_cBackground.m_fValue;
-		glClearColor(color[0], color[1], color[2], color[3]);
-	}
 	// 是否清空颜色和深度缓冲区
 	if (clearColor && clearDepth) glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	else if (clearColor) glClear(GL_COLOR_BUFFER_BIT);
@@ -799,10 +794,9 @@ void CGraphicsManager::Draw() {
 	int screenWidth = m_pRenderTarget ? m_pRenderTarget->GetWidth() : m_iWindowSize[0];
 	int screenHeight = m_pRenderTarget ? m_pRenderTarget->GetHeight() : m_iWindowSize[1];
 	CTexture* pRenderTarget = m_pRenderTarget;
-	// 渲染过程纹理和阴影贴图和反射贴图
+	// 渲染过程纹理和阴影贴图
 	CEngine::GetTextureManager()->Update();
 	if (m_bShadowEnable) DrawShadowMap();
-	DrawReflectMap();
 	// 准备后处理过程
 	CPostProcessManager* pPostProcessMgr = CEngine::GetPostProcessManager();
 	if (!pPostProcessMgr->PrepareFrame(pRenderTarget, screenWidth, screenHeight)) {
@@ -868,6 +862,10 @@ void CGraphicsManager::Draw() {
 		CEngine::GetSceneManager()->RenderScene(m_pCamera->GetViewMatrix(), m_pCamera->GetProjMatrix());
 		DrawScreen(render_width, render_height);
 	}
+	// 绘制深度图
+	DrawDepthMap();
+	// 绘制反射贴图
+	DrawReflectMap();
 	// 进行后处理
 	pPostProcessMgr->ApplyFrame();
 	// 绘制 GUI 元素
@@ -878,6 +876,25 @@ void CGraphicsManager::Draw() {
 		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
 		glBlitFramebuffer(0, 0, viewWidth, viewHeight, 0, 0, m_iWindowSize[0], m_iWindowSize[1], GL_COLOR_BUFFER_BIT, GL_NEAREST);
 		glBindFramebuffer(GL_FRAMEBUFFER, pRenderTarget->GetFramebuffer());
+	}
+}
+
+/**
+* 绘制深度图
+*/
+void CGraphicsManager::DrawDepthMap() {
+	CTexture* pDepthMap = CEngine::GetTextureManager()->GetTexture("__depthmap__");
+	if (pDepthMap && pDepthMap->IsFloatType()) {
+		m_bRenderDepth = true;
+		glDisable(GL_BLEND);
+		// 将深度值设置为1.0
+		glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+		SetRenderTarget(pDepthMap, 0, true, true);
+		glClearColor(m_cBackground[0], m_cBackground[1], m_cBackground[2], m_cBackground[3]);
+		CMatrix4 viewProj = m_pCamera->GetProjMatrix() * m_pCamera->GetViewMatrix();
+		CEngine::GetSceneManager()->RenderDepth(viewProj, "depthmap");
+		m_bRenderDepth = false;
+		glEnable(GL_BLEND);
 	}
 }
 
@@ -920,17 +937,19 @@ void CGraphicsManager::DrawShadowMap() {
 		projMat.Perspective(120.0f, 1.0f, 0.5f, 1000.0f);
 	}
 	// 渲染阴影贴图
-	glDisable(GL_BLEND);
 	m_bRenderDepth = true;
+	glDisable(GL_BLEND);
 	CMatrix4 viewProj = projMat * viewMat;
+	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 	SetRenderTarget(pShadowMap, 0, true, true);
+	glClearColor(m_cBackground[0], m_cBackground[1], m_cBackground[2], m_cBackground[3]);
 	CEngine::GetSceneManager()->RenderDepth(viewProj, "shadowmap");
-	m_bRenderDepth = false;
 	// 对阴影贴图进行模糊
 	SetRenderTarget(pShadowMapBlur, 0, false, false);
 	pShadowMap->UseTexture();
 	pShaderBlur->UseShader();
 	DrawQuadrilateral(CColor::White, false);
+	m_bRenderDepth = false;
 	glEnable(GL_BLEND);
 	// 设置阴影贴图纹理单元
 	pShadowMapBlur->UseTexture(8);
@@ -979,17 +998,19 @@ void CGraphicsManager::DrawCubeMap() {
 		{ mat[1], mat[5], mat[9] }, { -mat[1], -mat[5], -mat[9] },
 		{ mat[2], mat[6], mat[10] }, { mat[2], mat[6], mat[10] }
 	};
-	CSceneManager* pSceneMgr = CEngine::GetSceneManager();
-	// +X 方向已经默认绑定并清空了颜色和深度
 	m_pCamera->GetViewMatrix().LookAt(m_pCamera->m_cPosition, look[0], up[0]);
 	m_pCamera->UpdateFrustum();
+	DrawReflectMap();
+	// +X 方向已经默认绑定并清空了颜色和深度
+	CSceneManager* pSceneMgr = CEngine::GetSceneManager();
 	pSceneMgr->RenderScene(m_pCamera->GetViewMatrix(), m_pCamera->GetProjMatrix());
 	for (int i = 1; i < 6; i++) {
+		m_pCamera->GetViewMatrix().LookAt(m_pCamera->m_cPosition, look[i], up[i]);
+		m_pCamera->UpdateFrustum();
+		DrawReflectMap();
 		GLenum face = GL_TEXTURE_CUBE_MAP_POSITIVE_X + i;
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, face, m_pRenderTarget->GetTextureId(), 0);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		m_pCamera->GetViewMatrix().LookAt(m_pCamera->m_cPosition, look[i], up[i]);
-		m_pCamera->UpdateFrustum();
 		pSceneMgr->RenderScene(m_pCamera->GetViewMatrix(), m_pCamera->GetProjMatrix());
 	}
 	m_pCamera->SetFieldOfView(saved_fov);
@@ -1005,6 +1026,7 @@ void CGraphicsManager::DrawReflectMap() {
 	if (nodeList.empty()) return;
 	// 保存摄像机参数
 	m_bRenderReflect = true;
+	CTexture* savedRenderTarget = m_pRenderTarget;
 	CMatrix4 projMat = m_pCamera->GetProjMatrix();
 	CMatrix4 viewMat = m_pCamera->GetViewMatrix();
 	CVector3 cameraPos = m_pCamera->m_cPosition;
@@ -1035,6 +1057,7 @@ void CGraphicsManager::DrawReflectMap() {
 	}
 	// 恢复摄像机参数
 	m_bRenderReflect = false;
+	SetRenderTarget(savedRenderTarget, 0, false, false);
 	m_pCamera->m_cPosition.SetValue(cameraPos);
 	m_pCamera->m_cLookVector.SetValue(cameraLook);
 	m_pCamera->m_cUpVector.SetValue(cameraUp);

@@ -150,7 +150,7 @@ const float zNear = 0.1;
 const float zFar = 2000.0;
 float LinearizeDepth(vec2 uv) {
 	float z = texture2D(depthSampler, uv).x;
-	return (2.0 * zNear) / (zFar + zNear - z * (zFar - zNear));
+	return (2.0 * zFar * zNear) / (zFar + zNear - z * (zFar - zNear));
 }
 @endcode
 -# 草坪渲染
@@ -331,10 +331,10 @@ int main(int argc, char **argv)
 | physics.applyImpulse | 向刚体施加冲量 | name:*string*, x:*float*, y:*float*, z:*float*, &lt;px:*float*, py:*float*, pz:*float*&gt; | - |
 | physics.gravity | 设置物理引擎重力 | x:*float*, y:*float*, z:*float* | - |
 | physics.joint | 为关节设置物理模拟 | name:*string*, joint:*string*, &lt;mass:*float*, bendFactor:*float*, stretchFactor:*float*, damping:*float*&gt; | - |
-| animation.scale | 添加缩放动画 | name:*string*, x:*float*, y:*float*, z:*float*, interpolator:*string*, duration:*float* | - |
-| animation.rotation | 添加旋转动画 | name:*string*, x:*float*, y:*float*, z:*float*, interpolator:*string*, duration:*float* | - |
-| animation.translation | 添加位移动画 | name:*string*, x:*float*, y:*float*, z:*float*, interpolator:*string*, duration:*float* | - |
-| animation.start | 开始执行动画 | name:*string*, &lt;repeat:*integer*, swing:*boolean*, delay:*float*&gt; | - |
+| animation.scale | 添加缩放动画 | name:*string*, x:*float*, y:*float*, z:*float*, duration:*float*, &lt;interpolator:*string*&gt; | - |
+| animation.rotation | 添加旋转动画 | name:*string*, x:*float*, y:*float*, z:*float*, duration:*float*, &lt;interpolator:*string*&gt; | - |
+| animation.translation | 添加位移动画 | name:*string*, x:*float*, y:*float*, z:*float*, duration:*float*, &lt;interpolator:*string*&gt; | - |
+| animation.start | 开始执行动画 | name:*string*, &lt;repeat:*integer*, swing:*boolean*, relative:*boolean*, delay:*float*&gt; | - |
 | animation.stop | 停止执行动画 | name:*string*, &lt;reset:*boolean*&gt; | - |
 
 @remarks <> 内部参数为可选参数，[] 内部参数为可变个数参数.

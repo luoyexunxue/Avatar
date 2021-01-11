@@ -363,9 +363,9 @@ CDevice* CEngine::GetDevice() {
 void CEngine::LoadShader() {
 	const string shaderName[] = {
 		"default", "texture", "texturelight", "water", "terrain", "cloud",
-		"planetsky", "planetground", "light", "fresnel", "lensflare",
-		"shadowmap", "screen", "skybox", "flame", "blast", "shadowmapfilter",
-		"ibl_irradiancemap", "ibl_environmentmap", "ibl_integrationmap"
+		"planetsky", "planetground", "light", "hemilight", "fresnel", "lensflare",
+		"depthmap", "shadowmap", "shadowmapfilter", "screen", "skybox", "flame",
+		"blast", "irradiancemap", "environmentmap", "integrationmap"
 	};
 	const int shaderCount = sizeof(shaderName) / sizeof(string);
 	CShaderManager* pShaderMgr = GetShaderManager();

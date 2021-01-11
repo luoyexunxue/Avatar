@@ -14,6 +14,13 @@ public:
 	virtual bool Init(int width, int height);
 	virtual void Resize(int width, int height);
 	virtual void Destroy();
+	virtual void Apply(CTexture* target, CMesh* mesh);
+
+	//! 设置高斯模糊参数
+	void SetGaussKernel(int size, float sigma);
+
+private:
+	CTexture* m_pBlurTexture;
 };
 
 #endif

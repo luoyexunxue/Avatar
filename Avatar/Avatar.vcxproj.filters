@@ -354,6 +354,9 @@
     <ClCompile Include="CBase64.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="CGuiListView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AvatarConfig.h">
@@ -705,6 +708,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="CBase64.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CGuiListView.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

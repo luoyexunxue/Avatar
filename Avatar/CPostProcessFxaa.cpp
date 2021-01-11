@@ -9,7 +9,7 @@
 * 初始化后处理对象
 */
 bool CPostProcessFxaa::Init(int width, int height) {
-	const char* fragShader = "\
+	const char* fxaa = "\
 		#define FXAA_REDUCE_MIN (1.0/128.0)\n\
 		#define FXAA_REDUCE_MUL (1.0/8.0)\n\
 		#define FXAA_SPAN_MAX 8.0\n\
@@ -46,7 +46,7 @@ bool CPostProcessFxaa::Init(int width, int height) {
 	// 创建着色器与纹理
 	CShaderManager* pShaderMgr = CEngine::GetShaderManager();
 	CTextureManager* pTextureMgr = CEngine::GetTextureManager();
-	m_pPostProcessShader = pShaderMgr->Create("postprocess_fxaa", GetVertexShader(), fragShader);
+	m_pPostProcessShader = pShaderMgr->Create("postprocess_fxaa", GetVertexShader(), fxaa);
 	m_pPostProcessShader->SetUniform("uTexture", 0);
 	m_pPostProcessShader->SetUniform("uTexelSize", CVector2(1.0f / width, 1.0f / height));
 	m_pRenderTexture = pTextureMgr->Create("postprocess_fxaa", width, height, false, true, false);

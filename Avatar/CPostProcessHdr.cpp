@@ -5,13 +5,14 @@
 #include "CPostProcessHdr.h"
 #include "CEngine.h"
 #include "CTimer.h"
+#include <cmath>
 
 /**
 * 初始化后处理对象
 */
 bool CPostProcessHdr::Init(int width, int height) {
 	// HDR 像素着色器
-	const char* hdrShader = "\
+	const char* hdr = "\
 		uniform sampler2D uTexture;\
 		uniform sampler2D uLuminance;\
 		in vec2 vTexCoord;\
@@ -26,7 +27,7 @@ bool CPostProcessHdr::Init(int width, int height) {
 			fragColor = vec4(color, 1.0);\
 		}";
 	// 纹理复制着色器
-	const char* passShader = "\
+	const char* luminance = "\
 		uniform sampler2D uTexture;\
 		in vec2 vTexCoord;\
 		out vec4 fragColor;\
@@ -36,7 +37,7 @@ bool CPostProcessHdr::Init(int width, int height) {
 			fragColor = vec4(luminance, luminance, luminance, 1.0);\
 		}";
 	// 1/4下采样像素着色器
-	const char* downShader = "\
+	const char* resample = "\
 		uniform sampler2D uTexture;\
 		uniform vec2 uTextureSize;\
 		in vec2 vTexCoord;\
@@ -64,7 +65,7 @@ bool CPostProcessHdr::Init(int width, int height) {
 			fragColor = color;\
 		}";
 	// 亮度渐调着色器
-	const char* adaptShader = "\
+	const char* adaption = "\
 		uniform sampler2D uTexture;\
 		uniform sampler2D uTextureSelf;\
 		uniform float uElapsedTime;\
@@ -80,24 +81,23 @@ bool CPostProcessHdr::Init(int width, int height) {
 	// 创建着色器和纹理
 	CShaderManager* pShaderMgr = CEngine::GetShaderManager();
 	CTextureManager* pTextureMgr = CEngine::GetTextureManager();
-	m_pPostProcessShader = pShaderMgr->Create("postprocess_hdr", GetVertexShader(), hdrShader);
-	m_pPostProcessShader->SetUniform("uTexture", 0);
-	m_pPostProcessShader->SetUniform("uLuminance", 1);
-	m_pPassShader = pShaderMgr->Create("postprocess_hdr_pass", GetVertexShader(), passShader);
-	m_pPassShader->SetUniform("uTexture", 0);
-	m_pDownScaleShader = pShaderMgr->Create("postprocess_hdr_down", GetVertexShader(), downShader);
+	m_pLuminanceShader = pShaderMgr->Create("postprocess_hdr_lum", GetVertexShader(), luminance);
+	m_pLuminanceShader->SetUniform("uTexture", 0);
+	m_pDownScaleShader = pShaderMgr->Create("postprocess_hdr_down", GetVertexShader(), resample);
 	m_pDownScaleShader->SetUniform("uTexture", 0);
-	m_pAdaptLumShader = pShaderMgr->Create("postprocess_hdr_adapt", GetVertexShader(), adaptShader);
+	m_pAdaptLumShader = pShaderMgr->Create("postprocess_hdr_adapt", GetVertexShader(), adaption);
 	m_pAdaptLumShader->SetUniform("uTexture", 0);
 	m_pAdaptLumShader->SetUniform("uTextureSelf", 1);
+	m_pPostProcessShader = pShaderMgr->Create("postprocess_hdr", GetVertexShader(), hdr);
+	m_pPostProcessShader->SetUniform("uTexture", 0);
+	m_pPostProcessShader->SetUniform("uLuminance", 1);
 	m_pRenderTexture = pTextureMgr->Create("postprocess_hdr", width, height, false, true, false);
 	m_pToneMapTexture[0] = pTextureMgr->Create("postprocess_hdr_adapt", 1, 1, false, false, false);
 	m_pToneMapTexture[1] = pTextureMgr->Create("postprocess_hdr_1x1", 1, 1, false, false, false);
 	m_pToneMapTexture[2] = pTextureMgr->Create("postprocess_hdr_4x4", 4, 4, false, false, false);
 	m_pToneMapTexture[3] = pTextureMgr->Create("postprocess_hdr_16x16", 16, 16, false, false, false);
 	m_pToneMapTexture[4] = pTextureMgr->Create("postprocess_hdr_64x64", 64, 64, false, false, false);
-	return m_pPostProcessShader->IsValid() && m_pPassShader->IsValid()
-		&& m_pDownScaleShader->IsValid() && m_pAdaptLumShader->IsValid();
+	return m_pLuminanceShader->IsValid() && m_pDownScaleShader->IsValid() && m_pAdaptLumShader->IsValid() && m_pPostProcessShader->IsValid();
 }
 
 /**
@@ -117,10 +117,10 @@ void CPostProcessHdr::Destroy() {
 	CEngine::GetTextureManager()->Drop(m_pToneMapTexture[2]);
 	CEngine::GetTextureManager()->Drop(m_pToneMapTexture[3]);
 	CEngine::GetTextureManager()->Drop(m_pToneMapTexture[4]);
-	CEngine::GetShaderManager()->Drop(m_pPostProcessShader);
-	CEngine::GetShaderManager()->Drop(m_pPassShader);
+	CEngine::GetShaderManager()->Drop(m_pLuminanceShader);
 	CEngine::GetShaderManager()->Drop(m_pDownScaleShader);
 	CEngine::GetShaderManager()->Drop(m_pAdaptLumShader);
+	CEngine::GetShaderManager()->Drop(m_pPostProcessShader);
 }
 
 /**
@@ -134,23 +134,21 @@ void CPostProcessHdr::Apply(CTexture* target, CMesh* mesh) {
 	m_pToneMapTexture[0]->UseTexture(1);
 	m_pRenderTexture->UseTexture(0);
 	mesh->Render(false);
-
 	// 计算图像的平均亮度，将场景渲染到 64 x 64 的纹理上，得到灰度图
 	pGraphicsMgr->SetRenderTarget(m_pToneMapTexture[4], 0, true, false);
-	m_pPassShader->UseShader();
+	m_pLuminanceShader->UseShader();
 	m_pRenderTexture->UseTexture(0);
 	mesh->Render(false);
 	// 进行下采样
-	const static float sizeArray[4] = { 1.0f, 4.0f, 16.0f, 64.0f };
 	for (int i = 3; i > 0; i--) {
 		pGraphicsMgr->SetRenderTarget(m_pToneMapTexture[i], 0, true, false);
 		m_pDownScaleShader->UseShader();
-		m_pDownScaleShader->SetUniform("uTextureSize", CVector2(sizeArray[i], sizeArray[i]));
+		m_pDownScaleShader->SetUniform("uTextureSize", CVector2(powf(4.0f, (float)i)));
 		m_pToneMapTexture[i + 1]->UseTexture();
 		mesh->Render(false);
 	}
 	// 亮度渐调（线性调整）
-	float elapsedTime = CTimer::Reset("postprocess_hdr");
+	float elapsedTime = CTimer::Reset("postprocess_hdr") * 2.0f;
 	if (elapsedTime > 1.0f) elapsedTime = 1.0f;
 	pGraphicsMgr->SetRenderTarget(m_pToneMapTexture[0], 0, false, false);
 	m_pAdaptLumShader->UseShader();

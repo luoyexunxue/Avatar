@@ -17,7 +17,7 @@ public:
 	virtual void Apply(CTexture* target, CMesh* mesh);
 
 private:
-	CShader* m_pPassShader;
+	CShader* m_pLuminanceShader;
 	CShader* m_pDownScaleShader;
 	CShader* m_pAdaptLumShader;
 	CTexture* m_pToneMapTexture[5];

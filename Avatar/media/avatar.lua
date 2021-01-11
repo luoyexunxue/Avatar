@@ -88,11 +88,13 @@ OnReady = function()
 	addButton("water", "水面显示", function()
 		scene.visible("water", not scene.visible("water"))
 	end)
-	addEditbox("postName", "snow")
-	addButton("post", "POST", function()
-		local postname = gui.attrib("postName", "text")
-		post.enable(postname, not post.enable(postname))
+	addListview("post", {'anaglyph', 'beam', 'bloom', 'blur',
+		'cartoon', 'edge', 'emboss', 'fxaa', 'gray', 'hdr',
+		'oculus', 'panorama', 'pass', 'rain', 'snow', 'ssao',
+		'tunnel', 'dot', 'sphere', 'paint', 'shake'}, function(sel)
+		post.enable(sel, not post.enable(sel))
 	end)
+	addEditbox("inputbox", "")
 	--光照方向
 	addTrackBar("trackbar", 50, function(percent)
 		local alpha = percent * 0.062832

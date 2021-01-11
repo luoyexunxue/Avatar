@@ -233,7 +233,7 @@ bool CStringUtil::EndWith(const string& str, const char* key, bool ignoreCase) {
 /**
 * UTF8 字符串转换为 wchar_t 数组
 */
-void CStringUtil::Utf8ToWideCharArray(const char* src, wchar_t* buffer, size_t size) {
+size_t CStringUtil::Utf8ToWideCharArray(const char* src, wchar_t* buffer, size_t size) {
 	size_t count = 0;
 	while (*src && count < size - 1) {
 		char flag = *src;
@@ -255,12 +255,13 @@ void CStringUtil::Utf8ToWideCharArray(const char* src, wchar_t* buffer, size_t s
 		}
 	}
 	buffer[count] = 0;
+	return count;
 }
 
 /**
 * wchar_t 数组转换为 UTF8 字符串
 */
-void CStringUtil::WideCharArrayToUtf8(const wchar_t* src, char* buffer, size_t size) {
+size_t CStringUtil::WideCharArrayToUtf8(const wchar_t* src, char* buffer, size_t size) {
 	size_t count = 0;
 	while (*src && count < size - 1) {
 		wchar_t flag = *src++;
@@ -283,6 +284,7 @@ void CStringUtil::WideCharArrayToUtf8(const wchar_t* src, char* buffer, size_t s
 		}
 	}
 	buffer[count] = 0;
+	return count;
 }
 
 /**

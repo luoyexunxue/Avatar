@@ -66,9 +66,11 @@ public:
 		virtual ~CGuiElement() {}
 		//! 是否需要重绘
 		virtual bool Redraw() { return false; }
+		//! 响应点击事件
+		virtual bool OnClick(int x, int y) { return false; }
 		//! 响应拖动操作
-		virtual bool Drag(bool release, int dx, int dy, CRectangle& region) {
-			return m_pParent ? m_pParent->Drag(release, dx, dy, region) : false;
+		virtual bool OnDrag(bool release, int dx, int dy, CRectangle& region) {
+			return m_pParent ? m_pParent->OnDrag(release, dx, dy, region) : false;
 		}
 		//! 属性设置
 		virtual bool SetAttribute(const string& name, const string& value) = 0;

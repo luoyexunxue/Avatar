@@ -75,12 +75,10 @@ string CGuiTrackBar::GetAttribute(const string& name) {
 	else if (name == "max") return CStringUtil::Format("%f", m_fMaxValue);
 	else if (name == "backColor") {
 		const char* fmt = "#%02X%02X%02X%02X";
-		const unsigned char* val = m_cBackColor;
-		return CStringUtil::Format(fmt, val[3], val[2], val[1], val[0]);
+		return CStringUtil::Format(fmt, m_cBackColor[3], m_cBackColor[2], m_cBackColor[1], m_cBackColor[0]);
 	} else if (name == "foreColor") {
 		const char* fmt = "#%02X%02X%02X%02X";
-		const unsigned char* val = m_cForeColor;
-		return CStringUtil::Format(fmt, val[3], val[2], val[1], val[0]);
+		return CStringUtil::Format(fmt, m_cForeColor[3], m_cForeColor[2], m_cForeColor[1], m_cForeColor[0]);
 	}
 	return "";
 }

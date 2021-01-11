@@ -11,7 +11,7 @@
 */
 bool CPostProcessBeam::Init(int width, int height) {
 	// 体积光生成着色器
-	const char* fragShader = "\
+	const char* beam = "\
 		uniform sampler2D uTexture;\
 		uniform float uDensity;\
 		uniform float uExposure;\
@@ -40,7 +40,7 @@ bool CPostProcessBeam::Init(int width, int height) {
 			fragColor = vec4(color.rgb * uExposure / total, 1.0);\
 		}";
 	// 使用体积光照生成最终场景
-	const char* combineShader = "\
+	const char* combine = "\
 		uniform sampler2D uTexture;\
 		uniform sampler2D uTextureLight;\
 		in vec2 vTexCoord;\
@@ -54,17 +54,18 @@ bool CPostProcessBeam::Init(int width, int height) {
 	// 创建着色器和纹理
 	CShaderManager* pShaderMgr = CEngine::GetShaderManager();
 	CTextureManager* pTextureMgr = CEngine::GetTextureManager();
-	m_pPostProcessShader = pShaderMgr->Create("postprocess_beam", GetVertexShader(), combineShader);
-	m_pPostProcessShader->SetUniform("uTexture", 0);
-	m_pPostProcessShader->SetUniform("uTextureLight", 1);
-	m_pVolumeLightShader = pShaderMgr->Create("postprocess_beam_light", GetVertexShader(), fragShader);
+	m_pVolumeLightShader = pShaderMgr->Create("postprocess_beam_light", GetVertexShader(), beam);
 	m_pVolumeLightShader->SetUniform("uTexture", 0);
 	m_pVolumeLightShader->SetUniform("uDensity", 0.8f);
 	m_pVolumeLightShader->SetUniform("uExposure", 1.0f);
 	m_pVolumeLightShader->SetUniform("uLightPos", CVector2());
+	m_pPostProcessShader = pShaderMgr->Create("postprocess_beam", GetVertexShader(), combine);
+	m_pPostProcessShader->SetUniform("uTexture", 0);
+	m_pPostProcessShader->SetUniform("uTextureLight", 1);
 	m_pRenderTexture = pTextureMgr->Create("postprocess_beam", width, height, false, true, false);
 	m_pVolumeLightTexture = pTextureMgr->Create("postprocess_beam_light", width, height, false, false, false);
-	return m_pPostProcessShader->IsValid() && m_pVolumeLightShader->IsValid();
+	m_pRenderTexture->SetWrapModeClampToEdge(true, true);
+	return m_pVolumeLightShader->IsValid() && m_pPostProcessShader->IsValid();
 }
 
 /**
@@ -81,8 +82,8 @@ void CPostProcessBeam::Resize(int width, int height) {
 void CPostProcessBeam::Destroy() {
 	CEngine::GetTextureManager()->Drop(m_pRenderTexture);
 	CEngine::GetTextureManager()->Drop(m_pVolumeLightTexture);
-	CEngine::GetShaderManager()->Drop(m_pPostProcessShader);
 	CEngine::GetShaderManager()->Drop(m_pVolumeLightShader);
+	CEngine::GetShaderManager()->Drop(m_pPostProcessShader);
 }
 
 /**
@@ -96,7 +97,7 @@ void CPostProcessBeam::Apply(CTexture* target, CMesh* mesh) {
 	CVector3 lightDir;
 	pGraphicsMgr->GetLight(lightPos, lightDir);
 	// 对方向光进行特殊处理
-	if (lightPos[3] == 0.0f) lightPos.Scale(10000.0f);
+	if (lightPos[3] == 0.0f) lightPos.Scale(-10000.0f);
 	CVector3 lightPosScreen;
 	pGraphicsMgr->PointToScreen(lightPos, lightPosScreen);
 	float screenX = lightPosScreen[0] / m_pRenderTexture->GetWidth();

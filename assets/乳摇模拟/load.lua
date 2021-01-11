@@ -2,5 +2,5 @@
 scene.position("model_626324", 0, 0, 0)
 scene.angle("model_626324", 1.57, 0, 0)
 scene.scale("model_626324", 0.01440001, 0.01440001, 0.01440001)
-physics.joint("model_626324", "bustAJTL", 1.0, 200.0, 100.0, -0.1)
-physics.joint("model_626324", "bustAJTR", 1.0, 200.0, 100.0, -0.1)
+physics.joint("model_626324", "bustAJTL", 1.0, 100.0, 200.0, -0.1)
+physics.joint("model_626324", "bustAJTR", 1.0, 100.0, 200.0, -0.1)

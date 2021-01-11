@@ -93,6 +93,11 @@ void CAnimationManager::Update(float dt) {
 		if (anim->scale.size() > 1) node->m_cScale = s2->value.Lerp(s1->value, Interpolate(time, s2->time, s1->time, s1->interpolator));
 		if (anim->rotation.size() > 1) node->m_cOrientation = r2->value.Slerp(r1->value, Interpolate(time, r2->time, r1->time, r1->interpolator));
 		if (anim->translation.size() > 1) node->m_cPosition = t2->value.Lerp(t1->value, Interpolate(time, t2->time, t1->time, t1->interpolator));
+		if (anim->incremental) {
+			node->m_cScale *= anim->scale.front().value;
+			node->m_cOrientation *= anim->rotation.front().value;
+			node->m_cPosition += anim->translation.front().value;
+		}
 		node->Transform();
 		if (animationFinish) {
 			m_lstAnimation.remove(anim);
@@ -106,10 +111,11 @@ void CAnimationManager::Update(float dt) {
 * @param node 关联的场景节点
 * @param repeat 重复次数，为负数表示无限重复
 * @param swing 是否往复运动
+* @param relative 是否在原变换基础上的动画
 * @param delay 延时 delay 秒后开始动画
 * @return 成功返回 true
 */
-bool CAnimationManager::Start(CSceneNode* node, int repeat, bool swing, float delay) {
+bool CAnimationManager::Start(CSceneNode* node, int repeat, bool swing, bool relative, float delay) {
 	SAnimationData* anim = GetAnimationData(node, false);
 	if (!anim) return false;
 	const float ts = anim->scale.back().time;
@@ -119,6 +125,7 @@ bool CAnimationManager::Start(CSceneNode* node, int repeat, bool swing, float de
 	if (swing) anim->duration *= 2.0f;
 	anim->numberRepeat = repeat;
 	anim->reciprocating = swing;
+	anim->incremental = relative;
 	anim->animationDelay = delay;
 	anim->scaleIndex = 0;
 	anim->rotationIndex = 0;
@@ -176,10 +183,10 @@ void CAnimationManager::Clear() {
 * 设置缩放动画
 * @param node 关联的场景节点
 * @param value 动画目标缩放值
-* @param interpolator 动画插值方式
 * @param duration 动画持续时间
+* @param interpolator 动画插值方式
 */
-void CAnimationManager::AddScale(CSceneNode* node, const CVector3& value, Interpolator interpolator, float duration) {
+void CAnimationManager::AddScale(CSceneNode* node, const CVector3& value, float duration, Interpolator interpolator) {
 	SAnimationData* anim = GetAnimationData(node, true);
 	SScaleKey key;
 	key.time = anim->scale.back().time + duration;
@@ -192,10 +199,10 @@ void CAnimationManager::AddScale(CSceneNode* node, const CVector3& value, Interp
 * 设置旋转动画
 * @param node 关联的场景节点
 * @param value 动画目标旋转值
-* @param interpolator 动画插值方式
 * @param duration 动画持续时间
+* @param interpolator 动画插值方式
 */
-void CAnimationManager::AddRotation(CSceneNode* node, const CQuaternion& value, Interpolator interpolator, float duration) {
+void CAnimationManager::AddRotation(CSceneNode* node, const CQuaternion& value, float duration, Interpolator interpolator) {
 	SAnimationData* anim = GetAnimationData(node, true);
 	SRotationKey key;
 	key.time = anim->rotation.back().time + duration;
@@ -208,10 +215,10 @@ void CAnimationManager::AddRotation(CSceneNode* node, const CQuaternion& value, 
 * 设置平移动画
 * @param node 关联的场景节点
 * @param value 动画目标位置
-* @param interpolator 动画插值方式
 * @param duration 动画持续时间
+* @param interpolator 动画插值方式
 */
-void CAnimationManager::AddTranslation(CSceneNode* node, const CVector3& value, Interpolator interpolator, float duration) {
+void CAnimationManager::AddTranslation(CSceneNode* node, const CVector3& value, float duration, Interpolator interpolator) {
 	SAnimationData* anim = GetAnimationData(node, true);
 	STranslationKey key;
 	key.time = anim->translation.back().time + duration;
@@ -268,6 +275,7 @@ CAnimationManager::SAnimationData* CAnimationManager::GetAnimationData(CSceneNod
 	anim->translation.push_back(initTranslation);
 	anim->numberRepeat = 1;
 	anim->reciprocating = false;
+	anim->incremental = false;
 	anim->duration = 0.0f;
 	anim->reversing = false;
 	anim->repeatCount = 0;

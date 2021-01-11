@@ -50,9 +50,9 @@ public:
 	static bool EndWith(const string& str, const char* key, bool ignoreCase = false);
 
 	//! UTF8 字符串转换为 wchar_t 数组
-	static void Utf8ToWideCharArray(const char* src, wchar_t* buffer, size_t size);
+	static size_t Utf8ToWideCharArray(const char* src, wchar_t* buffer, size_t size);
 	//! wchar_t 数组转换为 UTF8 字符串
-	static void WideCharArrayToUtf8(const wchar_t* src, char* buffer, size_t size);
+	static size_t WideCharArrayToUtf8(const wchar_t* src, char* buffer, size_t size);
 	//! 字节数组转为十六进制字符串
 	static string ByteArrayToHexString(const string& split, const unsigned char* data, size_t size);
 

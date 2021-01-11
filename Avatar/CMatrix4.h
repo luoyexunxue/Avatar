@@ -54,10 +54,10 @@ public:
 	//! 平移操作
 	CMatrix4& Translate(float dx, float dy, float dz);
 
-	//! 生成变换矩阵(顺序 scale, rot, pos)
-	void MakeTransform(const CVector3& scale, const CMatrix4& rot, const CVector3& pos);
-	//! 生成变换矩阵(顺序 scale, rot, pos)
-	void MakeTransform(const CVector3& scale, const CQuaternion& rot, const CVector3& pos);
+	//! 生成变换矩阵(顺序 scale, rotation, translation)
+	void MakeTransform(const CVector3& scale, const CMatrix4& rotation, const CVector3& translation);
+	//! 生成变换矩阵(顺序 scale, rotation, translation)
+	void MakeTransform(const CVector3& scale, const CQuaternion& rotation, const CVector3& translation);
 
 	//! 计算近斜平面裁剪投影矩阵
 	CMatrix4& ObliqueNearPlaneClipping(const CMatrix4& proj, const CPlane& clip);

@@ -12,6 +12,7 @@
 #include "CGuiTrackBar.h"
 #include "CGuiEditBox.h"
 #include "CGuiPanel.h"
+#include "CGuiListView.h"
 #include <cstring>
 #include <cstdlib>
 
@@ -139,7 +140,7 @@ bool CGuiEnvironment::MouseEvent(int x, int y, int button, int delta) {
 		} else if (m_iLastMouseButton == 1 && button == 0) {
 			if (m_pDragElement) {
 				CRectangle updateRegion;
-				m_pDragElement->Drag(true, x - m_iLastMouseDownPos[0], y - m_iLastMouseDownPos[1], updateRegion);
+				m_pDragElement->OnDrag(true, x - m_iLastMouseDownPos[0], y - m_iLastMouseDownPos[1], updateRegion);
 				pElement = m_pDragElement;
 				m_pDragElement = 0;
 			}
@@ -147,6 +148,7 @@ bool CGuiEnvironment::MouseEvent(int x, int y, int button, int delta) {
 			int dy = y - pElement->m_cRegionScreen.GetTop();
 			CEngine::GetScriptManager()->GuiEvent(pElement->m_strName, EVENT_MOUSE_UP, dx, dy);
 			if (m_iLastMouseDownPos[0] == x && m_iLastMouseDownPos[1] == y) {
+				pElement->OnClick(dx, dy);
 				CEngine::GetScriptManager()->GuiEvent(pElement->m_strName, EVENT_MOUSE_CLICK, dx, dy);
 			}
 		} else if (m_pDragElement && m_iLastMouseButton == 1 && button == 1) {
@@ -154,7 +156,7 @@ bool CGuiEnvironment::MouseEvent(int x, int y, int button, int delta) {
 			int dy = y - m_pDragElement->m_cRegionScreen.GetTop();
 			CEngine::GetScriptManager()->GuiEvent(m_pDragElement->m_strName, EVENT_MOUSE_DRAG, dx, dy);
 			CRectangle updateRegion(m_pDragElement->m_cRegionScreen);
-			if (m_pDragElement->Drag(false, x - m_iLastMouseDownPos[0], y - m_iLastMouseDownPos[1], updateRegion)) {
+			if (m_pDragElement->OnDrag(false, x - m_iLastMouseDownPos[0], y - m_iLastMouseDownPos[1], updateRegion)) {
 				InvalidateRegion(updateRegion);
 			}
 		}
@@ -234,6 +236,7 @@ bool CGuiEnvironment::GuiCreate(const string& name, const string& type, const st
 	else if (type == "trackbar") pElement = new CGuiTrackBar(name);
 	else if (type == "editbox") pElement = new CGuiEditBox(name);
 	else if (type == "panel") pElement = new CGuiPanel(name);
+	else if (type == "listview") pElement = new CGuiListView(name);
 	// 解析属性列表
 	if (pElement) {
 		vector<string> attribs;

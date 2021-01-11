@@ -9,7 +9,7 @@
 * 初始化后处理对象
 */
 bool CPostProcessEmboss::Init(int width, int height) {
-	const char* fragShader = "\
+	const char* emboss = "\
 		uniform sampler2D uTexture;\
 		uniform vec2 uTextureSize;\
 		in vec2 vTexCoord;\
@@ -25,7 +25,7 @@ bool CPostProcessEmboss::Init(int width, int height) {
 		}";
 	CShaderManager* pShaderMgr = CEngine::GetShaderManager();
 	CTextureManager* pTextureMgr = CEngine::GetTextureManager();
-	m_pPostProcessShader = pShaderMgr->Create("postprocess_emboss", GetVertexShader(), fragShader);
+	m_pPostProcessShader = pShaderMgr->Create("postprocess_emboss", GetVertexShader(), emboss);
 	m_pPostProcessShader->SetUniform("uTexture", 0);
 	m_pPostProcessShader->SetUniform("uTextureSize", CVector2(width, height));
 	m_pRenderTexture = pTextureMgr->Create("postprocess_emboss", width, height, false, true, false);

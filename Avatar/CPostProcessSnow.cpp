@@ -10,7 +10,7 @@
 * 初始化后处理对象
 */
 bool CPostProcessSnow::Init(int width, int height) {
-	const char* fragShader = "\
+	const char* snow = "\
 		uniform sampler2D uTexture;\
 		uniform float uElapsedTime;\
 		uniform vec2 uResolution;\
@@ -45,7 +45,7 @@ bool CPostProcessSnow::Init(int width, int height) {
 	// 创建着色器和纹理
 	CShaderManager* pShaderMgr = CEngine::GetShaderManager();
 	CTextureManager* pTextureMgr = CEngine::GetTextureManager();
-	m_pPostProcessShader = pShaderMgr->Create("postprocess_snow", GetVertexShader(), fragShader);
+	m_pPostProcessShader = pShaderMgr->Create("postprocess_snow", GetVertexShader(), snow);
 	m_pPostProcessShader->SetUniform("uTexture", 0);
 	m_pPostProcessShader->SetUniform("uElapsedTime", 0.0f);
 	m_pPostProcessShader->SetUniform("uResolution", CVector2(width, height));

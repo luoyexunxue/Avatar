@@ -9,7 +9,7 @@
 * 初始化后处理对象
 */
 bool CPostProcessGray::Init(int width, int height) {
-	const char* fragShader = "\
+	const char* gray = "\
 		uniform sampler2D uTexture;\
 		in vec2 vTexCoord;\
 		out vec4 fragColor;\
@@ -20,7 +20,7 @@ bool CPostProcessGray::Init(int width, int height) {
 		}";
 	CShaderManager* pShaderMgr = CEngine::GetShaderManager();
 	CTextureManager* pTextureMgr = CEngine::GetTextureManager();
-	m_pPostProcessShader = pShaderMgr->Create("postprocess_gray", GetVertexShader(), fragShader);
+	m_pPostProcessShader = pShaderMgr->Create("postprocess_gray", GetVertexShader(), gray);
 	m_pPostProcessShader->SetUniform("uTexture", 0);
 	m_pRenderTexture = pTextureMgr->Create("postprocess_gray", width, height, false, true, false);
 	return m_pPostProcessShader->IsValid();

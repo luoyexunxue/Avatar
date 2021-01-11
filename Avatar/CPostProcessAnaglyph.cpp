@@ -9,7 +9,7 @@
 * 初始化后处理对象
 */
 bool CPostProcessAnaglyph::Init(int width, int height) {
-	const char* fragShader = "\
+	const char* anaglyph = "\
 		uniform sampler2D uTexture;\
 		in vec2 vTexCoord;\
 		out vec4 fragColor;\
@@ -22,7 +22,7 @@ bool CPostProcessAnaglyph::Init(int width, int height) {
 		}";
 	CShaderManager* pShaderMgr = CEngine::GetShaderManager();
 	CTextureManager* pTextureMgr = CEngine::GetTextureManager();
-	m_pPostProcessShader = pShaderMgr->Create("postprocess_anaglyph", GetVertexShader(), fragShader);
+	m_pPostProcessShader = pShaderMgr->Create("postprocess_anaglyph", GetVertexShader(), anaglyph);
 	m_pPostProcessShader->SetUniform("uTexture", 0);
 	m_pRenderTexture = pTextureMgr->Create("postprocess_anaglyph", width << 1, height, false, true, false);
 	return m_pPostProcessShader->IsValid();

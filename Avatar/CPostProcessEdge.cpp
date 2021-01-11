@@ -9,7 +9,7 @@
 * 初始化后处理对象
 */
 bool CPostProcessEdge::Init(int width, int height) {
-	const char* fragShader = "\
+	const char* edge = "\
 		uniform sampler2D uTexture;\
 		uniform vec2 uTextureSize;\
 		uniform vec3 uEdgeColor;\
@@ -40,7 +40,7 @@ bool CPostProcessEdge::Init(int width, int height) {
 	// 创建着色器和纹理
 	CShaderManager* pShaderMgr = CEngine::GetShaderManager();
 	CTextureManager* pTextureMgr = CEngine::GetTextureManager();
-	m_pPostProcessShader = pShaderMgr->Create("postprocess_edge", GetVertexShader(), fragShader);
+	m_pPostProcessShader = pShaderMgr->Create("postprocess_edge", GetVertexShader(), edge);
 	m_pPostProcessShader->SetUniform("uTexture", 0);
 	m_pPostProcessShader->SetUniform("uTextureSize", CVector2(width, height));
 	m_pPostProcessShader->SetUniform("uEdgeColor", CVector3(1.0f, 1.0f, 1.0f));

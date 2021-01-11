@@ -26,6 +26,8 @@ public:
 	virtual void Destroy() = 0;
 	//! 应用当前后处理
 	virtual void Apply(CTexture* target, CMesh* mesh);
+	//! 启用或禁用后处理
+	virtual void Enable(bool enable) {};
 
 protected:
 	//! 获取顶点着色器代码

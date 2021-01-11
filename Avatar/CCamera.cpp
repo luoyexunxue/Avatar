@@ -56,7 +56,8 @@ void CCamera::Input(CInputManager::SInput* input) {
 		m_cPosition += viewMat.Transpose() * movement;
 	}
 	if (input->bOrientation) {
-		CQuaternion orient(input->fOrientation);
+		float theta = m_fYaw * 0.5f;
+		CQuaternion orient = CQuaternion(0, 0, sinf(theta), cosf(theta)) * CQuaternion(input->fOrientation);
 		m_cLookVector = orient * CVector3::Y;
 		m_cUpVector = orient * CVector3::Z;
 	} else if (input->bTurn) {

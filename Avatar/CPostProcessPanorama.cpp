@@ -9,7 +9,7 @@
 * 初始化后处理对象
 */
 bool CPostProcessPanorama::Init(int width, int height) {
-	const char* fragShader = "\
+	const char* panorama = "\
 		uniform samplerCube uTexture;\
 		in vec2 vTexCoord;\
 		out vec4 fragColor;\
@@ -26,7 +26,7 @@ bool CPostProcessPanorama::Init(int width, int height) {
 	int cubeSize = width > height ? height : width;
 	CShaderManager* pShaderMgr = CEngine::GetShaderManager();
 	CTextureManager* pTextureMgr = CEngine::GetTextureManager();
-	m_pPostProcessShader = pShaderMgr->Create("postprocess_panorama", GetVertexShader(), fragShader);
+	m_pPostProcessShader = pShaderMgr->Create("postprocess_panorama", GetVertexShader(), panorama);
 	m_pPostProcessShader->SetUniform("uTexture", 0);
 	m_pRenderTexture = pTextureMgr->Create("postprocess_panorama", cubeSize, false, true, false);
 	return m_pPostProcessShader->IsValid();

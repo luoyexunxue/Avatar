@@ -408,14 +408,26 @@ CQuaternion CQuaternion::operator * (float scale) const {
 
 /**
 * 重载运算符 *
-* @note 四元数乘以向量等同于施加旋转到向量上
+* @note 四元数乘以向量等同于施加旋转到向量上 v' = qvq*
 */
 CVector3 CQuaternion::operator * (const CVector3& vector) const {
-	CQuaternion qvec(vector.m_fValue[0], vector.m_fValue[1], vector.m_fValue[2], 0);
-	CQuaternion qres = *this * qvec;
-	CQuaternion quat = *this;
-	qres *= quat.Conjugate();
-	return CVector3(qres.m_fValue[0], qres.m_fValue[1], qres.m_fValue[2], qvec.m_fValue[3]);
+	float qxqx = m_fValue[0] * m_fValue[0];
+	float qxqy = m_fValue[0] * m_fValue[1];
+	float qxqz = m_fValue[0] * m_fValue[2];
+	float qxqw = m_fValue[0] * m_fValue[3];
+	float qyqy = m_fValue[1] * m_fValue[1];
+	float qyqz = m_fValue[1] * m_fValue[2];
+	float qyqw = m_fValue[1] * m_fValue[3];
+	float qzqz = m_fValue[2] * m_fValue[2];
+	float qzqw = m_fValue[2] * m_fValue[3];
+
+	float x = vector.m_fValue[0] * (0.5f - qyqy - qzqz);
+	float y = vector.m_fValue[1] * (0.5f - qxqx - qzqz);
+	float z = vector.m_fValue[2] * (0.5f - qxqx - qyqy);
+	x = 2.0f * (x + vector.m_fValue[1] * (qxqy - qzqw) + vector.m_fValue[2] * (qxqz + qyqw));
+	y = 2.0f * (y + vector.m_fValue[0] * (qxqy + qzqw) + vector.m_fValue[2] * (qyqz - qxqw));
+	z = 2.0f * (z + vector.m_fValue[0] * (qxqz - qyqw) + vector.m_fValue[1] * (qyqz + qxqw));
+	return CVector3(x, y, z, 0.0f);
 }
 
 /**

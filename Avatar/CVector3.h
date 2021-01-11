@@ -98,6 +98,8 @@ public:
 	//! 重载运算符 -=
 	CVector3& operator -= (const CVector3& vector);
 	//! 重载运算符 *=
+	CVector3& operator *= (const CVector3& vector);
+	//! 重载运算符 *=
 	CVector3& operator *= (float factor);
 	//! 重载运算符 /=
 	CVector3& operator /= (float factor);

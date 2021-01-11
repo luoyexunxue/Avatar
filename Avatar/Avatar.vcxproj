@@ -202,6 +202,7 @@
     <ClCompile Include="CGuiEditBox.cpp" />
     <ClCompile Include="CGuiEnvironment.cpp" />
     <ClCompile Include="CGuiLabel.cpp" />
+    <ClCompile Include="CGuiListView.cpp" />
     <ClCompile Include="CGuiPanel.cpp" />
     <ClCompile Include="CGuiTrackBar.cpp" />
     <ClCompile Include="CInputManager.cpp" />
@@ -318,6 +319,7 @@
     <ClInclude Include="CGuiEditBox.h" />
     <ClInclude Include="CGuiEnvironment.h" />
     <ClInclude Include="CGuiLabel.h" />
+    <ClInclude Include="CGuiListView.h" />
     <ClInclude Include="CGuiPanel.h" />
     <ClInclude Include="CGuiTrackBar.h" />
     <ClInclude Include="CInputManager.h" />
