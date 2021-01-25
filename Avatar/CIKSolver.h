@@ -22,18 +22,18 @@ public:
 	~CIKSolver();
 
 public:
-	//! 支持的约束方式
-	enum ConstrainType { SWINGLIMIT, TWISTLIMIT };
-
-public:
 	//! 设置目标位置
 	void SetTarget(const CVector3& target);
-	//! 设置约束
-	void SetConstrain(SJoint* joint, ConstrainType type, const CVector3& axis, float minAngle, float maxAngle);
+	//! 设置铰链关节约束
+	void SetSwingLimit(SJoint* joint, const CVector3& axis, float min, float max);
+	//! 设置球状关节约束
+	void SetTwistLimit(SJoint* joint, const CVector3& axis, float angle);
 	//! 迭代解析
 	void Solve(int maxStep);
 
 private:
+	//! 支持的约束方式
+	enum ConstrainType { SWINGLIMIT, TWISTLIMIT };
 	//! 约束定义
 	typedef struct _SConstraint {
 		ConstrainType type;

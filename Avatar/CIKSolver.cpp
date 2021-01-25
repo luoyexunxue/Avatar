@@ -50,33 +50,45 @@ void CIKSolver::SetTarget(const CVector3& target) {
 }
 
 /**
-* 设置约束
+* 设置铰链关节约束
 */
-void CIKSolver::SetConstrain(SJoint* joint, ConstrainType type, const CVector3& axis, float minAngle, float maxAngle) {
+void CIKSolver::SetSwingLimit(SJoint* joint, const CVector3& axis, float min, float max) {
 	for (size_t i = 1; i < m_vecKinematicChain.size(); i++) {
 		if (m_vecKinematicChain[i].joint == joint) {
-			if (!m_vecKinematicChain[i].constraint) {
-				m_vecKinematicChain[i].constraint = new SConstraint();
-			}
-			m_vecKinematicChain[i].constraint->type = type;
-			m_vecKinematicChain[i].constraint->minAngle = minAngle;
-			m_vecKinematicChain[i].constraint->maxAngle = maxAngle;
+			if (!m_vecKinematicChain[i].constraint) m_vecKinematicChain[i].constraint = new SConstraint();
+			m_vecKinematicChain[i].constraint->type = SWINGLIMIT;
+			m_vecKinematicChain[i].constraint->minAngle = min;
+			m_vecKinematicChain[i].constraint->maxAngle = max;
 			m_vecKinematicChain[i].constraint->axis.SetValue(axis);
 			m_vecKinematicChain[i].constraint->axis.Normalize();
-			CQuaternion rotation;
 			CVector3 direction = CVector3(&m_vecKinematicChain[i - 1].joint->localMatrix[12]).Normalize();
-			if (type == SWINGLIMIT) {
-				CVector3 right = m_vecKinematicChain[i].constraint->axis.CrossProduct(direction);
-				if (right.DotProduct(right) < 1E-6) right = m_vecKinematicChain[i].constraint->axis.Tangent();
-				CVector3 destination = right.CrossProduct(m_vecKinematicChain[i].constraint->axis);
-				m_vecKinematicChain[i].constraint->original.SetValue(destination);
-				m_vecKinematicChain[i].constraint->initial.SetValue(direction);
-				m_vecKinematicChain[i].animationRot.FromVector(direction, destination);
-			} else if (type == TWISTLIMIT) {
-				m_vecKinematicChain[i].constraint->original.SetValue(m_vecKinematicChain[i].constraint->axis);
-				m_vecKinematicChain[i].constraint->initial.SetValue(direction);
-				m_vecKinematicChain[i].animationRot.FromVector(direction, m_vecKinematicChain[i].constraint->axis);
-			}
+			CVector3 right = m_vecKinematicChain[i].constraint->axis.CrossProduct(direction);
+			if (right.DotProduct(right) < 1E-6f) right = m_vecKinematicChain[i].constraint->axis.Tangent();
+			CVector3 destination = right.CrossProduct(m_vecKinematicChain[i].constraint->axis);
+			m_vecKinematicChain[i].constraint->original.SetValue(destination);
+			m_vecKinematicChain[i].constraint->initial.SetValue(direction);
+			m_vecKinematicChain[i].animationRot.FromVector(direction, destination);
+			break;
+		}
+	}
+}
+
+/**
+* 设置球状关节约束
+*/
+void CIKSolver::SetTwistLimit(SJoint* joint, const CVector3& axis, float angle) {
+	for (size_t i = 1; i < m_vecKinematicChain.size(); i++) {
+		if (m_vecKinematicChain[i].joint == joint) {
+			if (!m_vecKinematicChain[i].constraint) m_vecKinematicChain[i].constraint = new SConstraint();
+			m_vecKinematicChain[i].constraint->type = TWISTLIMIT;
+			m_vecKinematicChain[i].constraint->minAngle = 0.0f;
+			m_vecKinematicChain[i].constraint->maxAngle = angle;
+			m_vecKinematicChain[i].constraint->axis.SetValue(axis);
+			m_vecKinematicChain[i].constraint->axis.Normalize();
+			CVector3 direction = CVector3(&m_vecKinematicChain[i - 1].joint->localMatrix[12]).Normalize();
+			m_vecKinematicChain[i].constraint->original.SetValue(m_vecKinematicChain[i].constraint->axis);
+			m_vecKinematicChain[i].constraint->initial.SetValue(direction);
+			m_vecKinematicChain[i].animationRot.FromVector(direction, m_vecKinematicChain[i].constraint->axis);
 			break;
 		}
 	}
