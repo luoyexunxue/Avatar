@@ -261,23 +261,26 @@ void CSceneNodeAnimation::SetupFrame(float dt) {
 		SJoint* pJoint = m_pMeshData->GetJoint(i);
 		if (pJoint->physics) {
 			PhysicalSimulation(pJoint, gravity, dt, animateMat);
-		} else if (m_fBlendFactor < 1.0f) {
-			JointTransform(pJoint, 0, rotation, position);
-			if (m_fBlendFactor > 0.0f) {
-				CQuaternion rotation_blend;
-				CVector3 position_blend;
-				JointTransform(pJoint, 1, rotation_blend, position_blend);
-				rotation.SetValue(rotation.SlerpShortest(rotation_blend, m_fBlendFactor));
-				position.SetValue(position.Lerp(position_blend, m_fBlendFactor));
+		} else {
+			if (m_fBlendFactor >= 1.0f) JointTransform(pJoint, 1, rotation, position);
+			else {
+				JointTransform(pJoint, 0, rotation, position);
+				if (m_fBlendFactor > 0.0f) {
+					CQuaternion rotation_blend;
+					CVector3 position_blend;
+					JointTransform(pJoint, 1, rotation_blend, position_blend);
+					rotation.SetValue(rotation.SlerpShortest(rotation_blend, m_fBlendFactor));
+					position.SetValue(position.Lerp(position_blend, m_fBlendFactor));
+				}
 			}
 			animateMat.MakeTransform(CVector3::One, rotation, position);
-		} else {
-			JointTransform(pJoint, 1, rotation, position);
-			animateMat.MakeTransform(CVector3::One, rotation, position);
+		}
+		if (!pJoint->jointIK) {
+			pJoint->worldMatrix.SetValue(pJoint->localMatrix * animateMat);
+			if (pJoint->parent) pJoint->worldMatrix = pJoint->parent->worldMatrix * pJoint->worldMatrix;
 		}
 		// 骨骼变换矩阵为 worldMatrix = parent.worldMatrix * localMatrix * animateMat
-		pJoint->worldMatrix.SetValue(pJoint->localMatrix * animateMat);
-		if (pJoint->parent) pJoint->worldMatrix = pJoint->parent->worldMatrix * pJoint->worldMatrix;
+		// 顶点变换矩阵为 finalMatrix = worldMatrix * bindMatrixInv
 		pJoint->finalMatrix = pJoint->worldMatrix * pJoint->bindMatrixInv;
 	}
 	UpdateVertex();
@@ -384,10 +387,11 @@ void CSceneNodeAnimation::DrawSkeleton(bool topMost) {
 	}
 	// 计算骨骼节点模型坐标系位置
 	int index = 0;
-	const CVector3 orgin(0.0f, 0.0f, 0.0f, 1.0f);
 	for (size_t i = 0; i < jointCount; i++) {
 		SJoint* pJoint = m_pMeshData->GetJoint(i);
-		pJoint->position.SetValue(pJoint->worldMatrix * orgin);
+		pJoint->position[0] = pJoint->worldMatrix[12];
+		pJoint->position[1] = pJoint->worldMatrix[13];
+		pJoint->position[2] = pJoint->worldMatrix[14];
 		if (pJoint->parent) {
 			m_vecJointVertex[index++].SetPosition(pJoint->parent->position);
 			m_vecJointVertex[index++].SetPosition(pJoint->position);

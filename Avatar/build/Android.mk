@@ -14,17 +14,17 @@ LOCAL_SRC_FILES := CAnimationManager.cpp CBase64.cpp CBoundingBox.cpp CCamera.cp
 	CContactDetector.cpp CDelaunay.cpp CDeviceAndroid.cpp CDynamicBvt.cpp CEngine.cpp CFFT.cpp \
 	CFileManager.cpp CFontManager.cpp CFrustum.cpp CGeometryCreator.cpp CGraphicsManager.cpp \
 	CGuiButton.cpp CGuiEditBox.cpp CGuiEnvironment.cpp CGuiLabel.cpp CGuiListView.cpp CGuiPanel.cpp \
-	CGuiTrackBar.cpp CInputManager.cpp CJsonObject.cpp CLog.cpp CMaterial.cpp CMatrix4.cpp CMesh.cpp \
-	CMeshBlend.cpp CMeshData.cpp CMeshLoader.cpp CMeshLoader3ds.cpp CMeshLoaderBasic.cpp \
-	CMeshLoaderCollada.cpp CMeshLoaderGltf.cpp CMeshSlicer.cpp CPhysicsManager.cpp CPlane.cpp \
-	CPluginLoader.cpp CPostProcess.cpp CPostProcessAnaglyph.cpp CPostProcessBeam.cpp CPostProcessBloom.cpp \
-	CPostProcessBlur.cpp CPostProcessCartoon.cpp CPostProcessEdge.cpp CPostProcessEmboss.cpp \
-	CPostProcessFxaa.cpp CPostProcessGray.cpp CPostProcessHdr.cpp CPostProcessManager.cpp \
-	CPostProcessOculus.cpp CPostProcessPanorama.cpp CPostProcessPass.cpp CPostProcessRain.cpp \
-	CPostProcessSnow.cpp CPostProcessSsao.cpp CPostProcessUser.cpp CProfile.cpp CQuaternion.cpp \
-	CRay.cpp CRectangle.cpp CRigidBody.cpp CSceneManager.cpp CSceneNode.cpp CSceneNodeAnimation.cpp \
-	CSceneNodeAxis.cpp CSceneNodeBlast.cpp CSceneNodeBoard.cpp CSceneNodeCloud.cpp CSceneNodeDecal.cpp \
-	CSceneNodeFlame.cpp CSceneNodeFresnel.cpp CSceneNodeGeometry.cpp CSceneNodeLensflare.cpp \
+	CGuiTrackBar.cpp CIKSolver.cpp CInputManager.cpp CJsonObject.cpp CLog.cpp CMaterial.cpp \
+	CMatrix4.cpp CMesh.cpp CMeshBlend.cpp CMeshData.cpp CMeshLoader.cpp CMeshLoader3ds.cpp \
+	CMeshLoaderBasic.cpp CMeshLoaderCollada.cpp CMeshLoaderGltf.cpp CMeshSlicer.cpp CPhysicsManager.cpp \
+	CPlane.cpp CPluginLoader.cpp CPostProcess.cpp CPostProcessAnaglyph.cpp CPostProcessBeam.cpp \
+	CPostProcessBloom.cpp CPostProcessBlur.cpp CPostProcessCartoon.cpp CPostProcessEdge.cpp \
+	CPostProcessEmboss.cpp CPostProcessFxaa.cpp CPostProcessGray.cpp CPostProcessHdr.cpp \
+	CPostProcessManager.cpp CPostProcessOculus.cpp CPostProcessPanorama.cpp CPostProcessPass.cpp \
+	CPostProcessRain.cpp CPostProcessSnow.cpp CPostProcessSsao.cpp CPostProcessUser.cpp CProfile.cpp \
+	CQuaternion.cpp CRay.cpp CRectangle.cpp CRigidBody.cpp CSceneManager.cpp CSceneNode.cpp \
+	CSceneNodeAnimation.cpp CSceneNodeAxis.cpp CSceneNodeBlast.cpp CSceneNodeBoard.cpp CSceneNodeCloud.cpp \
+	CSceneNodeDecal.cpp CSceneNodeFlame.cpp CSceneNodeFresnel.cpp CSceneNodeGeometry.cpp CSceneNodeLensflare.cpp \
 	CSceneNodeLine.cpp CSceneNodeMesh.cpp CSceneNodeParticles.cpp CSceneNodePlanet.cpp CSceneNodePlant.cpp \
 	CSceneNodeScreen.cpp CSceneNodeSkybox.cpp CSceneNodeSound.cpp CSceneNodeStatic.cpp CSceneNodeTerrain.cpp \
 	CSceneNodeText.cpp CSceneNodeWater.cpp CScriptContext.cpp CScriptManager.cpp CShader.cpp \

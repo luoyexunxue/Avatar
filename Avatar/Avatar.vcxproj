@@ -205,6 +205,7 @@
     <ClCompile Include="CGuiListView.cpp" />
     <ClCompile Include="CGuiPanel.cpp" />
     <ClCompile Include="CGuiTrackBar.cpp" />
+    <ClCompile Include="CIKSolver.cpp" />
     <ClCompile Include="CInputManager.cpp" />
     <ClCompile Include="CJsonObject.cpp" />
     <ClCompile Include="CLog.cpp" />
@@ -322,6 +323,7 @@
     <ClInclude Include="CGuiListView.h" />
     <ClInclude Include="CGuiPanel.h" />
     <ClInclude Include="CGuiTrackBar.h" />
+    <ClInclude Include="CIKSolver.h" />
     <ClInclude Include="CInputManager.h" />
     <ClInclude Include="CJsonObject.h" />
     <ClInclude Include="CLog.h" />

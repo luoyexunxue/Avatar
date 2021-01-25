@@ -80,6 +80,8 @@ struct SJointDynamic {
 struct SJoint {
 	//! 所在数组下标
 	int index;
+	//! IK关节
+	bool jointIK;
 	//! 关节名称
 	string name;
 	//! 上级关节
@@ -105,7 +107,7 @@ struct SJoint {
 	//! 位置变换关键帧
 	vector<SAnimationPosKey> keyPos;
 	//! 默认构造函数
-	SJoint() : index(0), parent(0), physics(0) {}
+	SJoint() : index(0), jointIK(false), parent(0), physics(0) {}
 	//! 默认析构函数
 	~SJoint() { if (physics) delete physics; }
 };
