@@ -7,6 +7,7 @@
 #include "AvatarConfig.h"
 #include "CScriptContext.h"
 #include "CVector3.h"
+#include "CInputManager.h"
 #include <string>
 #include <map>
 #include <vector>
@@ -44,9 +45,7 @@ public:
 	//! 窗体大小改变事件
 	void OnSize(int width, int height);
 	//! 输入事件
-	void OnInput(const string& name, int value, int arg1, int arg2, int arg3);
-	//! 输入事件
-	void OnInput(const string& name, int value, float arg1, float arg2, float arg3);
+	void OnInput(CInputManager::SInput* input);
 
 	//! 脚本命令
 	void Script(const char* script);
@@ -58,8 +57,6 @@ public:
 	void CollideEnter(int callback, const string& name, const CVector3& pos);
 	//! 物理碰撞取消事件
 	void CollideLeave(int callback, const string& name);
-	//! 处理事件
-	void HandleEvent();
 
 private:
 	CScriptManager();

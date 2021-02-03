@@ -92,14 +92,14 @@ void CMaterial::UseMaterial() {
 		for (size_t i = 0; i < m_vecUniforms.size(); i++) {
 			SUniformValue* item = &m_vecUniforms[i];
 			switch (item->type) {
-			case CShader::BOOL: m_pShader->SetUniform(item->location, item->value.bValue); break;
-			case CShader::INT: m_pShader->SetUniform(item->location, item->value.iValue); break;
-			case CShader::FLOAT: m_pShader->SetUniform(item->location, item->value.fValue, 1, 1); break;
-			case CShader::VEC2: m_pShader->SetUniform(item->location, item->value.fValue, 2, 1); break;
-			case CShader::VEC3: m_pShader->SetUniform(item->location, item->value.fValue, 3, 1); break;
-			case CShader::VEC4: m_pShader->SetUniform(item->location, item->value.fValue, 4, 1); break;
-			case CShader::MAT3: m_pShader->SetUniform(item->location, item->value.fValue, 9, 1); break;
-			case CShader::MAT4: m_pShader->SetUniform(item->location, item->value.fValue, 16, 1); break;
+			case CShader::BOOL: m_pShader->SetUniform(item->location, item->bValue); break;
+			case CShader::INT: m_pShader->SetUniform(item->location, item->iValue); break;
+			case CShader::FLOAT: m_pShader->SetUniform(item->location, item->fValue, 1, 1); break;
+			case CShader::VEC2: m_pShader->SetUniform(item->location, item->fValue, 2, 1); break;
+			case CShader::VEC3: m_pShader->SetUniform(item->location, item->fValue, 3, 1); break;
+			case CShader::VEC4: m_pShader->SetUniform(item->location, item->fValue, 4, 1); break;
+			case CShader::MAT3: m_pShader->SetUniform(item->location, item->fValue, 9, 1); break;
+			case CShader::MAT4: m_pShader->SetUniform(item->location, item->fValue, 16, 1); break;
 			default: break;
 			}
 		}
@@ -190,7 +190,7 @@ void CMaterial::PassUniform(const string& name, bool value) {
 		SUniformValue uniformValue;
 		uniformValue.location = m_pShader->GetUniform(name);
 		uniformValue.type = CShader::BOOL;
-		uniformValue.value.bValue = value;
+		uniformValue.bValue = value;
 		m_vecUniforms.push_back(uniformValue);
 	}
 }
@@ -203,7 +203,7 @@ void CMaterial::PassUniform(const string& name, int value) {
 		SUniformValue uniformValue;
 		uniformValue.location = m_pShader->GetUniform(name);
 		uniformValue.type = CShader::INT;
-		uniformValue.value.iValue = value;
+		uniformValue.iValue = value;
 		m_vecUniforms.push_back(uniformValue);
 	}
 }
@@ -216,7 +216,7 @@ void CMaterial::PassUniform(const string& name, float value) {
 		SUniformValue uniformValue;
 		uniformValue.location = m_pShader->GetUniform(name);
 		uniformValue.type = CShader::FLOAT;
-		uniformValue.value.fValue[0] = value;
+		uniformValue.fValue[0] = value;
 		m_vecUniforms.push_back(uniformValue);
 	}
 }
@@ -229,8 +229,8 @@ void CMaterial::PassUniform(const string& name, const CVector2& value) {
 		SUniformValue uniformValue;
 		uniformValue.location = m_pShader->GetUniform(name);
 		uniformValue.type = CShader::VEC2;
-		uniformValue.value.fValue[0] = value.m_fValue[0];
-		uniformValue.value.fValue[1] = value.m_fValue[1];
+		uniformValue.fValue[0] = value.m_fValue[0];
+		uniformValue.fValue[1] = value.m_fValue[1];
 		m_vecUniforms.push_back(uniformValue);
 	}
 }
@@ -243,9 +243,9 @@ void CMaterial::PassUniform(const string& name, const CVector3& value) {
 		SUniformValue uniformValue;
 		uniformValue.location = m_pShader->GetUniform(name);
 		uniformValue.type = CShader::VEC3;
-		uniformValue.value.fValue[0] = value.m_fValue[0];
-		uniformValue.value.fValue[1] = value.m_fValue[1];
-		uniformValue.value.fValue[2] = value.m_fValue[2];
+		uniformValue.fValue[0] = value.m_fValue[0];
+		uniformValue.fValue[1] = value.m_fValue[1];
+		uniformValue.fValue[2] = value.m_fValue[2];
 		m_vecUniforms.push_back(uniformValue);
 	}
 }
@@ -258,7 +258,7 @@ void CMaterial::PassUniform(const string& name, const CMatrix4& value) {
 		SUniformValue uniformValue;
 		uniformValue.location = m_pShader->GetUniform(name);
 		uniformValue.type = CShader::MAT4;
-		memcpy(uniformValue.value.fValue, value.m_fValue, sizeof(float) * 16);
+		memcpy(uniformValue.fValue, value.m_fValue, sizeof(float) * 16);
 		m_vecUniforms.push_back(uniformValue);
 	}
 }
@@ -278,7 +278,7 @@ void CMaterial::PassUniform(const string& name, const float value[], int size) {
 		case 16: uniformValue.type = CShader::MAT4; break;
 		}
 		uniformValue.location = m_pShader->GetUniform(name);
-		memcpy(uniformValue.value.fValue, value, sizeof(float) * size);
+		memcpy(uniformValue.fValue, value, sizeof(float) * size);
 		m_vecUniforms.push_back(uniformValue);
 	}
 }

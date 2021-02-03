@@ -162,10 +162,10 @@ else
 	randomSwap()
 end
 
-OnInput = function(name, value, arg1, arg2)
+OnInput = function(name, param)
 	if name == "fire" then
 		if showtime then return end
-		local x, y, z, dx, dy, dz = graphics.pickingRay(arg1, arg2)
+		local x, y, z, dx, dy, dz = graphics.pickingRay(param.x, param.y)
 		local node, x, y, z = scene.pick(x, y, z, dx, dy, dz)
 		if node == nil then return end
 		if lastSelected == node then

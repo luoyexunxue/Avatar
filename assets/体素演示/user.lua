@@ -2,9 +2,9 @@
 camera.position(0, -6, 0)
 engine.input("scale", 1, -1)
 
-OnInput = function(name, value, arg1, arg2)
+OnInput = function(name, param)
 	if name == "fire" then
-		local sx, sy, sz, dx, dy, dz = graphics.pickingRay(arg1, arg2)
+		local sx, sy, sz, dx, dy, dz = graphics.pickingRay(param.x, param.y)
 		local node, x, y, z, mesh, face = scene.pick(sx, sy, sz, dx, dy, dz)
 		if node ~= nil then
 			local px, py, pz = scene.position(node)

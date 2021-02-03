@@ -36,13 +36,13 @@ void CCameraFree::Input(CInputManager::SInput* input) {
 	if (!m_bControlAttached) return;
 	if (input->bMove) {
 		CMatrix4 viewMat = m_cViewMatrix;
-		CVector3 movement = CVector3(input->fRightLeft, input->fUpDown, -input->fForthBack, 0.0f);
+		CVector3 movement = CVector3(input->fMove[0], input->fMove[2], -input->fMove[1], 0.0f);
 		m_cPosInAdvance += viewMat.Transpose() * movement;
 	}
 	if (input->bTurn && !m_bTrackFollow) {
-		CQuaternion rotX = CQuaternion().FromAxisAngle(CVector3::X, input->fPitch);
-		CQuaternion rotY = CQuaternion().FromAxisAngle(CVector3::Y, -input->fRoll);
-		CQuaternion rotZ = CQuaternion().FromAxisAngle(CVector3::Z, input->fYaw);
+		CQuaternion rotX = CQuaternion().FromAxisAngle(CVector3::X, input->fTurn[1]);
+		CQuaternion rotY = CQuaternion().FromAxisAngle(CVector3::Y, -input->fTurn[2]);
+		CQuaternion rotZ = CQuaternion().FromAxisAngle(CVector3::Z, input->fTurn[0]);
 		m_cOrientInAdvance = m_cOrientInAdvance * rotY * rotZ * rotX;
 	}
 }

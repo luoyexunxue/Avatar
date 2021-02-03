@@ -44,7 +44,7 @@ void CCameraGaze::Input(CInputManager::SInput* input) {
 	if (!m_bControlAttached) return;
 	if (input->bMove) {
 		CMatrix4 viewMat = m_cViewMatrix;
-		CVector3 movement = CVector3(input->fRightLeft, input->fUpDown, -input->fForthBack, 0.0f);
+		CVector3 movement = CVector3(input->fMove[0], input->fMove[2], -input->fMove[1], 0.0f);
 		CVector3 offset = viewMat.Transpose() * movement;
 		// 采用向量点积防止过冲
 		CVector3 lookVecBefore = m_cTargetPos - m_cPosInAdvance;
@@ -55,9 +55,9 @@ void CCameraGaze::Input(CInputManager::SInput* input) {
 		}
 	}
 	if (input->bTurn) {
-		m_fYawInAdvance += input->fYaw;
-		m_fPitchInAdvance += input->fPitch;
-		m_fRollInAdvance += input->fRoll;
+		m_fYawInAdvance += input->fTurn[0];
+		m_fPitchInAdvance += input->fTurn[1];
+		m_fRollInAdvance += input->fTurn[2];
 		// 限制 Yaw 范围
 		RestrictYawRange(false);
 		// 旋转角限制在 -89° 到 89°之间

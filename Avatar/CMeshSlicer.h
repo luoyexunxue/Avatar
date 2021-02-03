@@ -62,7 +62,7 @@ private:
 private:
 	vector<const CMesh*> m_vecMeshes;
 	list<STrackSegment> m_lstTrackSet;
-	vector< list<CVector3>> m_vecTrackLines;
+	vector<list<CVector3>> m_vecTrackLines;
 };
 
 #endif

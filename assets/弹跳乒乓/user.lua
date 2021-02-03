@@ -12,7 +12,7 @@ local snd = sound.create('sound.wav', true)
 physics.collide("sphere", function(enter)
 	if enter then sound.play(snd) end
 end)
-OnInput = function(name, value, arg1, arg2)
+OnInput = function(name, param)
 	if name == 'fire' then
 		scene.position('sphere', 0,0,10)
 		physics.reset('sphere')

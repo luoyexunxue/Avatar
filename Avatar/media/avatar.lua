@@ -166,7 +166,7 @@ end
 --------------------------------------------------
 -- 输入事件
 --------------------------------------------------
-OnInput = function(name, value, arg1, arg2)
+OnInput = function(name, param)
 	-- key
 	if name == "key" then
 		local iname = ""
@@ -174,17 +174,17 @@ OnInput = function(name, value, arg1, arg2)
 		local icolor = 1
 		local shape_set = {"box", "sphere", "capsule", "cylinder", "torus", "cone"}
 		local color_set = {'red', 'green', 'blue', 'yellow', 'purple', 'white', ''}
-		if value == 32 then
+		if param.value == 32 then
 			for i = 0,gShootCount,1 do
 				scene.delete("geometry_"..i)
 			end
 			gShootCount = 0
-		elseif value > 32 then
+		elseif param.value > 32 then
 			iname = "geometry_"..gShootCount
-			ishape = value % 6 + 1
+			ishape = param.value % 6 + 1
 			icolor = math.random(7)
 		end
-		print(value)
+		print(param.value)
 		if iname ~= "" then
 			local tx, ty, tz = camera.target()
 			local px, py, pz = camera.position()
@@ -198,7 +198,7 @@ OnInput = function(name, value, arg1, arg2)
 	end
 	-- fire
 	if name == "fire" then
-		local x, y, z, dx, dy, dz = graphics.pickingRay(arg1, arg2)
+		local x, y, z, dx, dy, dz = graphics.pickingRay(param.x, param.y)
 		local node, x, y, z = scene.pick(x, y, z, dx, dy, dz)
 		if gPickingMode == 0 then
 			physics.applyImpulse(node, dx, dy, dz, x, y, z)
@@ -211,15 +211,15 @@ OnInput = function(name, value, arg1, arg2)
 	end
 	-- function
 	if name == "function" then
-		if value == 2 then
+		if param.value == 2 then
 			graphics.stereo(true)
-		elseif value == 3 then
+		elseif param.value == 3 then
 			graphics.stereo(false)
-		elseif value == 4 then
+		elseif param.value == 4 then
 			post.enable("oculus", not post.enable("oculus"))
-		elseif value == 5 then
+		elseif param.value == 5 then
 			post.enable("anaglyph", not post.enable("anaglyph"))
-		elseif value == 8 then
+		elseif param.value == 8 then
 			if gPickingMode == 0 then
 				gPickingMode = 1
 			elseif gPickingMode == 1 then
@@ -232,7 +232,7 @@ OnInput = function(name, value, arg1, arg2)
 				gPickingMode = 0
 				scene.handle("line", "ClearPoint")
 			end
-		elseif value == 12 then
+		elseif param.value == 12 then
 			graphics.screenshot("screen_shots.png")
 		end
 	end

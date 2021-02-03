@@ -28,30 +28,30 @@ OnFail = function()
 	scene.position('player', 0, 0, 0.6)
 	camera.position(0,0,10)
 end
-OnInput = function(name, value, arg1,  arg2)
+OnInput = function(name, param)
 	if name == 'key' then
-		if value == 32 and currentLevel == 1 then scene.position('player',-0.04,31.54,10) end
-		if value == 32 and currentLevel == 2 then scene.position('player',11,6.92,1.312) end
+		if param.value == 32 and currentLevel == 1 then scene.position('player',-0.04,31.54,10) end
+		if param.value == 32 and currentLevel == 2 then scene.position('player',11,6.92,1.312) end
 		local fx = 0
 		local fy = 0
 		local fz = 0
 		local lx, ly, lz, rx, ry, rz, ux, uy, uz = camera.direction()
-		if value == 97 then
+		if param.value == 97 then
 			fx = -magnitude * rx
 			fy = -magnitude * ry
 			fz = -magnitude * rz
 		end
-		if value == 115 then
+		if param.value == 115 then
 			fx = -magnitude * ux
 			fy = -magnitude * uy
 			fz = -magnitude * uz
 		end
-		if value == 100 then
+		if param.value == 100 then
 			fx = magnitude * rx
 			fy = magnitude * ry
 			fz = magnitude * rz
 		end
-		if value == 119 then
+		if param.value == 119 then
 			fx = magnitude * ux
 			fy = magnitude * uy
 			fz = magnitude * uz

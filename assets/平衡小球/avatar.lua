@@ -28,7 +28,7 @@ OnUpdate = function(dt)
 end
 
 -- 输入事件
-OnInput = function(name, value, arg1, arg2)
+OnInput = function(name, param)
 end
 
 -- 画面大小改变

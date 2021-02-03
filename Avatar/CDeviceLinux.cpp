@@ -245,10 +245,10 @@ void CDeviceLinux::Handle(float dt) {
 	// 处理方向按键
 	float fMoveSpeed = 5.0f * dt;
 	if (KeyPressed[0]) fMoveSpeed *= 4.0f;
-	if (KeyPressed[1]) pInputMgr->ForthBack(fMoveSpeed);
-	if (KeyPressed[2]) pInputMgr->ForthBack(-fMoveSpeed);
-	if (KeyPressed[3]) pInputMgr->RightLeft(fMoveSpeed);
-	if (KeyPressed[4]) pInputMgr->RightLeft(-fMoveSpeed);
+	if (KeyPressed[1]) pInputMgr->Move(0.0f, fMoveSpeed, 0.0f);
+	if (KeyPressed[2]) pInputMgr->Move(0.0f, -fMoveSpeed, 0.0f);
+	if (KeyPressed[3]) pInputMgr->Move(fMoveSpeed, 0.0f, 0.0f);
+	if (KeyPressed[4]) pInputMgr->Move(-fMoveSpeed, 0.0f, 0.0f);
 }
 
 #endif

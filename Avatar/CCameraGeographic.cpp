@@ -43,7 +43,7 @@ const char* CCameraGeographic::GetName() const {
 void CCameraGeographic::Input(CInputManager::SInput* input) {
 	if (!m_bControlAttached) return;
 	if (input->bMove) {
-		CVector3 movement = CVector3(input->fRightLeft, input->fUpDown, -input->fForthBack, 0.0f);
+		CVector3 movement = CVector3(input->fMove[0], input->fMove[2], -input->fMove[1], 0.0f);
 		float targetDistance = m_fDistanceInAdvance * tanf(m_fFieldOfView * 0.5f * 0.017453f);
 		float scale_move = 0.0f;
 		float scale_turn = 0.0f;
@@ -58,7 +58,7 @@ void CCameraGeographic::Input(CInputManager::SInput* input) {
 		if (m_fDistanceInAdvance > m_fMaxDistance) m_fDistanceInAdvance = m_fMaxDistance;
 	}
 	if (input->bTurn) {
-		SetAngle(m_fYawInAdvance + input->fYaw, m_fPitchInAdvance + input->fPitch, 0.0f);
+		SetAngle(m_fYawInAdvance + input->fTurn[0], m_fPitchInAdvance + input->fTurn[1], 0.0f);
 	}
 }
 

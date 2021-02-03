@@ -65,8 +65,8 @@ CInputManager::SInput* CInputManager::GetInput() {
 void CInputManager::Update() {
 	// 将缓冲的输入复制到当前输入体中
 	memcpy(m_pInput, m_pBufferedInput, sizeof(SInput));
-	m_pInput->bMove = m_pInput->fRightLeft != 0.0f || m_pInput->fForthBack != 0.0f || m_pInput->fUpDown != 0.0f;
-	m_pInput->bTurn = m_pInput->fYaw != 0.0f || m_pInput->fPitch != 0.0f || m_pInput->fRoll != 0.0f;
+	m_pInput->bMove = m_pInput->fMove[0] != 0.0f || m_pInput->fMove[1] != 0.0f || m_pInput->fMove[2] != 0.0f;
+	m_pInput->bTurn = m_pInput->fTurn[0] != 0.0f || m_pInput->fTurn[1] != 0.0f || m_pInput->fTurn[2] != 0.0f;
 	// 重置输入缓冲
 	m_pBufferedInput->bFire = false;
 	m_pBufferedInput->bJump = false;
@@ -75,12 +75,12 @@ void CInputManager::Update() {
 	m_pBufferedInput->bPosition = false;
 	m_pBufferedInput->bOrientation = false;
 	m_pBufferedInput->bGravity = false;
-	m_pBufferedInput->fRightLeft = 0;
-	m_pBufferedInput->fForthBack = 0;
-	m_pBufferedInput->fUpDown = 0;
-	m_pBufferedInput->fYaw = 0;
-	m_pBufferedInput->fPitch = 0;
-	m_pBufferedInput->fRoll = 0;
+	m_pBufferedInput->fMove[0] = 0;
+	m_pBufferedInput->fMove[1] = 0;
+	m_pBufferedInput->fMove[2] = 0;
+	m_pBufferedInput->fTurn[0] = 0;
+	m_pBufferedInput->fTurn[1] = 0;
+	m_pBufferedInput->fTurn[2] = 0;
 	m_pBufferedInput->iFunction = 0;
 	m_pBufferedInput->iInputKey = 0;
 	m_pBufferedInput->iWidth = 0;
@@ -88,45 +88,21 @@ void CInputManager::Update() {
 }
 
 /**
-* 右左移动
+* 移动输入
 */
-void CInputManager::RightLeft(float step) {
-	m_pBufferedInput->fRightLeft += step;
+void CInputManager::Move(float right, float forth, float up) {
+	m_pBufferedInput->fMove[0] += right;
+	m_pBufferedInput->fMove[1] += forth;
+	m_pBufferedInput->fMove[2] += up;
 }
 
 /**
-* 前后移动
+* 角度输入
 */
-void CInputManager::ForthBack(float step) {
-	m_pBufferedInput->fForthBack += step;
-}
-
-/**
-* 上下移动
-*/
-void CInputManager::UpDown(float step) {
-	m_pBufferedInput->fUpDown += step;
-}
-
-/**
-* 方位角输入
-*/
-void CInputManager::Yaw(float angle) {
-	m_pBufferedInput->fYaw += angle;
-}
-
-/**
-* 俯仰角输入
-*/
-void CInputManager::Pitch(float angle) {
-	m_pBufferedInput->fPitch += angle;
-}
-
-/**
-* 翻滚角输入
-*/
-void CInputManager::Roll(float angle) {
-	m_pBufferedInput->fRoll += angle;
+void CInputManager::Turn(float yaw, float pitch, float roll) {
+	m_pBufferedInput->fTurn[0] += yaw;
+	m_pBufferedInput->fTurn[1] += pitch;
+	m_pBufferedInput->fTurn[2] += roll;
 }
 
 /**
@@ -186,27 +162,6 @@ void CInputManager::Quit() {
 }
 
 /**
-* 下一个状态
-*/
-void CInputManager::NextState() {
-	m_pBufferedInput->iState++;
-}
-
-/**
-* 上一个状态
-*/
-void CInputManager::PrevState() {
-	m_pBufferedInput->iState--;
-}
-
-/**
-* 复位状态
-*/
-void CInputManager::ResetState() {
-	m_pBufferedInput->iState = 0;
-}
-
-/**
 * 功能选择
 * @param func 功能键 1,2,3……
 */
@@ -240,16 +195,16 @@ void CInputManager::MouseInput(int x, int y, int button, int delta) {
 	// 检查是否为 GUI 输入
 	if (!CGuiEnvironment::GetInstance()->MouseEvent(x, y, button, delta) && !m_bDisableMouse) {
 		button = m_iMouseButtonMap[button];
-		m_pBufferedInput->fForthBack += delta * m_fMouseInputScale[0] * 100.0f;
+		m_pBufferedInput->fMove[1] += delta * m_fMouseInputScale[0] * 100.0f;
 		if (dx != 0 || dy != 0) {
 			m_iMouseClickPos[0] = -1;
 			m_iMouseClickPos[1] = -1;
 			if (button == 1) {
-				m_pBufferedInput->fYaw += dx * m_fMouseInputScale[1];
-				m_pBufferedInput->fPitch += dy * m_fMouseInputScale[1];
+				m_pBufferedInput->fTurn[0] += dx * m_fMouseInputScale[1];
+				m_pBufferedInput->fTurn[1] += dy * m_fMouseInputScale[1];
 			} else if (button == 2) {
-				m_pBufferedInput->fRightLeft -= dx * m_fMouseInputScale[0];
-				m_pBufferedInput->fUpDown += dy * m_fMouseInputScale[0];
+				m_pBufferedInput->fMove[0] -= dx * m_fMouseInputScale[0];
+				m_pBufferedInput->fMove[2] += dy * m_fMouseInputScale[0];
 			}
 		} else {
 			if (button == 1 && m_iMouseLastButton == 0) {
@@ -279,8 +234,6 @@ void CInputManager::KeyboardInput(int key) {
 		case ' ': m_pBufferedInput->bJump = true; break;
 		case 'F': m_pBufferedInput->bFire = true; break;
 		case 'P': m_pBufferedInput->bPause = !m_pBufferedInput->bPause; break;
-		case '+': m_pBufferedInput->iState++; break;
-		case '-': m_pBufferedInput->iState--; break;
 		default: break;
 		}
 	}

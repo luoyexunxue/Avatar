@@ -33,9 +33,9 @@ for key, value in ipairs(postlist) do
 	top = top + 40
 end
 
-OnInput = function(name, value, arg1, arg2)
+OnInput = function(name, param)
 	if name == 'key' then
-		if value == 32 then
+		if param.value == 32 then
 			post.enable(postlist[current], false)
 			current = current + 1
 			if current > postcount then current = 1 end

@@ -33,7 +33,6 @@ public:
 		bool bOrientation;
 		bool bGravity;
 
-		int iState;
 		int	iFunction;
 		int iInputKey;
 		int iInputX;
@@ -41,12 +40,8 @@ public:
 		int iWidth;
 		int iHeight;
 
-		float fRightLeft;
-		float fForthBack;
-		float fUpDown;
-		float fYaw;
-		float fPitch;
-		float fRoll;
+		float fMove[3];
+		float fTurn[3];
 		float fPosition[3];
 		float fOrientation[4];
 		float fGravity[3];
@@ -61,26 +56,25 @@ public:
 			bPosition = false;
 			bOrientation = false;
 			bGravity = false;
-			iState = 0;
 			iFunction = 0;
 			iInputKey = 0;
 			iInputX = 0;
 			iInputY = 0;
 			iWidth = 0;
 			iHeight = 0;
-			fRightLeft = 0.0f;
-			fForthBack = 0.0f;
-			fUpDown = 0.0f;
-			fYaw = 0.0f;
-			fPitch = 0.0f;
-			fRoll = 0.0f;
+			fMove[0] = 0.0f;
+			fMove[1] = 0.0f;
+			fMove[2] = 0.0f;
+			fTurn[0] = 0.0f;
+			fTurn[1] = 0.0f;
+			fTurn[2] = 0.0f;
 			fPosition[0] = 0.0f;
 			fPosition[1] = 0.0f;
 			fPosition[2] = 0.0f;
 			fOrientation[0] = 0.0f;
 			fOrientation[1] = 0.0f;
 			fOrientation[2] = 0.0f;
-			fOrientation[3] = 0.0f;
+			fOrientation[3] = 1.0f;
 			fGravity[0] = 0.0f;
 			fGravity[1] = 0.0f;
 			fGravity[2] = 0.0f;
@@ -93,20 +87,10 @@ public:
 	//! 输入更新
 	void Update();
 
-	//! 右左移动
-	void RightLeft(float step);
-	//! 前后移动
-	void ForthBack(float step);
-	//! 上下移动
-	void UpDown(float step);
-
-	//! 水平角度
-	void Yaw(float angle);
-	//! 俯仰角度
-	void Pitch(float angle);
-	//! 翻滚角度
-	void Roll(float angle);
-
+	//! 移动
+	void Move(float right, float forth, float up);
+	//! 角度
+	void Turn(float yaw, float pitch, float roll);
 	//! 位置
 	void Position(float x, float y, float z);
 	//! 方位
@@ -123,12 +107,6 @@ public:
 	//! 退出
 	void Quit();
 
-	//! 下一个状态
-	void NextState();
-	//! 上一个状态
-	void PrevState();
-	//! 复位状态
-	void ResetState();
 	//! 功能选择
 	void Function(int func);
 	//! 窗口大小改变

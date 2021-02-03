@@ -23,7 +23,7 @@ OnSize = function(w, h)
 	height = height - 50 - 10
 	gui.modify('start', 'top='..height..';left='..width);
 end
-OnInput = function(name, key, arg1, arg2, arg3)
+OnInput = function(name, param)
 	if name == 'fire' then
 		local x, y, z = scene.position('ball')
 		if z < -10 then throwBall() end

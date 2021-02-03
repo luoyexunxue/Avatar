@@ -145,6 +145,16 @@ void CScriptManager::OnReady() {
 * 更新内部逻辑
 */
 void CScriptManager::OnUpdate(float dt) {
+	// GUI事件回调
+	for (size_t i = 0; i < m_vecEventQueue.size(); i++) {
+		const SGuiEvent& evt = m_vecEventQueue[i];
+		lua_rawgeti(m_pLuaState, LUA_REGISTRYINDEX, evt.callback);
+		lua_pushinteger(m_pLuaState, evt.event);
+		lua_pushinteger(m_pLuaState, evt.arg1);
+		lua_pushinteger(m_pLuaState, evt.arg2);
+		lua_pcall(m_pLuaState, 3, 0, 0);
+	}
+	m_vecEventQueue.clear();
 	// 脚本命令执行
 	while (!m_queScriptQueue.empty()) {
 		string script = std::move(m_queScriptQueue.front());
@@ -181,27 +191,49 @@ void CScriptManager::OnSize(int width, int height) {
 /**
 * 输入事件
 */
-void CScriptManager::OnInput(const string& name, int value, int arg1, int arg2, int arg3) {
-	lua_getglobal(m_pLuaState, "OnInput");
-	lua_pushstring(m_pLuaState, name.c_str());
-	lua_pushinteger(m_pLuaState, value);
-	lua_pushinteger(m_pLuaState, arg1);
-	lua_pushinteger(m_pLuaState, arg2);
-	lua_pushinteger(m_pLuaState, arg3);
-	lua_pcall(m_pLuaState, 5, 0, 0);
-}
-
-/**
-* 输入事件
-*/
-void CScriptManager::OnInput(const string& name, int value, float arg1, float arg2, float arg3) {
-	lua_getglobal(m_pLuaState, "OnInput");
-	lua_pushstring(m_pLuaState, name.c_str());
-	lua_pushinteger(m_pLuaState, value);
-	lua_pushnumber(m_pLuaState, arg1);
-	lua_pushnumber(m_pLuaState, arg2);
-	lua_pushnumber(m_pLuaState, arg3);
-	lua_pcall(m_pLuaState, 5, 0, 0);
+void CScriptManager::OnInput(CInputManager::SInput* input) {
+	typedef struct _SValue {
+		int type;
+		union { int ivalue; float fvalue; };
+		_SValue() { type = 0; ivalue = 0; }
+		_SValue(int val) :type(0), ivalue(val) {}
+		_SValue(float val) :type(1), fvalue(val) {}
+	} SValue;
+	map<string, map<string, SValue>> evt;
+	if (input->iFunction) { evt["function"]["value"] = input->iFunction; }
+	if (input->iInputKey) { evt["key"]["value"] = input->iInputKey; }
+	if (input->bFire) { evt["fire"]["x"] = input->iInputX; evt["fire"]["y"] = input->iInputY; }
+	if (input->bJump) { evt["jump"] = map<string, SValue>(); }
+	if (input->bMove) { evt["move"]["x"] = input->fMove[0]; evt["move"]["y"] = input->fMove[1]; evt["move"]["z"] = input->fMove[2]; }
+	if (input->bTurn) { evt["turn"]["x"] = input->fTurn[0]; evt["turn"]["y"] = input->fTurn[1]; evt["turn"]["z"] = input->fTurn[2]; }
+	if (input->bGravity) {
+		evt["gravity"]["x"] = input->fGravity[0];
+		evt["gravity"]["y"] = input->fGravity[1];
+		evt["gravity"]["z"] = input->fGravity[2];
+	}
+	if (input->bPosition) {
+		evt["position"]["x"] = input->fPosition[0];
+		evt["position"]["y"] = input->fPosition[1];
+		evt["position"]["z"] = input->fPosition[2];
+	}
+	if (input->bOrientation) {
+		evt["orientation"]["x"] = input->fOrientation[0];
+		evt["orientation"]["y"] = input->fOrientation[1];
+		evt["orientation"]["z"] = input->fOrientation[2];
+		evt["orientation"]["w"] = input->fOrientation[3];
+	}
+	for (map<string, map<string, SValue>>::iterator iter = evt.begin(); iter != evt.end(); ++iter) {
+		lua_getglobal(m_pLuaState, "OnInput");
+		lua_pushstring(m_pLuaState, iter->first.c_str());
+		lua_newtable(m_pLuaState);
+		for (map<string, SValue>::iterator it = iter->second.begin(); it != iter->second.end(); ++it) {
+			lua_pushstring(m_pLuaState, it->first.c_str());
+			if (it->second.type == 0) lua_pushinteger(m_pLuaState, it->second.ivalue);
+			else lua_pushnumber(m_pLuaState, it->second.fvalue);
+			lua_settable(m_pLuaState, -3);
+		}
+		lua_pcall(m_pLuaState, 2, 0, 0);
+	}
 }
 
 /**
@@ -252,21 +284,6 @@ void CScriptManager::CollideLeave(int callback, const string& name) {
 	lua_pushboolean(m_pLuaState, 0);
 	lua_pushstring(m_pLuaState, name.c_str());
 	lua_pcall(m_pLuaState, 2, 0, 0);
-}
-
-/**
-* GUI 脚本事件回调
-*/
-void CScriptManager::HandleEvent() {
-	for (size_t i = 0; i < m_vecEventQueue.size(); i++) {
-		const SGuiEvent& evt = m_vecEventQueue[i];
-		lua_rawgeti(m_pLuaState, LUA_REGISTRYINDEX, evt.callback);
-		lua_pushinteger(m_pLuaState, evt.event);
-		lua_pushinteger(m_pLuaState, evt.arg1);
-		lua_pushinteger(m_pLuaState, evt.arg2);
-		lua_pcall(m_pLuaState, 3, 0, 0);
-	}
-	m_vecEventQueue.clear();
 }
 
 /**
@@ -532,15 +549,17 @@ int CScriptManager::DoEngineInput(lua_State* lua) {
 			}
 		} else if (!strcmp(method, "move")) {
 			if (lua_isnumber(lua, 2) && lua_isnumber(lua, 3) && lua_isnumber(lua, 4)) {
-				inputMgr->RightLeft((float)lua_tonumber(lua, 2));
-				inputMgr->ForthBack((float)lua_tonumber(lua, 3));
-				inputMgr->UpDown((float)lua_tonumber(lua, 4));
+				float right = (float)lua_tonumber(lua, 2);
+				float forth = (float)lua_tonumber(lua, 3);
+				float up = (float)lua_tonumber(lua, 4);
+				inputMgr->Move(right, forth, up);
 			}
 		} else if (!strcmp(method, "turn")) {
 			if (lua_isnumber(lua, 2) && lua_isnumber(lua, 3) && lua_isnumber(lua, 4)) {
-				inputMgr->Yaw((float)lua_tonumber(lua, 2));
-				inputMgr->Pitch((float)lua_tonumber(lua, 3));
-				inputMgr->Roll((float)lua_tonumber(lua, 4));
+				float yaw = (float)lua_tonumber(lua, 2);
+				float pitch = (float)lua_tonumber(lua, 3);
+				float roll = (float)lua_tonumber(lua, 4);
+				inputMgr->Turn(yaw, pitch, roll);
 			}
 		} else if (!strcmp(method, "map")) {
 			if (lua_isinteger(lua, 2) && lua_isinteger(lua, 3) && lua_isinteger(lua, 4)) {

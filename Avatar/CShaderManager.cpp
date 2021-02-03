@@ -138,7 +138,7 @@ bool CShaderManager::Update(CShader* shader, const char* vert, const char* frag)
 		union {
 			int iValue[1];
 			float fValue[16];
-		} value;
+		};
 	};
 	vector<SUniformValue> uniformValues;
 	map<string, int>::iterator iter = shader->m_mapUniforms.begin();
@@ -149,7 +149,7 @@ bool CShaderManager::Update(CShader* shader, const char* vert, const char* frag)
 		switch (uniform.type) {
 		case CShader::BOOL:
 		case CShader::INT:
-			glGetUniformiv(shader->m_iProgram, iter->second, uniform.value.iValue);
+			glGetUniformiv(shader->m_iProgram, iter->second, uniform.iValue);
 			break;
 		case CShader::FLOAT:
 		case CShader::VEC2:
@@ -157,7 +157,7 @@ bool CShaderManager::Update(CShader* shader, const char* vert, const char* frag)
 		case CShader::VEC4:
 		case CShader::MAT3:
 		case CShader::MAT4:
-			glGetUniformfv(shader->m_iProgram, iter->second, uniform.value.fValue);
+			glGetUniformfv(shader->m_iProgram, iter->second, uniform.fValue);
 			break;
 		default: break;
 		}
@@ -175,14 +175,14 @@ bool CShaderManager::Update(CShader* shader, const char* vert, const char* frag)
 		SUniformValue* item = &uniformValues[i];
 		if (shader->IsUniform(item->name)) {
 			switch (item->type) {
-			case CShader::BOOL: shader->SetUniform(item->name, item->value.iValue[0]); break;
-			case CShader::INT: shader->SetUniform(item->name, item->value.iValue[0]); break;
-			case CShader::FLOAT: shader->SetUniform(item->name, item->value.fValue, 1, 1); break;
-			case CShader::VEC2: shader->SetUniform(item->name, item->value.fValue, 2, 1); break;
-			case CShader::VEC3: shader->SetUniform(item->name, item->value.fValue, 3, 1); break;
-			case CShader::VEC4: shader->SetUniform(item->name, item->value.fValue, 4, 1); break;
-			case CShader::MAT3: shader->SetUniform(item->name, item->value.fValue, 9, 1); break;
-			case CShader::MAT4: shader->SetUniform(item->name, item->value.fValue, 16, 1); break;
+			case CShader::BOOL: shader->SetUniform(item->name, item->iValue[0]); break;
+			case CShader::INT: shader->SetUniform(item->name, item->iValue[0]); break;
+			case CShader::FLOAT: shader->SetUniform(item->name, item->fValue, 1, 1); break;
+			case CShader::VEC2: shader->SetUniform(item->name, item->fValue, 2, 1); break;
+			case CShader::VEC3: shader->SetUniform(item->name, item->fValue, 3, 1); break;
+			case CShader::VEC4: shader->SetUniform(item->name, item->fValue, 4, 1); break;
+			case CShader::MAT3: shader->SetUniform(item->name, item->fValue, 9, 1); break;
+			case CShader::MAT4: shader->SetUniform(item->name, item->fValue, 16, 1); break;
 			default: break;
 			}
 		}

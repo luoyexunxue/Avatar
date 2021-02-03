@@ -198,10 +198,7 @@ JNIEXPORT void JNICALL Java_com_luoyexunxue_avatar_AvatarNative_update(JNIEnv* e
 */
 JNIEXPORT void JNICALL Java_com_luoyexunxue_avatar_AvatarNative_move(JNIEnv* env, jobject obj, jfloat rightLeft, jfloat forthBack, jfloat upDown) {
 	if (_avatar_init) {
-		CInputManager* pInputMgr = CEngine::GetInputManager();
-		pInputMgr->RightLeft(rightLeft);
-		pInputMgr->ForthBack(forthBack);
-		pInputMgr->UpDown(upDown);
+		CEngine::GetInputManager()->Move(rightLeft, forthBack, upDown);
 	}
 }
 
@@ -372,18 +369,20 @@ void* ThreadRecv(void* pParam) {
 		if (ret > 0) {
 			buffer[ret] = 0;
 			CJsonObject json(buffer);
-			if (json.IsContain("dx")) pInputMgr->RightLeft(json["dx"].ToFloat());
-			if (json.IsContain("dy")) pInputMgr->ForthBack(json["dy"].ToFloat());
-			if (json.IsContain("dz")) pInputMgr->UpDown(json["dz"].ToFloat());
-			if (json.IsContain("yaw")) pInputMgr->Yaw(json["yaw"].ToFloat());
-			if (json.IsContain("pitch")) pInputMgr->Pitch(json["pitch"].ToFloat());
-			if (json.IsContain("roll")) pInputMgr->Roll(json["roll"].ToFloat());
 			if (json.IsContain("fire") && json["fire"].ToBool()) pInputMgr->Fire();
 			if (json.IsContain("jump") && json["jump"].ToBool()) pInputMgr->Jump();
+			if (json.IsContain("move")) {
+				CJsonObject& move = json["move"];
+				pInputMgr->Move(move[0].ToFloat(), move[1].ToFloat(), move[2].ToFloat());
+			}
+			if (json.IsContain("turn")) {
+				CJsonObject& turn = json["turn"];
+				pInputMgr->Turn(turn[0].ToFloat(), turn[1].ToFloat(), turn[2].ToFloat());
+			}
 			if (json.IsContain("angle")) {
 				CQuaternion orient;
-				CJsonObject& ori = json["angle"];
-				orient.FromEulerAngles(ori[0].ToFloat(), ori[1].ToFloat(), ori[2].ToFloat());
+				CJsonObject& angle = json["angle"];
+				orient.FromEulerAngles(angle[0].ToFloat(), angle[1].ToFloat(), angle[2].ToFloat());
 				pInputMgr->Orientation(orient[0], orient[1], orient[2], orient[3]);
 			}
 			if (json.IsContain("command")) {

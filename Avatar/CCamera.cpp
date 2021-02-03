@@ -52,7 +52,7 @@ void CCamera::Input(CInputManager::SInput* input) {
 		m_cPosition.SetValue(input->fPosition);
 	} else if (input->bMove) {
 		CMatrix4 viewMat = m_cViewMatrix;
-		CVector3 movement = CVector3(input->fRightLeft, input->fUpDown, -input->fForthBack, 0.0f);
+		CVector3 movement = CVector3(input->fMove[0], input->fMove[2], -input->fMove[1], 0.0f);
 		m_cPosition += viewMat.Transpose() * movement;
 	}
 	if (input->bOrientation) {
@@ -61,7 +61,7 @@ void CCamera::Input(CInputManager::SInput* input) {
 		m_cLookVector = orient * CVector3::Y;
 		m_cUpVector = orient * CVector3::Z;
 	} else if (input->bTurn) {
-		SetAngle(m_fYaw + input->fYaw, m_fPitch + input->fPitch, m_fRoll + input->fRoll);
+		SetAngle(m_fYaw + input->fTurn[0], m_fPitch + input->fTurn[1], m_fRoll + input->fTurn[2]);
 	}
 }
 

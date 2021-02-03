@@ -88,7 +88,7 @@ private:
 			bool bValue;
 			int iValue;
 			float fValue[16];
-		} value;
+		};
 	} SUniformValue;
 
 	//! 背面剔除

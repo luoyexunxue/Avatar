@@ -33,13 +33,13 @@ void CCameraSmooth::Input(CInputManager::SInput* input) {
 	if (!m_bControlAttached) return;
 	if (input->bMove) {
 		CMatrix4 viewMat = m_cViewMatrix;
-		CVector3 movement = CVector3(input->fRightLeft, input->fUpDown, -input->fForthBack, 0.0f);
+		CVector3 movement = CVector3(input->fMove[0], input->fMove[2], -input->fMove[1], 0.0f);
 		m_cPosInAdvance += viewMat.Transpose() * movement;
 	}
 	if (input->bTurn) {
-		m_fYawInAdvance += input->fYaw;
-		m_fPitchInAdvance += input->fPitch;
-		m_fRollInAdvance += input->fRoll;
+		m_fYawInAdvance += input->fTurn[0];
+		m_fPitchInAdvance += input->fTurn[1];
+		m_fRollInAdvance += input->fTurn[2];
 		RestrictYawRange(false);
 		// 俯仰角旋转角限制在 -89° 到 89°之间
 		const float maxAngle = 1.553343f;

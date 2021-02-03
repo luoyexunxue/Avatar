@@ -109,18 +109,9 @@ void CEngine::Update() {
 	}
 	// 获取系统输入
 	CInputManager* pInputMgr = GetInputManager();
-	CScriptManager* pScriptMgr = GetScriptManager();
-	CSoundManager* pSoundMgr = GetSoundManager();
 	GetDevice()->Handle(m_fTimeSpan);
 	pInputMgr->Update();
-	pScriptMgr->HandleEvent();
-	// 处理输入消息
 	CInputManager::SInput* pInput = pInputMgr->GetInput();
-	// 判断窗口是否改变大小
-	if (pInput->iWidth > 0 || pInput->iHeight > 0) {
-		GetGraphicsManager()->SetWindowSize(pInput->iWidth, pInput->iHeight);
-		pScriptMgr->OnSize(pInput->iWidth, pInput->iHeight);
-	}
 	// 判断是否退出
 	if (pInput->bQuit) {
 		CLog::Info("Input exit message");
@@ -129,21 +120,22 @@ void CEngine::Update() {
 	}
 	// 判断开始暂停
 	if (m_bActive == pInput->bPause) {
-		CLog::Info("Input start/pause message");
+		CLog::Info("Input %s message", pInput->bPause ? "pause" : "start");
 		CTimer::Pause(pInput->bPause);
-		pSoundMgr->Pause(pInput->bPause);
+		GetSoundManager()->Pause(pInput->bPause);
 		m_bActive = !m_bActive;
 	}
 	if (!m_bActive) return;
-
-	// 脚本输入处理
+	// 重力输入
 	if (pInput->bGravity) GetPhysicsManager()->SetGravity(CVector3(pInput->fGravity));
-	if (pInput->iFunction) pScriptMgr->OnInput("function", pInput->iFunction, 0, 0, 0);
-	if (pInput->iInputKey) pScriptMgr->OnInput("key", pInput->iInputKey, 0, 0, 0);
-	if (pInput->bFire) pScriptMgr->OnInput("fire", 1, pInput->iInputX, pInput->iInputY, 0);
-	if (pInput->bMove) pScriptMgr->OnInput("move", 1, pInput->fRightLeft, pInput->fForthBack, pInput->fUpDown);
-	if (pInput->bTurn) pScriptMgr->OnInput("turn", 1, pInput->fYaw, pInput->fPitch, pInput->fRoll);
-	// 在更新其它组件之前执行，保证脚本执行正确
+	// 判断窗口是否改变大小
+	if (pInput->iWidth > 0 || pInput->iHeight > 0) {
+		GetGraphicsManager()->SetWindowSize(pInput->iWidth, pInput->iHeight);
+		GetScriptManager()->OnSize(pInput->iWidth, pInput->iHeight);
+	}
+	// 脚本输入及更新
+	CScriptManager* pScriptMgr = GetScriptManager();
+	pScriptMgr->OnInput(pInput);
 	pScriptMgr->OnUpdate(m_fTimeSpan);
 	// 更新相机状态
 	CCamera* pCamera = GetGraphicsManager()->GetCamera();
@@ -160,6 +152,7 @@ void CEngine::Update() {
 	GetAnimationManager()->Update(m_fTimeSpan);
 	GetSceneManager()->Update(m_fTimeSpan);
 	// 更新听众位置，即摄像机位置
+	CSoundManager* pSoundMgr = GetSoundManager();
 	pSoundMgr->ListenerPos(pCamera->m_cPosition);
 	pSoundMgr->ListenerOri(pCamera->m_cLookVector, pCamera->m_cUpVector);
 }

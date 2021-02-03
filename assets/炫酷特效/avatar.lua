@@ -13,7 +13,7 @@ OnUpdate = function(dt)
    updateLight()
 end
 
-OnInput = function(name, value, arg1, arg2)
+OnInput = function(name, param)
 end
 
 OnSize = function(width, height)

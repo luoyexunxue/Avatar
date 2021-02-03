@@ -1,9 +1,9 @@
 ﻿shader.create('silk', 'silk.vert', 'silk.frag')
 scene.material('untitled', 2, {color='purple', shader='silk'})
 current_animation = 0
-OnInput = function(name, value, arg1, arg2)
+OnInput = function(name, param)
 	if name == "fire" then
-		local x, y, z, dx, dy, dz = graphics.pickingRay(arg1, arg2)
+		local x, y, z, dx, dy, dz = graphics.pickingRay(param.x, param.y)
 		local node = scene.pick(x, y, z, dx, dy, dz)
 		if node == 'untitled' then
 			current_animation = current_animation + 1
