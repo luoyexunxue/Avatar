@@ -76,7 +76,7 @@ float axis(float t, float k)
 
 float ptime()
 {
-    return iGlobalTime * 0.2;
+    return iTime * 0.2;
 }
 
 vec3 path(float to)
@@ -108,7 +108,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     float ft = fract(ptime());
 	float g = ft * 4.0;
     float fl = floor(ptime());
-    r.xy *= rot(fl * 3.14159 * cos(fl * 3.14) + sin(iGlobalTime * 0.5) * 2.0);
+    r.xy *= rot(fl * 3.14159 * cos(fl * 3.14) + sin(iTime * 0.5) * 2.0);
     r.yz *= rot(axis(g, 3.0) * -1.57);
     r.xz *= rot(axis(g, 2.0) * -1.57);
     r.yz *= rot(axis(g, 0.0) * 1.57);

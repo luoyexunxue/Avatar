@@ -332,7 +332,10 @@ function load_from_shadertoy(file, name)
 		uniform vec2 uResolution;
 		in vec2 vTexCoord;
 		out vec4 fragColor;
-		vec4 iDate = vec4(2016.0, 6.0, 7.0, 1066.0);
+		int iFrame = 1;
+		float iTimeDelta = 0.025;
+		float iSampleRate = 44100.0;
+		vec4 iDate = vec4(2021.0, 2.0, 5.0, 1066.0);
 		vec4 iMouse = vec4(640.0, 480.0, 0.0, 0.0);
 		vec3 iChannelResolution = vec3(1024.0, 1024.0, 4.0);
 	]]
@@ -341,14 +344,16 @@ function load_from_shadertoy(file, name)
 	local iter = source_file:lines()
 	for line in iter do
 		line = string.gsub(line, "iResolution", "uResolution")
-		line = string.gsub(line, "iGlobalTime", "uElapsedTime")
-		line = string.gsub(line, "iChannel0", "uTexture")	
-		local mainline = string.gsub(line, "mainImage%s-%(%s-out%s-vec4%s-fragColor%s-,%s-in%s-vec2%s-fragCoord%s-%)", "main()")
+		line = string.gsub(line, "iChannel%d", "uTexture")
+		line = string.gsub(line, "iChannelTime%[%d%]", "uElapsedTime")
+		line = string.gsub(line, "iChannelResolution%[%d%]", "iChannelResolution")
+		line = string.gsub(line, "iTime", "uElapsedTime")
+		local mainline = string.gsub(line, "mainImage%s*%(%s*out%s*vec4%s*fragColor%s*,%s*in%s*vec2%s*fragCoord%s*%)", "main()")
 		if mainline ~= line then start_main = true end
 		line = mainline
 		if start_main then
-			line = string.gsub(line, "%sfragCoord.xy", " gl_FragCoord.xy")
-			line = string.gsub(line, "%sfragCoord", " gl_FragCoord.xy")
+			line = string.gsub(line, "%s*fragCoord.xy", " gl_FragCoord.xy")
+			line = string.gsub(line, "%s*fragCoord", " gl_FragCoord.xy")
 		end
 		content = content .. line .. "\n";
 	end

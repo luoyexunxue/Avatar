@@ -10,7 +10,7 @@ vec2 center ( vec2 border , vec2 offset , vec2 vel ) {
 		c = vec2(iMouse.x, iMouse.y);	
 	} 
 	else {
-		c = offset + vel * iGlobalTime * 0.5;
+		c = offset + vel * iTime * 0.5;
 		c = mod ( c , 2. - 4. * border );
 		if ( c.x > 1. - border.x ) c.x = 2. - c.x - 2. * border.x;
 		if ( c.x < border.x ) c.x = 2. * border.x - c.x;
@@ -21,12 +21,12 @@ vec2 center ( vec2 border , vec2 offset , vec2 vel ) {
 }
 
 // ADDED: ------------------------------------------------------
-vec2 g_fragCoord;
+vec2 g_frag_coord;
 
 void circle ( float r , vec3 col , vec2 offset , vec2 vel ) {
     
 	// CHANGED: ------------------------------------------------------
-	vec2 pos = g_fragCoord.xy / iResolution.y;
+	vec2 pos = g_frag_coord.xy / iResolution.y;
     
 	float aspect = iResolution.x / iResolution.y;
 	vec2 c = center ( vec2 ( r / aspect , r ) , offset , vel );
@@ -47,7 +47,7 @@ vec3 band ( float shade, float low, float high, vec3 col1, vec3 col2 ) {
 }
 
 vec3 gradient ( float shade ) {
-	vec3 colour = vec3( (sin(iGlobalTime/2.0)*0.25)+0.25,0.0,(cos(iGlobalTime/2.0)*0.25)+0.25);
+	vec3 colour = vec3( (sin(iTime/2.0)*0.25)+0.25,0.0,(cos(iTime/2.0)*0.25)+0.25);
 	
 	vec2 mouseScaled = iMouse.xy/iResolution.xy;
 	vec3 col1 = vec3(mouseScaled.x, 0.0, 1.0-mouseScaled.x);
@@ -68,7 +68,7 @@ vec3 gradient ( float shade ) {
 void mainImage( out vec4 fragColor, in vec2 fragCoord ) {
     
     // ADDED: ------------------------------------------------------
-    g_fragCoord = fragCoord;
+    g_frag_coord = fragCoord;
 
 	circle ( .03 , vec3 ( 0.7 , 0.2 , 0.8 ) , vec2 ( .6 ) , vec2 ( .30 , .70 ) );
 	circle ( .05 , vec3 ( 0.7 , 0.9 , 0.6 ) , vec2 ( .1 ) , vec2 ( .02 , .20 ) );
