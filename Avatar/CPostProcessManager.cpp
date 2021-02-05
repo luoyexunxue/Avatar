@@ -72,11 +72,12 @@ bool CPostProcessManager::Register(const string& name, CPostProcess* post) {
 	// 删除已注册的同名称后处理
 	if (m_mapPostProcess.count(name) > 0) {
 		list<string>::iterator iter = m_lstEnabledPostProcess.begin();
-		while (m_lstEnabledPostProcess.end() != iter++) {
+		while (iter != m_lstEnabledPostProcess.end()) {
 			if (*iter == name) {
 				m_lstEnabledPostProcess.erase(iter);
 				break;
 			}
+			++iter;
 		}
 		CPostProcess* item = m_mapPostProcess[name];
 		m_mapPostProcess.erase(name);

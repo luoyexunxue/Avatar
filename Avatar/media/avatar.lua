@@ -16,9 +16,11 @@ gLightPos = false
 gGravity = false
 gShootCount = 0
 gPickingMode = 0
+gShadertoyLoad = {}
 
 dofile("gui.lua")
 dofile("tips.lua")
+dofile("postprocess.lua")
 
 --------------------------------------------------
 -- 引擎初始化完成
@@ -94,6 +96,16 @@ OnReady = function()
 		'tunnel', 'dot', 'sphere', 'paint', 'shake'}, function(sel)
 		post.enable(sel, not post.enable(sel))
 	end)
+	addListview("shadertoy", {'Apollian with a twist',
+		'cube', 'Cyclic noise I guess', 'Everywhere',
+		'flowers', 'fractal pyramid', 'jupiterCloud',
+		'Radiolarian seamless loop', 'Satori (fixed)'}, function(sel)
+		if gShadertoyLoad[sel] == nil then
+			load_from_shadertoy(engine.directory()..'shader/'..sel..'.txt', sel)
+			gShadertoyLoad[sel] = true
+		end
+		post.enable(sel, not post.enable(sel))
+	end)
 	addEditbox("inputbox", "")
 	--光照方向
 	addTrackBar("trackbar", 50, function(percent)
@@ -110,8 +122,6 @@ OnReady = function()
 	sound.play(sound.create("background.mp3", true, true, 0.2))
 	--加载场景
 	dofile("load.lua")
-	--加载后处理
-	dofile("postprocess.lua")
 	--加载用户脚本
 	dofile("user.lua")
 end
