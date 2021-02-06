@@ -37,9 +37,9 @@ public:
 	//! 清除所有外力
 	void ClearForce();
 	//! 施加外力
-	void ApplyForce(const CVector3& force, bool local);
+	void ApplyForce(const CVector3& force, bool local, bool append);
 	//! 施加外力和外力矩
-	void ApplyForce(const CVector3& force, const CVector3& torque, bool local);
+	void ApplyForce(const CVector3& force, const CVector3& torque, bool local, bool append);
 
 	//! 获取刚体几何
 	inline const SGeometry& GetGeometry() const { return m_sGeometry; }

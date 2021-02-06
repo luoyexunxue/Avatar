@@ -170,7 +170,7 @@ CVector3 CPhysicsManager::GetGravity() {
 */
 void CPhysicsManager::ApplyForce(CRigidBody* body, const CVector3& force) {
 	if (!body->m_bStatic) {
-		body->ApplyForce(force, false);
+		body->ApplyForce(force, false, false);
 	}
 }
 
@@ -183,7 +183,7 @@ void CPhysicsManager::ApplyForce(CRigidBody* body, const CVector3& force) {
 */
 void CPhysicsManager::ApplyForce(CRigidBody* body, const CVector3& force, const CVector3& relPos) {
 	if (!body->m_bStatic) {
-		body->ApplyForce(force, relPos.CrossProduct(force), true);
+		body->ApplyForce(force, relPos.CrossProduct(force), true, false);
 	}
 }
 

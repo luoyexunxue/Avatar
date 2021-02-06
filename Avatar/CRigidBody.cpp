@@ -118,21 +118,21 @@ void CRigidBody::ClearForce() {
 /**
 * 施加外力
 */
-void CRigidBody::ApplyForce(const CVector3& force, bool local) {
-	if (local) m_cExtraForceLocal.SetValue(force);
-	else m_cExtraForce.SetValue(force);
+void CRigidBody::ApplyForce(const CVector3& force, bool local, bool append) {
+	if (local) m_cExtraForceLocal.SetValue(append ? m_cExtraForceLocal + force : force);
+	else m_cExtraForce.SetValue(append ? m_cExtraForce + force : force);
 }
 
 /**
 * 施加外力和外力矩
 */
-void CRigidBody::ApplyForce(const CVector3& force, const CVector3& torque, bool local) {
+void CRigidBody::ApplyForce(const CVector3& force, const CVector3& torque, bool local, bool append) {
 	if (local) {
-		m_cExtraForceLocal.SetValue(force);
-		m_cExtraTorqueLocal.SetValue(torque);
+		m_cExtraForceLocal.SetValue(append ? m_cExtraForceLocal + force : force);
+		m_cExtraTorqueLocal.SetValue(append ? m_cExtraTorqueLocal + torque : torque);
 	} else {
-		m_cExtraForce.SetValue(force);
-		m_cExtraTorque.SetValue(torque);
+		m_cExtraForce.SetValue(append ? m_cExtraForce + force : force);
+		m_cExtraTorque.SetValue(append ? m_cExtraTorque + torque : torque);
 	}
 }
 
