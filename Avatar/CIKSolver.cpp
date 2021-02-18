@@ -4,6 +4,7 @@
 //================================================
 #include "CIKSolver.h"
 #include <algorithm>
+#include <cmath>
 
 /**
 * 默认构造函数

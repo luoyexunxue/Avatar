@@ -202,6 +202,7 @@ void CScriptManager::OnInput(CInputManager::SInput* input) {
 	map<string, map<string, SValue>> evt;
 	if (input->iFunction) { evt["function"]["value"] = input->iFunction; }
 	if (input->iInputKey) { evt["key"]["value"] = input->iInputKey; }
+	if (input->bMouse) { evt["mouse"]["button"] = input->iInputMouse; evt["mouse"]["x"] = input->iInputX; evt["mouse"]["y"] = input->iInputY; }
 	if (input->bFire) { evt["fire"]["x"] = input->iInputX; evt["fire"]["y"] = input->iInputY; }
 	if (input->bJump) { evt["jump"] = map<string, SValue>(); }
 	if (input->bMove) { evt["move"]["x"] = input->fMove[0]; evt["move"]["y"] = input->fMove[1]; evt["move"]["z"] = input->fMove[2]; }
@@ -1076,7 +1077,8 @@ int CScriptManager::DoSceneInsert(lua_State* lua) {
 			pNode = new CSceneNodeFlame(name, texture, distortionMap, alphaMask, width, height);
 		} else if (!strcmp("fresnel", type)) {
 			const char* meshFile = TableValue(lua, 4, "meshFile", "");
-			pNode = new CSceneNodeFresnel(name, meshFile);
+			bool cache = TableValue(lua, 4, "cache", true);
+			pNode = new CSceneNodeFresnel(name, meshFile, cache);
 		} else if (!strcmp("geometry", type)) {
 			const char* shape = TableValue(lua, 4, "shape", "");
 			const char* texture = TableValue(lua, 4, "texture", "");
@@ -1178,7 +1180,8 @@ int CScriptManager::DoSceneInsert(lua_State* lua) {
 			pNode = new CSceneNodeSound(name, soundFile, loop, start);
 		} else if (!strcmp("static", type)) {
 			const char* meshFile = TableValue(lua, 4, "meshFile", "");
-			pNode = new CSceneNodeStatic(name, meshFile);
+			bool cache = TableValue(lua, 4, "cache", true);
+			pNode = new CSceneNodeStatic(name, meshFile, cache);
 		} else if (!strcmp("terrain", type)) {
 			string textureArray[4];
 			const char* texture = TableValue(lua, 4, "texture", "");

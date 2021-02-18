@@ -68,6 +68,7 @@ void CInputManager::Update() {
 	m_pInput->bMove = m_pInput->fMove[0] != 0.0f || m_pInput->fMove[1] != 0.0f || m_pInput->fMove[2] != 0.0f;
 	m_pInput->bTurn = m_pInput->fTurn[0] != 0.0f || m_pInput->fTurn[1] != 0.0f || m_pInput->fTurn[2] != 0.0f;
 	// 重置输入缓冲
+	m_pBufferedInput->bMouse = false;
 	m_pBufferedInput->bFire = false;
 	m_pBufferedInput->bJump = false;
 	m_pBufferedInput->bMove = false;
@@ -214,6 +215,10 @@ void CInputManager::MouseInput(int x, int y, int button, int delta) {
 				bool clicked = x == m_iMouseClickPos[0] && y == m_iMouseClickPos[1];
 				m_pBufferedInput->bFire = clicked;
 			}
+		}
+		if (m_iMouseLastButton != button) {
+			m_pBufferedInput->bMouse = true;
+			m_pBufferedInput->iInputMouse = button;
 		}
 		m_iMouseLastButton = button;
 	}

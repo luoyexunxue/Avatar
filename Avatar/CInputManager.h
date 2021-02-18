@@ -25,6 +25,7 @@ public:
 	struct SInput {
 		bool bPause;
 		bool bQuit;
+		bool bMouse;
 		bool bFire;
 		bool bJump;
 		bool bMove;
@@ -37,6 +38,7 @@ public:
 		int iInputKey;
 		int iInputX;
 		int iInputY;
+		int iInputMouse;
 		int iWidth;
 		int iHeight;
 
@@ -49,6 +51,7 @@ public:
 		SInput() {
 			bPause = false;
 			bQuit = false;
+			bMouse = false;
 			bFire = false;
 			bJump = false;
 			bMove = false;
@@ -60,6 +63,7 @@ public:
 			iInputKey = 0;
 			iInputX = 0;
 			iInputY = 0;
+			iInputMouse = 0;
 			iWidth = 0;
 			iHeight = 0;
 			fMove[0] = 0.0f;

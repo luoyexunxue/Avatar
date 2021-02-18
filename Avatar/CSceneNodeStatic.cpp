@@ -9,8 +9,9 @@
 /**
 * 构造函数
 */
-CSceneNodeStatic::CSceneNodeStatic(const string& name, const string& meshFile): CSceneNode("static", name) {
+CSceneNodeStatic::CSceneNodeStatic(const string& name, const string& meshFile, bool cache): CSceneNode("static", name) {
 	m_strFile = meshFile;
+	m_bUseCache = cache;
 	m_pMeshData = 0;
 }
 
@@ -18,7 +19,7 @@ CSceneNodeStatic::CSceneNodeStatic(const string& name, const string& meshFile): 
 * 初始化场景节点
 */
 bool CSceneNodeStatic::Init() {
-	m_pMeshData = CMeshLoader::Load(m_strFile, true);
+	m_pMeshData = CMeshLoader::Load(m_strFile, m_bUseCache);
 	if (!m_pMeshData) return false;
 	m_cLocalBoundingBox = m_pMeshData->GetBoundingBox();
 	return true;

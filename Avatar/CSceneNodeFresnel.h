@@ -13,7 +13,7 @@
 class AVATAR_EXPORT CSceneNodeFresnel : public CSceneNode {
 public:
 	//! 构造方法
-	CSceneNodeFresnel(const string& name, const string& meshFile);
+	CSceneNodeFresnel(const string& name, const string& meshFile, bool cache);
 
 	//! 初始化场景节点
 	virtual bool Init();
@@ -25,6 +25,8 @@ public:
 	virtual CMeshData* GetMeshData();
 
 private:
+	//! 是否缓存模型
+	bool m_bUseCache;
 	//! 模型文件
 	string m_strFile;
 	//! 模型数据

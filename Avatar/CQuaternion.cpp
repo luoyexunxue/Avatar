@@ -115,30 +115,26 @@ CQuaternion& CQuaternion::Inverse() {
 
 /**
 * 由欧拉角转为四元数
-* @note 生成的四元数表示先绕 X 轴旋转 x 弧度，再绕 Y 轴旋转 y 弧度，再绕 Z 轴旋转 z 弧度
+* @note 生成的四元数 Q = Qz * Qy * Qx 表示旋转顺序为 X->Y->Z
 */
 CQuaternion& CQuaternion::FromEulerAngles(float x, float y, float z) {
 	x *= 0.5f;
 	y *= 0.5f;
 	z *= 0.5f;
-
 	float sinx = sinf(x);
 	float siny = sinf(y);
 	float sinz = sinf(z);
 	float cosx = cosf(x);
 	float cosy = cosf(y);
 	float cosz = cosf(z);
-
 	float cycz = cosy * cosz;
 	float sysz = siny * sinz;
 	float sycz = siny * cosz;
 	float cysz = cosy * sinz;
-
 	m_fValue[0] = sinx * cycz - cosx * sysz;
 	m_fValue[1] = cosx * sycz + sinx * cysz;
 	m_fValue[2] = cosx * cysz - sinx * sycz;
 	m_fValue[3] = cosx * cycz + sinx * sysz;
-
 	Normalize();
 	return *this;
 }

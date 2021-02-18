@@ -233,7 +233,7 @@ int main(int argc, char **argv)
 | OnUpdate | 逻辑更新 | dt:*float* | - |
 | OnExit | 引擎退出 | - | 引擎结束运行时调用一次 |
 | OnSize | 窗口大小改变 | width:*integer*, height:*integer* | - |
-| OnInput | 输入事件 | name:*string*, {param} | name 为 'function/key/fire/jump/move/turn/gravity/position/orientation' |
+| OnInput | 输入事件 | name:*string*, {param} | name 为 'function/key/mouse/fire/jump/move/turn/gravity/position/orientation' |
 
 ##接口一览表##
 <hr>
