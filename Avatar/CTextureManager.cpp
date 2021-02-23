@@ -95,12 +95,12 @@ CTexture* CTextureManager::Create(const string& file) {
 		glGenTextures(1, &pTexture->m_iTexture);
 		glBindTexture(GL_TEXTURE_2D, pTexture->m_iTexture);
 		GLint pixelFormat;
-		if (pTexture->m_iChannel == 1) pixelFormat = GL_LUMINANCE;
-		else if (pTexture->m_iChannel == 2) pixelFormat = GL_LUMINANCE_ALPHA;
+		if (pTexture->m_iChannel == 1) pixelFormat = GL_RED;
+		else if (pTexture->m_iChannel == 2) pixelFormat = GL_RG;
 		else if (pTexture->m_iChannel == 3) pixelFormat = GL_RGB;
 		else pixelFormat = GL_RGBA;
-
-		glTexImage2D(GL_TEXTURE_2D, 0, pixelFormat, pTexture->m_iWidth, pTexture->m_iHeight, 0, pixelFormat, GL_UNSIGNED_BYTE, pFile->contents);
+		GLint internalFormat = pTexture->m_iChannel == 4 ? GL_RGBA : GL_RGB;
+		glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, pTexture->m_iWidth, pTexture->m_iHeight, 0, pixelFormat, GL_UNSIGNED_BYTE, pFile->contents);
 		glGenerateMipmap(GL_TEXTURE_2D);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
@@ -152,13 +152,14 @@ CTexture* CTextureManager::Create(const string& name, const string files[6]) {
 	glGenTextures(1, &pTexture->m_iTexture);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, pTexture->m_iTexture);
 	GLint pixelFormat;
+	GLint internalFormat = pTexture->m_iChannel == 4 ? GL_RGBA : GL_RGB;
 	for (int i = 0; i < 6; i++) {
-		if (pFile[i]->channels == 1) pixelFormat = GL_LUMINANCE;
-		else if (pFile[i]->channels == 2) pixelFormat = GL_LUMINANCE_ALPHA;
+		if (pFile[i]->channels == 1) pixelFormat = GL_RED;
+		else if (pFile[i]->channels == 2) pixelFormat = GL_RG;
 		else if (pFile[i]->channels == 3) pixelFormat = GL_RGB;
 		else pixelFormat = GL_RGBA;
 		GLenum face = GL_TEXTURE_CUBE_MAP_POSITIVE_X + i;
-		glTexImage2D(face, 0, pixelFormat, pFile[i]->width, pFile[i]->height, 0, pixelFormat, GL_UNSIGNED_BYTE, pFile[i]->contents);
+		glTexImage2D(face, 0, internalFormat, pFile[i]->width, pFile[i]->height, 0, pixelFormat, GL_UNSIGNED_BYTE, pFile[i]->contents);
 		delete pFile[i];
 	}
 	glGenerateMipmap(GL_TEXTURE_CUBE_MAP);
@@ -207,27 +208,82 @@ CTexture* CTextureManager::Create(const string& name, int width, int height, int
 	if (pTexture->m_iWidth > 2 && (pTexture->m_iWidth & 0x01)) pTexture->m_iWidth -= 1;
 	if (pTexture->m_iHeight > 2 && (pTexture->m_iHeight & 0x01)) pTexture->m_iHeight -= 1;
 	m_mapTexture.insert(std::pair<string, CTexture*>(file, pTexture));
-	// 生成 OpenGL 纹理，最多支持四个通道
-	if (channel >= 1 && channel <= 4) {
-		glGenTextures(1, &pTexture->m_iTexture);
-		glBindTexture(GL_TEXTURE_2D, pTexture->m_iTexture);
-		GLint pixelFormat;
-		if (channel == 1) pixelFormat = GL_LUMINANCE;
-		else if (channel == 2) pixelFormat = GL_LUMINANCE_ALPHA;
-		else if (channel == 3) pixelFormat = GL_RGB;
-		else pixelFormat = GL_RGBA;
-		glTexImage2D(GL_TEXTURE_2D, 0, pixelFormat, pTexture->m_iWidth, pTexture->m_iHeight, 0, pixelFormat, GL_UNSIGNED_BYTE, data);
-		if (mipmap && !(pTexture->m_iWidth & (pTexture->m_iWidth - 1)) && !(pTexture->m_iHeight & (pTexture->m_iHeight - 1))) {
-			glGenerateMipmap(GL_TEXTURE_2D);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
-		} else {
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		}
-		pTexture->m_bIsValid = true;
-		pTexture->m_iPixelFormat = pixelFormat;
+	// 生成 OpenGL 纹理
+	glGenTextures(1, &pTexture->m_iTexture);
+	glBindTexture(GL_TEXTURE_2D, pTexture->m_iTexture);
+	GLint pixelFormat;
+	if (channel == 1) pixelFormat = GL_RED;
+	else if (channel == 2) pixelFormat = GL_RG;
+	else if (channel == 3) pixelFormat = GL_RGB;
+	else pixelFormat = GL_RGBA;
+	GLint internalFormat = channel == 4 ? GL_RGBA : GL_RGB;
+	glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, pTexture->m_iWidth, pTexture->m_iHeight, 0, pixelFormat, GL_UNSIGNED_BYTE, data);
+	if (mipmap && !(pTexture->m_iWidth & (pTexture->m_iWidth - 1)) && !(pTexture->m_iHeight & (pTexture->m_iHeight - 1))) {
+		glGenerateMipmap(GL_TEXTURE_2D);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
+	} else {
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	}
+	pTexture->m_iPixelFormat = pixelFormat;
+	pTexture->m_bIsValid = true;
+	return pTexture;
+}
+
+/**
+* 从内存创建立方体纹理
+* @param name 纹理名称，可为空
+* @param size 纹理大小，必须为2的幂
+* @param channel 通道数
+* @param data R-L-F-B-U-D图片数据指针
+* @param mipmap 是否生成MIPMAP
+* @return 创建的纹理
+*/
+CTexture* CTextureManager::Create(const string& name, int size, int channel, const void* data[6], bool mipmap) {
+	// 内存纹理名称，若未指定名称则按规则生成
+	string file = name;
+	if (file.empty()) {
+		file.append("mem_");
+		file.append(std::to_string(size)).append("_");
+		file.append(std::to_string(size)).append("_");
+		file.append(std::to_string(channel)).append("_");
+		file.append(CStringUtil::Guid());
+	}
+	// 检查是否已经载入相同的纹理资源
+	map<string, CTexture*>::iterator iter = m_mapTexture.find(file);
+	if (iter != m_mapTexture.end()) {
+		iter->second->m_iRefCount++;
+		return iter->second;
+	}
+	CTexture* pTexture = new CTexture(this);
+	pTexture->m_iTextureType = GL_TEXTURE_CUBE_MAP;
+	pTexture->m_strFilePath = file;
+	pTexture->m_iChannel = channel;
+	pTexture->m_iWidth = size;
+	pTexture->m_iHeight = size;
+	m_mapTexture.insert(std::pair<string, CTexture*>(file, pTexture));
+	// 生成 OpenGL 纹理
+	glGenTextures(1, &pTexture->m_iTexture);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, pTexture->m_iTexture);
+	GLint pixelFormat;
+	if (channel == 1) pixelFormat = GL_RED;
+	else if (channel == 2) pixelFormat = GL_RG;
+	else if (channel == 3) pixelFormat = GL_RGB;
+	else pixelFormat = GL_RGBA;
+	GLint internalFormat = channel == 4 ? GL_RGBA : GL_RGB;
+	for (int i = 0; i < 6; i++) {
+		GLenum face = GL_TEXTURE_CUBE_MAP_POSITIVE_X + i;
+		glTexImage2D(face, 0, internalFormat, size, size, 0, pixelFormat, GL_UNSIGNED_BYTE, data[i]);
+	}
+	if (mipmap) glGenerateMipmap(GL_TEXTURE_CUBE_MAP);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
+	// 防止出现视觉可见的裂缝
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	pTexture->m_iPixelFormat = pixelFormat;
+	pTexture->m_bIsValid = true;
 	return pTexture;
 }
 
@@ -444,11 +500,12 @@ bool CTextureManager::Update(CTexture* texture, const string& file) {
 		texture->m_bIsValid = true;
 	} else glBindTexture(GL_TEXTURE_2D, texture->m_iTexture);
 	GLint pixelFormat;
-	if (texture->m_iChannel == 1) pixelFormat = GL_LUMINANCE;
-	else if (texture->m_iChannel == 2) pixelFormat = GL_LUMINANCE_ALPHA;
+	if (texture->m_iChannel == 1) pixelFormat = GL_RED;
+	else if (texture->m_iChannel == 2) pixelFormat = GL_RG;
 	else if (texture->m_iChannel == 3) pixelFormat = GL_RGB;
 	else pixelFormat = GL_RGBA;
-	glTexImage2D(GL_TEXTURE_2D, 0, pixelFormat, texture->m_iWidth, texture->m_iHeight, 0, pixelFormat, GL_UNSIGNED_BYTE, pFile->contents);
+	GLint internalFormat = texture->m_iChannel == 4 ? GL_RGBA : GL_RGB;
+	glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, texture->m_iWidth, texture->m_iHeight, 0, pixelFormat, GL_UNSIGNED_BYTE, pFile->contents);
 	glGenerateMipmap(GL_TEXTURE_2D);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);

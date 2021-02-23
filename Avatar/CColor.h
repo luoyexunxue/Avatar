@@ -65,6 +65,8 @@ public:
 	//! 从 HSLA 转换
 	CColor& Hsla(float h, float s, float l, float a);
 
+	//! 线性插值
+	CColor Lerp(const CColor& color, float t) const;
 	//! 返回颜色代码
 	string ToString();
 

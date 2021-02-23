@@ -39,6 +39,8 @@ public:
 	CTexture* Create(const string& name, const string files[6]);
 	//! 从内存创建纹理
 	CTexture* Create(const string& name, int width, int height, int channel, const void* data, bool mipmap);
+	//! 从内存创建立方体纹理
+	CTexture* Create(const string& name, int size, int channel, const void* data[6], bool mipmap);
 	//! 创建渲染纹理
 	CTexture* Create(const string& name, int width, int height, bool floating, bool useDepth, bool mipmap);
 	//! 创建立方体渲染纹理

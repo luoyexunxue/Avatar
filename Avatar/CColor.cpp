@@ -342,6 +342,17 @@ CColor& CColor::Hsla(float h, float s, float l, float a) {
 }
 
 /**
+* 线性插值
+*/
+CColor CColor::Lerp(const CColor& color, float t) const {
+	float r = m_fValue[0] + (color.m_fValue[0] - m_fValue[0]) * t;
+	float g = m_fValue[1] + (color.m_fValue[1] - m_fValue[1]) * t;
+	float b = m_fValue[2] + (color.m_fValue[2] - m_fValue[2]) * t;
+	float a = m_fValue[3] + (color.m_fValue[3] - m_fValue[3]) * t;
+	return CColor(r, g, b, a);
+}
+
+/**
 * 返回颜色代码
 */
 string CColor::ToString() {

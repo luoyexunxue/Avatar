@@ -18,3 +18,5 @@
 	RopeImpostor
 	SoftbodyImpostor
 	SphereImpostor
+(6) 骨骼物理模拟(尾巴)
+(7) 骨骼动画IK
