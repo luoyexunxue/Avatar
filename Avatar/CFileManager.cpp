@@ -832,6 +832,49 @@ void jpegErrorExit(j_common_ptr cinfo) {
 }
 
 /**
+* JPG EXIF方向获取
+*/
+int jpegOrientation(j_decompress_ptr cinfo) {
+	jpeg_saved_marker_ptr exif_marker = 0;
+	jpeg_saved_marker_ptr cmarker = cinfo->marker_list;
+	while (cmarker) {
+		if (cmarker->marker == JPEG_APP0 + 1 && !memcmp(cmarker->data, "Exif\0\0", 6)) exif_marker = cmarker;
+		cmarker = cmarker->next;
+	}
+	if (exif_marker == 0 || exif_marker->data_length < 32) return 0;
+	bool is_le = false;
+	bool is_be = false;
+	const char leth[] = { 0x49, 0x49, 0x2a, 0x00 };
+	const char beth[] = { 0x4d, 0x4d, 0x00, 0x2a };
+	unsigned char* p = &exif_marker->data[0];
+	for (int i = 0; i < 16; i++) {
+		if (!memcmp(p, leth, 4)) { is_le = true; break; }
+		if (!memcmp(p, beth, 4)) { is_be = true; break; }
+		p += 1;
+	}
+	if (!is_le && !is_be) return 0;
+	p += 4;
+	uint32_t offset = is_be ? ((p[0] << 24) | (p[1] << 16) | (p[2] << 8) | p[3]) : (p[0] | (p[1] << 8) | (p[2] << 16) | (p[3] << 24));
+	p += offset - 4;
+	if (p - exif_marker->data + 2 > exif_marker->data_length) return 0;
+	uint16_t tags = is_be ? ((p[0] << 8) | p[1]) : (p[0] | (p[1] << 8));
+	p += 2;
+	if (p - exif_marker->data + tags * 12 > exif_marker->data_length) return 0;
+	unsigned int orient_tag_id = is_be ? 0x1201 : 0x0112;
+	while (tags--) {
+		if (memcmp(p, &orient_tag_id, 2) == 0) {
+			uint16_t type = is_be ? ((p[2] << 8) | p[3]) : (p[2] | (p[3] << 8));
+			uint32_t count = is_be ? ((p[4] << 24) | (p[5] << 16) | (p[6] << 8) | p[7]) : (p[4] | (p[5] << 8) | (p[6] << 16) | (p[7] << 24));
+			if (type != 3 || count != 1) return 0;
+			int orient = is_be ? ((p[8] << 8) | p[9]) : (p[8] | (p[9] << 8));
+			return orient <= 8 ? orient : 0;
+		}
+		p += 12;
+	}
+	return 0;
+}
+
+/**
 * 解析 JPG 文件
 * @param data 输入 JPG 文件数据
 * @param size 输入数据大小
@@ -853,6 +896,7 @@ bool CFileManager::ParseJpgFile(unsigned char* data, size_t size, CFileData* fil
 		return false;
 	}
 	jpeg_mem_src(&info, data, (unsigned long)size);
+	jpeg_save_markers(&info, JPEG_APP0 + 1, 0xffff);
 	jpeg_read_header(&info, TRUE);
 
 	CImageFile* pImage = static_cast<CImageFile*>(file);
@@ -861,17 +905,51 @@ bool CFileManager::ParseJpgFile(unsigned char* data, size_t size, CFileData* fil
 	pImage->channels = info.num_components;
 	pImage->size = info.image_width * info.image_height * info.num_components;
 	pImage->contents = new unsigned char[pImage->size];
+	int orientation = jpegOrientation(&info);
 
 	jpeg_start_decompress(&info);
-
 	unsigned char* p = pImage->contents;
 	while (info.output_scanline < info.output_height) {
 		int numlines = jpeg_read_scanlines(&info, &p, 1);
 		p += numlines * info.output_width * info.num_components;
 	}
-
 	jpeg_finish_decompress(&info);
 	jpeg_destroy_decompress(&info);
+
+	// EXIF 方向 6->90deg 3->180deg 8->270deg
+	if (orientation != 3 && orientation != 6 && orientation != 8) return true;
+	unsigned char* temp = new unsigned char[pImage->size];
+	if (orientation == 6) {
+		for (int y = 0; y < pImage->height; y++) {
+			for (int x = 0; x < pImage->width; x++) {
+				int srcIndex = pImage->channels * (y * pImage->width + x);
+				int dstIndex = pImage->channels * ((x + 1) * pImage->height - 1 - y);
+				memcpy(temp + dstIndex, pImage->contents + srcIndex, pImage->channels);
+			}
+		}
+	} else if (orientation == 3) {
+		for (int y = 0; y < pImage->height; y++) {
+			for (int x = 0; x < pImage->width; x++) {
+				int srcIndex = pImage->channels * (y * pImage->width + x);
+				int dstIndex = pImage->channels * ((pImage->height - y) * pImage->width - 1 - x);
+				memcpy(temp + dstIndex, pImage->contents + srcIndex, pImage->channels);
+			}
+		}
+	} else if (orientation == 8) {
+		for (int y = 0; y < pImage->height; y++) {
+			for (int x = 0; x < pImage->width; x++) {
+				int srcIndex = pImage->channels * (y * pImage->width + x);
+				int dstIndex = pImage->channels * ((pImage->width - 1 - x) * pImage->height + y);
+				memcpy(temp + dstIndex, pImage->contents + srcIndex, pImage->channels);
+			}
+		}
+	}
+	delete[] pImage->contents;
+	pImage->contents = temp;
+	if (orientation == 6 || orientation == 8) {
+		pImage->width = info.image_height;
+		pImage->height = info.image_width;
+	}
 	return true;
 }
 
