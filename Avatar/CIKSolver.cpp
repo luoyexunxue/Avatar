@@ -44,7 +44,7 @@ CIKSolver::~CIKSolver() {
 
 /**
 * 设置目标位置
-* @target 目标位置(模型坐标系)
+* @param target 目标位置(模型坐标系)
 */
 void CIKSolver::SetTarget(const CVector3& target) {
 	m_cTarget.SetValue(target);
@@ -52,6 +52,10 @@ void CIKSolver::SetTarget(const CVector3& target) {
 
 /**
 * 设置铰链关节约束
+* @param joint 关节指针
+* @param axis 旋转轴(关节局部坐标系)
+* @param min 最小角度
+* @param max 最大角度
 */
 void CIKSolver::SetSwingLimit(SJoint* joint, const CVector3& axis, float min, float max) {
 	for (size_t i = 1; i < m_vecKinematicChain.size(); i++) {
@@ -76,6 +80,9 @@ void CIKSolver::SetSwingLimit(SJoint* joint, const CVector3& axis, float min, fl
 
 /**
 * 设置球状关节约束
+* @param joint 关节指针
+* @param axis 中心轴(关节局部坐标系)
+* @param angle 最大偏转角度
 */
 void CIKSolver::SetTwistLimit(SJoint* joint, const CVector3& axis, float angle) {
 	for (size_t i = 1; i < m_vecKinematicChain.size(); i++) {
@@ -97,6 +104,8 @@ void CIKSolver::SetTwistLimit(SJoint* joint, const CVector3& axis, float angle) 
 
 /**
 * 迭代解析
+* @param maxStep 最大迭代次数
+* @remark 采用CCD方法
 */
 void CIKSolver::Solve(int maxStep) {
 	for (size_t i = 0; i < m_vecKinematicChain.size(); i++) {
@@ -156,6 +165,9 @@ void CIKSolver::Solve(int maxStep) {
 
 /**
 * 约束计算
+* @param index IK链数组下标
+* @param rotation 局部坐标系下的旋转
+* @remark 目前支持两种约束方式，通过对rotation参数进行修正以达到约束效果
 */
 void CIKSolver::ConstraintSolve(size_t index, CQuaternion& rotation) {
 	SConstraint* constraint = m_vecKinematicChain[index].constraint;
