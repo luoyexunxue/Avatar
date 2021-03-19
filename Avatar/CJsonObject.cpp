@@ -126,9 +126,9 @@ CJsonObject& CJsonObject::operator [] (size_t index) {
 */
 bool CJsonObject::ToBool() const {
 	if (m_sValue.type == SValue::BOOL) return m_sValue.bValue;
-	if (m_sValue.type == SValue::INTEGER) return m_sValue.iValue > 0;
-	if (m_sValue.type == SValue::FLOAT) return m_sValue.fValue > 0.0f;
-	if (m_sValue.type == SValue::STRING && m_sValue.length == 4) {
+	else if (m_sValue.type == SValue::INTEGER) return m_sValue.iValue > 0;
+	else if (m_sValue.type == SValue::FLOAT) return m_sValue.fValue > 0.0f;
+	else if (m_sValue.type == SValue::STRING && m_sValue.length == 4) {
 		if ((m_sValue.pValue[0] == 't' || m_sValue.pValue[0] == 'T') &&
 			(m_sValue.pValue[1] == 'r' || m_sValue.pValue[1] == 'R') &&
 			(m_sValue.pValue[2] == 'u' || m_sValue.pValue[2] == 'U') &&
@@ -142,9 +142,9 @@ bool CJsonObject::ToBool() const {
 */
 int CJsonObject::ToInt() const {
 	if (m_sValue.type == SValue::INTEGER) return m_sValue.iValue;
-	if (m_sValue.type == SValue::BOOL) return m_sValue.bValue ? 1 : 0;
-	if (m_sValue.type == SValue::FLOAT) return static_cast<int>(m_sValue.fValue);
-	if (m_sValue.type == SValue::STRING) return atoi(string(m_sValue.pValue, m_sValue.length).c_str());
+	else if (m_sValue.type == SValue::BOOL) return m_sValue.bValue ? 1 : 0;
+	else if (m_sValue.type == SValue::FLOAT) return static_cast<int>(m_sValue.fValue);
+	else if (m_sValue.type == SValue::STRING) return atoi(string(m_sValue.pValue, m_sValue.length).c_str());
 	return 0;
 }
 
@@ -153,9 +153,9 @@ int CJsonObject::ToInt() const {
 */
 float CJsonObject::ToFloat() const {
 	if (m_sValue.type == SValue::FLOAT) return m_sValue.fValue;
-	if (m_sValue.type == SValue::BOOL) return m_sValue.bValue ? 1.0f : 0.0f;
-	if (m_sValue.type == SValue::INTEGER) return static_cast<float>(m_sValue.iValue);
-	if (m_sValue.type == SValue::STRING) return static_cast<float>(atof(string(m_sValue.pValue, m_sValue.length).c_str()));
+	else if (m_sValue.type == SValue::BOOL) return m_sValue.bValue ? 1.0f : 0.0f;
+	else if (m_sValue.type == SValue::INTEGER) return static_cast<float>(m_sValue.iValue);
+	else if (m_sValue.type == SValue::STRING) return static_cast<float>(atof(string(m_sValue.pValue, m_sValue.length).c_str()));
 	return 0.0f;
 }
 
@@ -163,17 +163,36 @@ float CJsonObject::ToFloat() const {
 * 转换为字符串类型
 */
 string CJsonObject::ToString() const {
-	if (m_sValue.type == SValue::STRING) return string().assign(m_sValue.pValue, m_sValue.length);
-	if (m_sValue.type == SValue::BOOL) return m_sValue.bValue ? "true" : "false";
-	if (m_sValue.type == SValue::INTEGER) {
+	if (m_sValue.type == SValue::STRING) return string(m_sValue.pValue, m_sValue.length);
+	else if (m_sValue.type == SValue::NIL) return "null";
+	else if (m_sValue.type == SValue::BOOL) return m_sValue.bValue ? "true" : "false";
+	else if (m_sValue.type == SValue::INTEGER) {
 		char buffer[16];
 		snprintf(buffer, 16, "%d", m_sValue.iValue);
 		return buffer;
-	}
-	if (m_sValue.type == SValue::FLOAT) {
+	} else if (m_sValue.type == SValue::FLOAT) {
 		char buffer[16];
 		snprintf(buffer, 16, "%.6f", m_sValue.fValue);
 		return buffer;
+	} else if (m_sValue.type == SValue::OBJECT) {
+		string str = "{";
+		for (map<string, CJsonObject>::const_iterator i = m_mapValues.begin(); i != m_mapValues.end(); ++i) {
+			str.append("\"").append(i->first).append("\":");
+			if (i->second.IsString()) str.append("\"").append(i->second.ToString()).append("\",");
+			else str.append(i->second.ToString()).append(",");
+		}
+		if (str.length() > 1) str[str.length() - 1] = '}';
+		else str.append("}");
+		return str;
+	} else if (m_sValue.type == SValue::ARRAY) {
+		string str = "]";
+		for (vector<CJsonObject>::const_iterator i = m_vecValues.begin(); i != m_vecValues.end(); ++i) {
+			if (i->IsString()) str.append("\"").append(i->ToString()).append("\",");
+			str.append(i->ToString()).append(",");
+		}
+		if (str.length() > 1) str[str.length() - 1] = ']';
+		else str.append("]");
+		return str;
 	}
 	return "";
 }
