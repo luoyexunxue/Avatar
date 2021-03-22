@@ -176,6 +176,7 @@
   <ItemGroup>
     <ClCompile Include="Avatar.cpp" />
     <ClCompile Include="CAnimationManager.cpp" />
+    <ClCompile Include="CAsyncTask.cpp" />
     <ClCompile Include="CBase64.cpp" />
     <ClCompile Include="CBoundingBox.cpp" />
     <ClCompile Include="CCamera.cpp" />
@@ -293,6 +294,7 @@
   <ItemGroup>
     <ClInclude Include="AvatarConfig.h" />
     <ClInclude Include="CAnimationManager.h" />
+    <ClInclude Include="CAsyncTask.h" />
     <ClInclude Include="CBase64.h" />
     <ClInclude Include="CBoundingBox.h" />
     <ClInclude Include="CCamera.h" />

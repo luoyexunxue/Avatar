@@ -360,6 +360,9 @@
     <ClCompile Include="CIKSolver.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="CAsyncTask.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AvatarConfig.h">
@@ -717,6 +720,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="CIKSolver.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CAsyncTask.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
