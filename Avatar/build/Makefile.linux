@@ -3,8 +3,8 @@ CFLAGS = -Wall -I. -std=c++11
 LDFLAGS =
 
 EXEC = avatar
-OBJS = CAnimationManager.o CBase64.o CBoundingBox.o CCamera.o CCameraFree.o CCameraGaze.o \
-	CCameraGeographic.o CCameraSmooth.o CCameraViewer.o CColor.o CContactDetector.o \
+OBJS = CAnimationManager.o CAsyncTask.o CBase64.o CBoundingBox.o CCamera.o CCameraFree.o \
+	CCameraGaze.o CCameraGeographic.o CCameraSmooth.o CCameraViewer.o CColor.o CContactDetector.o \
 	CDelaunay.o CDeviceLinux.o CDynamicBvt.o CEngine.o CFFT.o CFileManager.o CFontManager.o \
 	CFrustum.o CGeometryCreator.o CGraphicsManager.o CGuiButton.o CGuiEditBox.o CGuiEnvironment.o \
 	CGuiLabel.o CGuiListView.o CGuiPanel.o CGuiTrackBar.o CIKSolver.o CInputManager.o \
