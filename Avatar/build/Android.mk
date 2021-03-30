@@ -29,7 +29,7 @@ LOCAL_SRC_FILES := CAnimationManager.cpp CAsyncTask.cpp CBase64.cpp CBoundingBox
 	CSceneNodeScreen.cpp CSceneNodeSkybox.cpp CSceneNodeSound.cpp CSceneNodeStatic.cpp CSceneNodeTerrain.cpp \
 	CSceneNodeText.cpp CSceneNodeWater.cpp CScriptContext.cpp CScriptManager.cpp CShader.cpp \
 	CShaderManager.cpp CSoundManager.cpp CStringUtil.cpp CTexture.cpp CTextureManager.cpp \
-	CThread.cpp CThreadPool.cpp CTimer.cpp CUdpSocket.cpp CUrlConnection.cpp CVector2.cpp \
+	CThreadPool.cpp CTimer.cpp CUdpSocket.cpp CUrlConnection.cpp CVector2.cpp \
 	CVector3.cpp CVertex.cpp CVertexJoint.cpp CZipReader.cpp Avatar.cpp
 
 LOCAL_SHARED_LIBRARIES += libopenal

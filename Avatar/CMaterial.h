@@ -9,8 +9,10 @@
 #include "CShader.h"
 #include <string>
 #include <vector>
+#include <map>
 using std::string;
 using std::vector;
+using std::map;
 
 /**
 * @brief 材质类
@@ -35,9 +37,14 @@ public:
 	//! 设置材质贴图
 	void SetTexture(const string& file, int index = 0);
 	//! 设置材质贴图
-	void SetTexture(const string& name, const string files[6], int index = 0);
-	//! 设置材质贴图
-	void SetTexture(const string& name, int width, int height, int channel, const void* data, int index = 0);
+	void SetTexture(const string& name, int width, int height, int channel, const void* data, bool mipmap, int index = 0);
+
+	//! 缓冲加载纹理
+	void SetTextureBuffered(const string& file, int index = 0);
+	//! 缓冲加载纹理
+	void SetTextureBuffered(const string& name, int width, int height, int channel, const void* data, bool mipmap, int index = 0);
+	//! 设置缓冲纹理模式
+	void SetTextureBufferedWrapMode(int s, int t, int index = 0);
 
 	//! 设置材质着色器
 	void SetShader(CShader* shader);
@@ -80,6 +87,22 @@ public:
 	float m_fColor[4];
 
 private:
+	//! 生成已缓冲的纹理
+	inline void CreateBufferedTexture();
+
+	//! 缓冲纹理对象
+	typedef struct _SBufferedTexture {
+		string name;
+		int width;
+		int height;
+		int channel;
+		int wraps;
+		int wrapt;
+		bool mipmap;
+		unsigned char* data;
+		_SBufferedTexture() : wraps(0), wrapt(0), data(0) {}
+	} SBufferedTexture;
+
 	//! Uniform 变量统一定义
 	typedef struct _SUniformValue {
 		int location;
@@ -91,6 +114,7 @@ private:
 		};
 	} SUniformValue;
 
+private:
 	//! 背面剔除
 	bool m_bCullFace;
 	//! 深度测试
@@ -108,6 +132,8 @@ private:
 	CShader* m_pShader;
 	//! 待传递的 Uniform 列表
 	vector<SUniformValue> m_vecUniforms;
+	//! 待创建的纹理对象
+	map<int, SBufferedTexture> m_mapBufferedTextures;
 
 	//! 设置为 CMesh 的友元类
 	friend class CMesh;

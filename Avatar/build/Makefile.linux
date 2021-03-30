@@ -22,7 +22,7 @@ OBJS = CAnimationManager.o CAsyncTask.o CBase64.o CBoundingBox.o CCamera.o CCame
 	CSceneNodePlanet.o CSceneNodePlant.o CSceneNodeScreen.o CSceneNodeSkybox.o CSceneNodeSound.o \
 	CSceneNodeStatic.o CSceneNodeTerrain.o CSceneNodeText.o CSceneNodeWater.o CScriptContext.o \
 	CScriptManager.o CShader.o CShaderManager.o CSoundManager.o CStringUtil.o CTexture.o \
-	CTextureManager.o CThread.o CThreadPool.o CTimer.o CUdpSocket.o CUrlConnection.o \
+	CTextureManager.o CThreadPool.o CTimer.o CUdpSocket.o CUrlConnection.o \
 	CVector2.o CVector3.o CVertex.o CVertexJoint.o CZipReader.o Avatar.o
 
 $(EXEC): $(OBJS)

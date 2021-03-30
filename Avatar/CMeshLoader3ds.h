@@ -17,21 +17,24 @@ public:
 	virtual CMeshData* LoadFile(const string& filename, uint8_t* data, size_t size);
 
 private:
+	//! 3DS加载器上下文
+	typedef struct _SContext {
+		string baseDir;
+		vector<CMesh*> meshes;
+		vector<CMaterial*> materials;
+	} SContext;
+
+private:
 	//! 递归读取块
-	void ReadChunk(unsigned char* buffer, size_t size);
+	void ReadChunk(SContext* context, unsigned char* buffer, size_t size);
 	//! 读取网格块
 	void ReadMeshChunk(unsigned char* buffer, size_t size, CMesh* mesh);
 	//! 读取材质块
-	void ReadMaterialChunk(unsigned char* buffer, unsigned int size, CMaterial* material);
+	void ReadMaterialChunk(SContext* context, unsigned char* buffer, unsigned int size, CMaterial* material);
 	//! 读取颜色块
 	void ReadColorChunk(unsigned char* buffer, unsigned int size, float color[3]);
 	//! 读取纹理块
 	void ReadTextureChunk(unsigned char* buffer, unsigned int size, string& texture);
-
-private:
-	string m_strBaseDir;
-	vector<CMesh*> m_vecMeshes;
-	vector<CMaterial*> m_vecMaterials;
 };
 
 #endif

@@ -17,10 +17,10 @@
 #include <cstring>
 #include <vector>
 #include <set>
-#include <tuple>
+#include <map>
 using std::vector;
 using std::set;
-using std::tuple;
+using std::map;
 
 /**
 * 已注册的模型加载器
@@ -79,15 +79,17 @@ void CMeshLoader::Destroy() {
 /**
 * 加载网格模型
 * @param filename 模型文件
+* @param create 是否创建渲染对象
 * @param cache 是否缓存
 * @return 网格模型对象指针
 * @attention 当使用缓存时，必须使用 CMeshLoader::Remove() 释放资源，并且应该避免修改网格对象内部数据。
 *	使用模型缓存避免重复加载相同模型，以优化内存使用率
 */
-CMeshData* CMeshLoader::Load(const string& filename, bool cache) {
+CMeshData* CMeshLoader::Load(const string& filename, bool create, bool cache) {
 	if (!m_mapMeshLoader.size()) {
 		RegisterLoader();
 	}
+	if (!create) cache = false;
 	CMeshData* meshData = 0;
 	string cacheName = CFileManager::IsFullPath(filename) ? filename : CEngine::GetFileManager()->GetDataDirectory() + filename;
 	map<string, CMeshData*>::iterator iter = m_mapMeshDataCache.find(cacheName);
@@ -106,26 +108,19 @@ CMeshData* CMeshLoader::Load(const string& filename, bool cache) {
 		if (iter != m_mapMeshLoader.end()) meshData = iter->second->LoadFile(filename, file.contents, file.size);
 		else CLog::Warn("Could not find a mesh loader for type '%s'", ext.c_str());
 	}
-	if (meshData && cache) {
-		m_mapMeshDataCache.insert(std::pair<string, CMeshData*>(cacheName, meshData));
-		m_mapCacheRefCount.insert(std::pair<CMeshData*, size_t>(meshData, 1));
+	if (meshData) {
+		if (create) {
+			for (size_t i = 0; i < meshData->GetMeshCount(); i++) {
+				CMesh* mesh = meshData->GetMesh(i);
+				mesh->Create(mesh->GetBindCount() > 0);
+			}
+		}
+		if (cache) {
+			m_mapMeshDataCache.insert(std::pair<string, CMeshData*>(cacheName, meshData));
+			m_mapCacheRefCount.insert(std::pair<CMeshData*, size_t>(meshData, 1));
+		}
 	}
 	return meshData;
-}
-
-/**
-* 保存网格模型
-* @param filename 保存的文件名
-* @param meshData 模型对象
-* @return 成功返回true
-*/
-bool CMeshLoader::Save(const string& filename, CMeshData* meshData) {
-	string ext = CStringUtil::UpperCase(CFileManager::GetExtension(filename));
-	if (ext == "AVT") {
-		return SaveAvatar(filename, meshData);
-	}
-	CLog::Warn("Could not save mesh data for type '%s'", ext.c_str());
-	return false;
 }
 
 /**
@@ -150,6 +145,25 @@ void CMeshLoader::Remove(CMeshData* meshData) {
 			}
 		}
 	} else delete meshData;
+}
+
+/**
+* 保存网格模型
+* @param filename 保存的文件名
+* @param meshData 模型对象
+* @return 成功返回true
+*/
+bool CMeshLoader::Save(const string& filename, CMeshData* meshData) {
+	// 处理缓冲的纹理数据，确保能正确读取到纹理数据
+	for (size_t i = 0; i < meshData->GetMeshCount(); i++) {
+		meshData->GetMesh(i)->GetMaterial()->UseMaterial();
+	}
+	string ext = CStringUtil::UpperCase(CFileManager::GetExtension(filename));
+	if (ext == "AVT") {
+		return SaveAvatar(filename, meshData);
+	}
+	CLog::Warn("Could not save mesh data for type '%s'", ext.c_str());
+	return false;
 }
 
 /**
@@ -182,9 +196,8 @@ CMeshData* CMeshLoader::LoadAvatar(const string& filename) {
 	CStreamReader reader(file.contents, file.size);
 	if (memcmp("AVATAR", reader.GetPointer(), 6) != 0) return 0;
 	if (reader.Skip(6).GetValue<uint16_t>() != 0x0001) return 0;
-	vector<tuple<CMaterial*, uint8_t, string>> materialTextures;
+	map<string, vector<std::pair<CMaterial*, uint8_t>>> textureMapper;
 	vector<int16_t> jointParentIndex;
-	map<string, CTexture*> textureMapper;
 	CMeshData* meshData = new CMeshData();
 	// 读取网格数据
 	uint32_t meshCount = reader.GetValue<uint32_t>();
@@ -229,9 +242,8 @@ CMeshData* CMeshLoader::LoadAvatar(const string& filename) {
 		for (uint8_t t = 0; t < mesh_texture; t++) {
 			char textureId[33] = { 0 };
 			reader.Read((unsigned char*)textureId, 32);
-			materialTextures.push_back(std::make_tuple(material, t, textureId));
+			textureMapper[textureId].push_back(std::pair<CMaterial*, uint8_t>(material, t));
 		}
-		mesh->Create((mesh_flag & 0x01) != 0);
 		meshData->AddMesh(mesh);
 	}
 	// 读骨骼数据
@@ -306,23 +318,15 @@ CMeshData* CMeshLoader::LoadAvatar(const string& filename) {
 		if (fileSize > 0) {
 			CFileManager::CImageFile image(fileType);
 			CEngine::GetFileManager()->ReadFile(reader.GetPointer(), fileSize, &image);
-			textureMapper[name] = CEngine::GetTextureManager()->Create(name, width, height, channel, image.contents, true);
+			for (size_t n = 0; n < textureMapper[name].size(); n++) {
+				textureMapper[name][n].first->SetTextureBuffered(name, width, height, channel, image.contents, true, textureMapper[name][n].second);
+			}
 			reader.Skip(fileSize);
-		} else {
-			textureMapper[name] = CEngine::GetTextureManager()->Create("");
+		} else if (textureMapper.count(name) > 0) {
+			for (size_t n = 0; n < textureMapper[name].size(); n++) {
+				textureMapper[name][n].first->SetTextureBuffered("", textureMapper[name][n].second);
+			}
 		}
-	}
-	// 纹理赋给网格对象
-	for (size_t i = 0; i < materialTextures.size(); i++) {
-		map<string, CTexture*>::iterator target = textureMapper.find(std::get<2>(materialTextures[i]));
-		if (target != textureMapper.end()) {
-			std::get<0>(materialTextures[i])->SetTexture(target->second, std::get<1>(materialTextures[i]));
-		}
-	}
-	map<string, CTexture*>::iterator iter = textureMapper.begin();
-	while (iter != textureMapper.end()) {
-		CEngine::GetTextureManager()->Drop(iter->second);
-		++iter;
 	}
 	return meshData;
 }

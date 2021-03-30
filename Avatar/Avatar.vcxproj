@@ -280,7 +280,6 @@
     <ClCompile Include="CRigidBody.cpp" />
     <ClCompile Include="CPhysicsManager.cpp" />
     <ClCompile Include="CQuaternion.cpp" />
-    <ClCompile Include="CThread.cpp" />
     <ClCompile Include="CThreadPool.cpp" />
     <ClCompile Include="CTimer.cpp" />
     <ClCompile Include="CUdpSocket.cpp" />
@@ -402,7 +401,6 @@
     <ClInclude Include="CPhysicsManager.h" />
     <ClInclude Include="CQuaternion.h" />
     <ClInclude Include="CStringUtil.h" />
-    <ClInclude Include="CThread.h" />
     <ClInclude Include="CThreadPool.h" />
     <ClInclude Include="CTimer.h" />
     <ClInclude Include="CUdpSocket.h" />

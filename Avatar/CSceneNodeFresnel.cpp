@@ -19,7 +19,7 @@ CSceneNodeFresnel::CSceneNodeFresnel(const string& name, const string& meshFile,
 * 初始化场景节点
 */
 bool CSceneNodeFresnel::Init() {
-	m_pMeshData = CMeshLoader::Load(m_strFile, m_bUseCache);
+	m_pMeshData = CMeshLoader::Load(m_strFile, true, m_bUseCache);
 	if (!m_pMeshData) return false;
 	m_cLocalBoundingBox = m_pMeshData->GetBoundingBox();
 	return true;

@@ -20,35 +20,6 @@ public:
 	virtual CMeshData* LoadFile(const string& filename, uint8_t* data, size_t size);
 
 private:
-	//! 读取二进制缓冲区
-	void ReadBuffers();
-	//! 读取骨骼
-	void ReadSkin();
-	//! 读取骨骼节点
-	void ReadJointNode(int index, const CMatrix4& matrix, SJoint* parent);
-	//! 读取节点
-	void ReadMeshNode(int index, const CMatrix4& matrix);
-	//! 读取网格
-	void ReadMesh(CJsonObject& mesh, const CMatrix4& matrix, map<size_t, int>& skinMapper);
-	//! 读取材质信息
-	void ReadMaterial(int index, CMaterial* material, int* texcoord);
-	//! 读取纹理数据
-	void ReadTexture(CJsonObject& texture, CMaterial* material);
-	//! 读取动画数据
-	void ReadAnimation();
-
-	//! 添加三角形
-	void AddTriangles(CMesh* mesh, int accessorIndex);
-	//! 添加顶点
-	void AddVertices(CMesh* mesh, int position, int joints, int weights, map<size_t, int>& skinMapper);
-	//! 设置顶点法相
-	void SetupVerticesNormal(CMesh* mesh, int accessorIndex);
-	//! 设置顶点纹理坐标
-	void SetupVerticesTexCoord(CMesh* mesh, int accessorIndex);
-	//! 设置顶点颜色
-	void SetupVerticesColor(CMesh* mesh, int accessorIndex);
-
-private:
 	//! 缓存元素类型
 	enum {
 		TYPE_BYTE = 5120,
@@ -65,25 +36,56 @@ private:
 		unsigned char* data;
 		size_t size;
 	} SBufferBin;
+	//! GLTF加载器上下文
+	typedef struct _SContext {
+		//! 文件名称
+		string filename;
+		//! 文件目录
+		string baseDir;
+		//! 网格对象指针
+		CMeshData* meshData;
+		//! JSON 对象
+		CJsonObject jsonObject;
+		//! 骨骼节点集合
+		map<int, bool> jointSet;
+		//! 骨骼下标映射
+		map<int, SJoint*> jointMap;
+		//! 骨骼逆局部变换矩阵
+		map<int, CMatrix4> localInvMap;
+		//! 骨骼绑定逆矩阵
+		map<int, CMatrix4> bindInvMap;
+		//! 缓存地址
+		vector<SBufferBin> buffers;
+	} SContext;
 
-	//! 文件名称
-	string m_strFilename;
-	//! 文件目录
-	string m_strBaseDir;
-	//! 网格对象指针
-	CMeshData* m_pMeshData;
-	//! JSON 对象
-	CJsonObject m_cJsonObject;
-	//! 骨骼节点集合
-	map<int, bool> m_setJoints;
-	//! 骨骼下标映射
-	map<int, SJoint*> m_mapJoints;
-	//! 骨骼逆局部变换矩阵
-	map<int, CMatrix4> m_mapLocalInv;
-	//! 骨骼绑定逆矩阵
-	map<int, CMatrix4> m_mapBindInv;
-	//! 缓存地址
-	vector<SBufferBin> m_vecBuffer;
+private:
+	//! 读取二进制缓冲区
+	void ReadBuffers(SContext* context);
+	//! 读取骨骼
+	void ReadSkin(SContext* context);
+	//! 读取骨骼节点
+	void ReadJointNode(SContext* context, int index, const CMatrix4& matrix, SJoint* parent);
+	//! 读取节点
+	void ReadMeshNode(SContext* context, int index, const CMatrix4& matrix);
+	//! 读取网格
+	void ReadMesh(SContext* context, int index, const CMatrix4& matrix, map<size_t, int>& skinMapper);
+	//! 读取材质信息
+	void ReadMaterial(SContext* context, int index, CMaterial* material, int* texcoord);
+	//! 读取纹理数据
+	bool ReadTexture(SContext* context, CJsonObject& texture, CMaterial* material);
+	//! 读取动画数据
+	void ReadAnimation(SContext* context);
+
+	//! 添加三角形
+	void AddTriangles(SContext* context, CMesh* mesh, int accessorIndex);
+	//! 添加顶点
+	void AddVertices(SContext* context, CMesh* mesh, int position, int joints, int weights, map<size_t, int>& skinMapper);
+	//! 设置顶点法相
+	void SetupVerticesNormal(SContext* context, CMesh* mesh, int accessorIndex);
+	//! 设置顶点纹理坐标
+	void SetupVerticesTexCoord(SContext* context, CMesh* mesh, int accessorIndex);
+	//! 设置顶点颜色
+	void SetupVerticesColor(SContext* context, CMesh* mesh, int accessorIndex);
 };
 
 #endif

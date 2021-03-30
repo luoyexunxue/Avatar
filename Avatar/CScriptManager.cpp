@@ -146,15 +146,15 @@ void CScriptManager::OnReady() {
 */
 void CScriptManager::OnUpdate(float dt) {
 	// GUI事件回调
-	for (size_t i = 0; i < m_vecEventQueue.size(); i++) {
-		const SGuiEvent& evt = m_vecEventQueue[i];
+	while (!m_queGuiEventQueue.empty()) {
+		SGuiEvent& evt = m_queGuiEventQueue.front();
+		m_queGuiEventQueue.pop();
 		lua_rawgeti(m_pLuaState, LUA_REGISTRYINDEX, evt.callback);
 		lua_pushinteger(m_pLuaState, evt.event);
 		lua_pushinteger(m_pLuaState, evt.arg1);
 		lua_pushinteger(m_pLuaState, evt.arg2);
 		lua_pcall(m_pLuaState, 3, 0, 0);
 	}
-	m_vecEventQueue.clear();
 	// 脚本命令执行
 	while (!m_queScriptQueue.empty()) {
 		string script = std::move(m_queScriptQueue.front());
@@ -260,7 +260,7 @@ void CScriptManager::Register(const string& function, void* callback) {
 void CScriptManager::GuiEvent(const string& name, int evt, int arg1, int arg2) {
 	map<string, int>::iterator iter = m_mapGuiEvent.find(name);
 	if (iter != m_mapGuiEvent.end()) {
-		m_vecEventQueue.push_back(SGuiEvent(iter->second, evt, arg1, arg2));
+		m_queGuiEventQueue.push(SGuiEvent(iter->second, evt, arg1, arg2));
 	}
 }
 

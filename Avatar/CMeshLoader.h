@@ -19,12 +19,13 @@ public:
 	static bool Register(const string& type, CMeshLoader* loader);
 	//! 销毁已注册的加载器
 	static void Destroy();
+
 	//! 加载网格模型
-	static CMeshData* Load(const string& filename, bool cache);
-	//! 保存网格模型
-	static bool Save(const string& filename, CMeshData* meshData);
+	static CMeshData* Load(const string& filename, bool create, bool cache);
 	//! 移除已缓存的模型
 	static void Remove(CMeshData* meshData);
+	//! 保存网格模型
+	static bool Save(const string& filename, CMeshData* meshData);
 
 public:
 	//! 默认构造函数

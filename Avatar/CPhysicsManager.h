@@ -81,7 +81,7 @@ private:
 
 private:
 	//! 碰撞信息
-	typedef struct _SCollideInfo{
+	typedef struct _SCollideInfo {
 		bool enter;
 		CRigidBody* body1;
 		CRigidBody* body2;
@@ -96,7 +96,7 @@ private:
 	//! DBVT 碰撞检测结果
 	vector<CDynamicBvt::SCollidePair> m_vecCollidePair;
 	//! 接触列表
-	vector<SArbiter> m_vecArbiterList;
+	list<SArbiter> m_lstArbiterList;
 	//! 碰撞集合
 	map<size_t, SCollideInfo> m_mapCollide;
 	//! 动态包围层次树

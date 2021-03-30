@@ -8,8 +8,6 @@
 #include "CCamera.h"
 #include "CVector3.h"
 #include "CBoundingBox.h"
-#include <vector>
-using std::vector;
 
 /**
 * @brief 地形场景节点

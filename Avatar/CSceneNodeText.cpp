@@ -147,7 +147,7 @@ void CSceneNodeText::UpdateText() {
 			buffer[index + 3] = (pixel * color[3] + (0xFF - pixel) * buffer[index + 3]) >> 8;
 		}
 	}
-	m_pMesh->GetMaterial()->SetTexture("", textureWidth, textureHeight, 4, buffer);
+	m_pMesh->GetMaterial()->SetTexture("", textureWidth, textureHeight, 4, buffer, false);
 	m_cScale.SetValue(static_cast<float>(textureWidth), static_cast<float>(textureHeight), 1.0f);
 	delete[] buffer;
 }

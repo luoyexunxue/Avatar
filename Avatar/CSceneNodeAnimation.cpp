@@ -35,7 +35,7 @@ CSceneNodeAnimation::CSceneNodeAnimation(const string& name, const string& meshF
 * 初始化场景节点
 */
 bool CSceneNodeAnimation::Init() {
-	m_pMeshData = CMeshLoader::Load(m_strFile, false);
+	m_pMeshData = CMeshLoader::Load(m_strFile, true, false);
 	if (!m_pMeshData) return false;
 	size_t jointCount = m_pMeshData->GetJointCount();
 	size_t meshCount = m_pMeshData->GetMeshCount();

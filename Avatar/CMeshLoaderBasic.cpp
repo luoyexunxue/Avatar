@@ -61,8 +61,7 @@ CMeshData* CMeshLoaderBasic::LoadStlFile(const string& filename, uint8_t* data, 
 		CVertex v3(v[2][0], v[2][1], v[2][2], 0, 0, n[0], n[1], n[2]);
 		pMesh->AddTriangle(v1, v2, v3);
 	}
-	pMesh->Create(false);
-	pMesh->GetMaterial()->SetTexture("");
+	pMesh->GetMaterial()->SetTextureBuffered("");
 	return pMeshData;
 }
 
@@ -132,7 +131,7 @@ CMeshData* CMeshLoaderBasic::LoadObjFile(const string& filename, uint8_t* data, 
 			if (!currentMesh) {
 				currentMesh = new CMesh();
 				currentMesh->GetMaterial()->GetName() = currentMtl;
-				currentMesh->GetMaterial()->SetTexture("");
+				currentMesh->GetMaterial()->SetTextureBuffered("");
 				pMeshData->AddMesh(currentMesh);
 				mapVertices.clear();
 			}
@@ -181,7 +180,6 @@ CMeshData* CMeshLoaderBasic::LoadObjFile(const string& filename, uint8_t* data, 
 			pMesh->SetupNormal();
 		}
 		pMesh->Reverse(false, false, true);
-		pMesh->Create(false);
 	}
 	return pMeshData;
 }
@@ -254,9 +252,8 @@ CMeshData* CMeshLoaderBasic::LoadMs3dFile(const string& filename, uint8_t* data,
 		materialReader >> mtl->m_fColor[0] >> mtl->m_fColor[1] >> mtl->m_fColor[2] >> mtl->m_fColor[3];
 		materialReader.Skip(41).Read((unsigned char*)texture, 128);
 		// 设置纹理图片，如果没有则使用纯灰色
-		if (strlen(texture) > 0) mtl->SetTexture(baseDir + texture);
-		else mtl->SetTexture("");
-		pMesh->Create(true);
+		if (strlen(texture) > 0) mtl->SetTextureBuffered(baseDir + texture);
+		else mtl->SetTextureBuffered("");
 	}
 	int numJoints = reader.Skip(12).GetValue<uint16_t>();
 	for (int i = 0; i < numJoints; i++) {
@@ -433,7 +430,7 @@ CMeshData* CMeshLoaderBasic::LoadI3dmFile(const string& filename, uint8_t* data,
 	reader.Skip(batchTableJSONByteLength + batchTableBinaryByteLength);
 	if (gltfFormat == 0) {
 		string uri = string((char*)reader.GetPointer(), reader.Available());
-		return CMeshLoader::Load(uri, true);
+		return CMeshLoader::Load(uri, false, false);
 	}
 	return CMeshLoaderGltf().LoadFile(filename, reader.GetPointer(), reader.Available());
 }
@@ -463,6 +460,7 @@ void CMeshLoaderBasic::LoadObjMaterial(const string& filename, CMeshData* meshDa
 		reader >> key;
 		if (key == "newmtl") {
 			pCurrentMaterial = new CMaterial();
+			pCurrentMaterial->SetTextureBuffered("");
 			reader >> pCurrentMaterial->GetName();
 			mapMaterials.insert(std::pair<string, CMaterial*>(pCurrentMaterial->GetName(), pCurrentMaterial));
 		} else if (key == "Kd" && pCurrentMaterial) {
@@ -475,29 +473,22 @@ void CMeshLoaderBasic::LoadObjMaterial(const string& filename, CMeshData* meshDa
 			char* q = line + strlen(line) - 1;
 			while (*p == ' ' || *p == '\t') ++p;
 			while (*q == ' ' || *q == '\t' || *q == '\r' || *q == '\n') *q = '\0';
-			if (CFileManager::IsFullPath(p)) pCurrentMaterial->SetTexture(p);
-			else pCurrentMaterial->SetTexture(baseDir + p);
+			if (CFileManager::IsFullPath(p)) pCurrentMaterial->SetTextureBuffered(p);
+			else pCurrentMaterial->SetTextureBuffered(baseDir + p);
 		} else if (key == "map_Ka" && pCurrentMaterial) {
 			reader.getline(line, 256);
 			char* p = line;
 			char* q = line + strlen(line) - 1;
 			while (*p == ' ' || *p == '\t') ++p;
 			while (*q == ' ' || *q == '\t' || *q == '\r' || *q == '\n') *q = '\0';
-			if (CFileManager::IsFullPath(p)) pCurrentMaterial->SetTexture(p);
-			else pCurrentMaterial->SetTexture(baseDir + p);
+			if (CFileManager::IsFullPath(p)) pCurrentMaterial->SetTextureBuffered(p);
+			else pCurrentMaterial->SetTextureBuffered(baseDir + p);
 		}
 	}
 	// 对网格赋予材质
 	for (size_t i = 0; i < meshData->GetMeshCount(); i++) {
 		map<string, CMaterial*>::iterator iter = mapMaterials.find(meshData->GetMesh(i)->GetMaterial()->GetName());
-		if (iter != mapMaterials.end()) {
-			CMesh* mesh = meshData->GetMesh(i);
-			mesh->GetMaterial()->CopyFrom(iter->second);
-			// 如果纹理为空则设置为默认的灰色纹理
-			if (!mesh->GetMaterial()->GetTexture()) {
-				mesh->GetMaterial()->SetTexture("");
-			}
-		}
+		if (iter != mapMaterials.end()) meshData->GetMesh(i)->GetMaterial()->CopyFrom(iter->second);
 	}
 	// 释放材质数组占用的内存
 	map<string, CMaterial*>::iterator iter = mapMaterials.begin();

@@ -10,11 +10,9 @@
 #include "CInputManager.h"
 #include <string>
 #include <map>
-#include <vector>
 #include <queue>
 using std::string;
 using std::map;
-using std::vector;
 using std::queue;
 typedef struct lua_State lua_State;
 
@@ -201,7 +199,7 @@ private:
 	//! GUI 界面事件绑定
 	map<string, int> m_mapGuiEvent;
 	//! GUI 事件队列
-	vector<SGuiEvent> m_vecEventQueue;
+	queue<SGuiEvent> m_queGuiEventQueue;
 	//! 脚本命令队列
 	queue<string> m_queScriptQueue;
 	//! 脚本管理器实例

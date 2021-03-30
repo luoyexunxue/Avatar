@@ -19,7 +19,7 @@ CSceneNodeStatic::CSceneNodeStatic(const string& name, const string& meshFile, b
 * 初始化场景节点
 */
 bool CSceneNodeStatic::Init() {
-	m_pMeshData = CMeshLoader::Load(m_strFile, m_bUseCache);
+	m_pMeshData = CMeshLoader::Load(m_strFile, true, m_bUseCache);
 	if (!m_pMeshData) return false;
 	m_cLocalBoundingBox = m_pMeshData->GetBoundingBox();
 	return true;

@@ -6,7 +6,18 @@
 #define _CASYNCTASK_H_
 #include "AvatarConfig.h"
 #include "CEngine.h"
-#include "CThread.h"
+#include <vector>
+#include <queue>
+#include <mutex>
+#ifdef AVATAR_WINDOWS
+#include <windows.h>
+#else
+#include <unistd.h>
+#include <pthread.h>
+#endif
+using std::vector;
+using std::queue;
+using std::mutex;
 
 /**
 * @brief 异步任务工具类
@@ -14,30 +25,34 @@
 class AVATAR_EXPORT CAsyncTask {
 public:
 	//! 默认构造函数
-	CAsyncTask(CEngine* engine);
+	CAsyncTask();
+	//! 指定线程数构造函数
+	CAsyncTask(int threadCount);
+	//! 使用引擎对象构造
+	CAsyncTask(CEngine* engine, int threadCount);
 	//! 默认析构函数
 	virtual ~CAsyncTask();
 
+	//! 启动异步任务
+	void Start();
+	//! 取消异步任务
+	void Cancel();
+	//! 处理异步事件
+	void Handle();
+
 	//! 任务进度通知
-	virtual void OnProgress(int percent);
+	virtual void OnProgress(int percent, void* userData);
 	//! 任务完成通知
 	virtual void OnCompleted(bool cancel);
-	//! 启动异步任务
-	virtual void Run();
-	//! 取消异步任务
-	virtual void Cancel();
 
 	//! 报告进度
-	virtual void ReportProgress(int percent);
+	virtual void ReportProgress(int percent, void* userData);
 	//! 是否已取消
 	virtual bool IsCancel();
-	//! 异步处理实现
+	//! 异步任务实现
 	virtual void DoWork() = 0;
 
 private:
-	//! 后台线程方法
-	static void RunBackground(class CThread* thread, void* param);
-
 	//! 事件通知接口
 	class CTaskHandler : public CEngine::CNotifyHandler {
 	public:
@@ -53,22 +68,38 @@ private:
 		int eventType;
 		int percentage;
 		bool cancellation;
-		_STaskEvent(): eventType(-1) {}
-		_STaskEvent(int percent): eventType(1), percentage(percent) {}
-		_STaskEvent(bool cancel): eventType(2), cancellation(cancel) {}
+		void* userData;
+		_STaskEvent() : eventType(-1) {}
+		_STaskEvent(bool cancel) : eventType(2), cancellation(cancel) {}
+		_STaskEvent(int percent, void* param) : eventType(1), percentage(percent), userData(param) {}
 	} STaskEvent;
 
 private:
+	//! 任务是否在运行
+	bool m_bRunning;
+	//! 是否已经被取消
+	bool m_bCancel;
+	//! 任务线程数
+	int m_iThreadCount;
+	//! 互斥锁
+	mutex m_cMutex;
 	//! 引擎对象指针
 	CEngine* m_pEngine;
 	//! 任务事件回调
 	CTaskHandler* m_pTaskHandler;
-	//! 线程对象
-	CThread* m_pThread;
-	//! 是否已经被取消
-	bool m_bCancel;
 	//! 事件队列
 	queue<STaskEvent> m_queEvents;
+#ifdef AVATAR_WINDOWS
+	//! 线程句柄
+	vector<HANDLE> m_vecThreads;
+	//! 工作线程
+	static DWORD WINAPI RunBackground(LPVOID param);
+#else
+	//! 线程句柄
+	vector<pthread_t> m_vecThreads;
+	//! 工作线程
+	static void* RunBackground(void* param);
+#endif
 };
 
 #endif

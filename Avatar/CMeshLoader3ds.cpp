@@ -13,38 +13,32 @@
 CMeshData* CMeshLoader3ds::LoadFile(const string& filename, uint8_t* data, size_t size) {
 	// 不是有效的 3DS 文件
 	if (size < 16 || data[0] != 0x4D || data[1] != 0x4D) return 0;
-	m_strBaseDir = CFileManager::GetDirectory(filename);
-	m_vecMeshes.clear();
-	m_vecMaterials.clear();
-	ReadChunk(data, size);
+	CMeshLoader3ds::SContext context;
+	context.baseDir = CFileManager::GetDirectory(filename);
+	ReadChunk(&context, data, size);
+	CMeshData* pMeshData = new CMeshData();
 	// 将材质绑定至指定网格对象
-	for (size_t i = 0; i < m_vecMaterials.size(); i++) {
-		for (size_t j = 0; j < m_vecMeshes.size(); j++) {
-			if (m_vecMaterials[i]->GetName() == m_vecMeshes[j]->GetMaterial()->GetName()) {
-				m_vecMeshes[j]->GetMaterial()->CopyFrom(m_vecMaterials[i]);
-				// 如果没有纹理则使用灰色纹理
-				if (!m_vecMaterials[i]->GetTexture()) {
-					m_vecMeshes[j]->GetMaterial()->SetTexture("");
-				}
+	for (size_t i = 0; i < context.meshes.size(); i++) {
+		bool material_flag = true;
+		for (size_t j = 0; j < context.materials.size(); j++) {
+			if (context.meshes[i]->GetMaterial()->GetName() == context.materials[j]->GetName()) {
+				material_flag = false;
+				context.meshes[i]->GetMaterial()->CopyFrom(context.materials[j]);
+				break;
 			}
 		}
-		delete m_vecMaterials[i];
+		if (material_flag) context.meshes[i]->GetMaterial()->SetTextureBuffered("");
+		context.meshes[i]->SetupNormal();
+		pMeshData->AddMesh(context.meshes[i]);
 	}
-	// 创建网格对象
-	CMeshData* pMeshData = new CMeshData();
-	for (size_t i = 0; i < m_vecMeshes.size(); i++) {
-		m_vecMeshes[i]->SetupNormal();
-		m_vecMeshes[i]->Create(false);
-		if (m_vecMaterials.empty()) m_vecMeshes[i]->GetMaterial()->SetTexture("");
-		pMeshData->AddMesh(m_vecMeshes[i]);
-	}
+	for (size_t i = 0; i < context.materials.size(); i++) delete context.materials[i];
 	return pMeshData;
 }
 
 /**
 * 递归读取块
 */
-void CMeshLoader3ds::ReadChunk(unsigned char* buffer, size_t size) {
+void CMeshLoader3ds::ReadChunk(SContext* context, unsigned char* buffer, size_t size) {
 	CStreamReader reader(buffer, size);
 	while (reader.Available() > 0) {
 		size_t currentPos = reader.GetPosition();
@@ -53,19 +47,19 @@ void CMeshLoader3ds::ReadChunk(unsigned char* buffer, size_t size) {
 		switch (chunkId) {
 		case 0x4D4D:
 		case 0x3D3D:
-			ReadChunk(reader.GetPointer(), chunkSize - 6);
+			ReadChunk(context, reader.GetPointer(), chunkSize - 6);
 			break;
 		case 0x4000:
 			while (reader.GetValue<char>() != '\0');
-			ReadChunk(reader.GetPointer(), chunkSize + currentPos - reader.GetPosition());
+			ReadChunk(context, reader.GetPointer(), chunkSize + currentPos - reader.GetPosition());
 			break;
 		case 0x4100:
-			m_vecMeshes.push_back(new CMesh());
-			ReadMeshChunk(reader.GetPointer(), chunkSize - 6, m_vecMeshes.back());
+			context->meshes.push_back(new CMesh());
+			ReadMeshChunk(reader.GetPointer(), chunkSize - 6, context->meshes.back());
 			break;
 		case 0xAFFF:
-			m_vecMaterials.push_back(new CMaterial());
-			ReadMaterialChunk(reader.GetPointer(), chunkSize - 6, m_vecMaterials.back());
+			context->materials.push_back(new CMaterial());
+			ReadMaterialChunk(context, reader.GetPointer(), chunkSize - 6, context->materials.back());
 			break;
 		default:
 			break;
@@ -126,9 +120,10 @@ void CMeshLoader3ds::ReadMeshChunk(unsigned char* buffer, size_t size, CMesh* me
 /**
 * 读取材质块
 */
-void CMeshLoader3ds::ReadMaterialChunk(unsigned char* buffer, unsigned int size, CMaterial* material) {
+void CMeshLoader3ds::ReadMaterialChunk(SContext* context, unsigned char* buffer, unsigned int size, CMaterial* material) {
 	float color[3];
 	string textureFile;
+	material->SetTextureBuffered("");
 	CStreamReader reader(buffer, size);
 	while (reader.Available() > 0) {
 		size_t currentPos = reader.GetPosition();
@@ -147,8 +142,8 @@ void CMeshLoader3ds::ReadMaterialChunk(unsigned char* buffer, unsigned int size,
 		case 0xA200:
 			ReadTextureChunk(reader.GetPointer(), chunkSize - 6, textureFile);
 			if (!textureFile.empty()) {
-				if (!CFileManager::IsFullPath(textureFile)) textureFile = m_strBaseDir + textureFile;
-				material->SetTexture(textureFile);
+				if (!CFileManager::IsFullPath(textureFile)) textureFile = context->baseDir + textureFile;
+				material->SetTextureBuffered(textureFile);
 			}
 			break;
 		default:

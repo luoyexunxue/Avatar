@@ -303,7 +303,7 @@ void CPhysicsManager::IntegrateVelocity() {
 */
 void CPhysicsManager::CollisionDetect() {
 	// 清除之前的接触对
-	m_vecArbiterList.clear();
+	m_lstArbiterList.clear();
 	// 使用 DBVT 进行粗略检查
 	m_pDynamicBvt->CollisionPair(m_vecCollidePair);
 	// 对每对可能的碰撞进行精确计算得到接触点
@@ -322,7 +322,7 @@ void CPhysicsManager::CollisionDetect() {
 			// 计算恢复系数和摩擦系数
 			arbiter.restitution = std::min(bodyA->m_fRestitution, bodyB->m_fRestitution);
 			arbiter.friction = std::min(bodyA->m_fFriction, bodyB->m_fFriction);
-			m_vecArbiterList.push_back(arbiter);
+			m_lstArbiterList.push_back(arbiter);
 		}
 	}
 	// 碰撞事件回调
@@ -335,16 +335,13 @@ void CPhysicsManager::CollisionDetect() {
 void CPhysicsManager::SolveConstraint() {
 	// 迭代次数
 	const int iteration = 10;
-
 	// 预处理接触点
-	for (size_t i = 0; i < m_vecArbiterList.size(); i++) {
-		PreSolve(m_vecArbiterList[i]);
-	}
+	list<SArbiter>::iterator iter = m_lstArbiterList.begin();
+	while (iter != m_lstArbiterList.end()) PreSolve(*iter++);
 	// 迭代冲量求解
-	for (int iter = 0; iter < iteration; iter++) {
-		for (size_t i = 0; i < m_vecArbiterList.size(); i++) {
-			Solve(m_vecArbiterList[i]);
-		}
+	for (int i = 0; i < iteration; i++) {
+		iter = m_lstArbiterList.begin();
+		while (iter != m_lstArbiterList.end()) Solve(*iter++);
 	}
 }
 
@@ -457,8 +454,9 @@ void CPhysicsManager::CollideEvent() {
 	}
 	// 遍历全部接触列表
 	CScriptManager* pScriptMgr = CEngine::GetScriptManager();
-	for (size_t i = 0; i < m_vecArbiterList.size(); i++) {
-		SArbiter& arbiter = m_vecArbiterList[i];
+	list<SArbiter>::iterator it = m_lstArbiterList.begin();
+	while (it != m_lstArbiterList.end()) {
+		SArbiter& arbiter = *it++;
 		if (arbiter.body1->m_bIsTrigger || arbiter.body2->m_bIsTrigger) {
 			arbiter.numContacts = 0;
 		}

@@ -46,6 +46,11 @@ CMaterial::~CMaterial() {
 	pTextureMgr->Drop(m_pTexture[6]);
 	pTextureMgr->Drop(m_pTexture[7]);
 	CEngine::GetShaderManager()->Drop(m_pShader);
+	map<int, SBufferedTexture>::iterator iter = m_mapBufferedTextures.begin();
+	while (iter != m_mapBufferedTextures.end()) {
+		if (iter->second.data) delete[] iter->second.data;
+		++iter;
+	}
 }
 
 /**
@@ -70,12 +75,29 @@ void CMaterial::CopyFrom(const CMaterial* material) {
 	m_bCullFace = material->m_bCullFace;
 	m_bUseDepth = material->m_bUseDepth;
 	m_bAddColor = material->m_bAddColor;
+	map<int, SBufferedTexture>::iterator iter1 = m_mapBufferedTextures.begin();
+	while (iter1 != m_mapBufferedTextures.end()) {
+		if (iter1->second.data) delete[] iter1->second.data;
+		++iter1;
+	}
+	m_mapBufferedTextures.clear();
+	map<int, SBufferedTexture>::const_iterator iter2 = material->m_mapBufferedTextures.begin();
+	while (iter2 != material->m_mapBufferedTextures.end()) {
+		m_mapBufferedTextures[iter2->first] = iter2->second;
+		if (iter2->second.data) {
+			int size = iter2->second.width * iter2->second.height * iter2->second.channel;
+			m_mapBufferedTextures[iter2->first].data = new unsigned char[size];
+			std::memcpy(m_mapBufferedTextures[iter2->first].data, iter2->second.data, size);
+		}
+		++iter2;
+	}
 }
 
 /**
 * 使用材质
 */
 void CMaterial::UseMaterial() {
+	CreateBufferedTexture();
 	// 设置纹理单元
 	if (m_iTextureCount == 1) m_pTexture[0]->UseTexture();
 	else if (m_iTextureCount > 1) {
@@ -116,52 +138,71 @@ void CMaterial::UseMaterial() {
 * 设置材质贴图
 */
 void CMaterial::SetTexture(CTexture* texture, int index) {
-	if (m_pTexture[index]) {
-		m_iTextureCount -= 1;
-	}
+	if (m_pTexture[index]) m_iTextureCount -= 1;
 	CEngine::GetTextureManager()->Drop(m_pTexture[index]);
-	if (texture) {
-		m_pTexture[index] = texture->AddReference();
-		m_iTextureCount += 1;
-	} else {
-		m_pTexture[index] = 0;
-	}
+	m_pTexture[index] = texture ? texture->AddReference() : 0;
+	m_iTextureCount += texture ? 1 : 0;
 }
 
 /**
 * 设置材质贴图
 */
 void CMaterial::SetTexture(const string& file, int index) {
-	if (!m_pTexture[index]) {
-		m_iTextureCount += 1;
-	}
+	if (!m_pTexture[index]) m_iTextureCount += 1;
 	CTextureManager* pTextureMgr = CEngine::GetTextureManager();
 	pTextureMgr->Drop(m_pTexture[index]);
 	m_pTexture[index] = pTextureMgr->Create(file);
 }
 
 /**
-* 设置立方体材质贴图
+* 设置内存材质贴图
 */
-void CMaterial::SetTexture(const string& name, const string files[6], int index) {
-	if (!m_pTexture[index]) {
-		m_iTextureCount += 1;
-	}
+void CMaterial::SetTexture(const string& name, int width, int height, int channel, const void* data, bool mipmap, int index) {
+	if (!m_pTexture[index]) m_iTextureCount += 1;
 	CTextureManager* pTextureMgr = CEngine::GetTextureManager();
 	pTextureMgr->Drop(m_pTexture[index]);
-	m_pTexture[index] = pTextureMgr->Create(name, files);
+	m_pTexture[index] = pTextureMgr->Create(name, width, height, channel, data, mipmap);
 }
 
 /**
-* 设置内存材质贴图
+* 缓冲加载纹理
+* @note 延迟创建纹理对象，若不在渲染线程中需调用此方法设置材质贴图
 */
-void CMaterial::SetTexture(const string& name, int width, int height, int channel, const void* data, int index) {
-	if (!m_pTexture[index]) {
-		m_iTextureCount += 1;
+void CMaterial::SetTextureBuffered(const string& file, int index) {
+	map<int, SBufferedTexture>::iterator iter = m_mapBufferedTextures.find(index);
+	if (iter != m_mapBufferedTextures.end() && iter->second.data) delete[] iter->second.data;
+	m_mapBufferedTextures[index].name = file;
+	m_mapBufferedTextures[index].data = 0;
+}
+
+/**
+*  缓冲加载纹理
+* @note 延迟创建纹理对象，若不在渲染线程中需调用此方法设置材质贴图
+*/
+void CMaterial::SetTextureBuffered(const string& name, int width, int height, int channel, const void* data, bool mipmap, int index) {
+	map<int, SBufferedTexture>::iterator iter = m_mapBufferedTextures.find(index);
+	if (iter != m_mapBufferedTextures.end() && iter->second.data) delete[] iter->second.data;
+	int size = width * height * channel;
+	m_mapBufferedTextures[index].name = name;
+	m_mapBufferedTextures[index].width = width;
+	m_mapBufferedTextures[index].height = height;
+	m_mapBufferedTextures[index].channel = channel;
+	m_mapBufferedTextures[index].mipmap = mipmap;
+	m_mapBufferedTextures[index].data = new unsigned char[size];
+	std::memcpy(m_mapBufferedTextures[index].data, data, size);
+}
+
+/**
+* 设置缓冲纹理模式
+* @param s 纹理坐标S，可选值 1-重复 2-限制到边界 3-镜像重复
+* @param t 纹理坐标T，可选值 1-重复 2-限制到边界 3-镜像重复
+*/
+void CMaterial::SetTextureBufferedWrapMode(int s, int t, int index) {
+	map<int, SBufferedTexture>::iterator iter = m_mapBufferedTextures.find(index);
+	if (iter != m_mapBufferedTextures.end()) {
+		iter->second.wraps = s;
+		iter->second.wrapt = t;
 	}
-	CTextureManager* pTextureMgr = CEngine::GetTextureManager();
-	pTextureMgr->Drop(m_pTexture[index]);
-	m_pTexture[index] = pTextureMgr->Create(name, width, height, channel, data, false);
 }
 
 /**
@@ -290,4 +331,28 @@ void CMaterial::SetRenderMode(bool cullFace, bool useDepth, bool addColor) {
 	m_bCullFace = cullFace;
 	m_bUseDepth = useDepth;
 	m_bAddColor = addColor;
+}
+
+/**
+* 创建已缓冲的纹理对象
+* @see SetTextureBuffered
+*/
+void CMaterial::CreateBufferedTexture() {
+	if (m_mapBufferedTextures.empty()) return;
+	map<int, SBufferedTexture>::iterator iter = m_mapBufferedTextures.begin();
+	while (iter != m_mapBufferedTextures.end()) {
+		const SBufferedTexture& t = iter->second;
+		if (t.data) {
+			SetTexture(t.name, t.width, t.height, t.channel, t.data, t.mipmap, iter->first);
+			delete[] t.data;
+		} else SetTexture(t.name, iter->first);
+		if (t.wraps == 1) m_pTexture[iter->first]->SetWrapModeRepeat(true, false);
+		else if (t.wraps == 2) m_pTexture[iter->first]->SetWrapModeClampToEdge(true, false);
+		else if (t.wraps == 3) m_pTexture[iter->first]->SetWrapModeMirroredRepeat(true, false);
+		if (t.wrapt == 1) m_pTexture[iter->first]->SetWrapModeRepeat(false, true);
+		else if (t.wrapt == 2) m_pTexture[iter->first]->SetWrapModeClampToEdge(false, true);
+		else if (t.wrapt == 3) m_pTexture[iter->first]->SetWrapModeMirroredRepeat(false, true);
+		++iter;
+	}
+	m_mapBufferedTextures.clear();
 }

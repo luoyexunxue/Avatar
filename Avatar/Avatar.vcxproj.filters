@@ -327,9 +327,6 @@
     <ClCompile Include="CCameraGeographic.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="CThread.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="CPostProcessPanorama.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -687,9 +684,6 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="CCameraGeographic.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="CThread.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="CPostProcessPanorama.h">
