@@ -14,8 +14,8 @@ using std::vector;
 class AVATAR_EXPORT CSceneNodeParticles: public CSceneNode {
 public:
 	//! 构造方法
-	CSceneNodeParticles(const string& name, const string& texture, float size, int count, bool dark,
-		const CColor& color, const float speed[3], float spread, float fade, bool loop);
+	CSceneNodeParticles(const string& name, const string& texture, const CColor& color,
+		float size, bool dark, int count, bool loop);
 
 	//! 初始化场景节点
 	virtual bool Init();
@@ -27,7 +27,9 @@ public:
 	virtual void Update(float dt);
 
 	//! 初始化粒子
-	void InitParticles(const CVector3& initSpeed, float spreadSpeed, float fadeSpeed);
+	void SetupSpeed(const CVector3& emit, float spread, float fade);
+	//! 设置是否受重力加速度影响
+	void SetGravityEffect(bool enable);
 
 private:
 	//! 随机数生成函数
@@ -44,17 +46,18 @@ private:
 		float distance;
 	} SParticle;
 
-private:
 	//! 是否循环
-	bool m_bLoopParticles;
+	bool m_bLoop;
 	//! 暗混合模式
-	bool m_bDarkBlendMode;
+	bool m_bDarkBlend;
+	//! 重力作用
+	bool m_bGravityEffect;
 	//! 消失速度
 	float m_fFadeSpeed;
-	//! 粒子射出速度
+	//! 粒子扩散速度
 	float m_fSpreadSpeed;
-	//! 粒子初始速度
-	float m_fInitSpeed[3];
+	//! 粒子射出速度
+	float m_fEmitSpeed[3];
 	//! 粒子大小
 	float m_fParticleSize;
 	//! 粒子初始颜色

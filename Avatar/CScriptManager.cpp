@@ -1136,18 +1136,13 @@ int CScriptManager::DoSceneInsert(lua_State* lua) {
 			float width = TableValue(lua, 4, "width", 1.0f);
 			pNode = new CSceneNodeLine(name, CColor(color), width);
 		} else if (!strcmp("particles", type)) {
-			float speed[3];
 			const char* texture = TableValue(lua, 4, "texture", "");
 			const char* color = TableValue(lua, 4, "color", "#FFC080FF");
-			int count = TableValue(lua, 4, "count", 100);
 			float size = TableValue(lua, 4, "size", 0.5f);
 			bool dark = TableValue(lua, 4, "dark", false);
-			float spread = TableValue(lua, 4, "spread", 0.5f);
-			float fade = TableValue(lua, 4, "fade", 1.0f);
-			speed[0] = TableValue(lua, 4, "dx", 0.0f);
-			speed[1] = TableValue(lua, 4, "dy", 0.0f);
-			speed[2] = TableValue(lua, 4, "dz", 0.0f);
-			pNode = new CSceneNodeParticles(name, texture, size, count, dark, CColor(color), speed, spread, fade, true);
+			int count = TableValue(lua, 4, "count", 100);
+			bool loop = TableValue(lua, 4, "loop", true);
+			pNode = new CSceneNodeParticles(name, texture, CColor(color), size, dark, count, loop);
 		} else if (!strcmp("planet", type)) {
 			const char* texture = TableValue(lua, 4, "texture", "");
 			const char* textureNight = TableValue(lua, 4, "textureNight", "");
@@ -1741,15 +1736,18 @@ int CScriptManager::DoSceneHandle(lua_State* lua) {
 			}
 		} else if (type == "particles") {
 			CSceneNodeParticles* that = static_cast<CSceneNodeParticles*>(pNode);
-			if (!strcmp(function, "InitParticles")) {
+			if (!strcmp(function, "SetupSpeed")) {
 				if (!lua_istable(lua, 3)) return 0;
-				CVector3 initSpeed;
-				initSpeed[0] = TableValue(lua, 3, "initSpeed_x", 0.0f);
-				initSpeed[1] = TableValue(lua, 3, "initSpeed_y", 0.0f);
-				initSpeed[2] = TableValue(lua, 3, "initSpeed_z", 0.0f);
-				float spreadSpeed = TableValue(lua, 3, "spreadSpeed", 1.0f);
-				float fadeSpeed = TableValue(lua, 3, "fadeSpeed", 1.0f);
-				that->InitParticles(initSpeed, spreadSpeed, fadeSpeed);
+				CVector3 emit;
+				emit[0] = TableValue(lua, 3, "emit_x", 0.0f);
+				emit[1] = TableValue(lua, 3, "emit_y", 0.0f);
+				emit[2] = TableValue(lua, 3, "emit_z", 0.0f);
+				float spread = TableValue(lua, 3, "spread", 1.0f);
+				float fade = TableValue(lua, 3, "fade", 1.0f);
+				that->SetupSpeed(emit, spread, fade);
+			} else if (!strcmp(function, "SetGravityEffect")) {
+				if (!lua_istable(lua, 3)) return 0;
+				that->SetGravityEffect(TableValue(lua, 3, "enable", false));
 			}
 		} else if (type == "sound") {
 			CSceneNodeSound* that = static_cast<CSceneNodeSound*>(pNode);

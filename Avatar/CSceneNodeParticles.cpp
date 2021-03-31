@@ -9,19 +9,19 @@
 /**
 * 构造函数
 */
-CSceneNodeParticles::CSceneNodeParticles(const string& name, const string& texture,
-	float size, int count, bool dark, const CColor& color, const float speed[3], float spread,
-	float fade, bool loop): CSceneNode("particles", name) {
+CSceneNodeParticles::CSceneNodeParticles(const string& name, const string& texture, const CColor& color,
+	float size, bool dark, int count, bool loop) : CSceneNode("particles", name) {
 	m_vecParticles.resize(count);
 	m_pSortIndex = new size_t[count];
-	m_fFadeSpeed = fade;
+	m_fFadeSpeed = 1.0f;
 	m_strTexture = texture;
-	m_bLoopParticles = loop;
-	m_bDarkBlendMode = dark;
-	m_fSpreadSpeed = spread;
-	m_fInitSpeed[0] = speed[0];
-	m_fInitSpeed[1] = speed[1];
-	m_fInitSpeed[2] = speed[2];
+	m_bLoop = loop;
+	m_bDarkBlend = dark;
+	m_bGravityEffect = false;
+	m_fSpreadSpeed = 1.0f;
+	m_fEmitSpeed[0] = 0.0f;
+	m_fEmitSpeed[1] = 0.0f;
+	m_fEmitSpeed[2] = 0.0f;
 	m_fParticleSize = size * 0.5f;
 	m_fParticleColor[0] = color.m_fValue[0];
 	m_fParticleColor[1] = color.m_fValue[1];
@@ -46,9 +46,9 @@ bool CSceneNodeParticles::Init() {
 		m_pMesh->AddTriangle(idx + 1, idx + 3, idx + 2);
 	}
 	m_pMesh->Create(true);
-	m_pMesh->GetMaterial()->SetRenderMode(true, true, !m_bDarkBlendMode);
-	if (m_bLoopParticles) {
-		InitParticles(m_fInitSpeed, m_fSpreadSpeed, m_fFadeSpeed);
+	m_pMesh->GetMaterial()->SetRenderMode(true, true, !m_bDarkBlend);
+	if (m_bLoop) {
+		SetupSpeed(m_fEmitSpeed, m_fSpreadSpeed, m_fFadeSpeed);
 	}
 	return true;
 }
@@ -73,6 +73,7 @@ void CSceneNodeParticles::Render() {
 */
 void CSceneNodeParticles::Update(float dt) {
 	CCamera* pCamera = CEngine::GetGraphicsManager()->GetCamera();
+	CVector3 gravity = CEngine::GetPhysicsManager()->GetGravity() * dt;
 	// 得到相机局部坐标系下的方向
 	CMatrix4 worldMatInv(m_cWorldMatrix);
 	CVector3 cameraPos = worldMatInv.Invert() * pCamera->m_cPosition;
@@ -89,18 +90,23 @@ void CSceneNodeParticles::Update(float dt) {
 		// 粒子衰减
 		particle->fade -= m_fFadeSpeed * dt;
 		if (particle->fade < 0.0f) {
-			particle->active = m_bLoopParticles;
+			particle->active = m_bLoop;
 			particle->color[3] = 0.0f;
-			if (m_bLoopParticles) {
+			if (m_bLoop) {
 				particle->fade += 1.0f;
-				particle->speed[0] = m_fInitSpeed[0] + Random() * m_fSpreadSpeed;
-				particle->speed[1] = m_fInitSpeed[1] + Random() * m_fSpreadSpeed;
-				particle->speed[2] = m_fInitSpeed[2] + Random() * m_fSpreadSpeed;
+				particle->speed[0] = m_fEmitSpeed[0] + Random() * m_fSpreadSpeed;
+				particle->speed[1] = m_fEmitSpeed[1] + Random() * m_fSpreadSpeed;
+				particle->speed[2] = m_fEmitSpeed[2] + Random() * m_fSpreadSpeed;
 				particle->position[0] = 0.0f;
 				particle->position[1] = 0.0f;
 				particle->position[2] = 0.0f;
 			}
 			continue;
+		}
+		if (m_bGravityEffect) {
+			particle->speed[0] += gravity[0];
+			particle->speed[1] += gravity[1];
+			particle->speed[2] += gravity[2];
 		}
 		// 更新位置和颜色
 		particle->position[0] += particle->speed[0] * sx;
@@ -156,12 +162,12 @@ void CSceneNodeParticles::Update(float dt) {
 /**
 * 初始化粒子
 */
-void CSceneNodeParticles::InitParticles(const CVector3& initSpeed, float spreadSpeed, float fadeSpeed) {
-	m_fInitSpeed[0] = initSpeed.m_fValue[0];
-	m_fInitSpeed[1] = initSpeed.m_fValue[1];
-	m_fInitSpeed[2] = initSpeed.m_fValue[2];
-	m_fSpreadSpeed = spreadSpeed;
-	m_fFadeSpeed = fadeSpeed;
+void CSceneNodeParticles::SetupSpeed(const CVector3& emit, float spread, float fade) {
+	m_fEmitSpeed[0] = emit.m_fValue[0];
+	m_fEmitSpeed[1] = emit.m_fValue[1];
+	m_fEmitSpeed[2] = emit.m_fValue[2];
+	m_fSpreadSpeed = spread;
+	m_fFadeSpeed = fade;
 	for (size_t i = 0; i < m_vecParticles.size(); i++) {
 		SParticle& particle = m_vecParticles[i];
 		particle.active = true;
@@ -169,14 +175,21 @@ void CSceneNodeParticles::InitParticles(const CVector3& initSpeed, float spreadS
 		particle.color[0] = m_fParticleColor[0];
 		particle.color[1] = m_fParticleColor[1];
 		particle.color[2] = m_fParticleColor[2];
-		particle.speed[0] = m_fInitSpeed[0] + Random() * spreadSpeed;
-		particle.speed[1] = m_fInitSpeed[1] + Random() * spreadSpeed;
-		particle.speed[2] = m_fInitSpeed[2] + Random() * spreadSpeed;
+		particle.speed[0] = m_fEmitSpeed[0] + Random() * spread;
+		particle.speed[1] = m_fEmitSpeed[1] + Random() * spread;
+		particle.speed[2] = m_fEmitSpeed[2] + Random() * spread;
 		particle.position[0] = 0.0f;
 		particle.position[1] = 0.0f;
 		particle.position[2] = 0.0f;
 		m_pSortIndex[i] = i;
 	}
+}
+
+/**
+* 设置是否受重力加速度影响
+*/
+void CSceneNodeParticles::SetGravityEffect(bool enable) {
+	m_bGravityEffect = enable;
 }
 
 /**
