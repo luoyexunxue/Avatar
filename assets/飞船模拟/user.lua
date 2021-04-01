@@ -7,6 +7,10 @@ camera.target(600, 0, 0)
 camera.angle(1.9, 0.5, 0)
 camera.position(660, 0, 0)
 
+scene.handle('flame1','SetupSpeed',{ spread = 2.5, emit_z = -23, fade = 8 })
+scene.handle('flame2','SetupSpeed',{ spread = 2.5, emit_z = -23, fade = 8 })
+scene.handle('flame3','SetupSpeed',{ spread = 2.5, emit_z = -23, fade = 8 })
+
 gTime = 0
 OnUpdate = function(dt)
 	gTime = gTime + dt

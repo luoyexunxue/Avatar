@@ -1,5 +1,5 @@
 ﻿OnReady = function()
-   graphics.background(0.160802,0.152958,0.160802)
+   graphics.background(0.160802,0.152958,0.160802,1.0)
    engine.input('map',1,2,3)
    engine.input('scale',1,1)
    engine.input('disable',false,false,true)

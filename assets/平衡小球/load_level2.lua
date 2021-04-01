@@ -110,7 +110,7 @@ scene.scale('player',1,1,1)
 scene.visible('player',true)
 physics.bind('player',{mass=1,shape='sphere',linearDamping=0,angularDamping=0,friction=0.5,restitution=0.3,trigger=false,allowSleep=false})
 
-scene.insert(nil,'skybox','skybox',{texture='px.jpg,nx.jpg,pz.jpg,nz.jpg,py.jpg,ny.jpg'})
+scene.insert(nil,'skybox','skybox',{texture='px.jpg,nx.jpg,nz.jpg,pz.jpg,py.jpg,ny.jpg'})
 scene.position('skybox',0,0,0)
 scene.angle('skybox',0,0,0)
 scene.scale('skybox',1,1,1)

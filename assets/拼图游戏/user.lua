@@ -10,7 +10,7 @@ function loadLevel(level)
 	currentLevel = level
 	swapTable = {}
 	scene.clear()
-	scene.insert(nil, "skybox", "skybox", { texture = "nebula_px.jpg,nebula_nx.jpg, nebula_pz.jpg, nebula_nz.jpg, nebula_py.jpg, nebula_ny.jpg" })
+	scene.insert(nil, "skybox", "skybox", { texture = "nebula_px.jpg,nebula_nx.jpg, nebula_nz.jpg, nebula_pz.jpg, nebula_py.jpg, nebula_ny.jpg" })
 	engine.log("Load level "..level)
 	for i = 1, currentLevel do
 		local u0 = (i - 1) / currentLevel

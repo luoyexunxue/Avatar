@@ -1,5 +1,5 @@
 ﻿
-scene.insert(nil,'skybox','skybox',{ texture = "px.jpg,nx.jpg,pz.jpg,nz.jpg,py.jpg,ny.jpg" })
+scene.insert(nil,'skybox','skybox',{ texture = "px.jpg,nx.jpg,nz.jpg,pz.jpg,py.jpg,ny.jpg" })
 scene.position('skybox',0,0,0)
 scene.angle('skybox',0,0,0)
 scene.scale('skybox',1,1,1)
