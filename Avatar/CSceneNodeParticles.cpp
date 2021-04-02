@@ -12,7 +12,7 @@
 CSceneNodeParticles::CSceneNodeParticles(const string& name, const string& texture, const CColor& color,
 	float size, bool dark, int count, bool loop) : CSceneNode("particles", name) {
 	m_vecParticles.resize(count);
-	m_pSortIndex = new size_t[count];
+	m_vecSortIndex.resize(count);
 	m_fFadeSpeed = 1.0f;
 	m_strTexture = texture;
 	m_bLoop = loop;
@@ -57,7 +57,6 @@ bool CSceneNodeParticles::Init() {
 * 销毁场景节点
 */
 void CSceneNodeParticles::Destroy() {
-	delete[] m_pSortIndex;
 	delete m_pMesh;
 }
 
@@ -74,13 +73,15 @@ void CSceneNodeParticles::Render() {
 void CSceneNodeParticles::Update(float dt) {
 	CCamera* pCamera = CEngine::GetGraphicsManager()->GetCamera();
 	CVector3 gravity = CEngine::GetPhysicsManager()->GetGravity() * dt;
-	// 得到相机局部坐标系下的方向
+	// 得到局部坐标系下的相机位置
 	CMatrix4 worldMatInv(m_cWorldMatrix);
 	CVector3 cameraPos = worldMatInv.Invert() * pCamera->m_cPosition;
+	CVector3 lookDir = worldMatInv * pCamera->m_cLookVector;
 	// 局部坐标系下的速度缩放系数
 	float sx = CVector3(worldMatInv(0, 0), worldMatInv(1, 0), worldMatInv(2, 0)).Length() * dt;
 	float sy = CVector3(worldMatInv(0, 1), worldMatInv(1, 1), worldMatInv(2, 1)).Length() * dt;
 	float sz = CVector3(worldMatInv(0, 2), worldMatInv(1, 2), worldMatInv(2, 2)).Length() * dt;
+	float fade_value = m_fFadeSpeed * dt;
 
 	// 更新粒子属性
 	bool changed = false;
@@ -88,12 +89,13 @@ void CSceneNodeParticles::Update(float dt) {
 		SParticle* particle = &m_vecParticles[i];
 		if (!particle->active) continue;
 		// 粒子衰减
-		particle->fade -= m_fFadeSpeed * dt;
+		particle->fade -= fade_value;
 		if (particle->fade < 0.0f) {
 			particle->active = m_bLoop;
 			particle->color[3] = 0.0f;
 			if (m_bLoop) {
 				particle->fade += 1.0f;
+				particle->scale = 1.0f;
 				particle->speed[0] = m_fEmitSpeed[0] + Random() * m_fSpreadSpeed;
 				particle->speed[1] = m_fEmitSpeed[1] + Random() * m_fSpreadSpeed;
 				particle->speed[2] = m_fEmitSpeed[2] + Random() * m_fSpreadSpeed;
@@ -108,33 +110,25 @@ void CSceneNodeParticles::Update(float dt) {
 			particle->speed[1] += gravity[1];
 			particle->speed[2] += gravity[2];
 		}
-		// 更新位置和颜色
+		// 更新颜色和位置
+		particle->scale += fade_value * 2.0f;
+		particle->color[3] = m_fParticleColor[3] * particle->fade;
 		particle->position[0] += particle->speed[0] * sx;
 		particle->position[1] += particle->speed[1] * sy;
 		particle->position[2] += particle->speed[2] * sz;
-		CVector3 center_to_camera = cameraPos - CVector3(particle->position);
-		particle->distance = center_to_camera.DotProduct(center_to_camera);
-		particle->color[3] = m_fParticleColor[3] * particle->fade;
+		particle->distance = lookDir.DotProduct(CVector3(particle->position).Sub(cameraPos));
 		changed = true;
 	}
 	if (!changed) return;
 
-	// 对粒子按摄像机视线方向排序，使用插入排序算法
+	// 对粒子由远及近排序，使用插入排序算法
 	for (size_t i = 1; i < m_vecParticles.size(); i++) {
-		if (m_vecParticles[m_pSortIndex[i - 1]].distance < m_vecParticles[m_pSortIndex[i]].distance) {
-			size_t j = i - 1;
-			while (j != 0) {
-				j -= 1;
-				if (m_vecParticles[m_pSortIndex[j]].distance > m_vecParticles[m_pSortIndex[i]].distance) {
-					j += 1;
-					break;
-				}
-			}
-			size_t temp = m_pSortIndex[i];
-			for (size_t k = i; k > j; k--) {
-				m_pSortIndex[k] = m_pSortIndex[k - 1];
-			}
-			m_pSortIndex[j] = temp;
+		for (size_t j = i; j > 0; j--) {
+			if (m_vecParticles[m_vecSortIndex[j]].distance > m_vecParticles[m_vecSortIndex[j - 1]].distance) {
+				size_t temp = m_vecSortIndex[j];
+				m_vecSortIndex[j] = m_vecSortIndex[j - 1];
+				m_vecSortIndex[j - 1] = temp;
+			} else break;
 		}
 	}
 	// 计算粒子平面右上两个向量
@@ -145,16 +139,18 @@ void CSceneNodeParticles::Update(float dt) {
 	vec_u.Scale(m_fParticleSize);
 	// 更新网格对象
 	for (size_t i = 0; i < m_vecParticles.size(); i++) {
-		SParticle* particle = &m_vecParticles[m_pSortIndex[i]];
 		size_t index = i << 2;
+		SParticle* particle = &m_vecParticles[m_vecSortIndex[i]];
+		CVector3 particle_r = vec_r * particle->scale;
+		CVector3 particle_u = vec_u * particle->scale;
 		m_pMesh->GetVertex(index + 0)->SetColor(particle->color);
-		m_pMesh->GetVertex(index + 0)->SetPosition(CVector3(particle->position) - vec_r);
+		m_pMesh->GetVertex(index + 0)->SetPosition(CVector3(particle->position).Sub(particle_r));
 		m_pMesh->GetVertex(index + 1)->SetColor(particle->color);
-		m_pMesh->GetVertex(index + 1)->SetPosition(CVector3(particle->position) - vec_u);
+		m_pMesh->GetVertex(index + 1)->SetPosition(CVector3(particle->position).Sub(particle_u));
 		m_pMesh->GetVertex(index + 2)->SetColor(particle->color);
-		m_pMesh->GetVertex(index + 2)->SetPosition(CVector3(particle->position) + vec_u);
+		m_pMesh->GetVertex(index + 2)->SetPosition(CVector3(particle->position).Add(particle_u));
 		m_pMesh->GetVertex(index + 3)->SetColor(particle->color);
-		m_pMesh->GetVertex(index + 3)->SetPosition(CVector3(particle->position) + vec_r);
+		m_pMesh->GetVertex(index + 3)->SetPosition(CVector3(particle->position).Add(particle_r));
 	}
 	m_pMesh->Update(1);
 }
@@ -171,7 +167,8 @@ void CSceneNodeParticles::SetupSpeed(const CVector3& emit, float spread, float f
 	for (size_t i = 0; i < m_vecParticles.size(); i++) {
 		SParticle& particle = m_vecParticles[i];
 		particle.active = true;
-		particle.fade = 0.5f - Random() * 0.5f;
+		particle.fade = Random() * 0.5f + 0.5f;
+		particle.scale = 1.0f;
 		particle.color[0] = m_fParticleColor[0];
 		particle.color[1] = m_fParticleColor[1];
 		particle.color[2] = m_fParticleColor[2];
@@ -181,7 +178,7 @@ void CSceneNodeParticles::SetupSpeed(const CVector3& emit, float spread, float f
 		particle.position[0] = 0.0f;
 		particle.position[1] = 0.0f;
 		particle.position[2] = 0.0f;
-		m_pSortIndex[i] = i;
+		m_vecSortIndex[i] = i;
 	}
 }
 

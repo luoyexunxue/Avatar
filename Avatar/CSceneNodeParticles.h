@@ -40,6 +40,7 @@ private:
 	typedef struct _SParticle {
 		bool active;
 		float fade;
+		float scale;
 		float color[4];
 		float speed[3];
 		float position[3];
@@ -69,7 +70,7 @@ private:
 	//! 粒子数组
 	vector<SParticle> m_vecParticles;
 	//! 粒子排序索引
-	size_t* m_pSortIndex;
+	vector<size_t> m_vecSortIndex;
 };
 
 #endif
