@@ -138,12 +138,13 @@ string CUdpSocket::GetClientIP() {
 * 使能阻塞模式
 */
 void CUdpSocket::EnableBlockmode(bool enable) {
-	int flag = 0;
 #ifdef AVATAR_WINDOWS
-	if (!enable) flag = 1;
-	ioctlsocket(m_iSocket, FIONBIO, (u_long*)&flag);
+	unsigned long flag = enable ? 0 : 1;
+	ioctlsocket(m_iSocket, FIONBIO, &flag);
 #else
-	if (!enable) flag = O_NONBLOCK;
+	int flag = fcntl(m_iSocket, F_GETFL, 0);
+	if (enable) flag &= ~O_NONBLOCK;
+	else flag |= O_NONBLOCK;
 	fcntl(m_iSocket, F_SETFL, flag);
 #endif
 }
